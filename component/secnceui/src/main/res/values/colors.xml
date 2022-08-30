@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="main_color_009FFF">#009FFF</color>
+    <color name="main_color_156EF3">#156EF3</color>
+    <color name="main_color_16A7FF">#16A7FF</color>
+    <color name="auxiliary_color_7A51FF">#7A51FF</color>
+    <color name="auxiliary_color_6842F6">#6842F6</color>
+    <color name="auxiliary_color_CF00FF">#CF00FF</color>
+    <color name="auxiliary_color_FFEB6E">#FFEB6E</color>
+    <color name="auxiliary_color_FF53DA">#FF53DA</color>
+    <color name="auxiliary_color_FFE856">#FFE856</color>
+    <color name="dark_grey_color_040925">#040925</color>
+    <color name="dark_grey_color_303554">#303554</color>
+    <color name="dark_grey_color_6C7192">#6C7192</color>
+    <color name="dark_grey_color_979CBB">#979CBB</color>
+    <color name="dark_grey_color_C6C4DE">#C6C4DE</color>
+    <color name="dark_grey_color_EFF4FF">#EFF4FF</color>
+    <color name="divider_color_F6F6F6">#F6F6F6</color>
+    <color name="divider_color_EFF4FF">#EFF4FF</color>
+    <color name="divider_color_979797">#979797</color>
+    <color name="color_E76D21">#E76D21</color>
+    <color name="color_0A7AFF">#0A7AFF</color>
+    <color name="color_F2F2F5">#F2F2F5</color>
+    <color name="color_219BFF">#219BFF</color>
+    <color name="color_345DFF">#345DFF</color>
+    <color name="color_F7F8FB">#F7F8FB</color>
+    <color name="color_3C4267">#3C4267</color>
+    <color name="color_333333">#333333</color>
+</resources>

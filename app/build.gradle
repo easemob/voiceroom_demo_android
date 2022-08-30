@@ -1,0 +1,85 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+}
+
+
+def dep = rootProject.ext.dependencies
+def androidVersion = rootProject.ext.android
+
+android {
+    compileSdk androidVersion["compileSdkVersion"]
+
+    defaultConfig {
+        minSdk androidVersion["minSdkVersion"]
+        targetSdk androidVersion["targetSdkVersion"]
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        kapt {
+            arguments {
+                arg("AROUTER_MODULE_NAME", project.getName())
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+    kotlinOptions {
+        jvmTarget = '11'
+    }
+    viewBinding {
+        enabled = true
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
+    implementation dep["core-ktx"]
+    implementation dep["appcompat"]
+    implementation dep["constraintlayout"]
+    implementation dep["recyclerview"]
+    implementation dep["material"]
+    implementation dep["navigation-fragment-ktx"]
+    implementation dep["navigation-ui-ktx"]
+    implementation dep["lifecycle-viewmodel-ktx"]
+    implementation dep["lifecycle-livedata-ktx"]
+    implementation dep["lifecycle-runtime-ktx"]
+    implementation dep["annotation"]
+    implementation dep["multidex"]
+
+    testImplementation dep["junit"]
+    androidTestImplementation dep["junit-android"]
+    androidTestImplementation dep["espresso-core"]
+
+    implementation dep["gson"]
+    // glide
+    implementation dep["glide"]
+    annotationProcessor dep["glide-compiler"]
+
+    // rtc && im
+    implementation dep["agora-rtc"]
+
+    // business
+    implementation project(":business:chatroom")
+    // basics depend
+    implementation project(":basicsdepend")
+
+    implementation dep["arouter-api"]
+    kapt dep["arouter-compiler"]
+}

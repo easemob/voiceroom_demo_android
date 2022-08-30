@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_audio_settings.xml"
+    app:startDestination="@+id/audioSettingsFragment">
+
+    <fragment
+        android:id="@+id/audioSettingsFragment"
+        android:name="io.agora.secnceui.audiosettings.ChatroomAudioSettingsSheetDialog"
+        android:label="AudioSettingsFragment"
+        tools:layout="@layout/dialog_chatroom_audio_setting">
+        <action
+            android:id="@+id/action_to_spatial_audio"
+            app:destination="@id/spatialAudioFragment"
+            app:enterAnim="@anim/fpa_slide_in_right"
+            app:exitAnim="@anim/fpa_slide_out_left"
+            app:popEnterAnim="@anim/fpa_slide_in_left"
+            app:popExitAnim="@anim/fpa_slide_out_right" />
+        <action
+            android:id="@+id/action_to_noise_suppression"
+            app:destination="@id/noiseSuppressionFragment"
+            app:enterAnim="@anim/fpa_slide_in_right"
+            app:exitAnim="@anim/fpa_slide_out_left"
+            app:popEnterAnim="@anim/fpa_slide_in_left"
+            app:popExitAnim="@anim/fpa_slide_out_right" />
+        <action
+            android:id="@+id/action_to_sound_selection"
+            app:destination="@id/soundSelectionFragment"
+            app:enterAnim="@anim/fpa_slide_in_right"
+            app:exitAnim="@anim/fpa_slide_out_left"
+            app:popEnterAnim="@anim/fpa_slide_in_left"
+            app:popExitAnim="@anim/fpa_slide_out_right" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/spatialAudioFragment"
+        android:name="io.agora.secnceui.spatialaudio.ChatroomSpatialAudioSheetDialog"
+        android:label="SpatialAudioFragment"
+        tools:layout="@layout/dialog_chatroom_spatial_audio" />
+
+    <fragment
+        android:id="@+id/soundSelectionFragment"
+        android:name="io.agora.secnceui.soundselection.ChatroomSoundSelectionSheetDialog"
+        android:label="SoundSelectionFragment"
+        tools:layout="@layout/dialog_chatroom_sound_selection" />
+
+    <fragment
+        android:id="@+id/noiseSuppressionFragment"
+        android:name="io.agora.secnceui.anis.ChatroomNoiseSuppressionSheetDialog"
+        android:label="NoiseSuppressionFragment"
+        tools:layout="@layout/dialog_chatroom_noise_suppression" />
+</navigation>

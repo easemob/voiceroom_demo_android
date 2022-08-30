@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_rect_top_radius20_white">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ivBottomSheetTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:src="@drawable/icon_chatroom_rectangle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/mtBottomSheetTitle"
+        style="@style/chatroom_bottom_sheet_title_style"
+        android:text="@string/chatroom_audio_settings"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ivBottomSheetTitle" />
+
+    <!--  Bot Settings  -->
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/mtBottomSheetBotSetting"
+        style="@style/chatroom_bottom_sheet_subtitle_style"
+        android:text="@string/chatroom_bot_settings"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mtBottomSheetTitle" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/mtBottomSheetAgoraBot"
+        style="@style/chatroom_bottom_sheet_text_style"
+        android:drawableStart="@drawable/icon_chatroom_setting_bot"
+        android:text="@string/chatroom_agora_bot"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mtBottomSheetBotSetting" />
+
+    <androidx.appcompat.widget.AppCompatCheckBox
+        android:id="@+id/mcbBottomSheetAgoraBot"
+        style="@style/chatroom_bottom_sheet_checkbox"
+        android:checked="false"
+        app:layout_constraintBottom_toBottomOf="@+id/mtBottomSheetAgoraBot"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/mtBottomSheetAgoraBot" />
+
+    <com.google.android.material.divider.MaterialDivider
+        style="@style/chatroom_bottom_sheet_divider_style"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mtBottomSheetAgoraBot" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/mtBottomSheetBotVolume"
+        style="@style/chatroom_bottom_sheet_text_style"
+        android:layout_marginTop="1dp"
+        android:drawableStart="@drawable/icon_chatroom_setting_volume"
+        android:text="@string/chatroom_bot_volume"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mtBottomSheetAgoraBot" />
+
+    <androidx.appcompat.widget.AppCompatSeekBar
+        android:id="@+id/pbChatroomBotVolume"
+        style="@style/chatroom_bottom_sheet_progress"
+        android:layout_gravity="center_vertical"
+        android:contentDescription="@string/chatroom_bot_volume"
+        android:thumb="@drawable/icon_progress_thumb20"
+        app:layout_constraintBottom_toBottomOf="@+id/mtBottomSheetBotVolume"
+        app:layout_constraintEnd_toStartOf="@+id/mtChatroomBotVolume"
+        app:layout_constraintStart_toEndOf="@+id/mtBottomSheetBotVolume"
+        app:layout_constraintTop_toTopOf="@+id/mtBottomSheetBotVolume"
+        tools:progress="10" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/mtChatroomBotVolume"
+        style="@style/chatroom_bottom_sheet_right_text_style"
+        app:layout_constraintBottom_toBottomOf="@+id/mtBottomSheetBotVolume"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/mtBottomSheetBotVolume"
+        tools:text="50" />
+
+    <!-- Room Audio Settings  -->
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/mtBottomSheetRoomAudioBotSetting"
+        style="@style/chatroom_bottom_sheet_subtitle_style"
+        android:layout_width="wrap_content"
+        android:drawableEnd="@drawable/icon_chatroom_setting_new_tag"
+        android:drawablePadding="5dp"
+        android:text="@string/chatroom_room_audio_settings"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mtBottomSheetBotVolume" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/color_F7F8FB"
+        app:layout_constraintBottom_toBottomOf="@+id/mtBottomSheetRoomAudioBotSetting"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/mtBottomSheetRoomAudioBotSetting"
+        app:layout_constraintTop_toTopOf="@+id/mtBottomSheetRoomAudioBotSetting" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/mtBottomSheetSoundEffect"
+        style="@style/chatroom_bottom_sheet_text_style"
+        android:drawableStart="@drawable/icon_chatroom_setting_sound_effect"
+        android:text="@string/chatroom_best_sound_effect"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mtBottomSheetRoomAudioBotSetting" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/mtBottomSheetSoundEffectArrow"
+        style="@style/chatroom_bottom_sheet_right_text_style"
+        android:drawableEnd="@drawable/icon_chatroom_arrow_right_grey"
+        android:text="KTV"
+        app:layout_constraintBottom_toBottomOf="@+id/mtBottomSheetSoundEffect"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/mtBottomSheetSoundEffect"
+        tools:text="KTV" />
+
+    <com.google.android.material.divider.MaterialDivider
+        style="@style/chatroom_bottom_sheet_divider_style"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mtBottomSheetSoundEffect" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/mtBottomSheetNoiseSuppression"
+        style="@style/chatroom_bottom_sheet_text_style"
+        android:layout_marginTop="1dp"
+        android:drawableStart="@drawable/icon_chatroom_setting_noise_suppression"
+        android:text="@string/chatroom_noise_suppression"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mtBottomSheetSoundEffect" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/mtBottomSheetNoiseSuppressionArrow"
+        style="@style/chatroom_bottom_sheet_right_text_style"
+        android:drawableEnd="@drawable/icon_chatroom_arrow_right_grey"
+        android:text="@string/chatroom_medium"
+        app:layout_constraintBottom_toBottomOf="@+id/mtBottomSheetNoiseSuppression"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/mtBottomSheetNoiseSuppression"
+        tools:text="Medium" />
+
+
+    <com.google.android.material.divider.MaterialDivider
+        style="@style/chatroom_bottom_sheet_divider_style"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mtBottomSheetNoiseSuppression" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/mtBottomSheetSpatialAudio"
+        style="@style/chatroom_bottom_sheet_text_style"
+        android:layout_marginTop="1dp"
+        android:drawableStart="@drawable/icon_chatroom_setting_noise_suppression"
+        android:layout_marginBottom="15dp"
+        android:text="@string/chatroom_spatial_audio"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mtBottomSheetNoiseSuppression" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/mtBottomSheetSpatialAudioArrow"
+        style="@style/chatroom_bottom_sheet_right_text_style"
+        android:drawableEnd="@drawable/icon_chatroom_arrow_right_grey"
+        android:text="@string/chatroom_off"
+        app:layout_constraintBottom_toBottomOf="@+id/mtBottomSheetSpatialAudio"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/mtBottomSheetSpatialAudio"
+        tools:text="Off" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:src="@drawable/icon_chatroom_spatial_audio_arrow"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/ivSeatOuterRing"
+        android:layout_width="82dp"
+        android:layout_height="82dp"
+        android:layout_marginStart="18dp"
+        android:layout_marginEnd="18dp"
+        android:layout_marginTop="13dp"
+        android:background="@drawable/bg_oval_gradient_purple"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearance="@style/chatroom_seat_roundStyle" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/ivSeatInfo"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:background="@drawable/bg_oval_white30"
+        app:contentPadding="18dp"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="@+id/ivSeatOuterRing"
+        app:layout_constraintStart_toStartOf="@+id/ivSeatOuterRing"
+        app:layout_constraintTop_toTopOf="@+id/ivSeatOuterRing"
+        app:layout_constraintBottom_toBottomOf="@+id/ivSeatOuterRing"
+        app:shapeAppearance="@style/chatroom_seat_roundStyle"
+        android:src="@drawable/icon_seat_add"/>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ivSeatMic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/icon_seat_on_mic0"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@id/ivSeatInfo"
+        app:layout_constraintEnd_toEndOf="@id/ivSeatInfo" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/mtSeatInfoName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        android:drawableStart="@drawable/icon_seat_owner_tag"
+        android:drawablePadding="2dp"
+        android:gravity="center"
+        android:text="Susan Stark"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_11"
+        app:layout_constraintEnd_toEndOf="@+id/ivSeatInfo"
+        app:layout_constraintStart_toStartOf="@+id/ivSeatInfo"
+        app:layout_constraintTop_toBottomOf="@+id/ivSeatInfo" />
+</androidx.constraintlayout.widget.ConstraintLayout>

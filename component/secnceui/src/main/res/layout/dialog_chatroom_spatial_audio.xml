@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_rect_top_radius20_white">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ivBottomSheetTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:src="@drawable/icon_chatroom_rectangle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ivBottomSheetBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingStart="14dp"
+        android:paddingTop="10dp"
+        android:paddingEnd="14dp"
+        android:paddingBottom="10dp"
+        android:src="@drawable/icon_chatroom_back_grey"
+        app:layout_constraintBottom_toBottomOf="@+id/mtBottomSheetTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/mtBottomSheetTitle" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/mtBottomSheetTitle"
+        style="@style/chatroom_bottom_sheet_title_style"
+        android:text="@string/chatroom_spatial_audio"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ivBottomSheetTitle" />
+
+    <!--  Agora Blue Bot  -->
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/mtBottomSheetBlueBotSetting"
+        style="@style/chatroom_bottom_sheet_subtitle_style"
+        android:text="@string/chatroom_agora_blue_bot"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mtBottomSheetTitle" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/mtBottomSheetBlueBotSpatialAudio"
+        style="@style/chatroom_bottom_sheet_text_style"
+        android:text="@string/chatroom_spatial_audio"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mtBottomSheetBlueBotSetting" />
+
+    <androidx.appcompat.widget.AppCompatCheckBox
+        android:id="@+id/mcbBottomBlueBotSpatialAudio"
+        style="@style/chatroom_bottom_sheet_checkbox"
+        android:checked="false"
+        app:layout_constraintBottom_toBottomOf="@+id/mtBottomSheetBlueBotSpatialAudio"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/mtBottomSheetBlueBotSpatialAudio" />
+
+    <com.google.android.material.divider.MaterialDivider
+        style="@style/chatroom_bottom_sheet_divider_style"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mtBottomSheetBlueBotSpatialAudio" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/mtBottomSheetBlueBotAttenuationFactor"
+        style="@style/chatroom_bottom_sheet_text_style"
+        android:layout_marginTop="1dp"
+        android:text="@string/chatroom_attenuation_factor"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mtBottomSheetBlueBotSpatialAudio" />
+
+    <androidx.appcompat.widget.AppCompatSeekBar
+        android:id="@+id/pbBottomSheetBlueBotAttenuationFactor"
+        style="@style/chatroom_bottom_sheet_progress"
+        android:layout_gravity="center_vertical"
+        android:contentDescription="@string/chatroom_attenuation_factor"
+        app:layout_constraintBottom_toBottomOf="@+id/mtBottomSheetBlueBotAttenuationFactor"
+        app:layout_constraintEnd_toStartOf="@+id/mtBlueBotAttenuationFactor"
+        app:layout_constraintStart_toEndOf="@+id/mtBottomSheetBlueBotAttenuationFactor"
+        app:layout_constraintTop_toTopOf="@+id/mtBottomSheetBlueBotAttenuationFactor"
+        tools:progress="10" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/mtBlueBotAttenuationFactor"
+        style="@style/chatroom_bottom_sheet_right_text_style"
+        app:layout_constraintBottom_toBottomOf="@+id/mtBottomSheetBlueBotAttenuationFactor"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/mtBottomSheetBlueBotAttenuationFactor"
+        tools:text="50" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/mtBottomSheetBlueBotAirAbsorb"
+        style="@style/chatroom_bottom_sheet_text_style"
+        android:text="@string/chatroom_air_absorb"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mtBottomSheetBlueBotAttenuationFactor" />
+
+    <androidx.appcompat.widget.AppCompatCheckBox
+        android:id="@+id/mcbBottomSheetBlueBotAirAbsorb"
+        style="@style/chatroom_bottom_sheet_checkbox"
+        android:checked="false"
+        app:layout_constraintBottom_toBottomOf="@+id/mtBottomSheetBlueBotAirAbsorb"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/mtBottomSheetBlueBotAirAbsorb" />
+
+    <com.google.android.material.divider.MaterialDivider
+        style="@style/chatroom_bottom_sheet_divider_style"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mtBottomSheetBlueBotAirAbsorb" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/mtBottomSheetBlueBotVoiceBlur"
+        style="@style/chatroom_bottom_sheet_text_style"
+        android:text="@string/chatroom_voice_blur"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mtBottomSheetBlueBotAirAbsorb" />
+
+    <androidx.appcompat.widget.AppCompatCheckBox
+        android:id="@+id/mcbBottomSheetBlueBotVoiceBlur"
+        style="@style/chatroom_bottom_sheet_checkbox"
+        android:checked="false"
+        app:layout_constraintBottom_toBottomOf="@+id/mtBottomSheetBlueBotVoiceBlur"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/mtBottomSheetBlueBotVoiceBlur" />
+
+    <!--  Agora Red Bot  -->
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/mtBottomSheetRedBotSetting"
+        style="@style/chatroom_bottom_sheet_subtitle_style"
+        android:text="@string/chatroom_agora_red_bot"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mtBottomSheetBlueBotVoiceBlur" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/mtBottomSheetRedBotSpatialAudio"
+        style="@style/chatroom_bottom_sheet_text_style"
+        android:text="@string/chatroom_spatial_audio"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mtBottomSheetRedBotSetting" />
+
+    <androidx.appcompat.widget.AppCompatCheckBox
+        android:id="@+id/mcbBottomRedBotSpatialAudio"
+        style="@style/chatroom_bottom_sheet_checkbox"
+        android:checked="false"
+        app:layout_constraintBottom_toBottomOf="@+id/mtBottomSheetRedBotSpatialAudio"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/mtBottomSheetRedBotSpatialAudio" />
+
+    <com.google.android.material.divider.MaterialDivider
+        style="@style/chatroom_bottom_sheet_divider_style"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mtBottomSheetRedBotSpatialAudio" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/mtBottomSheetRedBotAttenuationFactor"
+        style="@style/chatroom_bottom_sheet_text_style"
+        android:layout_marginTop="1dp"
+        android:text="@string/chatroom_attenuation_factor"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mtBottomSheetRedBotSpatialAudio" />
+
+    <androidx.appcompat.widget.AppCompatSeekBar
+        android:id="@+id/pbBottomSheetRedBotVolume"
+        style="@style/chatroom_bottom_sheet_progress"
+        android:layout_gravity="center_vertical"
+        android:contentDescription="@string/chatroom_attenuation_factor"
+        app:layout_constraintBottom_toBottomOf="@+id/mtBottomSheetRedBotAttenuationFactor"
+        app:layout_constraintEnd_toStartOf="@+id/mtBlueBotAttenuationFactor"
+        app:layout_constraintStart_toEndOf="@+id/mtBottomSheetRedBotAttenuationFactor"
+        app:layout_constraintTop_toTopOf="@+id/mtBottomSheetRedBotAttenuationFactor"
+        tools:progress="10" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/mtChatroomRedBotAttenuationFactor"
+        style="@style/chatroom_bottom_sheet_right_text_style"
+        app:layout_constraintBottom_toBottomOf="@+id/mtBottomSheetRedBotAttenuationFactor"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/mtBottomSheetRedBotAttenuationFactor"
+        tools:text="50" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/mtBottomSheetRedBotAirAbsorb"
+        style="@style/chatroom_bottom_sheet_text_style"
+        android:text="@string/chatroom_spatial_audio"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mtBottomSheetRedBotAttenuationFactor" />
+
+    <androidx.appcompat.widget.AppCompatCheckBox
+        android:id="@+id/mcbBottomSheetRedBotAirAbsorb"
+        style="@style/chatroom_bottom_sheet_checkbox"
+        android:checked="false"
+        app:layout_constraintBottom_toBottomOf="@+id/mtBottomSheetRedBotAirAbsorb"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/mtBottomSheetRedBotAirAbsorb" />
+
+    <com.google.android.material.divider.MaterialDivider
+        style="@style/chatroom_bottom_sheet_divider_style"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mtBottomSheetRedBotAirAbsorb" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/mtBottomSheetRedBotVoiceBlur"
+        style="@style/chatroom_bottom_sheet_text_style"
+        android:layout_marginTop="1dp"
+        android:text="@string/chatroom_voice_blur"
+        android:layout_marginBottom="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mtBottomSheetRedBotAirAbsorb" />
+
+    <androidx.appcompat.widget.AppCompatCheckBox
+        android:id="@+id/mcbBottomSheetRedBotVoiceBlur"
+        style="@style/chatroom_bottom_sheet_checkbox"
+        android:checked="false"
+        app:layout_constraintBottom_toBottomOf="@+id/mtBottomSheetRedBotVoiceBlur"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/mtBottomSheetRedBotVoiceBlur" />
+</androidx.constraintlayout.widget.ConstraintLayout>

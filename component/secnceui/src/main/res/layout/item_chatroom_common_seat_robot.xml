@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/superLayout"
+    android:layout_width="wrap_content"
+    android:background="@color/dark_grey_color_C6C4DE"
+    android:layout_height="wrap_content">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/ivSeatAvatar"
+        android:layout_width="58dp"
+        android:layout_height="58dp"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:shapeAppearance="@style/chatroom_seat_roundStyle"
+        android:background="@drawable/bg_oval_white30"
+        app:contentPadding="18dp"
+        tools:src="@drawable/icon_seat_close" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ivSeatMic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/icon_seat_mic"
+        app:layout_constraintBottom_toBottomOf="@id/ivSeatAvatar"
+        app:layout_constraintEnd_toEndOf="@id/ivSeatAvatar" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/mtSeatOwner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_11"
+        android:drawablePadding="2dp"
+        android:drawableStart="@null"
+        app:layout_constraintTop_toBottomOf="@+id/ivSeatAvatar"
+        app:layout_constraintEnd_toEndOf="@+id/ivSeatAvatar"
+        app:layout_constraintStart_toStartOf="@+id/ivSeatAvatar"
+        android:layout_marginTop="5dp"
+        tools:text="Susan Stark" />
+</androidx.constraintlayout.widget.ConstraintLayout>
