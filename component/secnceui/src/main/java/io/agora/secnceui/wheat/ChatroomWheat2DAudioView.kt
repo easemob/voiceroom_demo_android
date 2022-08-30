@@ -4,15 +4,19 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.res.ResourcesCompat
+import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup
+import com.google.android.material.divider.MaterialDividerItemDecoration
+import io.agora.buddy.tool.dp
 import io.agora.secnceui.R
-import io.agora.secnceui.bean.ChatroomWheatSeatType
-import io.agora.secnceui.bean.ChatroomWheatUserRole
-import io.agora.secnceui.bean.ChatroomWheatUserStatus
-import io.agora.secnceui.bean.SeatInfoBean
+import io.agora.secnceui.bean.*
 import io.agora.secnceui.databinding.ViewChatroom2dAudioWheatBinding
-import io.agora.secnceui.wheat.adapter.ChatroomWheatSeatAdapter
-import io.agora.secnceui.wheat.adapter.ChatroomWheatViewHolder
+import io.agora.secnceui.wheat.flat.ChatroomWheat2DBotViewHolder
+import io.agora.secnceui.wheat.flat.ChatroomWheat2DSeatAdapter
+import io.agora.secnceui.wheat.flat.ChatroomWheat2DSeatBotAdapter
+import io.agora.secnceui.wheat.flat.ChatroomWheat2DViewHolder
 
 class ChatroomWheat2DAudioView : ConstraintLayout {
 
@@ -42,32 +46,32 @@ class ChatroomWheat2DAudioView : ConstraintLayout {
                 )
             )
             add(SeatInfoBean(index = 5))
-            add(
-                SeatInfoBean(
-                    index = 6,
-                    wheatSeatType = ChatroomWheatSeatType.Normal,
-                    userRole = ChatroomWheatUserRole.Robot,
-                    userStatus = ChatroomWheatUserStatus.Speaking,
-                    name = "Agora Blue...",
-                    rotImage = R.drawable.icon_seat_blue_robot,
-                    isBotOpen = true
-                )
+        }
+        val botWheatSeatList = mutableListOf<BotSeatInfoBean>().apply {
+            val blueBot =  SeatInfoBean(
+                index = 0,
+                wheatSeatType = ChatroomWheatSeatType.Inactive,
+                userRole = ChatroomWheatUserRole.Robot,
+                userStatus = ChatroomWheatUserStatus.None,
+                name = "Agora Blue",
+                rotImage = R.drawable.icon_seat_blue_robot,
             )
-            add(
-                SeatInfoBean(
-                    index = 7, wheatSeatType = ChatroomWheatSeatType.Normal,
-                    userRole = ChatroomWheatUserRole.Robot,
-                    userStatus = ChatroomWheatUserStatus.Idle,
-                    name = "Agora Red...",
-                    rotImage = R.drawable.icon_seat_red_robot
-                )
+            val redBot =  SeatInfoBean(
+                index = 1,
+                wheatSeatType = ChatroomWheatSeatType.Inactive,
+                userRole = ChatroomWheatUserRole.Robot,
+                userStatus = ChatroomWheatUserStatus.None,
+                name = "Agora Red",
+                rotImage = R.drawable.icon_seat_red_robot,
             )
+            add(BotSeatInfoBean(blueBot,redBot))
         }
     }
 
     private lateinit var binding: ViewChatroom2dAudioWheatBinding
 
-    private var wheatSeatAdapter: ChatroomWheatSeatAdapter? = null
+    private var wheat2DSeatAdapter: ChatroomWheat2DSeatAdapter? = null
+    private var wheat2DSeatBotAdapter: ChatroomWheat2DSeatBotAdapter? = null
 
     constructor(context: Context) : this(context, null)
 
@@ -87,10 +91,27 @@ class ChatroomWheat2DAudioView : ConstraintLayout {
     }
 
     fun setUpAdapter(seatInfoList: List<SeatInfoBean>) {
-        wheatSeatAdapter = ChatroomWheatSeatAdapter(seatInfoList, null, ChatroomWheatViewHolder::class.java)
+        wheat2DSeatAdapter = ChatroomWheat2DSeatAdapter(seatInfoList, null, ChatroomWheat2DViewHolder::class.java)
+        wheat2DSeatBotAdapter = ChatroomWheat2DSeatBotAdapter(botWheatSeatList, null, ChatroomWheat2DBotViewHolder::class.java)
+
+        val config = ConcatAdapter.Config.Builder().setIsolateViewTypes(true).build()
+        val concatAdapter = ConcatAdapter(config, wheat2DSeatAdapter, wheat2DSeatBotAdapter)
+        val gridLayoutManager = GridLayoutManager(context, 4).apply {
+            spanSizeLookup = object : SpanSizeLookup() {
+                override fun getSpanSize(position: Int): Int {
+                    return if (position == (concatAdapter.itemCount) - 1) {
+                        2
+                    } else 1
+                }
+            }
+        }
         binding.rvChatroomWheatSeat.apply {
-            layoutManager = GridLayoutManager(context, 4)
-            adapter = wheatSeatAdapter
+            addItemDecoration( MaterialDividerItemDecoration(context, MaterialDividerItemDecoration.VERTICAL).apply {
+                dividerThickness = 32.dp.toInt()
+                dividerColor = ResourcesCompat.getColor(context.resources, io.agora.baseui.R.color.transparent, null)
+            })
+            layoutManager = gridLayoutManager
+            adapter = concatAdapter
         }
     }
 }

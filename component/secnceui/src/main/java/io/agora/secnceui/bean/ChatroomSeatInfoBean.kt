@@ -11,7 +11,8 @@ import androidx.annotation.IntDef
     ChatroomWheatSeatType.Idle,
     ChatroomWheatSeatType.Normal,
     ChatroomWheatSeatType.Mute,
-    ChatroomWheatSeatType.Lock
+    ChatroomWheatSeatType.Lock,
+    ChatroomWheatSeatType.Inactive
 )
 annotation class ChatroomWheatSeatType {
     companion object {
@@ -26,6 +27,9 @@ annotation class ChatroomWheatSeatType {
 
         // 锁麦
         const val Lock = 3
+
+        // 机器人待激活状态
+        const val Inactive = 4
     }
 }
 
@@ -81,9 +85,6 @@ annotation class ChatroomWheatUserRole {
     }
 }
 
-/**
- *
- */
 data class SeatInfoBean(
     val index: Int = 0,
     val name: String? = null,
@@ -92,8 +93,12 @@ data class SeatInfoBean(
     @ChatroomWheatUserRole val userRole: Int = ChatroomWheatUserRole.None,
     @ChatroomWheatUserStatus val userStatus: Int = ChatroomWheatUserStatus.None,
     @DrawableRes val rotImage: Int = 0,
-    val isBotOpen: Boolean = false,
 ) : BaseChatroomBean
+
+data class BotSeatInfoBean(
+    val blueBot:SeatInfoBean,
+    val redBot:SeatInfoBean
+)
 
 data class SeatManagerBean(
     val name: String,

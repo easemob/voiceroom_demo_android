@@ -34,7 +34,7 @@ class Chatroom2DSeatView : ConstraintLayout {
         mBinding = ViewChatroom2dSeatBinding.bind(root)
     }
 
-    private fun binding(seatInfo: SeatInfoBean) {
+    fun binding(seatInfo: SeatInfoBean) {
         when (seatInfo.wheatSeatType) {
             ChatroomWheatSeatType.Idle -> {
                 mBinding.ivSeatInfo.apply {
@@ -69,8 +69,12 @@ class Chatroom2DSeatView : ConstraintLayout {
                     setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
                 }
             }
+            ChatroomWheatSeatType.Inactive -> {
+                mBinding.mtSeatRotActive.isVisible = true
+                mBinding.ivSeatBotFloat.isVisible = true
+                setNormalWheatView(seatInfo)
+            }
             else -> {
-                // 有人在麦位
                 setNormalWheatView(seatInfo)
             }
         }
@@ -78,51 +82,55 @@ class Chatroom2DSeatView : ConstraintLayout {
 
     private fun setNormalWheatView(seatInfo: SeatInfoBean) {
         mBinding.mtSeatInfoName.text = seatInfo.name
-
-
         // todo avatar
         when (seatInfo.userRole) {
             ChatroomWheatUserRole.Robot -> {
-                setBackgroundResource(R.drawable.bg_oval_white)
-                mBinding.ivSeatInfo.setImageResource(seatInfo.rotImage)
-                val contentPadding = 10.dp.toInt()
-                mBinding.ivSeatInfo.setContentPadding(contentPadding, contentPadding, contentPadding, contentPadding)
+                mBinding.ivSeatInfo.apply {
+                    setBackgroundResource(R.drawable.bg_oval_white)
+                    setImageResource(seatInfo.rotImage)
+                    val contentPadding = 10.dp.toInt()
+                    setContentPadding(contentPadding, contentPadding, contentPadding, contentPadding)
+                }
                 mBinding.mtSeatInfoName.setCompoundDrawablesWithIntrinsicBounds(
                     R.drawable.icon_seat_robot_tag, 0, 0, 0
                 )
-                if (seatInfo.isBotOpen) {
-
-                }
+                mBinding.mtSeatRotActive.isVisible = true
             }
             ChatroomWheatUserRole.Owner -> {
-                setBackgroundResource(R.drawable.bg_oval_white30)
-                mBinding.ivSeatInfo.setImageResource(0)
+                mBinding.ivSeatInfo.apply {
+                    setBackgroundResource(R.drawable.bg_oval_white30)
+                    setImageResource(0)
+                }
                 mBinding.mtSeatInfoName.setCompoundDrawablesWithIntrinsicBounds(
                     R.drawable.icon_seat_owner_tag, 0, 0, 0
                 )
             }
             else -> {
-                setBackgroundResource(R.drawable.bg_oval_white30)
-                mBinding.ivSeatInfo.setImageResource(0)
+                mBinding.ivSeatInfo.apply {
+                    setBackgroundResource(R.drawable.bg_oval_white30)
+                    setImageResource(0)
+                }
                 mBinding.mtSeatInfoName.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
             }
         }
-        when (seatInfo.userStatus) {
-            ChatroomWheatUserStatus.None -> {
-                mBinding.ivSeatMic.isVisible = false
-            }
-            ChatroomWheatUserStatus.Idle -> {
-                mBinding.ivSeatMic.isVisible = true
-                mBinding.ivSeatMic.setImageResource(R.drawable.icon_seat_on_mic0)
-            }
-            ChatroomWheatUserStatus.Mute -> {
-                mBinding.ivSeatMic.isVisible = true
-                mBinding.ivSeatMic.setImageResource(R.drawable.icon_seat_off_mic)
-            }
-            else -> {
-                // speaking
-                mBinding.ivSeatMic.isVisible = true
-                mBinding.ivSeatMic.setImageResource(R.drawable.icon_seat_on_mic1)
+        mBinding.ivSeatMic.apply {
+            when (seatInfo.userStatus) {
+                ChatroomWheatUserStatus.None -> {
+                    isVisible = false
+                }
+                ChatroomWheatUserStatus.Idle -> {
+                    isVisible = true
+                    setImageResource(R.drawable.icon_seat_on_mic0)
+                }
+                ChatroomWheatUserStatus.Mute -> {
+                    isVisible = true
+                    setImageResource(R.drawable.icon_seat_off_mic)
+                }
+                else -> {
+                    // speaking
+                    isVisible = true
+                    setImageResource(R.drawable.icon_seat_on_mic1)
+                }
             }
         }
     }

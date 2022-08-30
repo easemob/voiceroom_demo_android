@@ -10,28 +10,42 @@
         android:layout_width="58dp"
         android:layout_height="58dp"
         android:background="@drawable/bg_oval_white30"
-        app:contentPadding="6dp"
+        app:contentPadding="18dp"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:shapeAppearance="@style/chatroom_seat_roundStyle"
-        tools:src="@drawable/icon_seat_red_robot" />
+        tools:src="@drawable/icon_seat_add" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/ivSeatBotFloat"
+        android:layout_width="58dp"
+        android:layout_height="58dp"
+        android:background="@drawable/bg_oval_black50"
+        app:layout_constraintDimensionRatio="1:1"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@+id/ivSeatInfo"
+        app:layout_constraintStart_toStartOf="@+id/ivSeatInfo"
+        app:layout_constraintTop_toTopOf="@+id/ivSeatInfo"
+        app:layout_constraintBottom_toBottomOf="@+id/ivSeatInfo"
+        app:shapeAppearance="@style/chatroom_seat_roundStyle" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/mtSeatRotActive"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="-15dp"
+        android:layout_marginTop="-13dp"
         android:background="@drawable/bg_rect_radius11_gradient_blue"
         android:gravity="center"
+        android:paddingHorizontal="6dp"
+        android:text="@string/chatroom_active"
+        android:visibility="gone"
         android:textColor="@color/white"
         android:textSize="@dimen/sp_11"
-        android:paddingHorizontal="6dp"
         app:layout_constraintEnd_toEndOf="@+id/ivSeatInfo"
         app:layout_constraintStart_toStartOf="@+id/ivSeatInfo"
-        app:layout_constraintTop_toBottomOf="@+id/ivSeatInfo"
-        android:text="active" />
+        app:layout_constraintTop_toBottomOf="@+id/ivSeatInfo" />
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/ivSeatMic"
@@ -47,13 +61,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="7dp"
-        android:drawableStart="@drawable/icon_seat_robot_tag"
+        android:drawableStart="@drawable/icon_seat_owner_tag"
         android:drawablePadding="2dp"
         android:gravity="center"
+        android:ellipsize="end"
+        tools:text="Susan Stark"
         android:textColor="@color/white"
         android:textSize="@dimen/sp_11"
         app:layout_constraintEnd_toEndOf="@+id/ivSeatInfo"
         app:layout_constraintStart_toStartOf="@+id/ivSeatInfo"
-        app:layout_constraintTop_toBottomOf="@+id/ivSeatInfo"
-        android:text="Agora Red" />
+        app:layout_constraintTop_toBottomOf="@+id/ivSeatInfo" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,12 +8,15 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import io.agora.baseui.dialog.BaseFragmentDialog
 import io.agora.buddy.tool.dp
-import io.agora.secnceui.databinding.DialogFragmentCommonBinding
+import io.agora.secnceui.databinding.DialogCenterFragmentAlertBinding
 
-class CommonFragmentDialog : BaseFragmentDialog<DialogFragmentCommonBinding>() {
+/**
+ * 中间弹框，确认/取消按钮
+ */
+class CommonFragmentAlertDialog : BaseFragmentDialog<DialogCenterFragmentAlertBinding>() {
 
-    override fun getViewBinding(inflater: LayoutInflater, container: ViewGroup?): DialogFragmentCommonBinding {
-        return DialogFragmentCommonBinding.inflate(inflater, container, false)
+    override fun getViewBinding(inflater: LayoutInflater, container: ViewGroup?): DialogCenterFragmentAlertBinding {
+        return DialogCenterFragmentAlertBinding.inflate(inflater, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

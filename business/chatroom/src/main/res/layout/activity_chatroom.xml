@@ -19,6 +19,7 @@
     <LinearLayout
         android:id="@+id/llChatroomDialog"
         android:layout_width="0dp"
+        android:visibility="visible"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         android:orientation="horizontal"
@@ -35,7 +36,7 @@
             android:background="@drawable/bg_rect_radius4_grey"
             android:paddingHorizontal="5dp"
             android:paddingVertical="2dp"
-            android:text="AudioSettings"
+            android:text="Audio"
             android:textAllCaps="false"
             android:textSize="@dimen/sp_12" />
 
@@ -48,30 +49,42 @@
             android:paddingHorizontal="5dp"
             android:paddingVertical="2dp"
             android:textSize="@dimen/sp_12"
-            android:text="SeatManager"
+            android:text="Seat"
             android:textAllCaps="false" />
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/mtCommonSheet"
+            android:id="@+id/mtAlertSheet"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:background="@drawable/bg_rect_radius4_grey"
             android:paddingHorizontal="5dp"
             android:paddingVertical="2dp"
-            android:text="SheetDialog"
+            android:text="Alert"
             android:textAllCaps="false"
             android:textSize="@dimen/sp_12" />
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/mtCommonDialog"
+            android:id="@+id/mtContentSheet"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:background="@drawable/bg_rect_radius4_grey"
             android:paddingHorizontal="5dp"
             android:paddingVertical="2dp"
-            android:text="CenterDialog"
+            android:text="Content"
+            android:textAllCaps="false"
+            android:textSize="@dimen/sp_12" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/mtCenterDialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:background="@drawable/bg_rect_radius4_grey"
+            android:paddingHorizontal="5dp"
+            android:paddingVertical="2dp"
+            android:text="Center"
             android:textAllCaps="false"
             android:textSize="@dimen/sp_12" />
 
@@ -87,7 +100,7 @@
         android:id="@+id/rvChatroomWheat2dSeat"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="18dp"
+        android:layout_marginTop="60dp"
         app:layout_constraintBottom_toTopOf="@+id/glHorizontal60"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -8,19 +8,21 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import io.agora.baseui.dialog.BaseSheetDialog
 import io.agora.buddy.tool.dp
-import io.agora.secnceui.databinding.DialogSheetCommonBinding
+import io.agora.secnceui.databinding.DialogBottomSheetAlertBinding
 
-class CommonSheetDialog : BaseSheetDialog<DialogSheetCommonBinding>() {
+/**
+ * 确定/取消
+ */
+class CommonSheetAlertDialog : BaseSheetDialog<DialogBottomSheetAlertBinding>() {
 
-    override fun getViewBinding(inflater: LayoutInflater, container: ViewGroup?): DialogSheetCommonBinding {
-        return DialogSheetCommonBinding.inflate(inflater, container, false)
+    override fun getViewBinding(inflater: LayoutInflater, container: ViewGroup?): DialogBottomSheetAlertBinding {
+        return DialogBottomSheetAlertBinding.inflate(inflater, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         dialog?.setCanceledOnTouchOutside(false)
         binding?.apply {
-            addMargin(view)
             setOnApplyWindowInsets(root)
             if (!TextUtils.isEmpty(contentText)){
                 mtContent.text = contentText

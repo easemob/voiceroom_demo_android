@@ -1,4 +1,4 @@
-package io.agora.secnceui.wheat.adapter
+package io.agora.secnceui.wheat.flat
 
 import io.agora.baseui.adapter.BaseRecyclerViewAdapter
 import io.agora.baseui.adapter.OnItemClickListener
@@ -18,7 +18,7 @@ class ChatroomSeatManagerAdapter(
 
     override fun onBindViewHolder(holder: ChatroomSeatManagerViewHolder, position: Int) {
         val layoutParams = holder.mBinding.root.layoutParams
-        layoutParams.width = ((getDisplaySize().width - 30.dp) / 3).toInt()
+        layoutParams.width = getDisplaySize().width / 3
         holder.mBinding.root.layoutParams = layoutParams
         super.onBindViewHolder(holder, position)
     }

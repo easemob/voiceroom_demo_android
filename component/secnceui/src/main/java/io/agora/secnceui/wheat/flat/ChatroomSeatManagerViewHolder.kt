@@ -1,4 +1,4 @@
-package io.agora.secnceui.wheat.adapter
+package io.agora.secnceui.wheat.flat
 
 import io.agora.baseui.adapter.BaseRecyclerViewAdapter
 import io.agora.secnceui.bean.SeatManagerBean

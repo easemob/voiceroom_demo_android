@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/bg_rect_radius20_white">
+    android:background="@drawable/bg_rect_top_radius20_white">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/ivBottomSheetTitle"
@@ -21,7 +21,7 @@
         android:id="@+id/ivChatroomSeatAvatar"
         android:layout_width="64dp"
         android:layout_height="64dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="18dp"
         android:background="@drawable/icon_chatroom_seat_empty"
         app:contentPadding="18dp"
         app:layout_constraintDimensionRatio="1:1"
@@ -73,9 +73,10 @@
         android:layout_width="match_parent"
         android:layout_height="69dp"
         android:layout_marginTop="33dp"
+        android:layout_marginBottom="10dp"
         android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mtChatroomSeatName" />
 </androidx.constraintlayout.widget.ConstraintLayout>

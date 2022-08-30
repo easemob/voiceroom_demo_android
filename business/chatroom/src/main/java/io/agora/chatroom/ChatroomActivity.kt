@@ -11,14 +11,15 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import io.agora.baseui.BaseUiActivity
 import io.agora.chatroom.databinding.ActivityChatroomBinding
 import io.agora.config.ARouterPath
-import io.agora.secnceui.widget.dialog.CommonFragmentDialog
-import io.agora.secnceui.widget.dialog.CommonSheetDialog
+import io.agora.secnceui.widget.dialog.CommonFragmentAlertDialog
+import io.agora.secnceui.widget.dialog.CommonSheetAlertDialog
 import io.agora.secnceui.anis.ChatroomNoiseSuppressionSheetDialog
 import io.agora.secnceui.audiosettings.ChatroomAudioSettingsSheetDialog
 import io.agora.secnceui.soundselection.ChatroomSoundSelectionSheetDialog
 import io.agora.secnceui.spatialaudio.ChatroomSpatialAudioSheetDialog
 import io.agora.secnceui.wheat.ChatroomSeatManagerSheetDialog
 import io.agora.secnceui.wheat.ChatroomWheat2DAudioView
+import io.agora.secnceui.widget.dialog.CommonSheetContentDialog
 
 @Route(path = ARouterPath.ChatroomPath)
 class ChatroomActivity : BaseUiActivity<ActivityChatroomBinding>() {
@@ -49,12 +50,12 @@ class ChatroomActivity : BaseUiActivity<ActivityChatroomBinding>() {
             mtSeatManager.setOnClickListener {
                 ChatroomSeatManagerSheetDialog().show(supportFragmentManager, "mtSeatManager")
             }
-            mtCommonSheet.setOnClickListener {
-                CommonSheetDialog()
+            mtAlertSheet.setOnClickListener {
+                CommonSheetAlertDialog()
                     .contentText(getString(io.agora.secnceui.R.string.chatroom_ask_upstage))
                     .leftText(getString(io.agora.secnceui.R.string.chatroom_cancel))
                     .rightText(getString(io.agora.secnceui.R.string.chatroom_submit))
-                    .setOnClickListener(object : CommonSheetDialog.OnClickBottomListener {
+                    .setOnClickListener(object : CommonSheetAlertDialog.OnClickBottomListener {
                         override fun onConfirmClick() {
                             Toast.makeText(baseContext, "onConfirmClick", Toast.LENGTH_LONG).show()
                         }
@@ -65,13 +66,13 @@ class ChatroomActivity : BaseUiActivity<ActivityChatroomBinding>() {
                     })
                     .show(supportFragmentManager, "mtCommonSheet")
             }
-            mtCommonDialog.setOnClickListener {
-                CommonFragmentDialog()
+            mtCenterDialog.setOnClickListener {
+                CommonFragmentAlertDialog()
                     .titleText("Prompt")
                     .contentText("Exit the chatroom and recreate a new one?")
-                    .leftText(getString(io.agora.secnceui.R.string.chatroom_submit))
+                    .leftText(getString(io.agora.secnceui.R.string.chatroom_cancel))
                     .rightText(getString(io.agora.secnceui.R.string.chatroom_submit))
-                    .setOnClickListener(object : CommonFragmentDialog.OnClickBottomListener {
+                    .setOnClickListener(object : CommonFragmentAlertDialog.OnClickBottomListener {
                         override fun onConfirmClick() {
                             Toast.makeText(baseContext, "onConfirmClick", Toast.LENGTH_LONG).show()
                         }
@@ -80,7 +81,13 @@ class ChatroomActivity : BaseUiActivity<ActivityChatroomBinding>() {
                             Toast.makeText(baseContext, "onCancelClick", Toast.LENGTH_LONG).show()
                         }
                     })
-                    .show(supportFragmentManager, "mtCommonDialog")
+                    .show(supportFragmentManager, "mtCenterDialog")
+            }
+            mtContentSheet.setOnClickListener {
+                CommonSheetContentDialog()
+                    .titleText(getString(io.agora.secnceui.R.string.chatroom_notice))
+                    .contentText(getString(io.agora.secnceui.R.string.chatroom_first_enter_room_notice_tips))
+                    .show(supportFragmentManager, "mtContentSheet")
             }
             mcbChatroomWheat.setOnCheckedChangeListener { buttonView, isChecked ->
                 if (isChecked) {

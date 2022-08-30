@@ -79,7 +79,6 @@ class Chatroom3DSeatView : ConstraintLayout {
     private fun setNormalWheatView(seatInfo: SeatInfoBean) {
         mBinding.mtSeatInfoName.text = seatInfo.name
 
-
         // todo avatar
         when (seatInfo.userRole) {
             ChatroomWheatUserRole.Robot -> {
@@ -90,9 +89,6 @@ class Chatroom3DSeatView : ConstraintLayout {
                 mBinding.mtSeatInfoName.setCompoundDrawablesWithIntrinsicBounds(
                     R.drawable.icon_seat_robot_tag, 0, 0, 0
                 )
-                if (seatInfo.isBotOpen) {
-
-                }
             }
             ChatroomWheatUserRole.Owner -> {
                 setBackgroundResource(R.drawable.bg_oval_white30)

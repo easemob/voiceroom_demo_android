@@ -16,8 +16,8 @@ import io.agora.buddy.tool.dp
 import io.agora.secnceui.R
 import io.agora.secnceui.bean.SeatManagerBean
 import io.agora.secnceui.databinding.DialogChatroomSeatManagerBinding
-import io.agora.secnceui.wheat.adapter.ChatroomSeatManagerAdapter
-import io.agora.secnceui.wheat.adapter.ChatroomSeatManagerViewHolder
+import io.agora.secnceui.wheat.flat.ChatroomSeatManagerAdapter
+import io.agora.secnceui.wheat.flat.ChatroomSeatManagerViewHolder
 
 class ChatroomSeatManagerSheetDialog : BaseSheetDialog<DialogChatroomSeatManagerBinding>() {
 
@@ -26,7 +26,7 @@ class ChatroomSeatManagerSheetDialog : BaseSheetDialog<DialogChatroomSeatManager
         const val KEY_SEAT_INFO = "seat_info"
     }
 
-    private var adapter: ChatroomSeatManagerAdapter? = null
+    private var seatManagerAdapter: ChatroomSeatManagerAdapter? = null
 
     private val seatManagerList = mutableListOf<SeatManagerBean>().apply {
         add(SeatManagerBean("Invite"))
@@ -40,7 +40,7 @@ class ChatroomSeatManagerSheetDialog : BaseSheetDialog<DialogChatroomSeatManager
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        adapter = ChatroomSeatManagerAdapter(seatManagerList, object : OnItemClickListener<SeatManagerBean> {
+        seatManagerAdapter = ChatroomSeatManagerAdapter(seatManagerList, object : OnItemClickListener<SeatManagerBean> {
             override fun onItemClick(data: SeatManagerBean, view: View, position: Int, viewType: Long) {
                 Toast.makeText(context, "$data", Toast.LENGTH_LONG).show()
             }
@@ -53,7 +53,6 @@ class ChatroomSeatManagerSheetDialog : BaseSheetDialog<DialogChatroomSeatManager
 //            }
         }
         binding?.apply {
-            addMargin(view)
             setOnApplyWindowInsets(root)
 
             val itemDecoration =
@@ -65,7 +64,7 @@ class ChatroomSeatManagerSheetDialog : BaseSheetDialog<DialogChatroomSeatManager
                 }
             rvChatroomSeatManager.addItemDecoration(itemDecoration)
             rvChatroomSeatManager.layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
-            rvChatroomSeatManager.adapter = adapter
+            rvChatroomSeatManager.adapter = seatManagerAdapter
         }
     }
 
