@@ -5,7 +5,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
-    <io.agora.secnceui.widget.Chatroom2DSeatView
+    <io.agora.secnceui.widget.wheat.Chatroom2DSeatView
         android:id="@+id/seat2dView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

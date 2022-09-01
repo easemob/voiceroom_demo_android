@@ -5,7 +5,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
-    <io.agora.secnceui.widget.Chatroom2DSeatView
+    <io.agora.secnceui.widget.wheat.Chatroom2DSeatView
         android:id="@+id/seatBlueBot"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -30,7 +30,7 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.5" />
 
-    <io.agora.secnceui.widget.Chatroom2DSeatView
+    <io.agora.secnceui.widget.wheat.Chatroom2DSeatView
         android:id="@+id/seatBlueRed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

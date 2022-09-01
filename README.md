@@ -5,9 +5,12 @@
 ### 软件架构
 软件架构说明
 
+##### basicdepend 依赖的一层壳
+* 依赖component和common
+
 ##### business：业务
-* AgoraChatroom 语聊房 (isChatroomModule=true 作为独立app 运行)
-* AgoraKtv k歌
+* chatroom 语聊房
+* agoraKtv k歌
 * ......
 
 ##### component：组件
@@ -25,9 +28,7 @@
 
 
 #### 使用说明
-
-1.  xxxx
-2.  xxxx
-3.  xxxx
+* app 直接引用 <basicdepend> 和相应的business，比如chatroom
+* chatroom 也可以作为单独app 运行（修改gradle.properties 中 isChatroomModule=true ）
 
 #### 参与贡献

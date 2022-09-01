@@ -15,7 +15,8 @@ val Number.sp
     get() = TypedValue.applyDimension(
         TypedValue.COMPLEX_UNIT_SP,
         this.toFloat(),
-        Resources.getSystem().displayMetrics)
+        Resources.getSystem().displayMetrics
+    )
 
 fun getDisplaySize(): Size {
     val metrics = Resources.getSystem().displayMetrics

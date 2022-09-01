@@ -4,7 +4,7 @@
 
     <application>
         <activity
-            android:name=".ChatroomActivity"
+            android:name=".ChatroomLiveActivity"
             android:exported="false" />
     </application>
 

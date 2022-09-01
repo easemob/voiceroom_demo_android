@@ -1,4 +1,4 @@
-package io.agora.secnceui.anis
+package io.agora.secnceui.ainoise
 
 import android.text.TextUtils
 import androidx.core.content.res.ResourcesCompat

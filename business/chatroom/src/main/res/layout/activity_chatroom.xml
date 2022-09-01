@@ -6,9 +6,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_chatroom_image"
-    tools:context=".ChatroomActivity">
+    tools:context=".ChatroomLiveActivity">
 
-    <io.agora.secnceui.widget.top.ChatroomTopView
+    <io.agora.secnceui.widget.top.ChatroomLiveTopView
         android:id="@+id/cTopView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -16,87 +16,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
-        android:id="@+id/llChatroomDialog"
-        android:layout_width="0dp"
-        android:visibility="visible"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        android:orientation="horizontal"
-        android:background="@color/black"
-        android:layout_marginTop="12dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cTopView">
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/mtAudioSettings"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="2dp"
-            android:background="@drawable/bg_rect_radius4_grey"
-            android:paddingHorizontal="5dp"
-            android:paddingVertical="2dp"
-            android:text="Audio"
-            android:textAllCaps="false"
-            android:textSize="@dimen/sp_12" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/mtSeatManager"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:background="@drawable/bg_rect_radius4_grey"
-            android:paddingHorizontal="5dp"
-            android:paddingVertical="2dp"
-            android:textSize="@dimen/sp_12"
-            android:text="Seat"
-            android:textAllCaps="false" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/mtAlertSheet"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:background="@drawable/bg_rect_radius4_grey"
-            android:paddingHorizontal="5dp"
-            android:paddingVertical="2dp"
-            android:text="Alert"
-            android:textAllCaps="false"
-            android:textSize="@dimen/sp_12" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/mtContentSheet"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:background="@drawable/bg_rect_radius4_grey"
-            android:paddingHorizontal="5dp"
-            android:paddingVertical="2dp"
-            android:text="Content"
-            android:textAllCaps="false"
-            android:textSize="@dimen/sp_12" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/mtCenterDialog"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:background="@drawable/bg_rect_radius4_grey"
-            android:paddingHorizontal="5dp"
-            android:paddingVertical="2dp"
-            android:text="Center"
-            android:textAllCaps="false"
-            android:textSize="@dimen/sp_12" />
-
-        <androidx.appcompat.widget.AppCompatCheckBox
-            android:id="@+id/mcbChatroomWheat"
-            style="@style/chatroom_bottom_sheet_checkbox"
-            android:layout_marginStart="5dp"
-            android:layout_marginEnd="0dp"
-            android:checked="false" />
-    </LinearLayout>
-
-    <io.agora.secnceui.wheat.ChatroomWheat2DAudioView
+    <io.agora.secnceui.widget.wheat.ChatroomWheat2DAudioView
         android:id="@+id/rvChatroomWheat2dSeat"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -104,9 +24,9 @@
         app:layout_constraintBottom_toTopOf="@+id/glHorizontal60"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/llChatroomDialog" />
+        app:layout_constraintTop_toBottomOf="@+id/cTopView" />
 
-    <io.agora.secnceui.wheat.ChatroomWheat3DAudioView
+    <io.agora.secnceui.widget.wheat.ChatroomWheat3DAudioView
         android:id="@+id/rvChatroomWheat3dSeat"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -115,7 +35,7 @@
         app:layout_constraintBottom_toTopOf="@+id/glHorizontal72"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/llChatroomDialog" />
+        app:layout_constraintTop_toBottomOf="@+id/cTopView" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/glHorizontal60"

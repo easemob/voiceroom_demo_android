@@ -1,4 +1,4 @@
-package io.agora.secnceui.wheat
+package io.agora.secnceui.widget.wheat
 
 import android.content.Context
 import android.util.AttributeSet

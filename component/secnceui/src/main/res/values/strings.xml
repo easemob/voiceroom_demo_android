@@ -62,4 +62,7 @@
     <string name="chatroom_submit">Submit</string>
     <string name="chatroom_cancel">Cancel</string>
     <string name="chatroom_first_enter_room_notice_tips">Welcome to Agora Chat Room 2.0 I am therobot Agora Red. Can you see the robot assistant at the right coner? Click it and experience the new features.</string>
+    <string name="chatroom_social_chat">Social Chat</string>
+    <string name="chatroom_social_chat_following_customers">The following customers are using it:</string>
+    <string name="chatroom_social_chat_more">More Best Agora Sound</string>
 </resources>

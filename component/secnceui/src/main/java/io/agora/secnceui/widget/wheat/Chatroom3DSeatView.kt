@@ -1,4 +1,4 @@
-package io.agora.secnceui.widget
+package io.agora.secnceui.widget.wheat
 
 import android.content.Context
 import android.util.AttributeSet
@@ -11,11 +11,11 @@ import io.agora.secnceui.bean.ChatroomWheatSeatType
 import io.agora.secnceui.bean.ChatroomWheatUserRole
 import io.agora.secnceui.bean.ChatroomWheatUserStatus
 import io.agora.secnceui.bean.SeatInfoBean
-import io.agora.secnceui.databinding.ViewChatroom2dSeatBinding
+import io.agora.secnceui.databinding.ViewChatroom3dSeatBinding
 
-class Chatroom2DSeatView : ConstraintLayout {
+class Chatroom3DSeatView : ConstraintLayout {
 
-    private lateinit var mBinding: ViewChatroom2dSeatBinding
+    private lateinit var mBinding: ViewChatroom3dSeatBinding
 
     constructor(context: Context) : this(context, null)
 
@@ -30,11 +30,11 @@ class Chatroom2DSeatView : ConstraintLayout {
     }
 
     private fun init(context: Context) {
-        val root = View.inflate(context, R.layout.view_chatroom_2d_seat, this)
-        mBinding = ViewChatroom2dSeatBinding.bind(root)
+        val root = View.inflate(context, R.layout.view_chatroom_3d_seat, this)
+        mBinding = ViewChatroom3dSeatBinding.bind(root)
     }
 
-    fun binding(seatInfo: SeatInfoBean) {
+    private fun binding(seatInfo: SeatInfoBean) {
         when (seatInfo.wheatSeatType) {
             ChatroomWheatSeatType.Idle -> {
                 mBinding.ivSeatInfo.apply {
@@ -69,12 +69,8 @@ class Chatroom2DSeatView : ConstraintLayout {
                     setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
                 }
             }
-            ChatroomWheatSeatType.Inactive -> {
-                mBinding.mtSeatRotActive.isVisible = true
-                mBinding.ivSeatBotFloat.isVisible = true
-                setNormalWheatView(seatInfo)
-            }
             else -> {
+                // 有人在麦位
                 setNormalWheatView(seatInfo)
             }
         }
@@ -82,55 +78,47 @@ class Chatroom2DSeatView : ConstraintLayout {
 
     private fun setNormalWheatView(seatInfo: SeatInfoBean) {
         mBinding.mtSeatInfoName.text = seatInfo.name
+
         // todo avatar
         when (seatInfo.userRole) {
             ChatroomWheatUserRole.Robot -> {
-                mBinding.ivSeatInfo.apply {
-                    setBackgroundResource(R.drawable.bg_oval_white)
-                    setImageResource(seatInfo.rotImage)
-                    val contentPadding = 10.dp.toInt()
-                    setContentPadding(contentPadding, contentPadding, contentPadding, contentPadding)
-                }
+                setBackgroundResource(R.drawable.bg_oval_white)
+                mBinding.ivSeatInfo.setImageResource(seatInfo.rotImage)
+                val contentPadding = 10.dp.toInt()
+                mBinding.ivSeatInfo.setContentPadding(contentPadding, contentPadding, contentPadding, contentPadding)
                 mBinding.mtSeatInfoName.setCompoundDrawablesWithIntrinsicBounds(
                     R.drawable.icon_seat_robot_tag, 0, 0, 0
                 )
-                mBinding.mtSeatRotActive.isVisible = true
             }
             ChatroomWheatUserRole.Owner -> {
-                mBinding.ivSeatInfo.apply {
-                    setBackgroundResource(R.drawable.bg_oval_white30)
-                    setImageResource(0)
-                }
+                setBackgroundResource(R.drawable.bg_oval_white30)
+                mBinding.ivSeatInfo.setImageResource(0)
                 mBinding.mtSeatInfoName.setCompoundDrawablesWithIntrinsicBounds(
                     R.drawable.icon_seat_owner_tag, 0, 0, 0
                 )
             }
             else -> {
-                mBinding.ivSeatInfo.apply {
-                    setBackgroundResource(R.drawable.bg_oval_white30)
-                    setImageResource(0)
-                }
+                setBackgroundResource(R.drawable.bg_oval_white30)
+                mBinding.ivSeatInfo.setImageResource(0)
                 mBinding.mtSeatInfoName.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
             }
         }
-        mBinding.ivSeatMic.apply {
-            when (seatInfo.userStatus) {
-                ChatroomWheatUserStatus.None -> {
-                    isVisible = false
-                }
-                ChatroomWheatUserStatus.Idle -> {
-                    isVisible = true
-                    setImageResource(R.drawable.icon_seat_on_mic0)
-                }
-                ChatroomWheatUserStatus.Mute -> {
-                    isVisible = true
-                    setImageResource(R.drawable.icon_seat_off_mic)
-                }
-                else -> {
-                    // speaking
-                    isVisible = true
-                    setImageResource(R.drawable.icon_seat_on_mic1)
-                }
+        when (seatInfo.userStatus) {
+            ChatroomWheatUserStatus.None -> {
+                mBinding.ivSeatMic.isVisible = false
+            }
+            ChatroomWheatUserStatus.Idle -> {
+                mBinding.ivSeatMic.isVisible = true
+                mBinding.ivSeatMic.setImageResource(R.drawable.icon_seat_on_mic0)
+            }
+            ChatroomWheatUserStatus.Mute -> {
+                mBinding.ivSeatMic.isVisible = true
+                mBinding.ivSeatMic.setImageResource(R.drawable.icon_seat_off_mic)
+            }
+            else -> {
+                // speaking
+                mBinding.ivSeatMic.isVisible = true
+                mBinding.ivSeatMic.setImageResource(R.drawable.icon_seat_on_mic1)
             }
         }
     }

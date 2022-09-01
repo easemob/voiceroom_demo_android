@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <io.agora.secnceui.widget.Chatroom2DSeatView
+    <io.agora.secnceui.widget.wheat.Chatroom2DSeatView
         android:id="@+id/seatView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -12,7 +12,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <io.agora.secnceui.widget.Chatroom2DSeatView
+    <io.agora.secnceui.widget.wheat.Chatroom2DSeatView
         android:id="@+id/seatView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -21,7 +21,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <io.agora.secnceui.widget.Chatroom2DSeatView
+    <io.agora.secnceui.widget.wheat.Chatroom2DSeatView
         android:id="@+id/seatView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -30,7 +30,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent" />
 
-    <io.agora.secnceui.widget.Chatroom3DSeatView
+    <io.agora.secnceui.widget.wheat.Chatroom3DSeatView
         android:id="@+id/seatView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -39,7 +39,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <io.agora.secnceui.widget.Chatroom2DSeatView
+    <io.agora.secnceui.widget.wheat.Chatroom2DSeatView
         android:id="@+id/seatView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -47,7 +47,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <io.agora.secnceui.widget.Chatroom2DSeatView
+    <io.agora.secnceui.widget.wheat.Chatroom2DSeatView
         android:id="@+id/seatView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -56,7 +56,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <io.agora.secnceui.widget.Chatroom2DSeatView
+    <io.agora.secnceui.widget.wheat.Chatroom2DSeatView
         android:id="@+id/seatView7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

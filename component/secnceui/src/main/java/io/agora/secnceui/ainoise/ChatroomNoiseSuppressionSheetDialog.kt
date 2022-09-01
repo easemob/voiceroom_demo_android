@@ -1,4 +1,4 @@
-package io.agora.secnceui.anis
+package io.agora.secnceui.ainoise
 
 import android.os.Bundle
 import android.view.LayoutInflater
