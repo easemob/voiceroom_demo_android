@@ -61,7 +61,6 @@ dependencies {
     implementation dep["lifecycle-livedata-ktx"]
     implementation dep["lifecycle-runtime-ktx"]
     implementation dep["annotation"]
-    implementation dep["multidex"]
 
     testImplementation dep["junit"]
     androidTestImplementation dep["junit-android"]

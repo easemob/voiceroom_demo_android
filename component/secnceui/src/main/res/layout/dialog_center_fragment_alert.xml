@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/bg_rect_radius20_white"
-    android:paddingTop="30dp"
-    android:paddingBottom="30dp">
+    android:paddingVertical="30dp"
+    android:paddingHorizontal="25dp">
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/mtTitle"
@@ -24,9 +24,7 @@
         android:id="@+id/mtContent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="25dp"
         android:layout_marginTop="20dp"
-        android:layout_marginEnd="25dp"
         android:textColor="@color/dark_grey_color_040925"
         android:textSize="@dimen/sp_14"
         app:layout_constraintEnd_toEndOf="parent"
@@ -36,10 +34,10 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/mbLeft"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
-        android:layout_marginEnd="12dp"
+        android:layout_marginEnd="10dp"
         android:paddingHorizontal="32dp"
         android:paddingVertical="10dp"
         android:text="@string/chatroom_cancel"
@@ -61,9 +59,9 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/mbRight"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="40dp"
         android:paddingHorizontal="32dp"
         android:paddingVertical="10dp"

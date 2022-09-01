@@ -20,6 +20,7 @@ import io.agora.secnceui.audiosettings.ChatroomAudioSettingsSheetDialog
 import io.agora.secnceui.bean.CustomerUsageBean
 import io.agora.secnceui.soundselection.ChatroomSocialChatSheetDialog
 import io.agora.secnceui.soundselection.ChatroomSoundSelectionSheetDialog
+import io.agora.secnceui.spatialaudio.Chatroom3DSpatialSeatTutorialSheetDialog
 import io.agora.secnceui.spatialaudio.ChatroomSpatialAudioSheetDialog
 import io.agora.secnceui.widget.wheat.ChatroomWheat2DAudioView
 import io.agora.secnceui.widget.dialog.CommonSheetContentDialog
@@ -73,25 +74,26 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>() {
                         }
                         ChatroomLiveTopView.ClickAction.RANK -> {
                             "排行榜".logD()
+                            Chatroom3DSpatialSeatTutorialSheetDialog().show(supportFragmentManager, "SeatTutorial")
                             // TODO:
-                            ChatroomAudioSettingsSheetDialog(object :
-                                ChatroomAudioSettingsSheetDialog.OnClickAudioSettingsListener {
-                                override fun onSoundEffect() {
-                                    ChatroomSoundSelectionSheetDialog()
-                                        .show(supportFragmentManager, "mtSoundSelection")
-                                }
-
-                                override fun onNoiseSuppression() {
-                                    ChatroomNoiseSuppressionSheetDialog()
-                                        .show(supportFragmentManager, "mtAnis")
-                                }
-
-                                override fun onSpatialAudio() {
-                                    ChatroomSpatialAudioSheetDialog()
-                                        .show(supportFragmentManager, "mtSpatialAudio")
-                                }
-
-                            }).show(supportFragmentManager, "mtAudioSettings")
+//                            ChatroomAudioSettingsSheetDialog(object :
+//                                ChatroomAudioSettingsSheetDialog.OnClickAudioSettingsListener {
+//                                override fun onSoundEffect() {
+//                                    ChatroomSoundSelectionSheetDialog()
+//                                        .show(supportFragmentManager, "mtSoundSelection")
+//                                }
+//
+//                                override fun onNoiseSuppression() {
+//                                    ChatroomNoiseSuppressionSheetDialog()
+//                                        .show(supportFragmentManager, "mtAnis")
+//                                }
+//
+//                                override fun onSpatialAudio() {
+//                                    ChatroomSpatialAudioSheetDialog()
+//                                        .show(supportFragmentManager, "mtSpatialAudio")
+//                                }
+//
+//                            }).show(supportFragmentManager, "mtAudioSettings")
                         }
                         ChatroomLiveTopView.ClickAction.NOTICE -> {
                             CommonSheetContentDialog()

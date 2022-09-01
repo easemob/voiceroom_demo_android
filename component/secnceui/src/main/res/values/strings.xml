@@ -65,4 +65,7 @@
     <string name="chatroom_social_chat">Social Chat</string>
     <string name="chatroom_social_chat_following_customers">The following customers are using it:</string>
     <string name="chatroom_social_chat_more">More Best Agora Sound</string>
+    <string name="chatroom_3d_spatial_audio">3D Spatial Audio Seat Tutorial</string>
+    <string name="chatroom_3d_spatial_audio_part1">Put on headset</string>
+    <string name="chatroom_3d_spatial_audio_part2">ove avatar around to hear different spatial audio effects</string>
 </resources>

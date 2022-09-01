@@ -2,6 +2,7 @@ package io.agora.secnceui.widget.wheat
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.MotionEvent
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
@@ -74,6 +75,19 @@ class Chatroom3DSeatView : ConstraintLayout {
                 setNormalWheatView(seatInfo)
             }
         }
+    }
+
+    override fun onTouchEvent(event: MotionEvent?): Boolean {
+        event?.apply {
+            rawX
+            rawY
+            x
+        }
+        return super.onTouchEvent(event)
+    }
+
+    override fun onInterceptTouchEvent(ev: MotionEvent?): Boolean {
+        return super.onInterceptTouchEvent(ev)
     }
 
     private fun setNormalWheatView(seatInfo: SeatInfoBean) {
