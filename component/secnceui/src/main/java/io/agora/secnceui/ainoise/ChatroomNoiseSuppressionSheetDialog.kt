@@ -20,7 +20,7 @@ import io.agora.secnceui.databinding.DialogChatroomNoiseSuppressionBinding
 import io.agora.secnceui.databinding.ItemChatroomAgoraAinsBinding
 import io.agora.secnceui.databinding.ItemChatroomAinsAuditionBinding
 
-class ChatroomNoiseSuppressionSheetDialog : BaseSheetDialog<DialogChatroomNoiseSuppressionBinding>() {
+class ChatroomNoiseSuppressionSheetDialog constructor(): BaseSheetDialog<DialogChatroomNoiseSuppressionBinding>() {
 
     private var anisModeAdapter: BaseRecyclerViewAdapter<ItemChatroomAgoraAinsBinding, AINSModeBean, ChatroomAINSViewHolder>? =
         null

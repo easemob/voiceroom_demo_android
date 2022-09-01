@@ -11,7 +11,7 @@ import io.agora.buddy.tool.dp
 import io.agora.secnceui.bean.CustomerUsageBean
 import io.agora.secnceui.databinding.DialogChatroomSocialChatBinding
 
-class ChatroomSocialChatSheetDialog(private val onClickSocialChatListener: OnClickSocialChatListener) :
+class ChatroomSocialChatSheetDialog constructor(private val onClickSocialChatListener: OnClickSocialChatListener) :
     BaseSheetDialog<DialogChatroomSocialChatBinding>() {
 
     override fun getViewBinding(inflater: LayoutInflater, container: ViewGroup?): DialogChatroomSocialChatBinding {

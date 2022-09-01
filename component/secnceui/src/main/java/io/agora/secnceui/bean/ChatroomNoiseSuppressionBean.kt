@@ -2,7 +2,7 @@ package io.agora.secnceui.bean
 
 import androidx.annotation.IntDef
 
-@kotlin.annotation.Retention(AnnotationRetention.RUNTIME)
+@kotlin.annotation.Retention(AnnotationRetention.SOURCE)
 @IntDef(AINSModeType.High, AINSModeType.Medium, AINSModeType.Off)
 annotation class AINSModeType {
     companion object {
@@ -14,7 +14,7 @@ annotation class AINSModeType {
     }
 }
 
-@kotlin.annotation.Retention(AnnotationRetention.RUNTIME)
+@kotlin.annotation.Retention(AnnotationRetention.SOURCE)
 @IntDef(AINSSoundType.AINS, AINSSoundType.None)
 annotation class AINSSoundType {
     companion object {

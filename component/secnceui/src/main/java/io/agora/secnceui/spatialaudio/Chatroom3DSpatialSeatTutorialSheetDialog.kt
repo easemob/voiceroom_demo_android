@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import io.agora.baseui.dialog.BaseSheetDialog
 import io.agora.secnceui.databinding.DialogChatroom3dSpatialSeatTutorialBinding
 
-class Chatroom3DSpatialSeatTutorialSheetDialog : BaseSheetDialog<DialogChatroom3dSpatialSeatTutorialBinding>() {
+class Chatroom3DSpatialSeatTutorialSheetDialog constructor(): BaseSheetDialog<DialogChatroom3dSpatialSeatTutorialBinding>() {
 
     override fun getViewBinding(inflater: LayoutInflater, container: ViewGroup?): DialogChatroom3dSpatialSeatTutorialBinding {
         return DialogChatroom3dSpatialSeatTutorialBinding.inflate(inflater, container, false)

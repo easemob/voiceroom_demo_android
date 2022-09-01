@@ -4,9 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.divider.MaterialDividerItemDecoration
@@ -14,7 +14,7 @@ import io.agora.baseui.adapter.OnItemClickListener
 import io.agora.baseui.dialog.BaseSheetDialog
 import io.agora.buddy.tool.dp
 import io.agora.secnceui.R
-import io.agora.secnceui.bean.SeatManagerBean
+import io.agora.secnceui.bean.*
 import io.agora.secnceui.databinding.DialogChatroomSeatManagerBinding
 import io.agora.secnceui.wheat.flat.ChatroomSeatManagerAdapter
 import io.agora.secnceui.wheat.flat.ChatroomSeatManagerViewHolder
@@ -28,11 +28,7 @@ class ChatroomSeatManagerSheetDialog : BaseSheetDialog<DialogChatroomSeatManager
 
     private var seatManagerAdapter: ChatroomSeatManagerAdapter? = null
 
-    private val seatManagerList = mutableListOf<SeatManagerBean>().apply {
-        add(SeatManagerBean("Invite"))
-        add(SeatManagerBean("Mute"))
-        add(SeatManagerBean("Lock"))
-    }
+    private val seatManagerList = mutableListOf<SeatManagerBean>()
 
     override fun getViewBinding(inflater: LayoutInflater, container: ViewGroup?): DialogChatroomSeatManagerBinding {
         return DialogChatroomSeatManagerBinding.inflate(inflater, container, false)
@@ -40,18 +36,19 @@ class ChatroomSeatManagerSheetDialog : BaseSheetDialog<DialogChatroomSeatManager
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        arguments?.apply {
+            val seatInfo: SeatInfoBean? = get(KEY_SEAT_INFO) as? SeatInfoBean
+            seatInfo?.let {
+                binding?.mtChatroomSeatName?.text = it.name ?: it.index.toString()
+                binding?.mtChatroomSeatTag?.isVisible = it.userRole == ChatroomWheatUserRole.Owner
+                seatManagerList.addAll(ChatroomWheatConstructor.builderSeatMangerList(view.context, it))
+            }
+        }
         seatManagerAdapter = ChatroomSeatManagerAdapter(seatManagerList, object : OnItemClickListener<SeatManagerBean> {
             override fun onItemClick(data: SeatManagerBean, view: View, position: Int, viewType: Long) {
                 Toast.makeText(context, "$data", Toast.LENGTH_LONG).show()
             }
         }, ChatroomSeatManagerViewHolder::class.java)
-        arguments?.apply {
-//            val seatInfo: SeatInfoBean = get(KEY_SEAT_INFO) as SeatInfoBean
-//            binding?.apply {
-//                mtChatroomSeatName.text = seatInfo.name
-//                mtChatroomSeatTag.isVisible = seatInfo.isHost
-//            }
-        }
         binding?.apply {
             setOnApplyWindowInsets(root)
 
@@ -66,13 +63,5 @@ class ChatroomSeatManagerSheetDialog : BaseSheetDialog<DialogChatroomSeatManager
             rvChatroomSeatManager.layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
             rvChatroomSeatManager.adapter = seatManagerAdapter
         }
-    }
-
-    private fun addMargin(view: View) {
-        val layoutParams: FrameLayout.LayoutParams = view.layoutParams as FrameLayout.LayoutParams
-        val marginHorizontal = 15.dp.toInt()
-        val marginVertical = 24.dp.toInt()
-        layoutParams.setMargins(marginHorizontal, 0, marginHorizontal, marginVertical)
-        view.layoutParams = layoutParams
     }
 }

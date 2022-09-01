@@ -1,6 +1,6 @@
 package io.agora.secnceui.bean
 
-data class ChatroomInfoBean(
+data class ChatroomInfoBean constructor(
     var chatroomId: String = "",
     var chatroomName: String = "",
     val ownerUserId: String = "",
@@ -12,7 +12,7 @@ data class ChatroomInfoBean(
     var watchCount: Int = 0,
 ) : BaseChatroomBean
 
-data class AudienceBean(
+data class AudienceBean constructor(
     var userid: String = "",
     var username: String = "",
     var userAvatar: String = "",

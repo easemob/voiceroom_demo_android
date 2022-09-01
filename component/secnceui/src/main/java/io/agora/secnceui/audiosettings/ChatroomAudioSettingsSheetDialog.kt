@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import io.agora.baseui.dialog.BaseSheetDialog
 import io.agora.secnceui.databinding.DialogChatroomAudioSettingBinding
 
-class ChatroomAudioSettingsSheetDialog(val audioSettingsListener: OnClickAudioSettingsListener) :
+class ChatroomAudioSettingsSheetDialog constructor(private val audioSettingsListener: OnClickAudioSettingsListener) :
     BaseSheetDialog<DialogChatroomAudioSettingBinding>() {
 
     override fun getViewBinding(inflater: LayoutInflater, container: ViewGroup?): DialogChatroomAudioSettingBinding {

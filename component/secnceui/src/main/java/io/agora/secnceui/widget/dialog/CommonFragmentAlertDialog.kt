@@ -13,7 +13,7 @@ import io.agora.secnceui.databinding.DialogCenterFragmentAlertBinding
 /**
  * 中间弹框，确认/取消按钮
  */
-class CommonFragmentAlertDialog : BaseFragmentDialog<DialogCenterFragmentAlertBinding>() {
+class CommonFragmentAlertDialog constructor(): BaseFragmentDialog<DialogCenterFragmentAlertBinding>() {
 
     override fun getViewBinding(inflater: LayoutInflater, container: ViewGroup?): DialogCenterFragmentAlertBinding {
         return DialogCenterFragmentAlertBinding.inflate(inflater, container, false)

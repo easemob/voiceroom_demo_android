@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import io.agora.baseui.dialog.BaseSheetDialog
 import io.agora.secnceui.databinding.DialogChatroomSpatialAudioBinding
 
-class ChatroomSpatialAudioSheetDialog : BaseSheetDialog<DialogChatroomSpatialAudioBinding>() {
+class ChatroomSpatialAudioSheetDialog constructor(): BaseSheetDialog<DialogChatroomSpatialAudioBinding>() {
 
     override fun getViewBinding(inflater: LayoutInflater, container: ViewGroup?): DialogChatroomSpatialAudioBinding {
         return DialogChatroomSpatialAudioBinding.inflate(inflater, container, false)

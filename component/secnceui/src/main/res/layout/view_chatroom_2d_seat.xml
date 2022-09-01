@@ -10,7 +10,9 @@
         android:layout_width="58dp"
         android:layout_height="58dp"
         android:background="@drawable/bg_oval_white30"
-        app:contentPadding="18dp"
+        android:cropToPadding="true"
+        android:scaleType="centerCrop"
+        app:contentPadding="0dp"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -23,12 +25,12 @@
         android:layout_width="58dp"
         android:layout_height="58dp"
         android:background="@drawable/bg_oval_black50"
-        app:layout_constraintDimensionRatio="1:1"
         android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/ivSeatInfo"
+        app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="@+id/ivSeatInfo"
         app:layout_constraintStart_toStartOf="@+id/ivSeatInfo"
         app:layout_constraintTop_toTopOf="@+id/ivSeatInfo"
-        app:layout_constraintBottom_toBottomOf="@+id/ivSeatInfo"
         app:shapeAppearance="@style/chatroom_seat_roundStyle" />
 
     <com.google.android.material.textview.MaterialTextView
@@ -40,9 +42,9 @@
         android:gravity="center"
         android:paddingHorizontal="6dp"
         android:text="@string/chatroom_active"
-        android:visibility="gone"
         android:textColor="@color/white"
         android:textSize="@dimen/sp_11"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="@+id/ivSeatInfo"
         app:layout_constraintStart_toStartOf="@+id/ivSeatInfo"
         app:layout_constraintTop_toBottomOf="@+id/ivSeatInfo" />
@@ -63,12 +65,12 @@
         android:layout_marginTop="7dp"
         android:drawableStart="@drawable/icon_seat_owner_tag"
         android:drawablePadding="2dp"
-        android:gravity="center"
         android:ellipsize="end"
-        tools:text="Susan Stark"
+        android:gravity="center"
         android:textColor="@color/white"
         android:textSize="@dimen/sp_11"
         app:layout_constraintEnd_toEndOf="@+id/ivSeatInfo"
         app:layout_constraintStart_toStartOf="@+id/ivSeatInfo"
-        app:layout_constraintTop_toBottomOf="@+id/ivSeatInfo" />
+        app:layout_constraintTop_toBottomOf="@+id/ivSeatInfo"
+        tools:text="Susan Stark" />
 </androidx.constraintlayout.widget.ConstraintLayout>

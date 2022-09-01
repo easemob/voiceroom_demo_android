@@ -11,7 +11,7 @@ import io.agora.secnceui.databinding.DialogBottomSheetContentBinding
 /**
  * content dialog 类似聊天室公告
  */
-class CommonSheetContentDialog : BaseSheetDialog<DialogBottomSheetContentBinding>() {
+class CommonSheetContentDialog constructor(): BaseSheetDialog<DialogBottomSheetContentBinding>() {
 
     override fun getViewBinding(inflater: LayoutInflater, container: ViewGroup?): DialogBottomSheetContentBinding {
         return DialogBottomSheetContentBinding.inflate(inflater, container, false)

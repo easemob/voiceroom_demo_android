@@ -17,7 +17,7 @@ import io.agora.secnceui.bean.SoundSelectionBean
 import io.agora.secnceui.databinding.DialogChatroomSoundSelectionBinding
 import io.agora.secnceui.databinding.ItemChatroomSoundSelectionBinding
 
-class ChatroomSoundSelectionSheetDialog : BaseSheetDialog<DialogChatroomSoundSelectionBinding>() {
+class ChatroomSoundSelectionSheetDialog constructor(): BaseSheetDialog<DialogChatroomSoundSelectionBinding>() {
 
     private var soundSelectionAdapter: BaseRecyclerViewAdapter<ItemChatroomSoundSelectionBinding, SoundSelectionBean, ChatroomSoundSelectionViewHolder>? =
         null

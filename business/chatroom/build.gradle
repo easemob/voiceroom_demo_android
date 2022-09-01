@@ -65,7 +65,7 @@ android {
 }
 
 dependencies {
-
+    implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
     api dep["core-ktx"]
     api dep["appcompat"]
     api dep["constraintlayout"]
@@ -81,7 +81,21 @@ dependencies {
 
     if (isChatroomModule.toBoolean()) {
         implementation project(":basicsdepend")
-    }else {
+        implementation dep["navigation-fragment-ktx"]
+        implementation dep["navigation-ui-ktx"]
+        implementation dep["lifecycle-viewmodel-ktx"]
+        implementation dep["lifecycle-livedata-ktx"]
+        implementation dep["lifecycle-runtime-ktx"]
+        implementation dep["annotation"]
+        implementation dep["gson"]
+        // glide
+        implementation dep["glide"]
+        annotationProcessor dep["glide-compiler"]
+        implementation dep["arouter-api"]
+        kapt dep["arouter-compiler"]
+        // rtc && im
+        implementation dep["agora-rtc"]
+    } else {
         compileOnly project(':common:buddy')
         compileOnly project(':common:baseui')
         compileOnly project(':common:config')

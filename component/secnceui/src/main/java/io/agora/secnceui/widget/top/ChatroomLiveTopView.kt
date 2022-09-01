@@ -6,6 +6,7 @@ import android.view.View
 import androidx.annotation.IntDef
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
+import io.agora.buddy.tool.GlideTools
 import io.agora.secnceui.R
 import io.agora.secnceui.bean.ChatroomInfoBean
 import io.agora.secnceui.databinding.ViewChatroomLiveTopBinding
@@ -40,7 +41,7 @@ class ChatroomLiveTopView : ConstraintLayout, View.OnClickListener, IChatroomLiv
         ChatroomTopType.Owner, ChatroomTopType.ChatroomName, ChatroomTopType.Members, ChatroomTopType.Gifts,
         ChatroomTopType.Watches, ChatroomTopType.RankNo1, ChatroomTopType.RankNo2, ChatroomTopType.RankNo3
     )
-    @kotlin.annotation.Retention(AnnotationRetention.RUNTIME)
+    @kotlin.annotation.Retention(AnnotationRetention.SOURCE)
     annotation class ChatroomTopType {
         companion object {
             /**聊天室房主*/
@@ -93,6 +94,8 @@ class ChatroomLiveTopView : ConstraintLayout, View.OnClickListener, IChatroomLiv
             mtChatroomMembers.text = chatroomInfo.audiencesCount.toString()
             mtChatroomGifts.text = chatroomInfo.giftCount.toString()
             mtChatroomWatch.text = chatroomInfo.watchCount.toString()
+            // 房主头像
+            GlideTools.loadImage(context, chatroomInfo.ownerAvatar, binding.ivChatroomOwner)
             val topGifts = chatroomInfo.topGifts
             if (topGifts.isNullOrEmpty()) {
                 llChatroomMemberRank.isVisible = false
@@ -102,15 +105,15 @@ class ChatroomLiveTopView : ConstraintLayout, View.OnClickListener, IChatroomLiv
                     when (index) {
                         0 -> {
                             ivChatroomMember1.isVisible = true
-                            // todo avatar
+                            GlideTools.loadImage(context, audienceBean.userAvatar, binding.ivChatroomMember1)
                         }
                         1 -> {
                             ivChatroomMember2.isVisible = true
-                            // todo avatar
+                            GlideTools.loadImage(context, audienceBean.userAvatar, binding.ivChatroomMember2)
                         }
                         2 -> {
                             ivChatroomMember3.isVisible = true
-                            // todo avatar
+                            GlideTools.loadImage(context, audienceBean.userAvatar, binding.ivChatroomMember3)
                         }
                         else -> {
                             return
@@ -126,15 +129,22 @@ class ChatroomLiveTopView : ConstraintLayout, View.OnClickListener, IChatroomLiv
         when (type) {
             ChatroomTopType.Owner -> {
                 // 房主头像
+                GlideTools.loadImage(context, imageUrl, binding.ivChatroomOwner)
             }
             ChatroomTopType.RankNo1 -> {
-
+                binding.llChatroomMemberRank.isVisible = true
+                binding.ivChatroomMember1.isVisible = true
+                GlideTools.loadImage(context, imageUrl, binding.ivChatroomMember1)
             }
             ChatroomTopType.RankNo2 -> {
-
+                binding.llChatroomMemberRank.isVisible = true
+                binding.ivChatroomMember2.isVisible = true
+                GlideTools.loadImage(context, imageUrl, binding.ivChatroomMember2)
             }
             ChatroomTopType.RankNo3 -> {
-
+                binding.llChatroomMemberRank.isVisible = true
+                binding.ivChatroomMember3.isVisible = true
+                GlideTools.loadImage(context, imageUrl, binding.ivChatroomMember3)
             }
             else -> {}
         }

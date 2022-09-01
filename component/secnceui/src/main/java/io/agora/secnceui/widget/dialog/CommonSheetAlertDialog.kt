@@ -13,7 +13,7 @@ import io.agora.secnceui.databinding.DialogBottomSheetAlertBinding
 /**
  * 确定/取消
  */
-class CommonSheetAlertDialog : BaseSheetDialog<DialogBottomSheetAlertBinding>() {
+class CommonSheetAlertDialog constructor(): BaseSheetDialog<DialogBottomSheetAlertBinding>() {
 
     override fun getViewBinding(inflater: LayoutInflater, container: ViewGroup?): DialogBottomSheetAlertBinding {
         return DialogBottomSheetAlertBinding.inflate(inflater, container, false)

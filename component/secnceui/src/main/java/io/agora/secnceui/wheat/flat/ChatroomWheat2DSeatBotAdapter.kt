@@ -7,7 +7,7 @@ import io.agora.buddy.tool.getDisplaySize
 import io.agora.secnceui.bean.BotSeatInfoBean
 import io.agora.secnceui.databinding.ItemChatroom2dSeatBotBinding
 
-class ChatroomWheat2DSeatBotAdapter(
+class ChatroomWheat2DSeatBotAdapter constructor(
     dataList: List<BotSeatInfoBean>?,
     listener: OnItemClickListener<BotSeatInfoBean>?,
     viewHolderClass: Class<ChatroomWheat2DBotViewHolder>

@@ -51,15 +51,16 @@
     <string name="chatroom_sounds_microphone_screen_tap_sound">Screen Tap Sound</string>
     <string name="chatroom_invite">Invite</string>
     <string name="chatroom_mute">Mute</string>
+    <string name="chatroom_block">Block</string>
+    <string name="chatroom_unblock">Unblock</string>
+    <string name="chatroom_kick_off">Kick Off</string>
     <string name="chatroom_unmute">Unmute</string>
-    <string name="chatroom_lock">Lock</string>
-    <string name="chatroom_upstage">Upstage</string>
-    <string name="chatroom_downstage">Downstage</string>
-    <string name="chatroom_kick_off_stage">Kick Off Stage</string>
+    <string name="chatroom_off_stage">Off-Stage</string>
     <string name="chatroom_host">Host</string>
     <string name="chatroom_active">Active</string>
     <string name="chatroom_ask_upstage">Ask Upstage</string>
     <string name="chatroom_submit">Submit</string>
+    <string name="chatroom_confirm">Confirm</string>
     <string name="chatroom_cancel">Cancel</string>
     <string name="chatroom_first_enter_room_notice_tips">Welcome to Agora Chat Room 2.0 I am therobot Agora Red. Can you see the robot assistant at the right coner? Click it and experience the new features.</string>
     <string name="chatroom_social_chat">Social Chat</string>
@@ -68,4 +69,6 @@
     <string name="chatroom_3d_spatial_audio">3D Spatial Audio Seat Tutorial</string>
     <string name="chatroom_3d_spatial_audio_part1">Put on headset</string>
     <string name="chatroom_3d_spatial_audio_part2">ove avatar around to hear different spatial audio effects</string>
+    <string name="chatroom_request_speak">Request to Speak?</string>
+    <string name="chatroom_cancel_request_speak">Cancel Request</string>
 </resources>

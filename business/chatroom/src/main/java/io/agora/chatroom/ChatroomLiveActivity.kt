@@ -9,20 +9,22 @@ import androidx.core.view.WindowInsetsCompat
 import com.alibaba.android.arouter.facade.annotation.Route
 import io.agora.baseui.BaseUiActivity
 import io.agora.baseui.BaseUiTool
+import io.agora.baseui.adapter.OnItemClickListener
 import io.agora.buddy.tool.logD
 import io.agora.chatroom.databinding.ActivityChatroomBinding
 import io.agora.chatroom.ui.ChatroomLiveTopViewModel
 import io.agora.config.ARouterPath
 import io.agora.secnceui.R
 import io.agora.secnceui.widget.dialog.CommonFragmentAlertDialog
-import io.agora.secnceui.ainoise.ChatroomNoiseSuppressionSheetDialog
-import io.agora.secnceui.audiosettings.ChatroomAudioSettingsSheetDialog
+import io.agora.secnceui.bean.ChatroomWheatSeatType
 import io.agora.secnceui.bean.CustomerUsageBean
+import io.agora.secnceui.bean.SeatInfoBean
 import io.agora.secnceui.soundselection.ChatroomSocialChatSheetDialog
-import io.agora.secnceui.soundselection.ChatroomSoundSelectionSheetDialog
 import io.agora.secnceui.spatialaudio.Chatroom3DSpatialSeatTutorialSheetDialog
 import io.agora.secnceui.spatialaudio.ChatroomSpatialAudioSheetDialog
-import io.agora.secnceui.widget.wheat.ChatroomWheat2DAudioView
+import io.agora.secnceui.wheat.ChatroomSeatManagerSheetDialog
+import io.agora.secnceui.wheat.ChatroomWheatConstructor
+import io.agora.secnceui.widget.dialog.CommonSheetAlertDialog
 import io.agora.secnceui.widget.dialog.CommonSheetContentDialog
 import io.agora.secnceui.widget.top.ChatroomLiveTopView
 import io.agora.secnceui.widget.top.OnLiveTopClickListener
@@ -130,7 +132,37 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>() {
 
     private fun test() {
         binding.apply {
-            rvChatroomWheat2dSeat.setUpAdapter(ChatroomWheat2DAudioView.testWheatSeatList)
+            rvChatroomWheat2dSeat.onItemClickListener(object : OnItemClickListener<SeatInfoBean> {
+                override fun onItemClick(data: SeatInfoBean, view: View, position: Int, viewType: Long) {
+                    super.onItemClick(data, view, position, viewType)
+                    // 普通用户,空闲位置
+                    if (data.wheatSeatType == ChatroomWheatSeatType.Idle) {
+                        CommonSheetAlertDialog()
+                            .contentText(getString(R.string.chatroom_request_speak))
+                            .rightText(getString(R.string.chatroom_confirm))
+                            .leftText(getString(R.string.chatroom_cancel))
+                            .setOnClickListener(object : CommonSheetAlertDialog.OnClickBottomListener {
+                                override fun onConfirmClick() {
+
+                                }
+
+                                override fun onCancelClick() {
+                                }
+
+                            })
+                            .show(supportFragmentManager, "SeatManagerSheetDialog11")
+                    } else {
+                        ChatroomSeatManagerSheetDialog().apply {
+                            arguments = Bundle().apply {
+                                putSerializable(ChatroomSeatManagerSheetDialog.KEY_SEAT_INFO, data)
+                            }
+                        }.show(supportFragmentManager, "SeatManagerSheetDialog")
+                    }
+                }
+            }).setUpAdapter(
+                ChatroomWheatConstructor.builder2dSeatList(),
+                ChatroomWheatConstructor.builder2dBotSeatList()
+            )
         }
         chatroomLiveTopViewModel.initChatroomInfo()
     }

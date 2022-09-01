@@ -37,4 +37,6 @@ dependencies {
     api dep["core-ktx"]
 
     compileOnly dep["gson"]
+    // glide
+    compileOnly dep["glide"]
 }
