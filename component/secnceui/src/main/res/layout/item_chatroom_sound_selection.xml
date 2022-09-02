@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingStart="20dp"
-        android:paddingTop="10dp"
+        android:paddingTop="20dp"
         android:paddingEnd="20dp"
         android:paddingBottom="10dp"
         android:textColor="@color/color_3C4267"
@@ -32,9 +32,11 @@
         android:paddingTop="6dp"
         android:paddingEnd="8dp"
         android:paddingBottom="6dp"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mtSoundSelectionCurrentName">
+        app:layout_constraintTop_toBottomOf="@+id/mtSoundSelectionCurrentName"
+        app:layout_goneMarginTop="10dp">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:layout_width="wrap_content"
@@ -57,13 +59,12 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="10dp"
         android:layout_marginEnd="20dp"
         app:cardCornerRadius="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/llSoundSelectionTips"
-        app:layout_goneMarginTop="13dp"
+        app:layout_goneMarginTop="10dp"
         app:strokeColor="@color/main_color_009FFF"
         app:strokeWidth="1dp">
 
@@ -83,7 +84,7 @@
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="Current Sound Selection" />
+                tools:text="Social Chat" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/ivSoundSelectionToggle"

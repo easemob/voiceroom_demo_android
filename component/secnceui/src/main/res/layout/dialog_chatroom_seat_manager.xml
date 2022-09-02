@@ -18,65 +18,86 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/ivChatroomSeatAvatar"
+        android:id="@+id/ivSeatInfo"
         android:layout_width="64dp"
         android:layout_height="64dp"
-        android:layout_marginTop="18dp"
-        android:background="@drawable/icon_chatroom_seat_empty"
-        app:contentPadding="18dp"
-        app:layout_constraintDimensionRatio="1:1"
+        android:layout_marginTop="36dp"
+        android:background="@drawable/bg_oval_grey"
+        android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ivBottomSheetTitle"
+        app:layout_constraintTop_toTopOf="parent"
         app:shapeAppearance="@style/chatroom_seat_roundStyle" />
 
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ivSeatInnerIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/icon_seat_add"
+        app:layout_constraintBottom_toBottomOf="@+id/ivSeatInfo"
+        app:layout_constraintEnd_toEndOf="@+id/ivSeatInfo"
+        app:layout_constraintStart_toStartOf="@+id/ivSeatInfo"
+        app:layout_constraintTop_toTopOf="@+id/ivSeatInfo" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ivSeatMic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/icon_seat_off_mic"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@id/ivSeatInfo"
+        app:layout_constraintEnd_toEndOf="@id/ivSeatInfo" />
+
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/mtChatroomSeatName"
+        android:id="@+id/mtSeatInfoName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+        android:ellipsize="end"
+        android:gravity="center"
         android:textColor="@color/color_333333"
         android:textSize="@dimen/sp_14"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ivChatroomSeatAvatar"
+        app:layout_constraintEnd_toEndOf="@+id/ivSeatInfo"
+        app:layout_constraintStart_toStartOf="@+id/ivSeatInfo"
+        app:layout_constraintTop_toBottomOf="@+id/ivSeatInfo"
         tools:text="Susan Stark" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/mtChatroomSeatTag"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="34dp"
         android:drawableStart="@drawable/icon_seat_owner_tag"
         android:drawablePadding="4dp"
         android:gravity="center"
+        android:text="@string/chatroom_host"
         android:textColor="@color/color_333333"
         android:textSize="@dimen/sp_11"
-        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mtChatroomSeatName"
-        tools:text="Host" />
+        app:layout_constraintTop_toBottomOf="@+id/ivSeatInfo" />
 
     <com.google.android.material.divider.MaterialDivider
         android:layout_width="0dp"
         android:layout_height="0.5dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="60dp"
         app:dividerColor="@color/divider_color_979797"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mtChatroomSeatName" />
+        app:layout_constraintTop_toBottomOf="@+id/ivSeatInfo" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvChatroomSeatManager"
         android:layout_width="match_parent"
-        android:layout_height="69dp"
-        android:layout_marginTop="33dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="61dp"
         android:layout_marginBottom="10dp"
         android:orientation="horizontal"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mtChatroomSeatName" />
+        app:layout_constraintTop_toBottomOf="@+id/ivSeatInfo" />
 </androidx.constraintlayout.widget.ConstraintLayout>

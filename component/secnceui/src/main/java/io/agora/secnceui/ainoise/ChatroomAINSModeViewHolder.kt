@@ -7,35 +7,47 @@ import androidx.core.view.isVisible
 import com.google.android.material.textview.MaterialTextView
 import io.agora.baseui.adapter.BaseRecyclerViewAdapter
 import io.agora.secnceui.R
+import io.agora.secnceui.annotation.AINSModeType
+import io.agora.secnceui.annotation.AINSSoundType
 import io.agora.secnceui.bean.AINSModeBean
-import io.agora.secnceui.bean.AINSModeType
-import io.agora.secnceui.bean.AINSSoundType
 import io.agora.secnceui.bean.AINSSoundsBean
 import io.agora.secnceui.databinding.ItemChatroomAgoraAinsBinding
 import io.agora.secnceui.databinding.ItemChatroomAinsAuditionBinding
 import io.agora.secnceui.databinding.ItemChatroomAnisContentBinding
 import io.agora.secnceui.databinding.ItemChatroomAnisTitleBinding
 
-class ChatroomAINSViewHolder(binding: ItemChatroomAgoraAinsBinding) :
+class ChatroomAINSModeViewHolder(binding: ItemChatroomAgoraAinsBinding) :
     BaseRecyclerViewAdapter.BaseViewHolder<ItemChatroomAgoraAinsBinding, AINSModeBean>(binding) {
     override fun binding(data: AINSModeBean?, selectedIndex: Int) {
         data?.let {
             mBinding.mtNoiseSuppressionName.text = it.anisName
-            when (it.anisType) {
+            mBinding.mtChatroomHigh.setOnClickListener { view ->
+                onItemClick(view)
+            }
+            mBinding.mtChatroomMedium.setOnClickListener { view ->
+                onItemClick(view)
+            }
+            mBinding.mtChatroomOff.setOnClickListener { view ->
+                onItemClick(view)
+            }
+            mBinding.mtChatroomHigh.tag = AINSModeType.High
+            mBinding.mtChatroomMedium.tag = AINSModeType.Medium
+            mBinding.mtChatroomOff.tag = AINSModeType.Off
+            when (it.anisMode) {
                 AINSModeType.High -> {
-                    setViewHighlight(mBinding.mbChatroomHigh)
-                    resetViewDefault(mBinding.mbChatroomMedium)
-                    resetViewDefault(mBinding.mbChatroomOff)
+                    setViewHighlight(mBinding.mtChatroomHigh)
+                    resetViewDefault(mBinding.mtChatroomMedium)
+                    resetViewDefault(mBinding.mtChatroomOff)
                 }
                 AINSModeType.Medium -> {
-                    setViewHighlight(mBinding.mbChatroomMedium)
-                    resetViewDefault(mBinding.mbChatroomHigh)
-                    resetViewDefault(mBinding.mbChatroomOff)
+                    setViewHighlight(mBinding.mtChatroomMedium)
+                    resetViewDefault(mBinding.mtChatroomHigh)
+                    resetViewDefault(mBinding.mtChatroomOff)
                 }
                 AINSModeType.Off -> {
-                    setViewHighlight(mBinding.mbChatroomOff)
-                    resetViewDefault(mBinding.mbChatroomHigh)
-                    resetViewDefault(mBinding.mbChatroomMedium)
+                    setViewHighlight(mBinding.mtChatroomOff)
+                    resetViewDefault(mBinding.mtChatroomHigh)
+                    resetViewDefault(mBinding.mtChatroomMedium)
                 }
             }
         }
@@ -57,6 +69,18 @@ class ChatroomAINSSoundsViewHolder(binding: ItemChatroomAinsAuditionBinding) :
     override fun binding(data: AINSSoundsBean?, selectedIndex: Int) {
         data?.let {
             mBinding.mtChatroomAinsName.text = it.soundName
+            mBinding.ivChatroomAinsSounds.setOnClickListener { view ->
+                onItemClick(view)
+            }
+            mBinding.mtChatroomAins.setOnClickListener { view ->
+                onItemClick(view)
+            }
+            mBinding.mtChatroomAinsNone.setOnClickListener { view ->
+                onItemClick(view)
+            }
+            mBinding.ivChatroomAinsSounds.tag = AINSSoundType.Audition
+            mBinding.mtChatroomAins.tag = AINSSoundType.AINS
+            mBinding.mtChatroomAinsNone.tag = AINSSoundType.None
             if (TextUtils.isEmpty(it.soundSubName)) {
                 mBinding.mtChatroomAinsSubName.text = ""
                 mBinding.mtChatroomAinsSubName.isVisible = false
@@ -66,12 +90,12 @@ class ChatroomAINSSoundsViewHolder(binding: ItemChatroomAinsAuditionBinding) :
             }
             if (it.soundsType == AINSSoundType.AINS) {
                 mBinding.ivChatroomAinsSounds.isInvisible = false
-                setViewHighlight(mBinding.mbChatroomAins)
-                resetViewDefault(mBinding.mbChatroomAinsNone)
+                setViewHighlight(mBinding.mtChatroomAins)
+                resetViewDefault(mBinding.mtChatroomAinsNone)
             } else {
                 mBinding.ivChatroomAinsSounds.isInvisible = true
-                setViewHighlight(mBinding.mbChatroomAinsNone)
-                resetViewDefault(mBinding.mbChatroomAins)
+                setViewHighlight(mBinding.mtChatroomAinsNone)
+                resetViewDefault(mBinding.mtChatroomAins)
             }
         }
     }

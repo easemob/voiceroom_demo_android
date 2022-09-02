@@ -47,7 +47,7 @@
 
     <fragment
         android:id="@+id/noiseSuppressionFragment"
-        android:name="io.agora.secnceui.ainoise.ChatroomNoiseSuppressionSheetDialog"
+        android:name="io.agora.secnceui.ainoise.ChatroomAINSSheetDialog"
         android:label="NoiseSuppressionFragment"
-        tools:layout="@layout/dialog_chatroom_noise_suppression" />
+        tools:layout="@layout/dialog_chatroom_ains" />
 </navigation>

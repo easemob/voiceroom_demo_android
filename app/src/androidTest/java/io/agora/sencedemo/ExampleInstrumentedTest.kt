@@ -1,6 +1,5 @@
 package io.agora.sencedemo
 
-import android.text.Html
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
 
@@ -21,9 +20,5 @@ class ExampleInstrumentedTest {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
         assertEquals("io.agora.sencedemo", appContext.packageName)
-        Html.fromHtml(
-            appContext.getString(R.string.chatroom_sound_selection_more),
-            Html.FROM_HTML_SEPARATOR_LINE_BREAK_PARAGRAPH
-        );
     }
 }

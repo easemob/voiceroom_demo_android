@@ -1,17 +1,18 @@
 package io.agora.secnceui.bean
 
 import androidx.annotation.DrawableRes
+import io.agora.secnceui.annotation.SoundSelectionType
 
-data class SoundSelectionBean(
-    val soundTitle: String = "",
+data class SoundSelectionBean constructor(
+    @SoundSelectionType val soundSelection: Int = SoundSelectionType.SocialChat,
+    val index: Int = 0,
     val soundName: String = "",
     val soundIntroduce: String = "",
     var isCurrentUsing: Boolean = false,
-    var isShowHint: Boolean = false,
     val customer: List<CustomerUsageBean>? = null
 ) : BaseChatroomBean
 
-data class CustomerUsageBean(
+data class CustomerUsageBean constructor(
     val name: String? = "",
     @DrawableRes val avatar: Int = 0
 ) : BaseChatroomBean

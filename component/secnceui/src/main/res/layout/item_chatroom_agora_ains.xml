@@ -13,33 +13,33 @@
         android:textColor="@color/color_3C4267"
         android:textSize="@dimen/sp_13"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/mbChatroomOff"
+        app:layout_constraintBottom_toBottomOf="@+id/mtChatroomOff"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/mbChatroomOff"
+        app:layout_constraintTop_toTopOf="@+id/mtChatroomOff"
         tools:text="@string/chatroom_your_ains" />
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/mbChatroomHigh"
+        android:id="@+id/mtChatroomHigh"
         style="@style/chatroom_bottom_sheet_frame_text_style"
         android:layout_marginEnd="6dp"
         android:background="@drawable/bg_rect_radius4_grey"
         android:text="@string/chatroom_high"
         android:textColor="@color/dark_grey_color_979CBB"
-        app:layout_constraintBottom_toBottomOf="@+id/mbChatroomOff"
-        app:layout_constraintEnd_toStartOf="@+id/mbChatroomMedium"
-        app:layout_constraintTop_toTopOf="@+id/mbChatroomOff" />
+        app:layout_constraintBottom_toBottomOf="@+id/mtChatroomOff"
+        app:layout_constraintEnd_toStartOf="@+id/mtChatroomMedium"
+        app:layout_constraintTop_toTopOf="@+id/mtChatroomOff" />
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/mbChatroomMedium"
+        android:id="@+id/mtChatroomMedium"
         style="@style/chatroom_bottom_sheet_frame_text_style"
         android:layout_marginEnd="6dp"
         android:text="@string/chatroom_medium"
-        app:layout_constraintBottom_toBottomOf="@+id/mbChatroomOff"
-        app:layout_constraintEnd_toStartOf="@+id/mbChatroomOff"
-        app:layout_constraintTop_toTopOf="@+id/mbChatroomOff" />
+        app:layout_constraintBottom_toBottomOf="@+id/mtChatroomOff"
+        app:layout_constraintEnd_toStartOf="@+id/mtChatroomOff"
+        app:layout_constraintTop_toTopOf="@+id/mtChatroomOff" />
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/mbChatroomOff"
+        android:id="@+id/mtChatroomOff"
         style="@style/chatroom_bottom_sheet_frame_text_style"
         android:layout_marginTop="14dp"
         android:layout_marginEnd="20dp"

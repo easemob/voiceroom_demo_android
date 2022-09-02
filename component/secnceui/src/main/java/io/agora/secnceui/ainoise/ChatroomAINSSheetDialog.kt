@@ -4,62 +4,53 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import io.agora.baseui.adapter.BaseRecyclerViewAdapter
+import io.agora.baseui.adapter.OnItemClickListener
 import io.agora.baseui.dialog.BaseSheetDialog
 import io.agora.secnceui.R
 import io.agora.secnceui.bean.AINSModeBean
-import io.agora.secnceui.bean.AINSModeType
-import io.agora.secnceui.bean.AINSSoundType
 import io.agora.secnceui.bean.AINSSoundsBean
-import io.agora.secnceui.databinding.DialogChatroomNoiseSuppressionBinding
+import io.agora.secnceui.bean.SoundSelectionBean
+import io.agora.secnceui.databinding.DialogChatroomAinsBinding
 import io.agora.secnceui.databinding.ItemChatroomAgoraAinsBinding
 import io.agora.secnceui.databinding.ItemChatroomAinsAuditionBinding
 
-class ChatroomNoiseSuppressionSheetDialog constructor(): BaseSheetDialog<DialogChatroomNoiseSuppressionBinding>() {
+class ChatroomAINSSheetDialog constructor() : BaseSheetDialog<DialogChatroomAinsBinding>() {
 
-    private var anisModeAdapter: BaseRecyclerViewAdapter<ItemChatroomAgoraAinsBinding, AINSModeBean, ChatroomAINSViewHolder>? =
+    companion object{
+        const val KEY_AINS_MODE = "ains_mode"
+    }
+
+    private var anisModeAdapter: BaseRecyclerViewAdapter<ItemChatroomAgoraAinsBinding, AINSModeBean, ChatroomAINSModeViewHolder>? =
         null
     private var anisSoundsAdapter: BaseRecyclerViewAdapter<ItemChatroomAinsAuditionBinding, AINSSoundsBean, ChatroomAINSSoundsViewHolder>? =
         null
 
-    private val anisModeList = mutableListOf<AINSModeBean>().apply {
-        add(AINSModeBean("You AINS", AINSModeType.High))
-        add(AINSModeBean("Agora Blue Bot AINS", AINSModeType.Medium))
-        add(AINSModeBean("Agora Red Bot AINS", AINSModeType.Off))
-    }
+    private val anisModeList = mutableListOf<AINSModeBean>()
 
-    private val anisSoundsList = mutableListOf<AINSSoundsBean>().apply {
-        add(AINSSoundsBean("TV Sound", "", AINSSoundType.AINS))
-        add(AINSSoundsBean("Kitchen Sound"))
-        add(AINSSoundsBean("Street Sound", "Ex. Bird, car, subway sounds"))
-        add(AINSSoundsBean("Machine Sound", "Ex. Fan, air conditioner, vacuum cleaner, printer sounds"))
-        add(AINSSoundsBean("Office Sound", "Ex. Keyboard tapping, mouse clicking sounds"))
-        add(AINSSoundsBean("Home Sound", "Ex. Door closing, chair squeaking, baby crying sounds"))
-        add(AINSSoundsBean("Construction Sound", "Ex. Knocking sound"))
-        add(AINSSoundsBean("Alert Sound / Music"))
-        add(AINSSoundsBean("Applause"))
-        add(AINSSoundsBean("Wind Sound"))
-        add(AINSSoundsBean("Mic Pop Filter"))
-        add(AINSSoundsBean("Audio Feedback"))
-        add(AINSSoundsBean("Microphone Finger Rub Sound"))
-        add(AINSSoundsBean("Screen Tap Sound"))
-    }
+    private val anisSoundsList = mutableListOf<AINSSoundsBean>()
 
     override fun getViewBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
-    ): DialogChatroomNoiseSuppressionBinding {
-        return DialogChatroomNoiseSuppressionBinding.inflate(inflater, container, false)
+    ): DialogChatroomAinsBinding {
+        return DialogChatroomAinsBinding.inflate(inflater, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         dialog?.setCanceledOnTouchOutside(false)
+        arguments?.apply {
+            val anis = getInt(KEY_AINS_MODE)
+            anisModeList.addAll(ChatroomAINSConstructor.builderDefaultAINSList(view.context,anis))
+        }
+        anisSoundsList.addAll(ChatroomAINSConstructor.builderDefaultSoundList(view.context))
         binding?.apply {
             setOnApplyWindowInsets(root)
             ivBottomSheetBack.setOnClickListener {
@@ -73,17 +64,53 @@ class ChatroomNoiseSuppressionSheetDialog constructor(): BaseSheetDialog<DialogC
         val anisModeHeaderAdapter = BaseRecyclerViewAdapter(mutableListOf<String>().apply {
             add(getString(R.string.chatroom_ains_settings))
         }, ChatroomAINSTitleViewHolder::class.java)
-        anisModeAdapter = BaseRecyclerViewAdapter(anisModeList, ChatroomAINSViewHolder::class.java)
+        anisModeAdapter = BaseRecyclerViewAdapter(anisModeList, object : OnItemClickListener<AINSModeBean> {
+
+            override fun onItemClick(data: AINSModeBean, view: View, position: Int, viewType: Long) {
+                val tag = view.tag
+                if (tag is Int) {
+                    if (data.anisMode == tag) {
+                        return
+                    } else {
+                        data.anisMode = tag
+                        anisSoundsAdapter?.notifyItemChanged(position)
+                    }
+                    Toast.makeText(view.context, "AINS Mode $tag", Toast.LENGTH_SHORT).show()
+                }
+
+            }
+        }, ChatroomAINSModeViewHolder::class.java)
+
         val anisIntroduceHeaderAdapter = BaseRecyclerViewAdapter(mutableListOf<String>().apply {
             add(getString(R.string.chatroom_agora_ains))
         }, ChatroomAINSTitleViewHolder::class.java)
+
         val anisIntroduceContentAdapter = BaseRecyclerViewAdapter(mutableListOf<String>().apply {
             add(getString(R.string.chatroom_ains_introduce))
         }, ChatroomAINSContentViewHolder::class.java)
+
         val anisSoundsHeaderAdapter = BaseRecyclerViewAdapter(mutableListOf<String>().apply {
             add(getString(R.string.chatroom_agora_ains_supports_sounds))
         }, ChatroomAINSTitleViewHolder::class.java)
-        anisSoundsAdapter = BaseRecyclerViewAdapter(anisSoundsList, ChatroomAINSSoundsViewHolder::class.java)
+
+        anisSoundsAdapter = BaseRecyclerViewAdapter(
+            anisSoundsList, object : OnItemClickListener<AINSSoundsBean> {
+
+                override fun onItemClick(data: AINSSoundsBean, view: View, position: Int, viewType: Long) {
+                    val tag = view.tag
+                    if (tag is Int) {
+                        if (data.soundsType == tag) {
+                            return
+                        } else {
+                            data.soundsType = tag
+                            anisSoundsAdapter?.notifyItemChanged(position)
+                        }
+                        Toast.makeText(view.context, "AINS Sound $tag", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            },
+            ChatroomAINSSoundsViewHolder::class.java
+        )
         val config = ConcatAdapter.Config.Builder().setIsolateViewTypes(true).build()
         val concatAdapter = ConcatAdapter(
             config,

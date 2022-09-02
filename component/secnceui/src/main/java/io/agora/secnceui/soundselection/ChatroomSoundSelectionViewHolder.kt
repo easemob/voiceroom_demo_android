@@ -2,7 +2,6 @@ package io.agora.secnceui.soundselection
 
 import android.os.Build
 import android.text.Html
-import android.text.TextUtils
 import android.view.View
 import android.widget.LinearLayout
 import androidx.annotation.RequiresApi
@@ -21,25 +20,25 @@ class ChatroomSoundSelectionViewHolder(binding: ItemChatroomSoundSelectionBindin
     BaseRecyclerViewAdapter.BaseViewHolder<ItemChatroomSoundSelectionBinding, SoundSelectionBean>(binding) {
     override fun binding(data: SoundSelectionBean?, selectedIndex: Int) {
         data?.let {
-            if (TextUtils.isEmpty(it.soundTitle)) {
-                mBinding.mtSoundSelectionCurrentName.isVisible = false
-                mBinding.mtSoundSelectionCurrentName.text = ""
-            } else {
-                mBinding.mtSoundSelectionCurrentName.isVisible = true
-                mBinding.mtSoundSelectionCurrentName.text = it.soundTitle
-            }
             if (it.isCurrentUsing) {
+                mBinding.mtSoundSelectionCurrentName.isVisible = true
+                mBinding.mtSoundSelectionCurrentName.text =
+                    mBinding.root.context.getString(R.string.chatroom_current_sound_selection)
                 mBinding.mcvSoundSelectionContent.strokeColor =
                     ResourcesCompat.getColor(context.resources, R.color.main_color_009FFF, null)
                 mBinding.ivSoundSelectionToggle.setImageResource(R.drawable.icon_chatroom_sound_listen)
                 mBinding.ivSoundSelected.isVisible = true
             } else {
+                mBinding.mtSoundSelectionCurrentName.text =
+                    mBinding.root.context.getString(R.string.chatroom_other_sound_selection)
+                // 第二个位置显示其他音效标题
+                mBinding.mtSoundSelectionCurrentName.isVisible = bindingAdapterPosition == 1
                 mBinding.mcvSoundSelectionContent.strokeColor =
                     ResourcesCompat.getColor(context.resources, R.color.divider_color_EFF4FF, null)
                 mBinding.ivSoundSelectionToggle.setImageResource(R.drawable.icon_chatroom_sound_toggle)
                 mBinding.ivSoundSelected.isVisible = false
             }
-            mBinding.llSoundSelectionTips.isVisible = it.isShowHint
+            mBinding.llSoundSelectionTips.isVisible = bindingAdapterPosition == selectedIndex
             mBinding.mtSoundSelectionName.text = it.soundName
             mBinding.mtSoundSelectionContent.text = it.soundIntroduce
             if (it.customer.isNullOrEmpty()) {

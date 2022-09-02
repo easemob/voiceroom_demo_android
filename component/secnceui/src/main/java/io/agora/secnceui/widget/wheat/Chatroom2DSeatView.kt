@@ -6,11 +6,10 @@ import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import io.agora.buddy.tool.GlideTools
-import io.agora.buddy.tool.dp
 import io.agora.secnceui.R
-import io.agora.secnceui.bean.ChatroomWheatSeatType
-import io.agora.secnceui.bean.ChatroomWheatUserRole
-import io.agora.secnceui.bean.ChatroomWheatUserStatus
+import io.agora.secnceui.annotation.WheatSeatType
+import io.agora.secnceui.annotation.WheatUserRole
+import io.agora.secnceui.annotation.WheatUserStatus
 import io.agora.secnceui.bean.SeatInfoBean
 import io.agora.secnceui.databinding.ViewChatroom2dSeatBinding
 
@@ -37,18 +36,14 @@ class Chatroom2DSeatView : ConstraintLayout {
 
     fun binding(seatInfo: SeatInfoBean) {
         when (seatInfo.wheatSeatType) {
-            ChatroomWheatSeatType.Idle,
-            ChatroomWheatSeatType.Mute -> {
-                mBinding.ivSeatInfo.apply {
-                    setBackgroundResource(R.drawable.bg_oval_white30)
-                    if (seatInfo.wheatSeatType == ChatroomWheatSeatType.Idle) {
-                        setImageResource(R.drawable.icon_seat_add)
-                    } else {
-                        setImageResource(R.drawable.icon_seat_mic)
-                    }
-                    // TODO:
-//                    val contentPadding = 18.dp.toInt()
-//                    setContentPadding(contentPadding, contentPadding, contentPadding, contentPadding)
+            WheatSeatType.Idle,
+            WheatSeatType.Mute -> {
+                mBinding.ivSeatInfo.setBackgroundResource(R.drawable.bg_oval_white30)
+                mBinding.ivSeatInnerIcon.isVisible = true
+                if (seatInfo.wheatSeatType == WheatSeatType.Idle) {
+                    mBinding.ivSeatInnerIcon.setImageResource(R.drawable.icon_seat_add)
+                } else {
+                    mBinding.ivSeatInnerIcon.setImageResource(R.drawable.icon_seat_mic)
                 }
                 mBinding.ivSeatMic.isVisible = false
                 mBinding.mtSeatInfoName.apply {
@@ -56,22 +51,18 @@ class Chatroom2DSeatView : ConstraintLayout {
                     setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
                 }
             }
-            ChatroomWheatSeatType.Lock,
-            ChatroomWheatSeatType.LockMute -> {
-                mBinding.ivSeatInfo.apply {
-                    setBackgroundResource(R.drawable.bg_oval_white30)
-                    setImageResource(R.drawable.icon_seat_close)
-                    // TODO:
-//                    val contentPadding = 18.dp.toInt()
-//                    setContentPaddingRelative(contentPadding, contentPadding, contentPadding, contentPadding)
-                }
-                mBinding.ivSeatMic.isVisible = seatInfo.wheatSeatType == ChatroomWheatSeatType.LockMute
+            WheatSeatType.Lock,
+            WheatSeatType.LockMute -> {
+                mBinding.ivSeatInfo.setBackgroundResource(R.drawable.bg_oval_white30)
+                mBinding.ivSeatInnerIcon.isVisible = true
+                mBinding.ivSeatInnerIcon.setImageResource(R.drawable.icon_seat_close)
+                mBinding.ivSeatMic.isVisible = seatInfo.wheatSeatType == WheatSeatType.LockMute
                 mBinding.mtSeatInfoName.apply {
                     text = seatInfo.index.toString()
                     setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
                 }
             }
-            ChatroomWheatSeatType.Inactive -> {
+            WheatSeatType.Inactive -> {
                 mBinding.mtSeatRotActive.isVisible = true
                 mBinding.ivSeatBotFloat.isVisible = true
                 setNormalWheatView(seatInfo)
@@ -84,22 +75,19 @@ class Chatroom2DSeatView : ConstraintLayout {
 
     private fun setNormalWheatView(seatInfo: SeatInfoBean) {
         mBinding.mtSeatInfoName.text = seatInfo.name
+        mBinding.ivSeatInnerIcon.isVisible = false
         when (seatInfo.userRole) {
-            ChatroomWheatUserRole.Robot -> {
+            WheatUserRole.Robot -> {
                 mBinding.ivSeatInfo.apply {
                     setBackgroundResource(R.drawable.bg_oval_white)
                     setImageResource(seatInfo.rotImage)
-
-                    // TODO:
-//                    val contentPadding = 10.dp.toInt()
-//                    setContentPadding(contentPadding, contentPadding, contentPadding, contentPadding)
                 }
                 mBinding.mtSeatInfoName.setCompoundDrawablesWithIntrinsicBounds(
                     R.drawable.icon_seat_robot_tag, 0, 0, 0
                 )
                 mBinding.mtSeatRotActive.isVisible = true
             }
-            ChatroomWheatUserRole.Owner -> {
+            WheatUserRole.Owner -> {
                 mBinding.ivSeatInfo.apply {
                     setBackgroundResource(R.drawable.bg_oval_white30)
                     GlideTools.loadImage(context, seatInfo.avatar, this)
@@ -118,14 +106,15 @@ class Chatroom2DSeatView : ConstraintLayout {
         }
         mBinding.ivSeatMic.apply {
             when (seatInfo.userStatus) {
-                ChatroomWheatUserStatus.None -> {
+                WheatUserStatus.None -> {
                     isVisible = false
                 }
-                ChatroomWheatUserStatus.Idle -> {
+                WheatUserStatus.Idle -> {
                     isVisible = true
                     setImageResource(R.drawable.icon_seat_on_mic0)
                 }
-                ChatroomWheatUserStatus.Mute -> {
+                WheatUserStatus.Mute,
+                WheatUserStatus.ForceMute -> {
                     isVisible = true
                     setImageResource(R.drawable.icon_seat_off_mic)
                 }

@@ -187,7 +187,7 @@
         tools:progress="10" />
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/mtChatroomRedBotAttenuationFactor"
+        android:id="@+id/mtRedBotAttenuationFactor"
         style="@style/chatroom_bottom_sheet_right_text_style"
         app:layout_constraintBottom_toBottomOf="@+id/mtBottomSheetRedBotAttenuationFactor"
         app:layout_constraintEnd_toEndOf="parent"

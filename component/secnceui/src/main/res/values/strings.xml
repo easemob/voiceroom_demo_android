@@ -16,6 +16,14 @@
     <string name="chatroom_sound_selection">Sound Selection</string>
     <string name="chatroom_sound_selection_tips">Switching other Agora Sound Selection need to exit the chatroom.</string>
     <string name="chatroom_current_customer_usage">Current Customer Usage</string>
+    <string name="chatroom_current_sound_selection">Current Sound Selection</string>
+    <string name="chatroom_other_sound_selection">Other Sound Selection</string>
+    <string name="chatroom_social_chat">Social Chat</string>
+    <string name="chatroom_social_chat_introduce">This scenario focuses on echo cancellation, noise reduction in a multi-person chat setting, creating a quiet chat atmosphere</string>
+    <string name="chatroom_karaoke">Karaoke</string>
+    <string name="chatroom_karaoke_introduce">The scene deals with the coordination of your voice and the musical accompaniment through high sound quality and echo cancellation to ensure the best karaoke experience</string>
+    <string name="chatroom_gaming_buddy">Gaming Buddy</string>
+    <string name="chatroom_gaming_buddy_introduce">This scene focuses on the coordination of human voice and in-game sound during live, interactive game sessions</string>
     <string name="chatroom_sound_selection_more">Need more Agora Sound Selection or custom sound. Visit <![CDATA[<font color=\'#3C4267\'><strong><u>www.agora.io.</u></strong></font>]]></string>
     <string name="chatroom_ains_sounds">Agora AINS supports the following sounds, click to have bot play the sound:</string>
     <string name="chatroom_ains_settings">AINS Settings</string>
@@ -24,6 +32,7 @@
     <string name="chatroom_agora_red_bot_ains">Agora Red Bot AINS</string>
     <string name="chatroom_high">High</string>
     <string name="chatroom_medium">Medium</string>
+    <string name="chatroom_open">Open</string>
     <string name="chatroom_off">Off</string>
     <string name="chatroom_ains">AINS</string>
     <string name="chatroom_none">None</string>
@@ -53,7 +62,7 @@
     <string name="chatroom_mute">Mute</string>
     <string name="chatroom_block">Block</string>
     <string name="chatroom_unblock">Unblock</string>
-    <string name="chatroom_kick_off">Kick Off</string>
+    <string name="chatroom_kickoff">Kick Off</string>
     <string name="chatroom_unmute">Unmute</string>
     <string name="chatroom_off_stage">Off-Stage</string>
     <string name="chatroom_host">Host</string>
@@ -63,12 +72,12 @@
     <string name="chatroom_confirm">Confirm</string>
     <string name="chatroom_cancel">Cancel</string>
     <string name="chatroom_first_enter_room_notice_tips">Welcome to Agora Chat Room 2.0 I am therobot Agora Red. Can you see the robot assistant at the right coner? Click it and experience the new features.</string>
-    <string name="chatroom_social_chat">Social Chat</string>
-    <string name="chatroom_social_chat_following_customers">The following customers are using it:</string>
+   <string name="chatroom_social_chat_following_customers">The following customers are using it:</string>
     <string name="chatroom_social_chat_more">More Best Agora Sound</string>
     <string name="chatroom_3d_spatial_audio">3D Spatial Audio Seat Tutorial</string>
     <string name="chatroom_3d_spatial_audio_part1">Put on headset</string>
     <string name="chatroom_3d_spatial_audio_part2">ove avatar around to hear different spatial audio effects</string>
     <string name="chatroom_request_speak">Request to Speak?</string>
     <string name="chatroom_cancel_request_speak">Cancel Request</string>
+
 </resources>

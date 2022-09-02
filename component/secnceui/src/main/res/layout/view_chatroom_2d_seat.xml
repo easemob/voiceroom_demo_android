@@ -10,15 +10,21 @@
         android:layout_width="58dp"
         android:layout_height="58dp"
         android:background="@drawable/bg_oval_white30"
-        android:cropToPadding="true"
         android:scaleType="centerCrop"
-        app:contentPadding="0dp"
-        app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:shapeAppearance="@style/chatroom_seat_roundStyle"
-        tools:src="@drawable/icon_seat_add" />
+        app:shapeAppearance="@style/chatroom_seat_roundStyle" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ivSeatInnerIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/icon_seat_add"
+        app:layout_constraintBottom_toBottomOf="@+id/ivSeatInfo"
+        app:layout_constraintEnd_toEndOf="@+id/ivSeatInfo"
+        app:layout_constraintStart_toStartOf="@+id/ivSeatInfo"
+        app:layout_constraintTop_toTopOf="@+id/ivSeatInfo" />
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/ivSeatBotFloat"
