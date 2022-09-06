@@ -14,3 +14,5 @@
 .cxx
 local.properties
 *.apk
+/.gradle/
+/.idea/

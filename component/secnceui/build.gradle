@@ -42,6 +42,8 @@ dependencies {
     api dep["recyclerview"]
     api dep["material"]
 
+    api dep["svga-player"]
+
     compileOnly project(':common:buddy')
     compileOnly project(':common:baseui')
 }

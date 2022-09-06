@@ -10,11 +10,16 @@
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.17" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="business/chatroom/src/main/res/layout/activity_chatroom.xml" value="0.23541666666666666" />
+        <entry key="business/chatroom/src/main/res/layout/activity_chatroom_3d_spatial.xml" value="0.23541666666666666" />
         <entry key="business/chatroom/src/main/res/layout/activity_chatroom_test.xml" value="0.23541666666666666" />
         <entry key="common/buddy/src/main/res/drawable/ic_baseline_image_24.xml" value="0.17" />
         <entry key="common/buddy/src/main/res/drawable/ic_default_image_32.xml" value="0.1645" />
         <entry key="common/buddy/src/main/res/drawable/ic_launcher_background.xml" value="0.17" />
+        <entry key="component/secnceui/src/main/res/drawable/bg_oval_black50.xml" value="0.179" />
+        <entry key="component/secnceui/src/main/res/drawable/bg_oval_gradient_purple.xml" value="0.179" />
         <entry key="component/secnceui/src/main/res/drawable/bg_oval_grey.xml" value="0.154" />
+        <entry key="component/secnceui/src/main/res/drawable/bg_oval_purple.xml" value="0.179" />
+        <entry key="component/secnceui/src/main/res/drawable/bg_oval_white.xml" value="0.179" />
         <entry key="component/secnceui/src/main/res/drawable/bg_oval_white30.xml" value="0.1535" />
         <entry key="component/secnceui/src/main/res/drawable/bg_oval_white50.xml" value="0.1675" />
         <entry key="component/secnceui/src/main/res/drawable/bg_rect_left_radius13_black20.xml" value="0.18" />
@@ -27,6 +32,9 @@
         <entry key="component/secnceui/src/main/res/drawable/bg_rect_raduis20_gradient_blue.xml" value="0.1675" />
         <entry key="component/secnceui/src/main/res/drawable/bg_rect_stoke4_blue.xml" value="0.1695" />
         <entry key="component/secnceui/src/main/res/drawable/bg_rect_top_radius20_white.xml" value="0.159" />
+        <entry key="component/secnceui/src/main/res/drawable/cb_checkbox_selector.xml" value="0.179" />
+        <entry key="component/secnceui/src/main/res/drawable/icon_chatroom_bot_left_link.xml" value="0.179" />
+        <entry key="component/secnceui/src/main/res/drawable/icon_progress_thumb20.xml" value="0.179" />
         <entry key="component/secnceui/src/main/res/layout/dialog_bottom_sheet_alert.xml" value="0.23541666666666666" />
         <entry key="component/secnceui/src/main/res/layout/dialog_bottom_sheet_content.xml" value="0.23541666666666666" />
         <entry key="component/secnceui/src/main/res/layout/dialog_center_fragment_alert.xml" value="0.23541666666666666" />
@@ -51,7 +59,7 @@
         <entry key="component/secnceui/src/main/res/layout/view_chatroom_2d_audio_wheat.xml" value="0.23541666666666666" />
         <entry key="component/secnceui/src/main/res/layout/view_chatroom_2d_seat.xml" value="1.0619608561197915" />
         <entry key="component/secnceui/src/main/res/layout/view_chatroom_3d_audio_wheat.xml" value="0.23541666666666666" />
-        <entry key="component/secnceui/src/main/res/layout/view_chatroom_3d_seat.xml" value="0.23541666666666666" />
+        <entry key="component/secnceui/src/main/res/layout/view_chatroom_3d_seat.xml" value="0.9674652099609375" />
         <entry key="component/secnceui/src/main/res/layout/view_chatroom_live_top.xml" value="0.23541666666666666" />
         <entry key="component/secnceui/src/main/res/layout/view_chatroom_top.xml" value="0.23541666666666666" />
       </map>

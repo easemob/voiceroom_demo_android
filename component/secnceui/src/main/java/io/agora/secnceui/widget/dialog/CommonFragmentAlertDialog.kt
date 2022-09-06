@@ -37,11 +37,11 @@ class CommonFragmentAlertDialog constructor(): BaseFragmentDialog<DialogCenterFr
                 mbRight.text = rightText
             }
             mbLeft.setOnClickListener {
-                clickListener?.onConfirmClick()
+                clickListener?.onCancelClick()
                 dismiss()
             }
-            mbLeft.setOnClickListener {
-                clickListener?.onCancelClick()
+            mbRight.setOnClickListener {
+                clickListener?.onConfirmClick()
                 dismiss()
             }
         }

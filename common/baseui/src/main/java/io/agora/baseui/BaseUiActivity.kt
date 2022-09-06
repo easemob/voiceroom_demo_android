@@ -2,6 +2,7 @@ package io.agora.baseui
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.ViewModel
@@ -25,6 +26,15 @@ abstract class BaseUiActivity<B : ViewBinding> : AppCompatActivity() {
         }
 
         WindowCompat.setDecorFitsSystemWindows(window, false)
+       onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                onHandleOnBackPressed()
+            }
+        })
+    }
+
+    open fun onHandleOnBackPressed() {
+
     }
 
     protected abstract fun getViewBinding(inflater: LayoutInflater): B?

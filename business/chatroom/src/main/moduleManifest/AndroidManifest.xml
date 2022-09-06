@@ -24,5 +24,9 @@
         <activity
             android:name="io.agora.chatroom.ChatroomLiveActivity"
             android:exported="false"/>
+
+        <activity
+            android:name="io.agora.chatroom.ChatroomLive3DActivity"
+            android:exported="false"/>
     </application>
 </manifest>

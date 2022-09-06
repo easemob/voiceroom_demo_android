@@ -17,4 +17,14 @@
         android:textAllCaps="false"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/mbStart3dChatroom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Start3DChatroom"
+        android:layout_marginTop="30dp"
+        android:textAllCaps="false"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mbStartChatroom" />
 </androidx.constraintlayout.widget.ConstraintLayout>

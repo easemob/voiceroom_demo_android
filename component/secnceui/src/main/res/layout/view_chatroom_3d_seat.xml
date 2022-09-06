@@ -1,28 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:layout_width="28dp"
-        android:layout_height="28dp"
-        android:src="@drawable/icon_chatroom_spatial_audio_arrow"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/ivSeatOuterRing"
         android:layout_width="82dp"
         android:layout_height="82dp"
-        android:layout_marginStart="18dp"
-        android:layout_marginEnd="18dp"
-        android:layout_marginTop="13dp"
-        android:background="@drawable/bg_oval_gradient_purple"
+        android:layout_margin="20dp"
+        android:background="@drawable/bg_oval_purple"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:shapeAppearance="@style/chatroom_seat_roundStyle" />
 
     <com.google.android.material.imageview.ShapeableImageView
@@ -30,21 +23,31 @@
         android:layout_width="72dp"
         android:layout_height="72dp"
         android:background="@drawable/bg_oval_white30"
-        app:contentPadding="18dp"
+        android:src="@drawable/icon_untitled"
+        app:layout_constraintBottom_toBottomOf="@+id/ivSeatOuterRing"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="@+id/ivSeatOuterRing"
         app:layout_constraintStart_toStartOf="@+id/ivSeatOuterRing"
         app:layout_constraintTop_toTopOf="@+id/ivSeatOuterRing"
-        app:layout_constraintBottom_toBottomOf="@+id/ivSeatOuterRing"
-        app:shapeAppearance="@style/chatroom_seat_roundStyle"
-        android:src="@drawable/icon_seat_add"/>
+        app:shapeAppearance="@style/chatroom_seat_roundStyle" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ivSeatInnerIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/icon_seat_add"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/ivSeatInfo"
+        app:layout_constraintEnd_toEndOf="@+id/ivSeatInfo"
+        app:layout_constraintStart_toStartOf="@+id/ivSeatInfo"
+        app:layout_constraintTop_toTopOf="@+id/ivSeatInfo" />
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/ivSeatMic"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/icon_seat_on_mic0"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/ivSeatInfo"
         app:layout_constraintEnd_toEndOf="@id/ivSeatInfo" />
 
@@ -61,5 +64,17 @@
         android:textSize="@dimen/sp_11"
         app:layout_constraintEnd_toEndOf="@+id/ivSeatInfo"
         app:layout_constraintStart_toStartOf="@+id/ivSeatInfo"
-        app:layout_constraintTop_toBottomOf="@+id/ivSeatInfo" />
+        app:layout_constraintTop_toBottomOf="@+id/ivSeatInfo"
+        tools:text="Susan Stark" />
+
+    <com.opensource.svgaplayer.SVGAImageView
+        android:id="@+id/svgaSeatArrow"
+        android:layout_width="30dp"
+        android:layout_height="20dp"
+        app:autoPlay="true"
+        app:layout_constraintCircle="@id/ivSeatOuterRing"
+        app:layout_constraintCircleAngle="0"
+        app:layout_constraintCircleRadius="50dp"
+        app:loopCount="0"
+        app:source="chatroom_3d_arrow_one.svga" />
 </androidx.constraintlayout.widget.ConstraintLayout>

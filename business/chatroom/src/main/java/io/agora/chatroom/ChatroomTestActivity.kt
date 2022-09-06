@@ -7,11 +7,14 @@ import io.agora.baseui.BaseUiActivity
 import io.agora.chatroom.databinding.ActivityChatroomTestBinding
 import io.agora.config.ARouterPath
 
-class ChatroomTestActivity: BaseUiActivity<ActivityChatroomTestBinding>() {
+class ChatroomTestActivity : BaseUiActivity<ActivityChatroomTestBinding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding.mbStartChatroom.setOnClickListener {
             ARouter.getInstance().build(ARouterPath.ChatroomPath).navigation();
+        }
+        binding.mbStartChatroom3D.setOnClickListener {
+            ARouter.getInstance().build(ARouterPath.Chatroom3DPath).navigation();
         }
     }
 

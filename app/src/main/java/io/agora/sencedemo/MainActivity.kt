@@ -13,6 +13,9 @@ class MainActivity : BaseUiActivity<ActivityMainBinding>() {
         binding.mbStartChatroom.setOnClickListener {
             ARouter.getInstance().build(ARouterPath.ChatroomPath).navigation();
         }
+        binding.mbStart3dChatroom.setOnClickListener {
+            ARouter.getInstance().build(ARouterPath.ChatroomPath).navigation();
+        }
     }
 
     override fun getViewBinding(inflater: LayoutInflater): ActivityMainBinding {

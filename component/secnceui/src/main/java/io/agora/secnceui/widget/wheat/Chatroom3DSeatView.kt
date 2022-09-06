@@ -2,17 +2,22 @@ package io.agora.secnceui.widget.wheat
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.MotionEvent
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
-import io.agora.buddy.tool.dp
+import com.opensource.svgaplayer.SVGADrawable
+import com.opensource.svgaplayer.SVGAParser
+import com.opensource.svgaplayer.SVGAVideoEntity
+import io.agora.buddy.tool.GlideTools
+import io.agora.buddy.tool.logD
 import io.agora.secnceui.R
 import io.agora.secnceui.annotation.WheatSeatType
 import io.agora.secnceui.annotation.WheatUserRole
 import io.agora.secnceui.annotation.WheatUserStatus
 import io.agora.secnceui.bean.SeatInfoBean
 import io.agora.secnceui.databinding.ViewChatroom3dSeatBinding
+import java.io.File
+
 
 class Chatroom3DSeatView : ConstraintLayout {
 
@@ -30,28 +35,47 @@ class Chatroom3DSeatView : ConstraintLayout {
         init(context)
     }
 
+    private val svgaParser by lazy {
+        SVGAParser.shareParser()
+    }
+
     private fun init(context: Context) {
         val root = View.inflate(context, R.layout.view_chatroom_3d_seat, this)
         mBinding = ViewChatroom3dSeatBinding.bind(root)
     }
 
-    private fun binding(seatInfo: SeatInfoBean) {
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        svgaParser.decodeFromAssets("chatroom_3d_arrow_one.svga", object : SVGAParser.ParseCompletion {
+            override fun onComplete(videoItem: SVGAVideoEntity) {
+                "ParseCompletion onComplete".logD()
+                val drawable = SVGADrawable(videoItem)
+                mBinding.svgaSeatArrow.setImageDrawable(drawable)
+                mBinding.svgaSeatArrow.startAnimation()
+            }
+
+            override fun onError() {
+                "ParseCompletion onError".logD()
+            }
+
+        }, object : SVGAParser.PlayCallback {
+            override fun onPlay(file: List<File>) {
+                "PlayCallback onPlay".logD()
+            }
+        })
+        mBinding.svgaSeatArrow.rotation = 360f
+    }
+
+    fun binding(seatInfo: SeatInfoBean) {
         when (seatInfo.wheatSeatType) {
-            WheatSeatType.Idle -> {
-                mBinding.ivSeatInfo.apply {
-                    setBackgroundResource(R.drawable.bg_oval_white30)
-                    setImageResource(R.drawable.icon_seat_add)
-                }
-                mBinding.ivSeatMic.isVisible = false
-                mBinding.mtSeatInfoName.apply {
-                    text = seatInfo.index.toString()
-                    setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
-                }
-            }
+            WheatSeatType.Idle,
             WheatSeatType.Mute -> {
-                mBinding.ivSeatInfo.apply {
-                    setBackgroundResource(R.drawable.bg_oval_white30)
-                    setImageResource(R.drawable.icon_seat_mic)
+                mBinding.ivSeatInfo.setBackgroundResource(R.drawable.bg_oval_white30)
+                mBinding.ivSeatInnerIcon.isVisible = true
+                if (seatInfo.wheatSeatType == WheatSeatType.Idle) {
+                    mBinding.ivSeatInnerIcon.setImageResource(R.drawable.icon_seat_add)
+                } else {
+                    mBinding.ivSeatInnerIcon.setImageResource(R.drawable.icon_seat_mic)
                 }
                 mBinding.ivSeatMic.isVisible = false
                 mBinding.mtSeatInfoName.apply {
@@ -59,81 +83,74 @@ class Chatroom3DSeatView : ConstraintLayout {
                     setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
                 }
             }
-            WheatSeatType.Lock -> {
-                mBinding.ivSeatInfo.apply {
-                    setBackgroundResource(R.drawable.bg_oval_white30)
-                    setImageResource(R.drawable.icon_seat_close)
-                }
-                mBinding.ivSeatMic.isVisible = false
+            WheatSeatType.Lock,
+            WheatSeatType.LockMute -> {
+                mBinding.ivSeatInfo.setBackgroundResource(R.drawable.bg_oval_white30)
+                mBinding.ivSeatInnerIcon.isVisible = true
+                mBinding.ivSeatInnerIcon.setImageResource(R.drawable.icon_seat_close)
+                mBinding.ivSeatMic.isVisible = seatInfo.wheatSeatType == WheatSeatType.LockMute
                 mBinding.mtSeatInfoName.apply {
                     text = seatInfo.index.toString()
                     setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
                 }
             }
             else -> {
-                // 有人在麦位
                 setNormalWheatView(seatInfo)
             }
         }
     }
 
-    override fun onTouchEvent(event: MotionEvent?): Boolean {
-        event?.apply {
-            rawX
-            rawY
-            x
-        }
-        return super.onTouchEvent(event)
-    }
-
-    override fun onInterceptTouchEvent(ev: MotionEvent?): Boolean {
-        return super.onInterceptTouchEvent(ev)
-    }
-
     private fun setNormalWheatView(seatInfo: SeatInfoBean) {
         mBinding.mtSeatInfoName.text = seatInfo.name
-
-        // todo avatar
+        mBinding.ivSeatInnerIcon.isVisible = false
         when (seatInfo.userRole) {
-            WheatUserRole.Robot -> {
-                setBackgroundResource(R.drawable.bg_oval_white)
-                mBinding.ivSeatInfo.setImageResource(seatInfo.rotImage)
-                val contentPadding = 10.dp.toInt()
-                mBinding.ivSeatInfo.setContentPadding(contentPadding, contentPadding, contentPadding, contentPadding)
-                mBinding.mtSeatInfoName.setCompoundDrawablesWithIntrinsicBounds(
-                    R.drawable.icon_seat_robot_tag, 0, 0, 0
-                )
-            }
             WheatUserRole.Owner -> {
-                setBackgroundResource(R.drawable.bg_oval_white30)
-                mBinding.ivSeatInfo.setImageResource(0)
+                mBinding.ivSeatInfo.apply {
+                    setBackgroundResource(R.drawable.bg_oval_white30)
+                    GlideTools.loadImage(context, seatInfo.avatar, this)
+                }
                 mBinding.mtSeatInfoName.setCompoundDrawablesWithIntrinsicBounds(
                     R.drawable.icon_seat_owner_tag, 0, 0, 0
                 )
             }
             else -> {
-                setBackgroundResource(R.drawable.bg_oval_white30)
-                mBinding.ivSeatInfo.setImageResource(0)
+                mBinding.ivSeatInfo.apply {
+                    setBackgroundResource(R.drawable.bg_oval_white30)
+                    GlideTools.loadImage(context, seatInfo.avatar, this)
+                }
                 mBinding.mtSeatInfoName.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
             }
         }
-        when (seatInfo.userStatus) {
-            WheatUserStatus.None -> {
-                mBinding.ivSeatMic.isVisible = false
-            }
-            WheatUserStatus.Idle -> {
-                mBinding.ivSeatMic.isVisible = true
-                mBinding.ivSeatMic.setImageResource(R.drawable.icon_seat_on_mic0)
-            }
-            WheatUserStatus.Mute -> {
-                mBinding.ivSeatMic.isVisible = true
-                mBinding.ivSeatMic.setImageResource(R.drawable.icon_seat_off_mic)
-            }
-            else -> {
-                // speaking
-                mBinding.ivSeatMic.isVisible = true
-                mBinding.ivSeatMic.setImageResource(R.drawable.icon_seat_on_mic1)
+        mBinding.ivSeatMic.apply {
+            when (seatInfo.userStatus) {
+                WheatUserStatus.None -> {
+                    isVisible = false
+                }
+                WheatUserStatus.Idle -> {
+                    isVisible = true
+                    setImageResource(R.drawable.icon_seat_on_mic0)
+                }
+                WheatUserStatus.Mute,
+                WheatUserStatus.ForceMute -> {
+                    isVisible = true
+                    setImageResource(R.drawable.icon_seat_off_mic)
+                }
+                else -> {
+                    // speaking
+                    isVisible = true
+                    setImageResource(R.drawable.icon_seat_on_mic1)
+                }
             }
         }
     }
+
+
+    fun changeAngle(angle: Float) {
+        val layoutParams: ConstraintLayout.LayoutParams = mBinding.svgaSeatArrow.layoutParams as LayoutParams
+        layoutParams.circleAngle = angle
+        mBinding.svgaSeatArrow.rotation = angle
+
+        mBinding.svgaSeatArrow.layoutParams = layoutParams
+    }
+
 }
