@@ -103,6 +103,6 @@
     <style name="chatroom_bottom_sheet_divider_style">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">1dp</item>
-        <item name="android:textColor">@color/divider_color_F6F6F6</item>
+        <item name="dividerColor">@color/divider_color_F6F6F6</item>
     </style>
 </resources>

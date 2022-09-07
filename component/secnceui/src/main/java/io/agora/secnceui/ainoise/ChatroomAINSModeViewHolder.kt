@@ -1,11 +1,11 @@
 package io.agora.secnceui.ainoise
 
 import android.text.TextUtils
-import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import com.google.android.material.textview.MaterialTextView
 import io.agora.baseui.adapter.BaseRecyclerViewAdapter
+import io.agora.buddy.tool.ViewTools
 import io.agora.secnceui.R
 import io.agora.secnceui.annotation.AINSModeType
 import io.agora.secnceui.annotation.AINSSoundType
@@ -22,13 +22,13 @@ class ChatroomAINSModeViewHolder(binding: ItemChatroomAgoraAinsBinding) :
         data?.let {
             mBinding.mtNoiseSuppressionName.text = it.anisName
             mBinding.mtChatroomHigh.setOnClickListener { view ->
-                onItemChildClick(AINSModeType.High,view)
+                onItemChildClick(AINSModeType.High, view)
             }
             mBinding.mtChatroomMedium.setOnClickListener { view ->
-                onItemChildClick(AINSModeType.Medium,view)
+                onItemChildClick(AINSModeType.Medium, view)
             }
             mBinding.mtChatroomOff.setOnClickListener { view ->
-                onItemChildClick(AINSModeType.Off,view)
+                onItemChildClick(AINSModeType.Off, view)
             }
 //            mBinding.mtChatroomHigh.tag = AINSModeType.High
 //            mBinding.mtChatroomMedium.tag = AINSModeType.Medium
@@ -55,12 +55,12 @@ class ChatroomAINSModeViewHolder(binding: ItemChatroomAgoraAinsBinding) :
 
     private fun resetViewDefault(textView: MaterialTextView) {
         textView.setBackgroundResource(R.drawable.bg_rect_radius4_grey)
-        textView.setTextColor(ResourcesCompat.getColor(context.resources, R.color.dark_grey_color_979CBB, null))
+        textView.setTextColor(ViewTools.getColor(context.resources, R.color.dark_grey_color_979CBB))
     }
 
     private fun setViewHighlight(textView: MaterialTextView) {
         textView.setBackgroundResource(R.drawable.bg_rect_stoke4_blue)
-        textView.setTextColor(ResourcesCompat.getColor(context.resources, R.color.main_color_156EF3, null))
+        textView.setTextColor(ViewTools.getColor(context.resources, R.color.main_color_156EF3))
     }
 }
 
@@ -70,13 +70,13 @@ class ChatroomAINSSoundsViewHolder(binding: ItemChatroomAinsAuditionBinding) :
         data?.let {
             mBinding.mtChatroomAinsName.text = it.soundName
             mBinding.ivChatroomAinsSounds.setOnClickListener { view ->
-                onItemChildClick(AINSSoundType.Audition,view)
+                onItemChildClick(AINSSoundType.Audition, view)
             }
             mBinding.mtChatroomAins.setOnClickListener { view ->
-                onItemChildClick(AINSSoundType.AINS,view)
+                onItemChildClick(AINSSoundType.AINS, view)
             }
             mBinding.mtChatroomAinsNone.setOnClickListener { view ->
-                onItemChildClick(AINSSoundType.None,view)
+                onItemChildClick(AINSSoundType.None, view)
             }
 //            mBinding.ivChatroomAinsSounds.tag = AINSSoundType.Audition
 //            mBinding.mtChatroomAins.tag = AINSSoundType.AINS
@@ -102,12 +102,12 @@ class ChatroomAINSSoundsViewHolder(binding: ItemChatroomAinsAuditionBinding) :
 
     private fun resetViewDefault(textView: MaterialTextView) {
         textView.setBackgroundResource(R.drawable.bg_rect_radius4_grey)
-        textView.setTextColor(ResourcesCompat.getColor(context.resources, R.color.dark_grey_color_979CBB, null))
+        textView.setTextColor(ViewTools.getColor(context.resources, R.color.dark_grey_color_979CBB))
     }
 
     private fun setViewHighlight(textView: MaterialTextView) {
         textView.setBackgroundResource(R.drawable.bg_rect_stoke4_blue)
-        textView.setTextColor(ResourcesCompat.getColor(context.resources, R.color.main_color_156EF3, null))
+        textView.setTextColor(ViewTools.getColor(context.resources, R.color.main_color_156EF3))
     }
 }
 

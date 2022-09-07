@@ -79,5 +79,13 @@
     <string name="chatroom_3d_spatial_audio_part2">ove avatar around to hear different spatial audio effects</string>
     <string name="chatroom_request_speak">Request to Speak?</string>
     <string name="chatroom_cancel_request_speak">Cancel Request</string>
+    <string name="chatroom_prompt">Prompt</string>
+    <string name="chatroom_exit">Exit the chatroom?</string>
+    <string name="chatroom_exit_and_create_one">Exit the chatroom and recreate a new one?</string>
+    <string name="chatroom_contribution_ranking">Contribution Ranking</string>
+    <string name="chatroom_audience_list">Audience List</string>
+    <string name="chatroom_contribution_value">Contribution Value</string>
+    <string name="chatroom_contribution_empty">No data</string>
+    <string name="chatroom_search">search</string>
 
 </resources>

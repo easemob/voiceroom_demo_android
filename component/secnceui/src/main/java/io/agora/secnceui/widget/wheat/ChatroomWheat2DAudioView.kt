@@ -4,13 +4,13 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import io.agora.baseui.adapter.OnItemChildClickListener
 import io.agora.baseui.adapter.OnItemClickListener
+import io.agora.buddy.tool.ViewTools
 import io.agora.buddy.tool.dp
 import io.agora.secnceui.R
 import io.agora.secnceui.bean.*
@@ -77,7 +77,8 @@ class ChatroomWheat2DAudioView : ConstraintLayout {
         binding.rvChatroomWheatSeat.apply {
             addItemDecoration(MaterialDividerItemDecoration(context, MaterialDividerItemDecoration.VERTICAL).apply {
                 dividerThickness = 32.dp.toInt()
-                dividerColor = ResourcesCompat.getColor(context.resources, io.agora.baseui.R.color.transparent, null)
+
+                dividerColor = ViewTools.getColor(context.resources, io.agora.baseui.R.color.transparent)
             })
             layoutManager = gridLayoutManager
             adapter = concatAdapter

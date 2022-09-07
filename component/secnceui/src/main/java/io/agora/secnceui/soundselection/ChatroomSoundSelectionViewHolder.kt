@@ -6,10 +6,10 @@ import android.view.View
 import android.widget.LinearLayout
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatImageView
-import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import io.agora.baseui.adapter.BaseRecyclerViewAdapter
+import io.agora.buddy.tool.ViewTools
 import io.agora.buddy.tool.dp
 import io.agora.secnceui.R
 import io.agora.secnceui.bean.SoundSelectionBean
@@ -25,20 +25,21 @@ class ChatroomSoundSelectionViewHolder(binding: ItemChatroomSoundSelectionBindin
                 mBinding.mtSoundSelectionCurrentName.text =
                     mBinding.root.context.getString(R.string.chatroom_current_sound_selection)
                 mBinding.mcvSoundSelectionContent.strokeColor =
-                    ResourcesCompat.getColor(context.resources, R.color.main_color_009FFF, null)
+                    ViewTools.getColor(context.resources, R.color.main_color_009FFF)
                 mBinding.ivSoundSelectionToggle.setImageResource(R.drawable.icon_chatroom_sound_listen)
                 mBinding.ivSoundSelected.isVisible = true
+                mBinding.llSoundSelectionTips.isVisible = false
             } else {
                 mBinding.mtSoundSelectionCurrentName.text =
                     mBinding.root.context.getString(R.string.chatroom_other_sound_selection)
-                // 第二个位置显示其他音效标题
+                // 第二个位置显示其他音效标题和提示
                 mBinding.mtSoundSelectionCurrentName.isVisible = bindingAdapterPosition == 1
+                mBinding.llSoundSelectionTips.isVisible = bindingAdapterPosition == 1
                 mBinding.mcvSoundSelectionContent.strokeColor =
-                    ResourcesCompat.getColor(context.resources, R.color.divider_color_EFF4FF, null)
+                    ViewTools.getColor(context.resources, R.color.divider_color_EFF4FF)
                 mBinding.ivSoundSelectionToggle.setImageResource(R.drawable.icon_chatroom_sound_toggle)
                 mBinding.ivSoundSelected.isVisible = false
             }
-            mBinding.llSoundSelectionTips.isVisible = bindingAdapterPosition == selectedIndex
             mBinding.mtSoundSelectionName.text = it.soundName
             mBinding.mtSoundSelectionContent.text = it.soundIntroduce
             if (it.customer.isNullOrEmpty()) {

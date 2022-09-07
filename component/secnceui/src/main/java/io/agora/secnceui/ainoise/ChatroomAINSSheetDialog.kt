@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -13,6 +12,7 @@ import com.google.android.material.divider.MaterialDividerItemDecoration
 import io.agora.baseui.adapter.BaseRecyclerViewAdapter
 import io.agora.baseui.adapter.OnItemChildClickListener
 import io.agora.baseui.dialog.BaseSheetDialog
+import io.agora.buddy.tool.ViewTools
 import io.agora.secnceui.R
 import io.agora.secnceui.bean.AINSModeBean
 import io.agora.secnceui.bean.AINSSoundsBean
@@ -126,7 +126,7 @@ class ChatroomAINSSheetDialog constructor() : BaseSheetDialog<DialogChatroomAins
         context?.let {
             recyclerView.addItemDecoration(
                 MaterialDividerItemDecoration(it, MaterialDividerItemDecoration.HORIZONTAL).apply {
-                    dividerColor = ResourcesCompat.getColor(it.resources, R.color.divider_color_F6F6F6, null)
+                    dividerColor = ViewTools.getColor(it.resources, R.color.divider_color_F6F6F6)
                 }
             )
         }

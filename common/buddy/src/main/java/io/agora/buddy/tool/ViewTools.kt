@@ -2,8 +2,12 @@ package io.agora.buddy.tool
 
 import android.app.Activity
 import android.content.ContextWrapper
+import android.content.res.Resources
 import android.view.View
-import android.widget.TextView
+import androidx.annotation.ColorInt
+import androidx.annotation.ColorRes
+import androidx.annotation.Nullable
+import androidx.core.content.res.ResourcesCompat
 
 object ViewTools {
     fun getActivityFromView(view: View?): Activity? {
@@ -17,5 +21,10 @@ object ViewTools {
             }
         }
         return null
+    }
+
+    @ColorInt
+    fun getColor(resources: Resources, @ColorRes id: Int, theme: Resources.Theme? = null): Int {
+        return ResourcesCompat.getColor(resources, id, theme)
     }
 }

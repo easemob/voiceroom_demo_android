@@ -1,7 +1,6 @@
 package io.agora.secnceui.bean
 
 import androidx.annotation.DrawableRes
-import androidx.annotation.IntDef
 import io.agora.secnceui.annotation.WheatSeatAction
 import io.agora.secnceui.annotation.WheatSeatType
 import io.agora.secnceui.annotation.WheatUserRole

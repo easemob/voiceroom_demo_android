@@ -15,7 +15,8 @@ import io.agora.secnceui.bean.SoundSelectionBean
 import io.agora.secnceui.databinding.DialogChatroomSoundSelectionBinding
 import io.agora.secnceui.databinding.ItemChatroomSoundSelectionBinding
 
-class ChatroomSoundSelectionSheetDialog constructor() : BaseSheetDialog<DialogChatroomSoundSelectionBinding>() {
+class ChatroomSoundSelectionSheetDialog constructor(private val soundSelectionListener: OnClickSoundSelectionListener) :
+    BaseSheetDialog<DialogChatroomSoundSelectionBinding>() {
 
     companion object {
         const val KEY_CURRENT_SELECTION = "current_selection"
@@ -36,7 +37,7 @@ class ChatroomSoundSelectionSheetDialog constructor() : BaseSheetDialog<DialogCh
         arguments?.apply {
             val currentSelection: Int = getInt(KEY_CURRENT_SELECTION)
             soundSelectionList.addAll(
-                ChatroomSoundSelectionConstructor.builderSpatialList(view.context, currentSelection)
+                ChatroomSoundSelectionConstructor.builderSoundSelectionList(view.context, currentSelection)
             )
         }
 
@@ -56,12 +57,7 @@ class ChatroomSoundSelectionSheetDialog constructor() : BaseSheetDialog<DialogCh
                 override fun onItemClick(data: SoundSelectionBean, view: View, position: Int, viewType: Long) {
                     Toast.makeText(context, "$data", Toast.LENGTH_SHORT).show()
                     if (!data.isCurrentUsing) {
-                        val lastSelectedIndex = soundSelectionAdapter?.selectedIndex ?: -1
-                        soundSelectionAdapter?.selectedIndex = position
-                        soundSelectionAdapter?.notifyItemChanged(position)
-                        if (lastSelectedIndex > 0) {
-                            soundSelectionAdapter?.notifyItemChanged(lastSelectedIndex)
-                        }
+                        soundSelectionListener.onSoundEffect(data)
                     }
                 }
             }, ChatroomSoundSelectionViewHolder::class.java)
@@ -71,5 +67,9 @@ class ChatroomSoundSelectionSheetDialog constructor() : BaseSheetDialog<DialogCh
         val concatAdapter = ConcatAdapter(config, soundSelectionAdapter, footerAdapter)
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = concatAdapter
+    }
+
+    interface OnClickSoundSelectionListener {
+        fun onSoundEffect(soundSelection: SoundSelectionBean)
     }
 }

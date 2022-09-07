@@ -9,19 +9,16 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import io.agora.baseui.BaseUiActivity
 import io.agora.baseui.BaseUiTool
 import io.agora.baseui.adapter.OnItemClickListener
-import io.agora.buddy.tool.logD
 import io.agora.chatroom.databinding.ActivityChatroom3dSpatialBinding
 import io.agora.chatroom.ui.ChatroomLiveTopViewModel
 import io.agora.config.ARouterPath
 import io.agora.secnceui.R
-import io.agora.secnceui.ainoise.ChatroomAINSSheetDialog
-import io.agora.secnceui.annotation.AINSModeType
 import io.agora.secnceui.annotation.SoundSelectionType
-import io.agora.secnceui.audiosettings.ChatroomAudioSettingsSheetDialog
 import io.agora.secnceui.bean.*
+import io.agora.secnceui.rank.ChatroomContributionAndAudienceSheetDialog
 import io.agora.secnceui.widget.dialog.CommonFragmentAlertDialog
 import io.agora.secnceui.soundselection.ChatroomSocialChatSheetDialog
-import io.agora.secnceui.soundselection.ChatroomSoundSelectionSheetDialog
+import io.agora.secnceui.soundselection.ChatroomSoundSelectionConstructor
 import io.agora.secnceui.spatialaudio.ChatroomSpatialAudioSheetDialog
 import io.agora.secnceui.widget.dialog.CommonSheetContentDialog
 import io.agora.secnceui.widget.top.ChatroomLiveTopView
@@ -50,93 +47,45 @@ class ChatroomLive3DActivity : BaseUiActivity<ActivityChatroom3dSpatialBinding>(
     }
 
     private fun initView() {
-        binding.cTopView.let {
-            it.setOnLiveTopClickListener(object : OnLiveTopClickListener {
-                override fun onClickView(view: View, action: Int) {
-                    when (action) {
-                        ChatroomLiveTopView.ClickAction.BACK -> {
-                            onHandleOnBackPressed()
-                        }
-                        ChatroomLiveTopView.ClickAction.RANK -> {
-                            "排行榜".logD()
-                            // TODO:
-                            ChatroomAudioSettingsSheetDialog(object :
-                                ChatroomAudioSettingsSheetDialog.OnClickAudioSettingsListener {
+        binding.cTopView.setOnLiveTopClickListener(object : OnLiveTopClickListener {
+            override fun onClickView(view: View, action: Int) {
+                when (action) {
+                    ChatroomLiveTopView.ClickAction.BACK -> {
+                        onHandleOnBackPressed()
+                    }
+                    ChatroomLiveTopView.ClickAction.RANK -> {
+                        ChatroomContributionAndAudienceSheetDialog(this@ChatroomLive3DActivity).show(
+                            supportFragmentManager,
+                            "ContributionAndAudienceSheetDialog"
+                        )
+                    }
+                    ChatroomLiveTopView.ClickAction.NOTICE -> {
+                        CommonSheetContentDialog()
+                            .titleText(getString(io.agora.secnceui.R.string.chatroom_notice))
+                            .contentText(getString(R.string.chatroom_first_enter_room_notice_tips))
+                            .show(supportFragmentManager, "mtContentSheet")
 
-                                override fun onSoundEffect(@SoundSelectionType soundSelection: Int) {
-                                    ChatroomSoundSelectionSheetDialog().apply {
-                                        arguments = Bundle().apply {
-                                            putInt(
-                                                ChatroomSoundSelectionSheetDialog.KEY_CURRENT_SELECTION,
-                                                SoundSelectionType.Karaoke
-                                            )
-                                        }
-                                    }
-                                        .show(supportFragmentManager, "mtSoundSelection")
-                                }
+                    }
+                    ChatroomLiveTopView.ClickAction.SOCIAL -> {
+                        val curSoundSelection = ChatroomSoundSelectionConstructor.builderCurSoundSelection(
+                            this@ChatroomLive3DActivity,
+                            SoundSelectionType.Karaoke
+                        )
+                        ChatroomSocialChatSheetDialog(object :
+                            ChatroomSocialChatSheetDialog.OnClickSocialChatListener {
 
-                                override fun onNoiseSuppression(@AINSModeType ainsModeType: Int) {
-                                    ChatroomAINSSheetDialog().apply {
-                                        arguments = Bundle().apply {
-                                            putInt(ChatroomAINSSheetDialog.KEY_AINS_MODE, AINSModeType.High)
-                                        }
-                                    }
-                                        .show(supportFragmentManager, "mtAnis")
-                                }
-
-                                override fun onSpatialAudio(isOpen: Boolean) {
-                                    ChatroomSpatialAudioSheetDialog().apply {
-                                        arguments = Bundle().apply {
-                                            putBoolean(ChatroomSpatialAudioSheetDialog.KEY_SPATIAL_OPEN, isOpen)
-                                        }
-                                    }
-                                        .show(supportFragmentManager, "mtSpatialAudio")
-                                }
-
-                            }).apply {
-                                arguments = Bundle().apply {
-                                    //test
-                                    val audioSettingsInfo = ChatroomAudioSettingsBean(
-                                        botOpen = false,
-                                        botVolume = 50,
-                                        soundSelection = SoundSelectionType.GamingBuddy,
-                                        anisMode = AINSModeType.Medium,
-                                        spatialOpen = false
-                                    )
-                                    putSerializable(
-                                        ChatroomAudioSettingsSheetDialog.KEY_AUDIO_SETTINGS_INFO,
-                                        audioSettingsInfo
-                                    )
-                                }
-                            }.show(supportFragmentManager, "mtAudioSettings")
-                        }
-                        ChatroomLiveTopView.ClickAction.NOTICE -> {
-                            CommonSheetContentDialog()
-                                .titleText(getString(io.agora.secnceui.R.string.chatroom_notice))
-                                .contentText(getString(R.string.chatroom_first_enter_room_notice_tips))
-                                .show(supportFragmentManager, "mtContentSheet")
-
-                        }
-                        ChatroomLiveTopView.ClickAction.SOCIAL -> {
-                            ChatroomSocialChatSheetDialog(object :
-                                ChatroomSocialChatSheetDialog.OnClickSocialChatListener {
-
-                                override fun onMoreSound() {
-                                    ChatroomSpatialAudioSheetDialog()
-                                        .show(supportFragmentManager, "mtSpatialAudio")
-                                }
-                            }).contentText("This scenario focuses on echo cancellation, noise reduction in a multi-person chat setting, creating a quiet chat atmosphere")
-                                .customers(mutableListOf<CustomerUsageBean>().apply {
-                                    add(CustomerUsageBean("ya", R.drawable.icon_chatroom_ya_launcher))
-                                    add(CustomerUsageBean("soul", R.drawable.icon_chatroom_soul_launcher))
-                                })
-                                .show(supportFragmentManager, "chatroomSocialChatSheetDialog")
-                        }
+                            override fun onMoreSound() {
+                                ChatroomSpatialAudioSheetDialog()
+                                    .show(supportFragmentManager, "mtSpatialAudio")
+                            }
+                        }).contentText(curSoundSelection.soundIntroduce)
+                            .customers(curSoundSelection.customer ?: mutableListOf())
+                            .show(supportFragmentManager, "chatroomSocialChatSheetDialog")
                     }
                 }
-            })
-            chatroomLiveTopViewModel.setIChatroomLiveTopView(it)
-        }
+            }
+        })
+        chatroomLiveTopViewModel.setIChatroomLiveTopView(binding.cTopView)
     }
 
     override fun getViewBinding(inflater: LayoutInflater): ActivityChatroom3dSpatialBinding {
@@ -144,7 +93,7 @@ class ChatroomLive3DActivity : BaseUiActivity<ActivityChatroom3dSpatialBinding>(
     }
 
     private fun test() {
-        binding.rvChatroomWheat3dSeat.onItemClickListener(object :OnItemClickListener<SeatInfoBean>{
+        binding.rvChatroomWheat3dSeat.onItemClickListener(object : OnItemClickListener<SeatInfoBean> {
             override fun onItemClick(data: SeatInfoBean, view: View, position: Int, viewType: Long) {
                 Toast.makeText(this@ChatroomLive3DActivity, "click ${data.name}", Toast.LENGTH_SHORT).show()
             }
@@ -152,7 +101,7 @@ class ChatroomLive3DActivity : BaseUiActivity<ActivityChatroom3dSpatialBinding>(
         chatroomLiveTopViewModel.initChatroomInfo()
     }
 
-    override fun  onKeyDown(keyCode:Int , event: KeyEvent):Boolean {
+    override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
         if (keyCode == KeyEvent.KEYCODE_BACK && event.repeatCount == 0) {
             return false;
         }

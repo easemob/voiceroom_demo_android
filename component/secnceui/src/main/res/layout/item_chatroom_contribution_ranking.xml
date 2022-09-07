@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/ivAudienceAvatar"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="55dp"
+        android:layout_marginTop="14dp"
+        android:layout_marginBottom="14dp"
+        android:background="@drawable/bg_oval_white30"
+        android:scaleType="centerCrop"
+        android:src="@drawable/icon_man1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearance="@style/chatroom_seat_roundStyle" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ivContributionNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/icon_chatroom_bang1"
+        app:layout_constraintBottom_toBottomOf="@+id/ivAudienceAvatar"
+        app:layout_constraintEnd_toStartOf="@+id/ivAudienceAvatar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/ivAudienceAvatar" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/mtContributionNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="@color/dark_grey_color_979CBB"
+        android:textSize="@dimen/sp_14"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/ivAudienceAvatar"
+        app:layout_constraintEnd_toStartOf="@+id/ivAudienceAvatar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/ivAudienceAvatar"
+        tools:text="4" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/mtContributionUsername"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="11dp"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:textColor="@color/color_3C4267"
+        android:textSize="@dimen/sp_14"
+        app:layout_constraintBottom_toBottomOf="@+id/ivAudienceAvatar"
+        app:layout_constraintStart_toEndOf="@+id/ivAudienceAvatar"
+        app:layout_constraintTop_toTopOf="@+id/ivAudienceAvatar"
+        tools:text="Susan Stark" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/mtContributionValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:gravity="end"
+        android:textColor="@color/dark_grey_color_6C7192"
+        android:textSize="@dimen/sp_16"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/ivAudienceAvatar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/ivAudienceAvatar"
+        tools:text="2134" />
+</androidx.constraintlayout.widget.ConstraintLayout>

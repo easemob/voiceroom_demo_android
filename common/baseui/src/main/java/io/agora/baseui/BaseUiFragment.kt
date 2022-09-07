@@ -34,7 +34,7 @@ abstract class BaseUiFragment<B : ViewBinding> : Fragment() {
     val parentActivity: BaseUiActivity<*>
         get() = requireActivity() as BaseUiActivity<*>
 
-    protected abstract fun getViewBinding(inflater: LayoutInflater?,container: ViewGroup?): B?
+    protected abstract fun getViewBinding(inflater: LayoutInflater, container: ViewGroup?): B?
 
-    open fun onHandleOnBackPressed(){}
+    open fun onHandleOnBackPressed() {}
 }
