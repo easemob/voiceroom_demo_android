@@ -10,6 +10,12 @@ class ChatroomWheat2DBotViewHolder(binding: ItemChatroom2dSeatBotBinding) :
         data?.let {
             mBinding.seatBlueBot.binding(it.blueBot)
             mBinding.seatBlueRed.binding(it.redBot)
+            mBinding.seatBlueBot.setOnClickListener { view ->
+                onItemChildClick(it.blueBot, view)
+            }
+            mBinding.seatBlueRed.setOnClickListener { view ->
+                onItemChildClick(it.redBot, view)
+            }
         }
     }
 }

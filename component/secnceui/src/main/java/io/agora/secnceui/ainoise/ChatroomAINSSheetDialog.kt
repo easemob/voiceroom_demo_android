@@ -11,19 +11,18 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import io.agora.baseui.adapter.BaseRecyclerViewAdapter
-import io.agora.baseui.adapter.OnItemClickListener
+import io.agora.baseui.adapter.OnItemChildClickListener
 import io.agora.baseui.dialog.BaseSheetDialog
 import io.agora.secnceui.R
 import io.agora.secnceui.bean.AINSModeBean
 import io.agora.secnceui.bean.AINSSoundsBean
-import io.agora.secnceui.bean.SoundSelectionBean
 import io.agora.secnceui.databinding.DialogChatroomAinsBinding
 import io.agora.secnceui.databinding.ItemChatroomAgoraAinsBinding
 import io.agora.secnceui.databinding.ItemChatroomAinsAuditionBinding
 
 class ChatroomAINSSheetDialog constructor() : BaseSheetDialog<DialogChatroomAinsBinding>() {
 
-    companion object{
+    companion object {
         const val KEY_AINS_MODE = "ains_mode"
     }
 
@@ -48,7 +47,7 @@ class ChatroomAINSSheetDialog constructor() : BaseSheetDialog<DialogChatroomAins
         dialog?.setCanceledOnTouchOutside(false)
         arguments?.apply {
             val anis = getInt(KEY_AINS_MODE)
-            anisModeList.addAll(ChatroomAINSConstructor.builderDefaultAINSList(view.context,anis))
+            anisModeList.addAll(ChatroomAINSConstructor.builderDefaultAINSList(view.context, anis))
         }
         anisSoundsList.addAll(ChatroomAINSConstructor.builderDefaultSoundList(view.context))
         binding?.apply {
@@ -64,20 +63,22 @@ class ChatroomAINSSheetDialog constructor() : BaseSheetDialog<DialogChatroomAins
         val anisModeHeaderAdapter = BaseRecyclerViewAdapter(mutableListOf<String>().apply {
             add(getString(R.string.chatroom_ains_settings))
         }, ChatroomAINSTitleViewHolder::class.java)
-        anisModeAdapter = BaseRecyclerViewAdapter(anisModeList, object : OnItemClickListener<AINSModeBean> {
+        anisModeAdapter = BaseRecyclerViewAdapter(anisModeList, null, object : OnItemChildClickListener<AINSModeBean> {
 
-            override fun onItemClick(data: AINSModeBean, view: View, position: Int, viewType: Long) {
-                val tag = view.tag
-                if (tag is Int) {
-                    if (data.anisMode == tag) {
-                        return
-                    } else {
-                        data.anisMode = tag
-                        anisSoundsAdapter?.notifyItemChanged(position)
+            override fun onItemChildClick(
+                data: AINSModeBean?, extData: Any?, view: View, position: Int, itemViewType: Int
+            ) {
+                data?.let {
+                    if (extData is Int) {
+                        if (it.anisMode == extData) {
+                            return
+                        } else {
+                            data.anisMode = extData
+                            anisModeAdapter?.notifyItemChanged(position)
+                        }
+                        Toast.makeText(view.context, "AINS Mode $extData", Toast.LENGTH_SHORT).show()
                     }
-                    Toast.makeText(view.context, "AINS Mode $tag", Toast.LENGTH_SHORT).show()
                 }
-
             }
         }, ChatroomAINSModeViewHolder::class.java)
 
@@ -94,18 +95,21 @@ class ChatroomAINSSheetDialog constructor() : BaseSheetDialog<DialogChatroomAins
         }, ChatroomAINSTitleViewHolder::class.java)
 
         anisSoundsAdapter = BaseRecyclerViewAdapter(
-            anisSoundsList, object : OnItemClickListener<AINSSoundsBean> {
+            anisSoundsList, null, object : OnItemChildClickListener<AINSSoundsBean> {
 
-                override fun onItemClick(data: AINSSoundsBean, view: View, position: Int, viewType: Long) {
-                    val tag = view.tag
-                    if (tag is Int) {
-                        if (data.soundsType == tag) {
-                            return
-                        } else {
-                            data.soundsType = tag
-                            anisSoundsAdapter?.notifyItemChanged(position)
+                override fun onItemChildClick(
+                    data: AINSSoundsBean?, extData: Any?, view: View, position: Int, itemViewType: Int
+                ) {
+                    data?.let {
+                        if (extData is Int) {
+                            if (it.soundsType == extData) {
+                                return
+                            } else {
+                                data.soundsType = extData
+                                anisSoundsAdapter?.notifyItemChanged(position)
+                            }
+                            Toast.makeText(view.context, "AINS Sound $extData", Toast.LENGTH_SHORT).show()
                         }
-                        Toast.makeText(view.context, "AINS Sound $tag", Toast.LENGTH_SHORT).show()
                     }
                 }
             },

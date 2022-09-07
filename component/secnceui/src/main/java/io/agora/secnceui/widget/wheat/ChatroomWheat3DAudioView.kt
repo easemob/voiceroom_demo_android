@@ -10,11 +10,12 @@ import android.util.AttributeSet
 import android.util.Size
 import android.view.MotionEvent
 import android.view.View
-import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
+import io.agora.baseui.adapter.OnItemClickListener
 import io.agora.buddy.tool.logE
 import io.agora.secnceui.R
+import io.agora.secnceui.bean.SeatInfoBean
 import io.agora.secnceui.databinding.ViewChatroom3dAudioWheatBinding
 import kotlin.math.abs
 import kotlin.math.atan2
@@ -67,6 +68,12 @@ class ChatroomWheat3DAudioView : ConstraintLayout, View.OnClickListener {
     // 点按动画
     private var seatAnimator: ValueAnimator? = null
 
+    private var onItemClickListener: OnItemClickListener<SeatInfoBean>? = null
+
+    fun onItemClickListener(onItemClickListener: OnItemClickListener<SeatInfoBean>) = apply {
+        this.onItemClickListener = onItemClickListener
+    }
+
     constructor(context: Context) : this(context, null)
 
     constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
@@ -113,25 +120,25 @@ class ChatroomWheat3DAudioView : ConstraintLayout, View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.seatView1 -> {
-                Toast.makeText(context, "click seatView1", Toast.LENGTH_SHORT).show()
+                onItemClickListener?.onItemClick(SeatInfoBean(),v,1,-1)
             }
             R.id.seatView2 -> {
-                Toast.makeText(context, "click seatView2", Toast.LENGTH_SHORT).show()
+                onItemClickListener?.onItemClick(SeatInfoBean(),v,2,-1)
             }
             R.id.seatView3 -> {
-                Toast.makeText(context, "click seatView3", Toast.LENGTH_SHORT).show()
+                onItemClickListener?.onItemClick(SeatInfoBean(),v,3,-1)
             }
             R.id.seatView5 -> {
-                Toast.makeText(context, "click seatView5", Toast.LENGTH_SHORT).show()
+                onItemClickListener?.onItemClick(SeatInfoBean(),v,5,-1)
             }
             R.id.seatView6 -> {
-                Toast.makeText(context, "click seatView6", Toast.LENGTH_SHORT).show()
+                onItemClickListener?.onItemClick(SeatInfoBean(),v,6,-1)
             }
             R.id.seatView7 -> {
-                Toast.makeText(context, "click seatView7", Toast.LENGTH_SHORT).show()
+                onItemClickListener?.onItemClick(SeatInfoBean(),v,7,-1)
             }
             R.id.seatViewCenter -> {
-                Toast.makeText(context, "click seatViewCenter", Toast.LENGTH_SHORT).show()
+                onItemClickListener?.onItemClick(SeatInfoBean(),v,4,-1)
             }
         }
     }

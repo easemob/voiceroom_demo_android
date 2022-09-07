@@ -22,17 +22,17 @@ class ChatroomAINSModeViewHolder(binding: ItemChatroomAgoraAinsBinding) :
         data?.let {
             mBinding.mtNoiseSuppressionName.text = it.anisName
             mBinding.mtChatroomHigh.setOnClickListener { view ->
-                onItemClick(view)
+                onItemChildClick(AINSModeType.High,view)
             }
             mBinding.mtChatroomMedium.setOnClickListener { view ->
-                onItemClick(view)
+                onItemChildClick(AINSModeType.Medium,view)
             }
             mBinding.mtChatroomOff.setOnClickListener { view ->
-                onItemClick(view)
+                onItemChildClick(AINSModeType.Off,view)
             }
-            mBinding.mtChatroomHigh.tag = AINSModeType.High
-            mBinding.mtChatroomMedium.tag = AINSModeType.Medium
-            mBinding.mtChatroomOff.tag = AINSModeType.Off
+//            mBinding.mtChatroomHigh.tag = AINSModeType.High
+//            mBinding.mtChatroomMedium.tag = AINSModeType.Medium
+//            mBinding.mtChatroomOff.tag = AINSModeType.Off
             when (it.anisMode) {
                 AINSModeType.High -> {
                     setViewHighlight(mBinding.mtChatroomHigh)
@@ -70,17 +70,17 @@ class ChatroomAINSSoundsViewHolder(binding: ItemChatroomAinsAuditionBinding) :
         data?.let {
             mBinding.mtChatroomAinsName.text = it.soundName
             mBinding.ivChatroomAinsSounds.setOnClickListener { view ->
-                onItemClick(view)
+                onItemChildClick(AINSSoundType.Audition,view)
             }
             mBinding.mtChatroomAins.setOnClickListener { view ->
-                onItemClick(view)
+                onItemChildClick(AINSSoundType.AINS,view)
             }
             mBinding.mtChatroomAinsNone.setOnClickListener { view ->
-                onItemClick(view)
+                onItemChildClick(AINSSoundType.None,view)
             }
-            mBinding.ivChatroomAinsSounds.tag = AINSSoundType.Audition
-            mBinding.mtChatroomAins.tag = AINSSoundType.AINS
-            mBinding.mtChatroomAinsNone.tag = AINSSoundType.None
+//            mBinding.ivChatroomAinsSounds.tag = AINSSoundType.Audition
+//            mBinding.mtChatroomAins.tag = AINSSoundType.AINS
+//            mBinding.mtChatroomAinsNone.tag = AINSSoundType.None
             if (TextUtils.isEmpty(it.soundSubName)) {
                 mBinding.mtChatroomAinsSubName.text = ""
                 mBinding.mtChatroomAinsSubName.isVisible = false

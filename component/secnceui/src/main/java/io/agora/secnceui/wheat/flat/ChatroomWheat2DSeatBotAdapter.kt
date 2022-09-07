@@ -1,6 +1,7 @@
 package io.agora.secnceui.wheat.flat
 
 import io.agora.baseui.adapter.BaseRecyclerViewAdapter
+import io.agora.baseui.adapter.OnItemChildClickListener
 import io.agora.baseui.adapter.OnItemClickListener
 import io.agora.buddy.tool.dp
 import io.agora.buddy.tool.getDisplaySize
@@ -10,10 +11,11 @@ import io.agora.secnceui.databinding.ItemChatroom2dSeatBotBinding
 class ChatroomWheat2DSeatBotAdapter constructor(
     dataList: List<BotSeatInfoBean>?,
     listener: OnItemClickListener<BotSeatInfoBean>?,
+    childListener: OnItemChildClickListener<BotSeatInfoBean>?,
     viewHolderClass: Class<ChatroomWheat2DBotViewHolder>
 ) :
     BaseRecyclerViewAdapter<ItemChatroom2dSeatBotBinding, BotSeatInfoBean, ChatroomWheat2DBotViewHolder>(
-        dataList, listener, viewHolderClass
+        dataList, listener,childListener, viewHolderClass
     ) {
 
     override fun onBindViewHolder(holder: ChatroomWheat2DBotViewHolder, position: Int) {

@@ -9,6 +9,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.alibaba.android.arouter.facade.annotation.Route
 import io.agora.baseui.BaseUiActivity
 import io.agora.baseui.BaseUiTool
+import io.agora.baseui.adapter.OnItemChildClickListener
 import io.agora.baseui.adapter.OnItemClickListener
 import io.agora.buddy.tool.logD
 import io.agora.chatroom.databinding.ActivityChatroomBinding
@@ -149,39 +150,47 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>() {
     }
 
     private fun test() {
-        binding.apply {
-            rvChatroomWheat2dSeat.onItemClickListener(object : OnItemClickListener<SeatInfoBean> {
-                override fun onItemClick(data: SeatInfoBean, view: View, position: Int, viewType: Long) {
-                    super.onItemClick(data, view, position, viewType)
-                    // 普通用户,空闲位置
-                    if (data.wheatSeatType == WheatSeatType.Idle) {
-                        CommonSheetAlertDialog()
-                            .contentText(getString(R.string.chatroom_request_speak))
-                            .rightText(getString(R.string.chatroom_confirm))
-                            .leftText(getString(R.string.chatroom_cancel))
-                            .setOnClickListener(object : CommonSheetAlertDialog.OnClickBottomListener {
-                                override fun onConfirmClick() {
+        binding.rvChatroomWheat2dSeat.onItemClickListener(object : OnItemClickListener<SeatInfoBean> {
 
-                                }
+            override fun onItemClick(data: SeatInfoBean, view: View, position: Int, viewType: Long) {
+                super.onItemClick(data, view, position, viewType)
+                // 普通用户,空闲位置
+                if (data.wheatSeatType == WheatSeatType.Idle) {
+                    CommonSheetAlertDialog()
+                        .contentText(getString(R.string.chatroom_request_speak))
+                        .rightText(getString(R.string.chatroom_confirm))
+                        .leftText(getString(R.string.chatroom_cancel))
+                        .setOnClickListener(object : CommonSheetAlertDialog.OnClickBottomListener {
+                            override fun onConfirmClick() {
 
-                                override fun onCancelClick() {
-                                }
-
-                            })
-                            .show(supportFragmentManager, "SeatManagerSheetDialog11")
-                    } else {
-                        ChatroomSeatManagerSheetDialog().apply {
-                            arguments = Bundle().apply {
-                                putSerializable(ChatroomSeatManagerSheetDialog.KEY_SEAT_INFO, data)
                             }
-                        }.show(supportFragmentManager, "SeatManagerSheetDialog")
-                    }
+
+                            override fun onCancelClick() {
+                            }
+
+                        })
+                        .show(supportFragmentManager, "SeatManagerSheetDialog11")
+                } else {
+                    ChatroomSeatManagerSheetDialog().apply {
+                        arguments = Bundle().apply {
+                            putSerializable(ChatroomSeatManagerSheetDialog.KEY_SEAT_INFO, data)
+                        }
+                    }.show(supportFragmentManager, "SeatManagerSheetDialog")
                 }
-            }).setUpAdapter(
-                ChatroomWheatConstructor.builder2dSeatList(),
-                ChatroomWheatConstructor.builder2dBotSeatList()
-            )
-        }
+            }
+        }, object : OnItemChildClickListener<BotSeatInfoBean> {
+
+            override fun onItemChildClick(
+                data: BotSeatInfoBean?, extData: Any?, view: View?, position: Int, itemViewType: Int
+            ) {
+                if (extData is SeatInfoBean) {
+                    Toast.makeText(this@ChatroomLiveActivity, "${extData.name}", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }).setUpAdapter(
+            ChatroomWheatConstructor.builder2dSeatList(),
+            ChatroomWheatConstructor.builder2dBotSeatList()
+        )
         chatroomLiveTopViewModel.initChatroomInfo()
     }
 

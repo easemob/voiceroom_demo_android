@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup
 import com.google.android.material.divider.MaterialDividerItemDecoration
+import io.agora.baseui.adapter.OnItemChildClickListener
 import io.agora.baseui.adapter.OnItemClickListener
 import io.agora.buddy.tool.dp
 import io.agora.secnceui.R
@@ -27,9 +28,14 @@ class ChatroomWheat2DAudioView : ConstraintLayout {
     private var wheat2DSeatBotAdapter: ChatroomWheat2DSeatBotAdapter? = null
 
     private var onItemClickListener: OnItemClickListener<SeatInfoBean>? = null
+    private var onBotClickListener: OnItemChildClickListener<BotSeatInfoBean>? = null
 
-    fun onItemClickListener(onItemClickListener: OnItemClickListener<SeatInfoBean>) = apply {
+    fun onItemClickListener(
+        onItemClickListener: OnItemClickListener<SeatInfoBean>,
+        onBotClickListener: OnItemChildClickListener<BotSeatInfoBean>
+    ) = apply {
         this.onItemClickListener = onItemClickListener
+        this.onBotClickListener = onBotClickListener
     }
 
     constructor(context: Context) : this(context, null)
@@ -49,11 +55,13 @@ class ChatroomWheat2DAudioView : ConstraintLayout {
         binding = ViewChatroom2dAudioWheatBinding.bind(root)
     }
 
-    fun setUpAdapter(seatInfoList: List<SeatInfoBean>,botSeatList:List<BotSeatInfoBean>) {
+    fun setUpAdapter(seatInfoList: List<SeatInfoBean>, botSeatList: List<BotSeatInfoBean>) {
         wheat2DSeatAdapter =
             ChatroomWheat2DSeatAdapter(seatInfoList, onItemClickListener, ChatroomWheat2DViewHolder::class.java)
         wheat2DSeatBotAdapter =
-            ChatroomWheat2DSeatBotAdapter(botSeatList, null, ChatroomWheat2DBotViewHolder::class.java)
+            ChatroomWheat2DSeatBotAdapter(
+                botSeatList, null, onBotClickListener, ChatroomWheat2DBotViewHolder::class.java
+            )
 
         val config = ConcatAdapter.Config.Builder().setIsolateViewTypes(true).build()
         val concatAdapter = ConcatAdapter(config, wheat2DSeatAdapter, wheat2DSeatBotAdapter)

@@ -67,6 +67,15 @@
         app:layout_constraintTop_toBottomOf="@+id/ivSeatInfo"
         tools:text="Susan Stark" />
 
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@+id/ivSeatInfo"
+        app:layout_constraintEnd_toEndOf="@+id/ivSeatInfo"
+        app:layout_constraintTop_toTopOf="@+id/ivSeatInfo"
+        android:layout_marginTop="-0.5dp"
+        android:src="@drawable/icon_chatroom_3d_seat_tag"/>
+
     <com.opensource.svgaplayer.SVGAImageView
         android:id="@+id/svgaSeatArrow"
         android:layout_width="30dp"

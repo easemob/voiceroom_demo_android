@@ -8,6 +8,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.alibaba.android.arouter.facade.annotation.Route
 import io.agora.baseui.BaseUiActivity
 import io.agora.baseui.BaseUiTool
+import io.agora.baseui.adapter.OnItemClickListener
 import io.agora.buddy.tool.logD
 import io.agora.chatroom.databinding.ActivityChatroom3dSpatialBinding
 import io.agora.chatroom.ui.ChatroomLiveTopViewModel
@@ -143,9 +144,11 @@ class ChatroomLive3DActivity : BaseUiActivity<ActivityChatroom3dSpatialBinding>(
     }
 
     private fun test() {
-        binding.apply {
-
-        }
+        binding.rvChatroomWheat3dSeat.onItemClickListener(object :OnItemClickListener<SeatInfoBean>{
+            override fun onItemClick(data: SeatInfoBean, view: View, position: Int, viewType: Long) {
+                Toast.makeText(this@ChatroomLive3DActivity, "click ${data.name}", Toast.LENGTH_SHORT).show()
+            }
+        })
         chatroomLiveTopViewModel.initChatroomInfo()
     }
 
