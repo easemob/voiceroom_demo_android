@@ -13,13 +13,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AgoraScenesChatroom">
         <activity
-            android:name="io.agora.chatroom.ChatroomTestActivity"
+            android:name="io.agora.chatroom.ChatroomSplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name="io.agora.chatroom.ChatroomTestActivity"
+            android:exported="false"/>
 
         <activity
             android:name="io.agora.chatroom.ChatroomLiveActivity"

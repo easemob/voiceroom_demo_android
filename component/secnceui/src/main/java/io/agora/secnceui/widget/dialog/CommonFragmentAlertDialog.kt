@@ -23,7 +23,7 @@ class CommonFragmentAlertDialog constructor(): BaseFragmentDialog<DialogCenterFr
         super.onViewCreated(view, savedInstanceState)
         dialog?.setCanceledOnTouchOutside(false)
         mBinding?.apply {
-            addMargin(view)
+//            addMargin(view)
             if (!TextUtils.isEmpty(titleText)){
                 mtTitle.text = titleText
             }

@@ -20,21 +20,12 @@ abstract class BaseUiActivity<B : ViewBinding> : AppCompatActivity() {
         if (binding == null) {
             "Inflate Error".logE()
             finish()
-        } else{
+        } else {
             this.binding = binding
             super.setContentView(this.binding.root)
         }
 
         WindowCompat.setDecorFitsSystemWindows(window, false)
-       onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                onHandleOnBackPressed()
-            }
-        })
-    }
-
-    open fun onHandleOnBackPressed() {
-
     }
 
     protected abstract fun getViewBinding(inflater: LayoutInflater): B?

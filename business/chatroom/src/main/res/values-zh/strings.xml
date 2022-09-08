@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">声网语聊房</string>
+    <string name="app_agora_chatroom">声网语聊房</string>
+    <string name="app_agora_chatroom_copy_right">Powered by Agora.io</string>
+</resources>

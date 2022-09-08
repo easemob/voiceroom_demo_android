@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.alibaba.android.arouter.facade.annotation.Route
@@ -54,6 +55,11 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>() {
             binding.clMain.setPaddingRelative(0, inset.top, 0, inset.bottom)
             WindowInsetsCompat.CONSUMED
         }
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                onHandleOnBackPressed()
+            }
+        })
     }
 
     private fun initView() {
@@ -215,12 +221,12 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>() {
         chatroomLiveTopViewModel.initChatroomInfo()
     }
 
-    override fun onHandleOnBackPressed() {
+    private fun onHandleOnBackPressed() {
         CommonFragmentAlertDialog()
             .titleText(getString(R.string.chatroom_prompt))
             .contentText(getString(R.string.chatroom_exit))
             .leftText(getString(R.string.chatroom_cancel))
-            .rightText(getString(R.string.chatroom_submit))
+            .rightText(getString(R.string.chatroom_confirm))
             .setOnClickListener(object : CommonFragmentAlertDialog.OnClickBottomListener {
                 override fun onConfirmClick() {
                     finish()

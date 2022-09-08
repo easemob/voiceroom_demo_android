@@ -3,6 +3,7 @@ package io.agora.chatroom
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.alibaba.android.arouter.facade.annotation.Route
@@ -44,6 +45,11 @@ class ChatroomLive3DActivity : BaseUiActivity<ActivityChatroom3dSpatialBinding>(
             binding.clMain.setPaddingRelative(0, inset.top, 0, inset.bottom)
             WindowInsetsCompat.CONSUMED
         }
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                onHandleOnBackPressed()
+            }
+        })
     }
 
     private fun initView() {
@@ -103,7 +109,7 @@ class ChatroomLive3DActivity : BaseUiActivity<ActivityChatroom3dSpatialBinding>(
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
         if (keyCode == KeyEvent.KEYCODE_BACK && event.repeatCount == 0) {
-            return false;
+            return false
         }
         return super.onKeyDown(keyCode, event);
     }
@@ -112,12 +118,12 @@ class ChatroomLive3DActivity : BaseUiActivity<ActivityChatroom3dSpatialBinding>(
         return super.dispatchTouchEvent(ev)
     }
 
-    override fun onHandleOnBackPressed() {
+    private fun onHandleOnBackPressed() {
         CommonFragmentAlertDialog()
-            .titleText("Prompt")
-            .contentText("Exit the chatroom?")
-            .leftText(getString(io.agora.secnceui.R.string.chatroom_cancel))
-            .rightText(getString(io.agora.secnceui.R.string.chatroom_submit))
+            .titleText(getString(R.string.chatroom_prompt))
+            .contentText(getString(R.string.chatroom_exit))
+            .leftText(getString(R.string.chatroom_cancel))
+            .rightText(getString(R.string.chatroom_submit))
             .setOnClickListener(object : CommonFragmentAlertDialog.OnClickBottomListener {
                 override fun onConfirmClick() {
                     finish()
