@@ -93,8 +93,6 @@ dependencies {
         annotationProcessor dep["glide-compiler"]
         implementation dep["arouter-api"]
         kapt dep["arouter-compiler"]
-        // rtc && im
-        implementation dep["agora-rtc"]
     } else {
         compileOnly project(':common:buddy')
         compileOnly project(':common:baseui')

@@ -41,7 +41,7 @@ class ChatroomSplashActivity : BaseUiActivity<ActivityChatroomSplashBinding>() {
     }
 
     private fun initListeners() {
-        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v: View?, insets: WindowInsetsCompat ->
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { _: View?, insets: WindowInsetsCompat ->
             val inset = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             binding.clRoot.setPaddingRelative(0, inset.top, 0, inset.bottom)
             WindowInsetsCompat.CONSUMED

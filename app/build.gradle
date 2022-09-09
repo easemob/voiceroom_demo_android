@@ -71,8 +71,6 @@ dependencies {
     annotationProcessor dep["glide-compiler"]
     implementation dep["arouter-api"]
     kapt dep["arouter-compiler"]
-    // rtc && im
-    implementation dep["agora-rtc"]
 
     // business
     implementation project(":business:chatroom")

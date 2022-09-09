@@ -30,12 +30,16 @@ android {
     kotlinOptions {
         jvmTarget = '11'
     }
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['src/main/jniLibs']
+        }
+    }
 }
 
 dependencies {
+    api fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
     api dep["core-ktx"]
-
-    compileOnly dep["agora-rtc"]
 
     compileOnly project(':common:buddy')
 }
