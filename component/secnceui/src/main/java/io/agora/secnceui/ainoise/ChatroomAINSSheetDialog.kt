@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import io.agora.baseui.adapter.BaseRecyclerViewAdapter
 import io.agora.baseui.adapter.OnItemChildClickListener
-import io.agora.baseui.dialog.BaseSheetDialog
+import io.agora.baseui.dialog.BaseFixedHeightSheetDialog
 import io.agora.buddy.tool.ViewTools
 import io.agora.secnceui.R
 import io.agora.secnceui.bean.AINSModeBean
@@ -20,7 +20,7 @@ import io.agora.secnceui.databinding.DialogChatroomAinsBinding
 import io.agora.secnceui.databinding.ItemChatroomAgoraAinsBinding
 import io.agora.secnceui.databinding.ItemChatroomAinsAuditionBinding
 
-class ChatroomAINSSheetDialog constructor() : BaseSheetDialog<DialogChatroomAinsBinding>() {
+class ChatroomAINSSheetDialog constructor() : BaseFixedHeightSheetDialog<DialogChatroomAinsBinding>() {
 
     companion object {
         const val KEY_AINS_MODE = "ains_mode"
@@ -51,7 +51,7 @@ class ChatroomAINSSheetDialog constructor() : BaseSheetDialog<DialogChatroomAins
         }
         anisSoundsList.addAll(ChatroomAINSConstructor.builderDefaultSoundList(view.context))
         binding?.apply {
-            setOnApplyWindowInsets(root)
+            setOnApplyWindowInsets(rvNoiseSuppression)
             ivBottomSheetBack.setOnClickListener {
                 onHandleOnBackPressed()
             }

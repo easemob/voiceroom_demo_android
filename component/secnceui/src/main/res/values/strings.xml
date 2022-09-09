@@ -24,6 +24,8 @@
     <string name="chatroom_karaoke_introduce">The scene deals with the coordination of your voice and the musical accompaniment through high sound quality and echo cancellation to ensure the best karaoke experience</string>
     <string name="chatroom_gaming_buddy">Gaming Buddy</string>
     <string name="chatroom_gaming_buddy_introduce">This scene focuses on the coordination of human voice and in-game sound during live, interactive game sessions</string>
+    <string name="chatroom_sound_card_hq">Sound Card HQ</string>
+    <string name="chatroom_sound_card_hq_introduce">This sound effect focuses on solving the problems of poor sound quality of mono anchors and compatibility with mainstream external sound cards. The sound network stereo collection and high sound quality technology can greatly improve the sound quality of anchors using sound cards and enhance the attraction of live broadcasting rooms. At present, it has been adapted to mainstream sound cards in the market.</string>
     <string name="chatroom_sound_selection_more">Need more Agora Sound Selection or custom sound. Visit <![CDATA[<font color=\'#3C4267\'><strong><u>www.agora.io.</u></strong></font>]]></string>
     <string name="chatroom_ains_sounds">Agora AINS supports the following sounds, click to have bot play the sound:</string>
     <string name="chatroom_ains_settings">AINS Settings</string>

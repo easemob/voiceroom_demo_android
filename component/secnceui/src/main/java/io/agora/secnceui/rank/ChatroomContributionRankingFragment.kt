@@ -64,8 +64,10 @@ class ChatroomContributionRankingFragment : BaseUiFragment<FragmentChatroomContr
         recyclerView.layoutManager = LinearLayoutManager(context)
         context?.let {
             recyclerView.addItemDecoration(
-                MaterialDividerItemDecoration(it, MaterialDividerItemDecoration.HORIZONTAL).apply {
-                    dividerThickness = 15.dp.toInt()
+                MaterialDividerItemDecoration(it, MaterialDividerItemDecoration.VERTICAL).apply {
+                    dividerThickness = 1.dp.toInt()
+                    dividerInsetStart = 15.dp.toInt()
+                    dividerInsetEnd =  15.dp.toInt()
                     dividerColor = ViewTools.getColor(it.resources, R.color.divider_color_F8F5FA)
                 }
             )

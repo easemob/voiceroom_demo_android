@@ -10,13 +10,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import io.agora.baseui.adapter.BaseRecyclerViewAdapter
 import io.agora.baseui.adapter.OnItemClickListener
-import io.agora.baseui.dialog.BaseSheetDialog
+import io.agora.baseui.dialog.BaseFixedHeightSheetDialog
 import io.agora.secnceui.bean.SoundSelectionBean
 import io.agora.secnceui.databinding.DialogChatroomSoundSelectionBinding
 import io.agora.secnceui.databinding.ItemChatroomSoundSelectionBinding
 
 class ChatroomSoundSelectionSheetDialog constructor(private val soundSelectionListener: OnClickSoundSelectionListener) :
-    BaseSheetDialog<DialogChatroomSoundSelectionBinding>() {
+    BaseFixedHeightSheetDialog<DialogChatroomSoundSelectionBinding>() {
 
     companion object {
         const val KEY_CURRENT_SELECTION = "current_selection"
@@ -42,7 +42,7 @@ class ChatroomSoundSelectionSheetDialog constructor(private val soundSelectionLi
         }
 
         binding?.apply {
-            setOnApplyWindowInsets(root)
+            setOnApplyWindowInsets(rvBottomSheetSoundSelection)
             ivBottomSheetBack.setOnClickListener {
                 onHandleOnBackPressed()
             }

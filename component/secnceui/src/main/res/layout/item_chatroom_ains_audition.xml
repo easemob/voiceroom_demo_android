@@ -13,7 +13,7 @@
         android:layout_marginEnd="15dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="@+id/mtChatroomAinsNone"
-        app:layout_constraintEnd_toStartOf="@+id/ivChatroomAinsSounds"
+        app:layout_constraintEnd_toStartOf="@+id/mtChatroomAins"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/mtChatroomAinsNone">
 
@@ -34,17 +34,6 @@
             android:textSize="@dimen/sp_10"
             tools:text="Ex. Bird, car, subway sounds" />
     </LinearLayout>
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/ivChatroomAinsSounds"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="12dp"
-        android:src="@drawable/icon_chatroom_anis_sound"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="@+id/mtChatroomAinsNone"
-        app:layout_constraintEnd_toStartOf="@+id/mtChatroomAins"
-        app:layout_constraintTop_toTopOf="@+id/mtChatroomAinsNone" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/mtChatroomAins"

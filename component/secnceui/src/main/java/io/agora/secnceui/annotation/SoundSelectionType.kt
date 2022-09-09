@@ -6,7 +6,8 @@ import androidx.annotation.IntDef
 @IntDef(
     SoundSelectionType.SocialChat,
     SoundSelectionType.Karaoke,
-    SoundSelectionType.GamingBuddy
+    SoundSelectionType.GamingBuddy,
+    SoundSelectionType.SoundCardHQ,
 )
 annotation class SoundSelectionType {
     companion object {
@@ -15,6 +16,8 @@ annotation class SoundSelectionType {
         const val Karaoke = 1
 
         const val GamingBuddy = 2
+
+        const val SoundCardHQ = 3
     }
 }
 

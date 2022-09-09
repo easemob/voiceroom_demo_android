@@ -5,10 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
-import io.agora.baseui.dialog.BaseSheetDialog
+import io.agora.baseui.dialog.BaseFixedHeightSheetDialog
 import io.agora.secnceui.databinding.DialogChatroomSpatialAudioBinding
 
-class ChatroomSpatialAudioSheetDialog constructor() : BaseSheetDialog<DialogChatroomSpatialAudioBinding>() {
+class ChatroomSpatialAudioSheetDialog constructor() : BaseFixedHeightSheetDialog<DialogChatroomSpatialAudioBinding>() {
 
     companion object {
         const val KEY_SPATIAL_OPEN = "key_spatial_open"

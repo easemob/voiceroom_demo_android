@@ -9,13 +9,13 @@ import android.widget.TextView
 import androidx.fragment.app.FragmentActivity
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import io.agora.baseui.dialog.BaseSheetDialog
+import io.agora.baseui.dialog.BaseFixedHeightSheetDialog
 import io.agora.buddy.tool.ViewTools
 import io.agora.secnceui.R
 import io.agora.secnceui.databinding.DialogChatroomContributionAndAudienceBinding
 
 class ChatroomContributionAndAudienceSheetDialog constructor(private val fragmentActivity: FragmentActivity) :
-    BaseSheetDialog<DialogChatroomContributionAndAudienceBinding>() {
+    BaseFixedHeightSheetDialog<DialogChatroomContributionAndAudienceBinding>() {
 
     override fun getViewBinding(
         inflater: LayoutInflater,

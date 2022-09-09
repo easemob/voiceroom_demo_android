@@ -23,7 +23,6 @@ abstract class BaseSheetDialog<B : ViewBinding?> : BottomSheetDialogFragment() {
         return this.binding?.root
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         dialog?.window?.let {
@@ -39,12 +38,12 @@ abstract class BaseSheetDialog<B : ViewBinding?> : BottomSheetDialogFragment() {
         })
     }
 
-    protected fun setOnApplyWindowInsets(root: View) {
+    protected fun setOnApplyWindowInsets(view: View) {
         dialog?.window?.let {
             ViewCompat.setOnApplyWindowInsetsListener(it.decorView) { v: View?, insets: WindowInsetsCompat ->
                 val inset = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-                Log.d("setOnApplyWindowInsets",inset.toString())
-                root.setPadding(inset.left, 0, inset.right, inset.bottom)
+                Log.d("setOnApplyWindowInsets", inset.toString())
+                view.setPadding(0, 0, 0, inset.bottom)
                 WindowInsetsCompat.CONSUMED
             }
         }

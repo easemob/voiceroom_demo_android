@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import io.agora.baseui.dialog.BaseSheetDialog
+import io.agora.baseui.dialog.BaseFixedHeightSheetDialog
 import io.agora.secnceui.R
 import io.agora.secnceui.annotation.AINSModeType
 import io.agora.secnceui.annotation.SoundSelectionType
@@ -12,7 +12,7 @@ import io.agora.secnceui.bean.ChatroomAudioSettingsBean
 import io.agora.secnceui.databinding.DialogChatroomAudioSettingBinding
 
 class ChatroomAudioSettingsSheetDialog constructor(private val audioSettingsListener: OnClickAudioSettingsListener) :
-    BaseSheetDialog<DialogChatroomAudioSettingBinding>() {
+    BaseFixedHeightSheetDialog<DialogChatroomAudioSettingBinding>() {
 
     companion object {
         const val KEY_AUDIO_SETTINGS_INFO = "audio_settings"
@@ -30,7 +30,7 @@ class ChatroomAudioSettingsSheetDialog constructor(private val audioSettingsList
             audioSettingsInfo = get(KEY_AUDIO_SETTINGS_INFO) as ChatroomAudioSettingsBean?
         }
         binding?.apply {
-            setOnApplyWindowInsets(root)
+            setOnApplyWindowInsets(clContent)
             audioSettingsInfo?.let { audioInfo ->
                 mcbBottomSheetAgoraBot.isChecked = audioInfo.botOpen
                 pbChatroomBotVolume.progress = audioInfo.botVolume

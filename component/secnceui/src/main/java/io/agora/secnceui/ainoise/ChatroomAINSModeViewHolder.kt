@@ -6,6 +6,7 @@ import androidx.core.view.isVisible
 import com.google.android.material.textview.MaterialTextView
 import io.agora.baseui.adapter.BaseRecyclerViewAdapter
 import io.agora.buddy.tool.ViewTools
+import io.agora.buddy.tool.dp
 import io.agora.secnceui.R
 import io.agora.secnceui.annotation.AINSModeType
 import io.agora.secnceui.annotation.AINSSoundType
@@ -69,9 +70,6 @@ class ChatroomAINSSoundsViewHolder(binding: ItemChatroomAinsAuditionBinding) :
     override fun binding(data: AINSSoundsBean?, selectedIndex: Int) {
         data?.let {
             mBinding.mtChatroomAinsName.text = it.soundName
-            mBinding.ivChatroomAinsSounds.setOnClickListener { view ->
-                onItemChildClick(AINSSoundType.Audition, view)
-            }
             mBinding.mtChatroomAins.setOnClickListener { view ->
                 onItemChildClick(AINSSoundType.AINS, view)
             }
@@ -89,11 +87,9 @@ class ChatroomAINSSoundsViewHolder(binding: ItemChatroomAinsAuditionBinding) :
                 mBinding.mtChatroomAinsSubName.isVisible = false
             }
             if (it.soundsType == AINSSoundType.AINS) {
-                mBinding.ivChatroomAinsSounds.isInvisible = false
                 setViewHighlight(mBinding.mtChatroomAins)
                 resetViewDefault(mBinding.mtChatroomAinsNone)
             } else {
-                mBinding.ivChatroomAinsSounds.isInvisible = true
                 setViewHighlight(mBinding.mtChatroomAinsNone)
                 resetViewDefault(mBinding.mtChatroomAins)
             }
