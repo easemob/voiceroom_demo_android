@@ -3,10 +3,10 @@ package io.agora.secnceui.widget.top
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
+import androidx.annotation.DrawableRes
 import androidx.annotation.IntDef
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
-import io.agora.buddy.tool.GlideTools
 import io.agora.secnceui.R
 import io.agora.secnceui.bean.ChatroomInfoBean
 import io.agora.secnceui.databinding.ViewChatroomLiveTopBinding
@@ -95,7 +95,7 @@ class ChatroomLiveTopView : ConstraintLayout, View.OnClickListener, IChatroomLiv
             mtChatroomGifts.text = chatroomInfo.giftCount.toString()
             mtChatroomWatch.text = chatroomInfo.watchCount.toString()
             // 房主头像
-            GlideTools.loadImage(context, chatroomInfo.ownerAvatar, binding.ivChatroomOwner)
+            binding.ivChatroomOwner.setImageResource(chatroomInfo.ownerAvatar.avatar)
             val topGifts = chatroomInfo.topGifts
             if (topGifts.isNullOrEmpty()) {
                 llChatroomMemberRank.isVisible = false
@@ -105,15 +105,15 @@ class ChatroomLiveTopView : ConstraintLayout, View.OnClickListener, IChatroomLiv
                     when (index) {
                         0 -> {
                             ivChatroomMember1.isVisible = true
-                            GlideTools.loadImage(context, audienceBean.userAvatar, binding.ivChatroomMember1)
+                            binding.ivChatroomMember1.setImageResource(audienceBean.userAvatar.avatar)
                         }
                         1 -> {
                             ivChatroomMember2.isVisible = true
-                            GlideTools.loadImage(context, audienceBean.userAvatar, binding.ivChatroomMember2)
+                            binding.ivChatroomMember2.setImageResource(audienceBean.userAvatar.avatar)
                         }
                         2 -> {
                             ivChatroomMember3.isVisible = true
-                            GlideTools.loadImage(context, audienceBean.userAvatar, binding.ivChatroomMember3)
+                            binding.ivChatroomMember3.setImageResource(audienceBean.userAvatar.avatar)
                         }
                         else -> {
                             return
@@ -125,26 +125,26 @@ class ChatroomLiveTopView : ConstraintLayout, View.OnClickListener, IChatroomLiv
     }
 
     /**设置头像*/
-    override fun onImageUpdate(@ChatroomTopType type: Int, imageUrl: String) {
+    override fun onImageUpdate(@ChatroomTopType type: Int, @DrawableRes avatarRes: Int) {
         when (type) {
             ChatroomTopType.Owner -> {
                 // 房主头像
-                GlideTools.loadImage(context, imageUrl, binding.ivChatroomOwner)
+                binding.ivChatroomOwner.setImageResource(avatarRes)
             }
             ChatroomTopType.RankNo1 -> {
                 binding.llChatroomMemberRank.isVisible = true
                 binding.ivChatroomMember1.isVisible = true
-                GlideTools.loadImage(context, imageUrl, binding.ivChatroomMember1)
+                binding.ivChatroomMember1.setImageResource(avatarRes)
             }
             ChatroomTopType.RankNo2 -> {
                 binding.llChatroomMemberRank.isVisible = true
                 binding.ivChatroomMember2.isVisible = true
-                GlideTools.loadImage(context, imageUrl, binding.ivChatroomMember2)
+                binding.ivChatroomMember2.setImageResource(avatarRes)
             }
             ChatroomTopType.RankNo3 -> {
                 binding.llChatroomMemberRank.isVisible = true
                 binding.ivChatroomMember3.isVisible = true
-                GlideTools.loadImage(context, imageUrl, binding.ivChatroomMember3)
+                binding.ivChatroomMember3.setImageResource(avatarRes)
             }
             else -> {}
         }

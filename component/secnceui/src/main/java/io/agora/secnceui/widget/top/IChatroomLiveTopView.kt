@@ -1,5 +1,6 @@
 package io.agora.secnceui.widget.top
 
+import androidx.annotation.DrawableRes
 import io.agora.secnceui.bean.ChatroomInfoBean
 
 interface IChatroomLiveTopView {
@@ -10,5 +11,5 @@ interface IChatroomLiveTopView {
     fun onTextUpdate(@ChatroomLiveTopView.ChatroomTopType type: Int, text: String)
 
     /**头部 image 更新*/
-    fun onImageUpdate(@ChatroomLiveTopView.ChatroomTopType type: Int, imageUrl: String)
+    fun onImageUpdate(@ChatroomLiveTopView.ChatroomTopType type: Int, @DrawableRes avatarRes: Int)
 }

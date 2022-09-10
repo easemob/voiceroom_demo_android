@@ -23,7 +23,7 @@
         android:layout_width="72dp"
         android:layout_height="72dp"
         android:background="@drawable/bg_oval_white30"
-        android:src="@drawable/icon_untitled"
+        android:src="@drawable/icon_woman1"
         app:layout_constraintBottom_toBottomOf="@+id/ivSeatOuterRing"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="@+id/ivSeatOuterRing"

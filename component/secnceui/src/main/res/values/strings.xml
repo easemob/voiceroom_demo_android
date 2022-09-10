@@ -8,6 +8,8 @@
     <string name="chatroom_best_sound_effect">Best Sound Effect</string>
     <string name="chatroom_noise_suppression">Noise Suppression</string>
     <string name="chatroom_spatial_audio">Spatial Audio</string>
+    <string name="chatroom_agora_blue">Agora Blue</string>
+    <string name="chatroom_agora_red">Agora Red</string>
     <string name="chatroom_agora_blue_bot">Agora Blue Bot</string>
     <string name="chatroom_agora_red_bot">Agora Red Bot</string>
     <string name="chatroom_attenuation_factor">Attenuation factor</string>

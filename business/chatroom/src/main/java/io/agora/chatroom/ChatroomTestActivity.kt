@@ -6,8 +6,9 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
 import io.agora.baseui.BaseUiActivity
 import io.agora.chatroom.databinding.ActivityChatroomTestBinding
-import io.agora.config.ARouterPath
-
+import io.agora.config.RouterParams
+import io.agora.config.RouterPath
+import io.agora.config.ConfigConstants
 
 // test
 @Route(path = ChatroomTestActivity.PATH)
@@ -19,10 +20,16 @@ class ChatroomTestActivity : BaseUiActivity<ActivityChatroomTestBinding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding.mbStartChatroom.setOnClickListener {
-            ARouter.getInstance().build(ARouterPath.ChatroomPath).navigation()
+            ARouter.getInstance()
+                .build(RouterPath.ChatroomPath)
+                .withInt(RouterParams.KEY_CHATROOM_TYPE, ConfigConstants.Common_Chatroom)
+                .navigation()
         }
         binding.mbStartChatroom3D.setOnClickListener {
-            ARouter.getInstance().build(ARouterPath.Chatroom3DPath).navigation()
+            ARouter.getInstance()
+                .build(RouterPath.ChatroomPath)
+                .withInt(RouterParams.KEY_CHATROOM_TYPE, ConfigConstants.Spatial_Chatroom)
+                .navigation()
         }
     }
 

@@ -5,7 +5,6 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
-import io.agora.buddy.tool.GlideTools
 import io.agora.secnceui.R
 import io.agora.secnceui.annotation.WheatSeatType
 import io.agora.secnceui.annotation.WheatUserRole
@@ -80,7 +79,7 @@ class Chatroom2DSeatView : ConstraintLayout {
             WheatUserRole.Robot -> {
                 mBinding.ivSeatInfo.apply {
                     setBackgroundResource(R.drawable.bg_oval_white)
-                    setImageResource(seatInfo.rotImage)
+                    setImageResource(seatInfo.rot.avatar)
                 }
                 mBinding.mtSeatInfoName.setCompoundDrawablesWithIntrinsicBounds(
                     R.drawable.icon_seat_robot_tag, 0, 0, 0
@@ -90,7 +89,7 @@ class Chatroom2DSeatView : ConstraintLayout {
             WheatUserRole.Owner -> {
                 mBinding.ivSeatInfo.apply {
                     setBackgroundResource(R.drawable.bg_oval_white30)
-                    GlideTools.loadImage(context, seatInfo.avatar, this)
+                    setImageResource(seatInfo.avatar.avatar)
                 }
                 mBinding.mtSeatInfoName.setCompoundDrawablesWithIntrinsicBounds(
                     R.drawable.icon_seat_owner_tag, 0, 0, 0
@@ -99,7 +98,7 @@ class Chatroom2DSeatView : ConstraintLayout {
             else -> {
                 mBinding.ivSeatInfo.apply {
                     setBackgroundResource(R.drawable.bg_oval_white30)
-                    GlideTools.loadImage(context, seatInfo.avatar, this)
+                    setImageResource(seatInfo.avatar.avatar)
                 }
                 mBinding.mtSeatInfoName.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
             }

@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/audioSettingsFragment"
-        android:name="io.agora.secnceui.audiosettings.ChatroomAudioSettingsSheetDialog"
+        android:name="io.agora.secnceui.ui.audiosettings.ChatroomAudioSettingsSheetDialog"
         android:label="AudioSettingsFragment"
         tools:layout="@layout/dialog_chatroom_audio_setting">
         <action
@@ -35,19 +35,19 @@
 
     <fragment
         android:id="@+id/spatialAudioFragment"
-        android:name="io.agora.secnceui.spatialaudio.ChatroomSpatialAudioSheetDialog"
+        android:name="io.agora.secnceui.ui.spatialaudio.ChatroomSpatialAudioSheetDialog"
         android:label="SpatialAudioFragment"
         tools:layout="@layout/dialog_chatroom_spatial_audio" />
 
     <fragment
         android:id="@+id/soundSelectionFragment"
-        android:name="io.agora.secnceui.soundselection.ChatroomSoundSelectionSheetDialog"
+        android:name="io.agora.secnceui.ui.soundselection.ChatroomSoundSelectionSheetDialog"
         android:label="SoundSelectionFragment"
         tools:layout="@layout/dialog_chatroom_sound_selection" />
 
     <fragment
         android:id="@+id/noiseSuppressionFragment"
-        android:name="io.agora.secnceui.ainoise.ChatroomAINSSheetDialog"
+        android:name="io.agora.secnceui.ui.ainoise.ChatroomAINSSheetDialog"
         android:label="NoiseSuppressionFragment"
         tools:layout="@layout/dialog_chatroom_ains" />
 </navigation>

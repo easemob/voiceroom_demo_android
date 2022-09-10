@@ -8,7 +8,6 @@ import androidx.core.view.isVisible
 import com.opensource.svgaplayer.SVGADrawable
 import com.opensource.svgaplayer.SVGAParser
 import com.opensource.svgaplayer.SVGAVideoEntity
-import io.agora.buddy.tool.GlideTools
 import io.agora.buddy.tool.logD
 import io.agora.secnceui.R
 import io.agora.secnceui.annotation.WheatSeatType
@@ -17,7 +16,6 @@ import io.agora.secnceui.annotation.WheatUserStatus
 import io.agora.secnceui.bean.SeatInfoBean
 import io.agora.secnceui.databinding.ViewChatroom3dSeatBinding
 import java.io.File
-
 
 class Chatroom3DSeatView : ConstraintLayout {
 
@@ -107,7 +105,7 @@ class Chatroom3DSeatView : ConstraintLayout {
             WheatUserRole.Owner -> {
                 mBinding.ivSeatInfo.apply {
                     setBackgroundResource(R.drawable.bg_oval_white30)
-                    GlideTools.loadImage(context, seatInfo.avatar, this)
+                    setImageResource(seatInfo.avatar.avatar)
                 }
                 mBinding.mtSeatInfoName.setCompoundDrawablesWithIntrinsicBounds(
                     R.drawable.icon_seat_owner_tag, 0, 0, 0
@@ -116,7 +114,7 @@ class Chatroom3DSeatView : ConstraintLayout {
             else -> {
                 mBinding.ivSeatInfo.apply {
                     setBackgroundResource(R.drawable.bg_oval_white30)
-                    GlideTools.loadImage(context, seatInfo.avatar, this)
+                    setImageResource(seatInfo.avatar.avatar)
                 }
                 mBinding.mtSeatInfoName.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
             }
