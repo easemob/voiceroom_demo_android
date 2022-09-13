@@ -73,8 +73,9 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>() {
             binding.rvChatroomWheat2dSeat.isVisible = false
             binding.rvChatroomWheat3dSeat.isVisible = true
             binding.rvChatroomWheat3dSeat.onItemClickListener(
-                ChatroomWheatViewHelper.createSeatClickListener(this)
-            )
+                ChatroomWheatViewHelper.createSeatClickListener(this),
+                ChatroomWheatViewHelper.createBotClickListener(this),
+            ).setUpSeatInfoMap(ChatroomWheatConstructor.builder3dSeatMap(this))
         }
 
         chatroomLiveTopViewModel.initChatroomInfo()

@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <io.agora.secnceui.widget.wheat.Chatroom2DSeatView
-        android:id="@+id/seatView1"
+        android:id="@+id/seatView0"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
@@ -14,7 +14,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <io.agora.secnceui.widget.wheat.Chatroom2DSeatView
-        android:id="@+id/seatView2"
+        android:id="@+id/seatView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="28dp"
@@ -23,7 +23,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <io.agora.secnceui.widget.wheat.Chatroom2DSeatView
-        android:id="@+id/seatView3"
+        android:id="@+id/seatRotBlue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="28dp"
@@ -32,7 +32,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <io.agora.secnceui.widget.wheat.Chatroom2DSeatView
-        android:id="@+id/seatView5"
+        android:id="@+id/seatView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -40,7 +40,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <io.agora.secnceui.widget.wheat.Chatroom2DSeatView
-        android:id="@+id/seatView6"
+        android:id="@+id/seatView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="28dp"
@@ -49,7 +49,7 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <io.agora.secnceui.widget.wheat.Chatroom2DSeatView
-        android:id="@+id/seatView7"
+        android:id="@+id/seatBotRed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="53dp"

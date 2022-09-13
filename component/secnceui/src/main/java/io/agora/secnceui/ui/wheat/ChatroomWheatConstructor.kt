@@ -6,6 +6,7 @@ import io.agora.secnceui.annotation.*
 import io.agora.secnceui.bean.*
 import io.agora.secnceui.bean.enum.EnumAvatar
 import io.agora.secnceui.bean.enum.EnumBot
+import io.agora.secnceui.constants.ScenesConstant
 
 object ChatroomWheatConstructor {
 
@@ -15,7 +16,7 @@ object ChatroomWheatConstructor {
             SeatInfoBean(
                 index = 0,
                 name = "Susan Stark",
-                avatar =EnumAvatar.Women2,
+                avatar = EnumAvatar.Women2,
                 wheatSeatType = WheatSeatType.Normal,
                 userRole = WheatUserRole.Owner,
                 userStatus = WheatUserStatus.Speaking,
@@ -26,7 +27,7 @@ object ChatroomWheatConstructor {
             SeatInfoBean(
                 index = 4,
                 name = "Jim Scofield",
-                avatar =EnumAvatar.Man5,
+                avatar = EnumAvatar.Man5,
                 wheatSeatType = WheatSeatType.NormalMute,
                 userRole = WheatUserRole.Guest,
                 userStatus = WheatUserStatus.Mute
@@ -53,6 +54,48 @@ object ChatroomWheatConstructor {
             rot = EnumBot.AgoraRed,
         )
         return mutableListOf(BotSeatInfoBean(blueBot, redBot))
+    }
+
+    fun builder3dSeatMap(context: Context): MutableMap<String, SeatInfoBean> {
+
+        return mutableMapOf(
+            ScenesConstant.KeySeat0 to SeatInfoBean(
+                index = 0,
+                name = "Susan Stark",
+                avatar = EnumAvatar.Women2,
+                wheatSeatType = WheatSeatType.Normal,
+                userRole = WheatUserRole.Owner,
+                userStatus = WheatUserStatus.Speaking,
+            ),
+            ScenesConstant.KeySeat1 to SeatInfoBean(index = 1),
+            ScenesConstant.KeySeatBlue to SeatInfoBean(
+                index = 2,
+                wheatSeatType = WheatSeatType.Inactive,
+                userRole = WheatUserRole.Robot,
+                userStatus = WheatUserStatus.None,
+                name = context.getString(R.string.chatroom_agora_blue),
+                rot = EnumBot.AgoraBlue,
+            ),
+            ScenesConstant.KeySeat3 to SeatInfoBean(index = 3, wheatSeatType = WheatSeatType.Mute),
+            ScenesConstant.KeySeat4 to SeatInfoBean(index = 4, wheatSeatType = WheatSeatType.Mute),
+
+            ScenesConstant.KeySeatRed to SeatInfoBean(
+                index = 5,
+                wheatSeatType = WheatSeatType.Inactive,
+                userRole = WheatUserRole.Robot,
+                userStatus = WheatUserStatus.None,
+                name = context.getString(R.string.chatroom_agora_red),
+                rot = EnumBot.AgoraRed,
+            ),
+            ScenesConstant.KeySeatCenter to SeatInfoBean(
+                        index = 6,
+                        name = "Jim Scofield",
+                        avatar = EnumAvatar.Man5,
+                        wheatSeatType = WheatSeatType.NormalMute,
+                        userRole = WheatUserRole.Guest,
+                        userStatus = WheatUserStatus.Mute
+                    ),
+        )
     }
 
     /**
