@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="error_network_error">Network unavailable</string>
+    <string name="room_empty_data">No Chat Room Yet</string>
+</resources>

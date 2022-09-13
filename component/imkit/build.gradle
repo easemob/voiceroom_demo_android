@@ -34,4 +34,5 @@ android {
 
 dependencies {
     api dep["core-ktx"]
+    api dep["agora-chat"]
 }

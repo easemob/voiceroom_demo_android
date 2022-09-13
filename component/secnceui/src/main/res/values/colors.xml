@@ -30,4 +30,10 @@
     <color name="color_F1F3F8">#F1F3F8</color>
     <color name="color_DAD9E9">#DAD9E9</color>
     <color name="color_A8ABFF">#A8ABFF</color>
+    <color name="color_000000">#ff000000</color>
+    <color name="primary_edit_stroke_color_E4E3ED">#E4E3ED</color>
+    <color name="primary_edit_text_color_B6B8C9">##B6B8C9</color>
+    <color name="rv_item_system_name_color">#8BB3FF</color>
+    <color name="rv_item_system_event_color">#FCF0B3</color>
+    <color name="white">#feffffff</color>
 </resources>

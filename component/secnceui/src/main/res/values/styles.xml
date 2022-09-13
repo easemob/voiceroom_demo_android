@@ -105,4 +105,35 @@
         <item name="android:layout_height">1dp</item>
         <item name="dividerColor">@color/divider_color_F6F6F6</item>
     </style>
+
+    <declare-styleable name="chatroom_encryption_input_style">
+        <attr name="space" format="dimension"/>
+        <attr name="strokeWidth" format="dimension"/>
+        <attr name="checkedColor" format="color"/>
+        <attr name="defaultColor" format="color"/>
+        <attr name="textLength" format="integer"/>
+        <attr name="backColor" format="color"/>
+        <attr name="textColor" format="color"/>
+        <attr name="circle" format="dimension"/>
+        <attr name="round" format="dimension"/>
+        <attr name="textSize" format="dimension"/>
+        <attr name="isPwd" format="boolean"/>
+        <attr name="waitInputColor" format="color"/>
+        <attr name="isWaitInput" format="boolean"/>
+    </declare-styleable>
+
+    <!-- like自定义属性 -->
+    <declare-styleable name="LikeLayout">
+        <attr name="initX" format="dimension" />
+        <attr name="initY" format="dimension" />
+        <attr name="xRand" format="dimension" />
+        <attr name="animLengthRand" format="dimension" />
+        <attr name="xPointFactor" format="dimension" />
+        <attr name="animLength" format="dimension" />
+        <attr name="heart_width" format="dimension" />
+        <attr name="heart_height" format="dimension" />
+        <attr name="bezierFactor" format="integer" />
+        <attr name="anim_duration" format="integer" />
+    </declare-styleable>
+
 </resources>
