@@ -18,7 +18,7 @@
         android:layout_marginLeft="6dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text="幸福士大夫"
+        tools:text="nickname"
         android:textSize="17sp"
         android:textColor="#aaffffff"
         />
@@ -29,7 +29,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="17sp"
-        tools:text="似的发射点"
+        tools:text="welcome"
         android:textColor="@color/white"
         />
 </LinearLayout>

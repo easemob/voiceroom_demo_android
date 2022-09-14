@@ -23,7 +23,7 @@ import com.google.android.material.tabs.TabLayoutMediator;
 
 import io.agora.baseui.BaseActivity;
 import io.agora.chatroom.R;
-import io.agora.chatroom.fragment.ChatRoomListFragment;
+import io.agora.chatroom.fragment.ChatroomListFragment;
 import io.agora.chatroom.model.PageViewModel;
 import io.agora.config.RouterPath;
 import io.agora.secnceui.widget.titlebar.ChatroomTitleBar;
@@ -123,7 +123,7 @@ public class ChatroomListActivity extends BaseActivity implements ChatroomTitleB
             @NonNull
             @Override
             public Fragment createFragment(int position) {
-                return new ChatRoomListFragment();
+                return new ChatroomListFragment();
             }
 
             @Override

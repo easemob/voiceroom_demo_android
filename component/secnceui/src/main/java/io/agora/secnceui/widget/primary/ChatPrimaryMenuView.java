@@ -88,9 +88,9 @@ public class ChatPrimaryMenuView extends RelativeLayout {
             public void onClick(View v) {
                 isShowEmoji = !isShowEmoji;
                 if (isShowEmoji){
-                    icon.setImageResource(R.mipmap.icon_key);
+                    icon.setImageResource(R.drawable.icon_key);
                 }else {
-                    icon.setImageResource(R.mipmap.icon_face);
+                    icon.setImageResource(R.drawable.icon_face);
                 }
                 // TODO: 2022/9/2  show emoji
                 if (null != clickListener)
@@ -131,10 +131,10 @@ public class ChatPrimaryMenuView extends RelativeLayout {
     }
 
     private void initMenu() {
-        registerMenuItem(R.mipmap.icon_mic,R.id.extend_item_mic);
-        registerMenuItem(R.mipmap.icon_handuphard,R.id.extend_item_hand_up);
-        registerMenuItem(R.mipmap.icon_eq,R.id.extend_item_eq);
-        registerMenuItem(R.mipmap.icon_gift,R.id.extend_item_gift);
+        registerMenuItem(R.drawable.icon_mic,R.id.extend_item_mic);
+        registerMenuItem(R.drawable.icon_handuphard,R.id.extend_item_hand_up);
+        registerMenuItem(R.drawable.icon_eq,R.id.extend_item_eq);
+        registerMenuItem(R.drawable.icon_gift,R.id.extend_item_gift);
         addView();
     }
 

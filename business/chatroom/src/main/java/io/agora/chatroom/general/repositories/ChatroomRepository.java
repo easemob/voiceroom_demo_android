@@ -9,15 +9,15 @@ import java.util.List;
 import io.agora.baseui.general.net.Resource;
 import tools.bean.VRoomBean;
 
-public class RoomRepository extends BaseRepository {
-    public RoomListRepository listener;
-    private static RoomRepository mInstance;
+public class ChatroomRepository extends BaseRepository {
+    public ChatroomListRepository listener;
+    private static ChatroomRepository mInstance;
 
-    public static RoomRepository getInstance() {
+    public static ChatroomRepository getInstance() {
         if (mInstance == null) {
-            synchronized (RoomRepository.class) {
+            synchronized (ChatroomRepository.class) {
                 if (mInstance == null) {
-                    mInstance = new RoomRepository();
+                    mInstance = new ChatroomRepository();
                 }
             }
         }
@@ -33,8 +33,8 @@ public class RoomRepository extends BaseRepository {
         return (listener!=null)?listener.getAllRoomList():null;
     }
 
-    public void setListener(RoomListRepository roomListRepository){
-        this.listener = roomListRepository;
+    public void setListener(ChatroomListRepository chatroomListRepository){
+        this.listener = chatroomListRepository;
     }
 
 }

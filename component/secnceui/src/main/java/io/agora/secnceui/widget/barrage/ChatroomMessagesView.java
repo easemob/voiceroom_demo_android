@@ -1,6 +1,5 @@
 package io.agora.secnceui.widget.barrage;
 
-import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.PointF;
@@ -191,10 +190,10 @@ public class ChatroomMessagesView extends RelativeLayout{
 
         private void showSystemMsg(TextView name,String nickName,String type) {
             StringBuilder builder = new StringBuilder();
-            builder.append(nickName).append(" ").append(context.getString(R.string.em_live_msg_member_add));
+            builder.append(nickName).append(" ").append(context.getString(R.string.chatroom_system_msg_member_add));
             SpannableString span = new SpannableString(builder.toString());
-            span.setSpan(new ForegroundColorSpan(ContextCompat.getColor(getContext(), R.color.rv_item_system_name_color)), 0, nickName.length()+1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            span.setSpan(new ForegroundColorSpan(ContextCompat.getColor(getContext(), R.color.rv_item_system_event_color)),
+            span.setSpan(new ForegroundColorSpan(ContextCompat.getColor(getContext(), R.color.color_8BB3FF)), 0, nickName.length()+1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            span.setSpan(new ForegroundColorSpan(ContextCompat.getColor(getContext(), R.color.color_FCF0B3)),
                     nickName.length() + 1, builder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             name.setText(span);
         }
@@ -209,7 +208,7 @@ public class ChatroomMessagesView extends RelativeLayout{
                 builder.append(nickName).append(" : ").append(content);
             }
             SpannableString span = new SpannableString(builder.toString());
-            span.setSpan(new ForegroundColorSpan(ContextCompat.getColor(getContext(), R.color.rv_item_system_name_color)), 0, nickName.length()+1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            span.setSpan(new ForegroundColorSpan(ContextCompat.getColor(getContext(), R.color.color_8BB3FF)), 0, nickName.length()+1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             span.setSpan(new ForegroundColorSpan(ContextCompat.getColor(getContext(), R.color.white)),
                     nickName.length() + 1, builder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             name.setText(span, TextView.BufferType.SPANNABLE);

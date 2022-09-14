@@ -20,11 +20,8 @@ import android.content.res.TypedArray;
 import android.graphics.Path;
 import android.view.View;
 import android.view.ViewGroup;
-
-
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
-
 import io.agora.secnceui.R;
 
 
@@ -92,7 +89,7 @@ public abstract class AbstractPathAnimator {
             config.animLengthRand = (int) typedArray.getDimension(R.styleable.LikeLayout_animLengthRand,
                     res.getDimensionPixelOffset(R.dimen.like_anim_length_rand));
             config.bezierFactor = typedArray.getInteger(R.styleable.LikeLayout_bezierFactor,
-                    res.getInteger(R.integer.heart_anim_bezier_factor));
+                    res.getInteger(R.integer.like_anim_bezier_factor));
             config.xPointFactor = pointx;
 //            config.heartWidth = (int) typedArray.getDimension(R.styleable.HeartLayout_heart_width,
 //                    res.getDimensionPixelOffset(R.dimen.heart_size_width));//动画图片宽度

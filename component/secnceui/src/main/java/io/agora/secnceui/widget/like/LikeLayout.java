@@ -27,8 +27,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-
-
 import java.lang.ref.WeakReference;
 import java.util.Random;
 
@@ -81,7 +79,7 @@ public class LikeLayout extends RelativeLayout implements View.OnClickListener {
         View view = LayoutInflater.from(context).inflate(R.layout.widget_gift_periscope, this);
         imageView = view.findViewById(R.id.img);
         imageView.setOnClickListener(this);
-        bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.icon_like);
+        bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.icon_like);
         dHeight = bitmap.getWidth();
         dWidth = bitmap.getHeight();
         textHight = sp2px(getContext(), 20) + dHeight / 2;

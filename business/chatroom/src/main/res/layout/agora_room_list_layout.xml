@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@mipmap/bg_app_def_white"
+    android:background="@drawable/bg_app_def_white"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <io.agora.secnceui.widget.titlebar.ChatroomTitleBar
@@ -31,14 +31,14 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintDimensionRatio="1:1"
-            android:background="@mipmap/icon_create_3d_room"
+            android:background="@drawable/icon_create_3d_room"
             app:shapeAppearance="@style/chatroom_seat_roundStyle"
             android:src="@drawable/bg_oval_black20"
             android:layout_width="28dp"
             android:layout_height="28dp"/>
 
         <ImageView
-            android:src="@mipmap/icons_slices"
+            android:src="@drawable/icons_slices"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -101,7 +101,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
-                android:src="@mipmap/icon_chatroom_house_add"
+                android:src="@drawable/icon_chatroom_house_add"
                 android:layout_width="22dp"
                 android:layout_marginLeft="2dp"
                 android:layout_height="match_parent"/>

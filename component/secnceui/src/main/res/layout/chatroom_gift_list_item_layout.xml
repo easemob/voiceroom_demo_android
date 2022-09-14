@@ -49,7 +49,7 @@
             <ImageView
                 android:layout_width="10dp"
                 android:layout_height="10dp"
-                android:src="@mipmap/icon_dollagora"/>
+                android:src="@drawable/icon_dollagora"/>
 
             <TextView
                 android:id="@+id/price"

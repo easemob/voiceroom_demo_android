@@ -32,7 +32,7 @@ public class ExpressionGridAdapter extends ArrayAdapter<ExpressionIcon>{
             imageView.setImageResource(emojicon.getIcon());
         }else if(emojicon.getIconPath() != null){
             Glide.with(getContext()).load(emojicon.getIconPath())
-                    .apply(RequestOptions.placeholderOf(R.mipmap.icon_default_expression))
+                    .apply(RequestOptions.placeholderOf(R.drawable.icon_default_expression))
                     .into(imageView);
         }
         return convertView;

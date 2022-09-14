@@ -1,4 +1,4 @@
-package io.agora.chatroom
+package io.agora.chatroom.activity
 
 import android.content.Context
 import android.os.Bundle
@@ -8,9 +8,12 @@ import android.view.LayoutInflater
 import android.view.View
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.ViewModelProvider
 import com.alibaba.android.arouter.launcher.ARouter
 import io.agora.baseui.BaseUiActivity
+import io.agora.chatroom.ChatroomDataTestManager
 import io.agora.chatroom.databinding.ActivityChatroomSplashBinding
+import io.agora.chatroom.model.ChatroomViewModel
 import io.agora.config.RouterPath
 import manager.ChatroomConfigManager
 import java.util.*
@@ -31,6 +34,9 @@ class ChatroomSplashActivity : BaseUiActivity<ActivityChatroomSplashBinding>() {
             binding.mtChatroom.letterSpacing = -0.05f
         }
         ChatroomConfigManager.getInstance().initRoomConfig(this);
+        //测试假数据
+        val roomViewModel: ChatroomViewModel = ViewModelProvider(this)[ChatroomViewModel::class.java]
+        ChatroomDataTestManager.getInstance().setRoomListData(this, roomViewModel)
         Handler(Looper.getMainLooper()).postDelayed(Runnable { initSplashPage() }, SPLASH_DELAYED)
     }
 

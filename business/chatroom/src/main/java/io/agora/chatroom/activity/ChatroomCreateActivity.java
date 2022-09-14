@@ -28,6 +28,7 @@ import io.agora.ValueCallBack;
 import io.agora.baseui.BaseActivity;
 import io.agora.chat.ChatClient;
 import io.agora.chat.ChatRoom;
+import io.agora.chatroom.ChatroomDataTestManager;
 import io.agora.chatroom.R;
 import io.agora.chatroom.bean.PageBean;
 import io.agora.config.RouterPath;
@@ -46,7 +47,7 @@ public class ChatroomCreateActivity extends BaseActivity implements RadioGroup.O
    private EditText mEdRoomName;
    private boolean isPublic = true;
    private TextView mTip;
-   private ArrayList<PageBean> data = new ArrayList<>();
+   private ArrayList<PageBean> data;
    private ChatroomEncryptionInputView mEditText;
    private ConstraintLayout baseLayout;
    private int roomType;
@@ -70,25 +71,7 @@ public class ChatroomCreateActivity extends BaseActivity implements RadioGroup.O
       mNext = findViewById(R.id.bottom_next);
       baseLayout = findViewById(R.id.base_layout);
       chickPrivate();
-      data.clear();
-      PageBean bean = new PageBean();
-      bean.setRoom_type(0);
-      bean.setTab_title(getString(R.string.tab_layout_chat_room));
-      bean.setRoom_name(getString(R.string.room_create_chat_room));
-      bean.setRoom_desc(getString(R.string.room_create_chat_room_desc));
-      data.add(bean);
-      PageBean bean1 = new PageBean();
-      bean1.setRoom_type(1);
-      bean1.setTab_title(getString(R.string.tab_layout_audio_room));
-      bean1.setRoom_name(getString(R.string.room_create_3d_room));
-      bean1.setRoom_desc(getString(R.string.room_create_3d_room_desc));
-      data.add(bean1);
-      PageBean bean2 = new PageBean();
-      bean2.setRoom_type(2);
-      bean2.setTab_title(getString(R.string.tab_layout_karaoke_room));
-      bean2.setRoom_name(getString(R.string.room_create_ktv_room));
-      bean2.setRoom_desc(getString(R.string.room_create_ktv_room_desc));
-      data.add(bean2);
+      data = ChatroomDataTestManager.getInstance().getDefaultPageData();
    }
 
    @Override
@@ -194,15 +177,15 @@ public class ChatroomCreateActivity extends BaseActivity implements RadioGroup.O
          @Override
          public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
                if (data.get(position).getRoom_type() == 0){
-                  holder.mLayout.setBackgroundResource(R.mipmap.icon_create_chat_room);
+                  holder.mLayout.setBackgroundResource(R.drawable.icon_create_chat_room);
                   holder.mTitle.setText(getString(R.string.room_create_chat_room));
                   holder.mContent.setText(getString(R.string.room_create_chat_room_desc));
                }else if (data.get(position).getRoom_type() == 1){
-                  holder.mLayout.setBackgroundResource(R.mipmap.icon_create_3d_room);
+                  holder.mLayout.setBackgroundResource(R.drawable.icon_create_3d_room);
                   holder.mTitle.setText(getString(R.string.room_create_3d_room));
                   holder.mContent.setText(getString(R.string.room_create_3d_room_desc));
                }else if (data.get(position).getRoom_type() == 2){
-                  holder.mLayout.setBackgroundResource(R.mipmap.icon_create_ktv_room);
+                  holder.mLayout.setBackgroundResource(R.drawable.icon_create_ktv_room);
                   holder.mTitle.setText(getString(R.string.room_create_ktv_room));
                   holder.mContent.setText(getString(R.string.room_create_ktv_room_desc));
                }

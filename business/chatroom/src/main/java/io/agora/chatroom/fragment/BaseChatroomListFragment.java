@@ -16,7 +16,7 @@ import io.agora.chatroom.R;
 import io.agora.chatroom.adapter.ChatroomListAdapter;
 
 
-public class BaseChatRoomListFragment<T> extends BaseListFragment<T> implements SwipeRefreshLayout.OnRefreshListener{
+public class BaseChatroomListFragment<T> extends BaseListFragment<T> implements SwipeRefreshLayout.OnRefreshListener{
    private SwipeRefreshLayout swipeRefreshLayout;
    private RecyclerView recyclerView;
 

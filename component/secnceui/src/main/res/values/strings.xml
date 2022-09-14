@@ -93,5 +93,5 @@
     <string name="chatroom_search">search</string>
 
     <string name="chatroom_input_chat_title">Let\'s Chat</string>
-    <string name="em_live_msg_member_add">Joined</string>
+    <string name="chatroom_system_msg_member_add">Joined</string>
 </resources>

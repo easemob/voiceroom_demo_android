@@ -5,22 +5,20 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
-
 import java.util.List;
-
 import io.agora.baseui.general.net.Resource;
 import io.agora.chatroom.general.livedatas.SingleSourceLiveData;
-import io.agora.chatroom.general.repositories.RoomRepository;
+import io.agora.chatroom.general.repositories.ChatroomRepository;
 import tools.bean.VRoomBean;
 
 
-public class RoomViewModel extends AndroidViewModel {
-    private RoomRepository mRepository;
+public class ChatroomViewModel extends AndroidViewModel {
+    private ChatroomRepository mRepository;
     private SingleSourceLiveData<Resource<List<VRoomBean.RoomsBean>>> roomObservable;
 
-    public RoomViewModel(@NonNull Application application) {
+    public ChatroomViewModel(@NonNull Application application) {
         super(application);
-        mRepository = RoomRepository.getInstance();
+        mRepository = ChatroomRepository.getInstance();
         roomObservable = new SingleSourceLiveData<>();
     }
 
@@ -37,7 +35,7 @@ public class RoomViewModel extends AndroidViewModel {
         roomObservable.setSource(mRepository.getAllRoomList());
     }
 
-    public RoomRepository getRoomRepository(){
+    public ChatroomRepository getRoomRepository(){
         return mRepository;
     }
 

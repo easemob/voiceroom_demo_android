@@ -32,7 +32,7 @@
             android:layout_width="42dp"
             android:layout_height="42dp"
             android:scaleType="centerCrop"
-            android:src="@mipmap/icon_chatroom_expression_backspace"/>
+            android:src="@drawable/icon_chatroom_expression_backspace"/>
 
     </LinearLayout>
 

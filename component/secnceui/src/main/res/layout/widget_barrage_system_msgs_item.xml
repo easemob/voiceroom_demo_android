@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         tools:text="Stefano"
         android:textSize="@dimen/text_size_13sp"
-        android:textColor="@color/rv_item_system_name_color"
+        android:textColor="@color/color_8BB3FF"
         />
 
     <TextView
@@ -28,12 +28,12 @@
         android:layout_height="wrap_content"
         android:textSize="@dimen/text_size_13sp"
         tools:text="Joined"
-        android:textColor="@color/rv_item_system_event_color"
+        android:textColor="@color/color_FCF0B3"
         />
 
     <ImageView
         android:id="@+id/icon_system"
-        android:src="@mipmap/icon_shaking_hand"
+        android:src="@drawable/icon_shaking_hand"
         android:layout_marginStart="4dp"
         android:layout_marginEnd="12dp"
         android:layout_width="18dp"

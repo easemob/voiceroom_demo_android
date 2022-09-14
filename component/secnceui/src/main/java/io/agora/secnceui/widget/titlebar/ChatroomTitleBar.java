@@ -206,7 +206,7 @@ public class ChatroomTitleBar extends RelativeLayout implements View.OnClickList
     }
 
     public void setToolbarCustomColorDefault(@ColorInt int colorId) {
-        Drawable leftArrow = ContextCompat.getDrawable(getContext(), R.mipmap.icon_tab_back_empty);
+        Drawable leftArrow = ContextCompat.getDrawable(getContext(), R.drawable.icon_tab_back_empty);
         if(leftArrow != null) {
             leftArrow.setColorFilter(colorId, PorterDuff.Mode.SRC_ATOP);
             if(getContext() instanceof AppCompatActivity) {

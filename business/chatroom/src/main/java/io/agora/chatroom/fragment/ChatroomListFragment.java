@@ -14,15 +14,15 @@ import io.agora.baseui.general.net.Resource;
 import io.agora.chatroom.R;
 import io.agora.chatroom.adapter.ChatroomListAdapter;
 import io.agora.chatroom.model.PageViewModel;
-import io.agora.chatroom.model.RoomViewModel;
+import io.agora.chatroom.model.ChatroomViewModel;
 import tools.bean.VRoomBean;
 
-public class ChatRoomListFragment extends BaseChatRoomListFragment<VRoomBean.RoomsBean> {
+public class ChatroomListFragment extends BaseChatroomListFragment<VRoomBean.RoomsBean> {
     private ChatroomListAdapter listAdapter;
-    private RoomViewModel roomViewModel;
+    private ChatroomViewModel chatroomViewModel;
     private PageViewModel pageViewModel;
 
-    public ChatRoomListFragment(){
+    public ChatroomListFragment(){
 
     }
 
@@ -47,14 +47,14 @@ public class ChatRoomListFragment extends BaseChatRoomListFragment<VRoomBean.Roo
     @Override
     protected void initViewModel() {
         super.initViewModel();
-        roomViewModel = new ViewModelProvider(this).get(RoomViewModel.class);
-        roomViewModel.getRoomObservable().observe(this,response ->{
+        chatroomViewModel = new ViewModelProvider(this).get(ChatroomViewModel.class);
+        chatroomViewModel.getRoomObservable().observe(this, response ->{
             parseResource(response, new OnResourceParseCallback<List<VRoomBean.RoomsBean>>() {
                 @Override
                 public void onSuccess(@Nullable List<VRoomBean.RoomsBean> data) {
                     Log.e("viewModel","6 -+- " + data.size());
                     listAdapter.setData(data);
-                    roomViewModel.clearRegisterInfo();
+                    chatroomViewModel.clearRegisterInfo();
                 }
             });
         });
@@ -63,9 +63,9 @@ public class ChatRoomListFragment extends BaseChatRoomListFragment<VRoomBean.Roo
         pageViewModel.getPageSelect().observe(this, page -> {
             Log.e("viewModel","getPageSelect -+- " + page);
             if(page == 0) {
-                roomViewModel.getAllDataList();
+                chatroomViewModel.getAllDataList();
             }else if (page > 0){
-                roomViewModel.getDataList(page);
+                chatroomViewModel.getDataList(page);
             }
         });
 
@@ -74,7 +74,7 @@ public class ChatRoomListFragment extends BaseChatRoomListFragment<VRoomBean.Roo
     @Override
     protected void initData() {
         super.initData();
-        roomViewModel.getAllDataList();
+        chatroomViewModel.getAllDataList();
     }
 
     @Override

@@ -8,7 +8,7 @@ import java.util.List;
 import io.agora.baseui.general.net.Resource;
 import tools.bean.VRoomBean;
 
-public interface RoomListRepository {
+public interface ChatroomListRepository {
     LiveData<Resource<List<VRoomBean.RoomsBean>>> getRoomList(int type);
     LiveData<Resource<List<VRoomBean.RoomsBean>>> getAllRoomList();
 }

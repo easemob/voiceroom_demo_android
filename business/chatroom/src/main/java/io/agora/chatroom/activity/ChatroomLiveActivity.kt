@@ -1,4 +1,4 @@
-package io.agora.chatroom
+package io.agora.chatroom.activity
 
 import android.os.Bundle
 import android.view.KeyEvent

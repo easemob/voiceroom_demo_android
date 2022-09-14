@@ -170,7 +170,7 @@ public abstract class RoomBaseRecyclerViewAdapter<T> extends RoomBaseAdapter<Roo
             emptyView = LayoutInflater.from(mContext).inflate(this.emptyViewId, parent, false);
         }
         if(hideEmptyView) {
-            emptyView = LayoutInflater.from(mContext).inflate(R.layout.rv_layout_no_data_show_nothing, parent, false);
+            emptyView = LayoutInflater.from(mContext).inflate(R.layout.layout_no_data_show_nothing, parent, false);
         }
         return new ViewHolder<T>(emptyView) {
 
@@ -427,7 +427,7 @@ public abstract class RoomBaseRecyclerViewAdapter<T> extends RoomBaseAdapter<Roo
      * @return
      */
     public int getEmptyLayoutId() {
-        return R.layout.rv_layout_no_data_show_nothing;
+        return R.layout.layout_no_data_show_nothing;
     }
 
     /**

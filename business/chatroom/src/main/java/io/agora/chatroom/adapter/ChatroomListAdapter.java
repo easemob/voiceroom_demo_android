@@ -61,16 +61,16 @@ public class ChatroomListAdapter extends RoomBaseRecyclerViewAdapter<VRoomBean.R
         private void itemType(int type){
             switch (type){
                 case 1:
-                    item_layout.setBackgroundResource(R.mipmap.bg_chatroom_list_type_nomal);
+                    item_layout.setBackgroundResource(R.drawable.bg_chatroom_list_type_nomal);
                     break;
                 case 2:
-                    item_layout.setBackgroundResource(R.mipmap.bg_chatroom_list_type_3d);
+                    item_layout.setBackgroundResource(R.drawable.bg_chatroom_list_type_3d);
                     break;
                 case 3:
-                    item_layout.setBackgroundResource(R.mipmap.bg_chatroom_list_type_official);
+                    item_layout.setBackgroundResource(R.drawable.bg_chatroom_list_type_official);
                     break;
                 default:
-                    item_layout.setBackgroundResource(R.mipmap.bg_chatroom_list_type_nomal);
+                    item_layout.setBackgroundResource(R.drawable.bg_chatroom_list_type_nomal);
             }
         }
 
@@ -78,7 +78,7 @@ public class ChatroomListAdapter extends RoomBaseRecyclerViewAdapter<VRoomBean.R
             if (isShow){
                 title_layout.setVisibility(View.VISIBLE);
                 if (type == 2){
-                    icon.setBackgroundResource(R.mipmap.icon_official);
+                    icon.setBackgroundResource(R.drawable.icon_official);
                     title.setText(mContext.getString(R.string.room_list_title_official));
                     return;
                 }
