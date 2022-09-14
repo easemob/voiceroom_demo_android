@@ -26,6 +26,9 @@ android {
     buildFeatures{
         viewBinding true
     }
+    dataBinding{
+        enabled = true
+    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_11
         targetCompatibility JavaVersion.VERSION_11
@@ -41,9 +44,11 @@ dependencies {
     api dep["constraintlayout"]
     api dep["recyclerview"]
     api dep["material"]
+    api dep["glide"]
 
     api dep["svga-player"]
 
     compileOnly project(':common:buddy')
     compileOnly project(':common:baseui')
+    compileOnly project(':component:imkit')
 }

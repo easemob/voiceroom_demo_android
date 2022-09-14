@@ -30,4 +30,11 @@
     <color name="color_F1F3F8">#F1F3F8</color>
     <color name="color_DAD9E9">#DAD9E9</color>
     <color name="color_A8ABFF">#A8ABFF</color>
+    <color name="color_000000">#ff000000</color>
+    <color name="color_FA396A">#FA396A</color>
+    <color name="color_E4E3ED">#E4E3ED</color>
+    <color name="color_B6B8C9">#B6B8C9</color>
+    <color name="color_8BB3FF">#8BB3FF</color>
+    <color name="color_FCF0B3">#FCF0B3</color>
+    <color name="white">#feffffff</color>
 </resources>

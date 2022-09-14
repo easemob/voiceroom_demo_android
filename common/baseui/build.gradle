@@ -41,6 +41,7 @@ dependencies {
     api dep["constraintlayout"]
     api dep["recyclerview"]
     api dep["material"]
+    implementation 'androidx.databinding:databinding-runtime:4.2.2'
 
     compileOnly project(':common:buddy')
 }

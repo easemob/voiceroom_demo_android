@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="radio_style">
+        <item name="android:paddingLeft">8dp</item>
+        <item name="android:button">@drawable/room_create_encrypt_bg</item>
+        <item name="buttonStyle">@style/Widget.AppCompat.Button.Borderless</item>
+        <item name="android:width">68dp</item>
+        <item name="height">20dp</item>
+        <item name="background">@color/transparent</item>
+    </style>
+
+    <style name="edit_encryption">
+        <item name="android:layout_marginStart">16dp</item>
+    </style>
+
+    <style name="chatroom_seat_roundStyle">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+</resources>

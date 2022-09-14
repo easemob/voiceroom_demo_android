@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AgoraScenesChatroom">
         <activity
-            android:name="io.agora.chatroom.ChatroomSplashActivity"
+            android:name="io.agora.chatroom.activity.ChatroomSplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,7 +26,17 @@
             android:exported="false"/>
 
         <activity
-            android:name="io.agora.chatroom.ChatroomLiveActivity"
+            android:name="io.agora.chatroom.activity.ChatroomLiveActivity"
             android:exported="false"/>
+
+        <activity android:name=".activity.ChatroomListActivity"
+            android:exported="false"/>
+
+        <activity android:name=".activity.ChatroomCreateActivity"
+            android:exported="false"/>
+
+        <activity android:name=".activity.ChatroomProfileActivity"
+            android:exported="false"/>
+
     </application>
 </manifest>
