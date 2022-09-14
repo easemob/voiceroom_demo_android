@@ -5,6 +5,7 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
+import io.agora.buddy.tool.ViewTools
 import io.agora.secnceui.R
 import io.agora.secnceui.annotation.WheatSeatType
 import io.agora.secnceui.annotation.WheatUserRole
@@ -75,11 +76,12 @@ class Chatroom2DSeatView : ConstraintLayout {
     private fun setNormalWheatView(seatInfo: SeatInfoBean) {
         mBinding.mtSeatInfoName.text = seatInfo.name
         mBinding.ivSeatInnerIcon.isVisible = false
+        val resId = ViewTools.getDrawableId(context, seatInfo.avatar)
         when (seatInfo.userRole) {
             WheatUserRole.Robot -> {
                 mBinding.ivSeatInfo.apply {
                     setBackgroundResource(R.drawable.bg_oval_white)
-                    setImageResource(seatInfo.rot.avatar)
+                    setImageResource(resId)
                 }
                 mBinding.mtSeatInfoName.setCompoundDrawablesWithIntrinsicBounds(
                     R.drawable.icon_seat_robot_tag, 0, 0, 0
@@ -89,7 +91,7 @@ class Chatroom2DSeatView : ConstraintLayout {
             WheatUserRole.Owner -> {
                 mBinding.ivSeatInfo.apply {
                     setBackgroundResource(R.drawable.bg_oval_white30)
-                    setImageResource(seatInfo.avatar.avatar)
+                    setImageResource(resId)
                 }
                 mBinding.mtSeatInfoName.setCompoundDrawablesWithIntrinsicBounds(
                     R.drawable.icon_seat_owner_tag, 0, 0, 0
@@ -98,7 +100,7 @@ class Chatroom2DSeatView : ConstraintLayout {
             else -> {
                 mBinding.ivSeatInfo.apply {
                     setBackgroundResource(R.drawable.bg_oval_white30)
-                    setImageResource(seatInfo.avatar.avatar)
+                    setImageResource(resId)
                 }
                 mBinding.mtSeatInfoName.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
             }

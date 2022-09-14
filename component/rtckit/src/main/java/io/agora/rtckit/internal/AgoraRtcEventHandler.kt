@@ -11,6 +11,8 @@ import io.agora.rtc2.RtcEngineEx
 import io.agora.rtckit.annotation.RtcNetWorkQuality
 import io.agora.rtckit.constants.RtcKitConstant
 import io.agora.rtckit.open.status.RtcAudioChangeStatus
+import io.agora.rtckit.open.status.RtcAudioVolumeIndicationStatus
+import io.agora.rtckit.open.status.RtcAudioVolumeInfo
 import io.agora.rtckit.open.status.RtcNetWorkStatus
 
 /**
@@ -142,6 +144,20 @@ internal class AgoraRtcEventHandler(var rtcListener: IRtcClientListener?) : IRtc
      */
     override fun onAudioVolumeIndication(speakers: Array<out AudioVolumeInfo>?, totalVolume: Int) {
         super.onAudioVolumeIndication(speakers, totalVolume)
+        speakers?.let {
+            val speakerInfos: Array<RtcAudioVolumeInfo?> = arrayOfNulls(it.size)
+
+            it.forEachIndexed { index, audioVolumeInfo ->
+                speakerInfos[index] = RtcAudioVolumeInfo(
+                    uid = audioVolumeInfo.uid,
+                    volume = audioVolumeInfo.volume,
+                    vad = audioVolumeInfo.vad,
+                    voicePitch = audioVolumeInfo.voicePitch
+                )
+            }
+            rtcListener?.onAudioVolumeIndication(RtcAudioVolumeIndicationStatus(speakerInfos, totalVolume))
+        }
+        "onAudioVolumeIndication speakers:$speakers,totalVolume:$totalVolume".logD(TAG)
     }
 
     private fun getClientRole(role: Int): String {

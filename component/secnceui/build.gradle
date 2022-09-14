@@ -46,8 +46,6 @@ dependencies {
     api dep["material"]
     api dep["glide"]
 
-    api dep["svga-player"]
-
     compileOnly project(':common:buddy')
     compileOnly project(':common:baseui')
     compileOnly project(':component:imkit')

@@ -8,6 +8,7 @@ import java.util.List;
 
 import io.agora.baseui.general.net.Resource;
 import tools.bean.VRoomBean;
+import tools.bean.VRoomInfoBean;
 
 public class ChatroomRepository extends BaseRepository {
     public ChatroomListRepository listener;
@@ -31,6 +32,10 @@ public class ChatroomRepository extends BaseRepository {
 
     public LiveData<Resource<List<VRoomBean.RoomsBean>>> getAllRoomList() {
         return (listener!=null)?listener.getAllRoomList():null;
+    }
+
+    public LiveData<Resource<VRoomInfoBean>> getRoomInfo(String roomId) {
+        return (listener != null) ? listener.getRoomInfo(roomId) : null;
     }
 
     public void setListener(ChatroomListRepository chatroomListRepository){

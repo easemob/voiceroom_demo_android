@@ -23,7 +23,7 @@
         android:layout_width="72dp"
         android:layout_height="72dp"
         android:background="@drawable/bg_oval_white30"
-        android:src="@drawable/icon_woman1"
+        android:src="@drawable/avatar1"
         app:layout_constraintBottom_toBottomOf="@+id/ivSeatOuterRing"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="@+id/ivSeatOuterRing"
@@ -41,15 +41,6 @@
         app:layout_constraintEnd_toEndOf="@+id/ivSeatInfo"
         app:layout_constraintStart_toStartOf="@+id/ivSeatInfo"
         app:layout_constraintTop_toTopOf="@+id/ivSeatInfo" />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/ivSeatMic"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/icon_seat_on_mic0"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@id/ivSeatInfo"
-        app:layout_constraintEnd_toEndOf="@id/ivSeatInfo" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/mtSeatInfoName"
@@ -76,14 +67,21 @@
         android:layout_marginTop="-0.5dp"
         android:src="@drawable/icon_chatroom_3d_seat_tag"/>
 
-    <com.opensource.svgaplayer.SVGAImageView
-        android:id="@+id/svgaSeatArrow"
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ivSeatArrowAnim"
         android:layout_width="30dp"
         android:layout_height="20dp"
-        app:autoPlay="true"
         app:layout_constraintCircle="@id/ivSeatOuterRing"
         app:layout_constraintCircleAngle="0"
         app:layout_constraintCircleRadius="50dp"
-        app:loopCount="0"
-        app:source="chatroom_3d_arrow_one.svga" />
+        android:background="@drawable/anim_chatroom_one_arrow"/>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ivSeatMic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/icon_seat_on_mic0"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/ivSeatInfo"
+        app:layout_constraintEnd_toEndOf="@id/ivSeatInfo" />
 </androidx.constraintlayout.widget.ConstraintLayout>

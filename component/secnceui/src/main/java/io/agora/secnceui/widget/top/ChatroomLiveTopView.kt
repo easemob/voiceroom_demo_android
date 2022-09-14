@@ -7,6 +7,7 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.IntDef
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
+import io.agora.buddy.tool.ViewTools
 import io.agora.secnceui.R
 import io.agora.secnceui.bean.ChatroomInfoBean
 import io.agora.secnceui.databinding.ViewChatroomLiveTopBinding
@@ -95,25 +96,31 @@ class ChatroomLiveTopView : ConstraintLayout, View.OnClickListener, IChatroomLiv
             mtChatroomGifts.text = chatroomInfo.giftCount.toString()
             mtChatroomWatch.text = chatroomInfo.watchCount.toString()
             // 房主头像
-            binding.ivChatroomOwner.setImageResource(chatroomInfo.ownerAvatar.avatar)
+            binding.ivChatroomOwner.setImageResource(
+                ViewTools.getDrawableId(
+                    binding.ivChatroomOwner.context,
+                    chatroomInfo.ownerAvatar
+                )
+            )
             val topGifts = chatroomInfo.topGifts
             if (topGifts.isNullOrEmpty()) {
                 llChatroomMemberRank.isVisible = false
             } else {
                 llChatroomMemberRank.isVisible = true
                 topGifts.forEachIndexed { index, audienceBean ->
+                    val resId = ViewTools.getDrawableId(llChatroomMemberRank.context, audienceBean.userAvatar)
                     when (index) {
                         0 -> {
                             ivChatroomMember1.isVisible = true
-                            binding.ivChatroomMember1.setImageResource(audienceBean.userAvatar.avatar)
+                            binding.ivChatroomMember1.setImageResource(resId)
                         }
                         1 -> {
                             ivChatroomMember2.isVisible = true
-                            binding.ivChatroomMember2.setImageResource(audienceBean.userAvatar.avatar)
+                            binding.ivChatroomMember2.setImageResource(resId)
                         }
                         2 -> {
                             ivChatroomMember3.isVisible = true
-                            binding.ivChatroomMember3.setImageResource(audienceBean.userAvatar.avatar)
+                            binding.ivChatroomMember3.setImageResource(resId)
                         }
                         else -> {
                             return

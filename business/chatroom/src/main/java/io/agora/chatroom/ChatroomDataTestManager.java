@@ -18,6 +18,9 @@ import io.agora.chatroom.general.repositories.ChatroomListRepository;
 import io.agora.chatroom.general.repositories.NetworkOnlyResource;
 import io.agora.chatroom.model.ChatroomViewModel;
 import tools.bean.VRoomBean;
+import tools.bean.VRoomDetail;
+import tools.bean.VRoomInfoBean;
+import tools.bean.VRoomMicInfo;
 
 public class ChatroomDataTestManager extends BaseRepository implements ChatroomListRepository {
     private static ChatroomDataTestManager mInstance;
@@ -94,6 +97,26 @@ public class ChatroomDataTestManager extends BaseRepository implements ChatroomL
                 getDataList(new ValueCallBack<List<VRoomBean.RoomsBean>>() {
                     @Override
                     public void onSuccess(List<VRoomBean.RoomsBean> value) {
+                        callBack.onSuccess(createLiveData(value));
+                    }
+
+                    @Override
+                    public void onError(int error, String errorMsg) {
+
+                    }
+                });
+            }
+        }.asLiveData();
+    }
+
+    @Override
+    public LiveData<Resource<VRoomInfoBean>> getRoomInfo(String roomId) {
+        return new NetworkOnlyResource<VRoomInfoBean>() {
+            @Override
+            protected void createCall(@NonNull ResultCallBack<LiveData<VRoomInfoBean>> callBack) {
+                getRoomInfo(roomId, new ValueCallBack<VRoomInfoBean>() {
+                    @Override
+                    public void onSuccess(VRoomInfoBean value) {
                         callBack.onSuccess(createLiveData(value));
                     }
 
@@ -258,5 +281,37 @@ public class ChatroomDataTestManager extends BaseRepository implements ChatroomL
         callBack.onSuccess(typeList);
     }
 
+    private void getRoomInfo(String roomId, ValueCallBack<VRoomInfoBean> callBack) {
+//        Map<String, String> headers = new HashMap<>();
+//        headers.put("Content-Type", "application/json");
+//        JSONObject requestBody = new JSONObject();
+//        try {
+//            requestBody.putOpt("room", roomId);
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//        new VRHttpClientManager.Builder(mContext)
+//                .setUrl("https://a1.easemob.com/voice/room/" + roomId)
+//                .setHeaders(headers)
+//                .setParams(requestBody.toString())
+//                .setRequestMethod(Method_GET)
+//                .asyncExecute(new VRHttpCallback() {
+//                    @Override
+//                    public void onSuccess(String result) {
+//                        Log.e("HttpClient success1: ", result);
+//                        callBack.onSuccess(GsonTools.toBean(result, VRoomInfoBean.class));
+//                    }
+//
+//                    @Override
+//                    public void onError(int code, String msg) {
+//                        Log.e("HttpClient onError: ", code + " msg: " + msg);
+//                        callBack.onError(code, msg);
+//                    }
+//                });
 
+        List<VRoomMicInfo> micInfoList = new ArrayList<>();
+        VRoomDetail room = new VRoomDetail();
+        VRoomInfoBean vRoomInfoBean = new VRoomInfoBean(micInfoList, room);
+        callBack.onSuccess(vRoomInfoBean);
+    }
 }

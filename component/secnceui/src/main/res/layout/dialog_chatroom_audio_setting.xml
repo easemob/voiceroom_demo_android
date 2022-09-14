@@ -32,7 +32,7 @@
 
         <!--  Bot Settings  -->
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/mtBottomSheetBotSetting"
+            android:id="@+id/mtBotSettingsTitle"
             style="@style/chatroom_bottom_sheet_subtitle_style"
             android:text="@string/chatroom_bot_settings"
             app:layout_constraintEnd_toEndOf="parent"
@@ -40,20 +40,20 @@
             app:layout_constraintTop_toBottomOf="@+id/mtBottomSheetTitle" />
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/mtBottomSheetAgoraBot"
+            android:id="@+id/mtAgoraBot"
             style="@style/chatroom_bottom_sheet_text_style"
             android:drawableStart="@drawable/icon_chatroom_setting_bot"
             android:text="@string/chatroom_agora_bot"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/mtBottomSheetBotSetting" />
+            app:layout_constraintTop_toBottomOf="@+id/mtBotSettingsTitle" />
 
         <androidx.appcompat.widget.AppCompatCheckBox
-            android:id="@+id/mcbBottomSheetAgoraBot"
+            android:id="@+id/mcbAgoraBot"
             style="@style/chatroom_bottom_sheet_checkbox"
             android:checked="false"
-            app:layout_constraintBottom_toBottomOf="@+id/mtBottomSheetAgoraBot"
+            app:layout_constraintBottom_toBottomOf="@+id/mtAgoraBot"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/mtBottomSheetAgoraBot" />
+            app:layout_constraintTop_toTopOf="@+id/mtAgoraBot" />
 
         <com.google.android.material.divider.MaterialDivider
             style="@style/chatroom_bottom_sheet_divider_style"
@@ -61,72 +61,72 @@
             android:layout_marginEnd="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/mtBottomSheetAgoraBot" />
+            app:layout_constraintTop_toBottomOf="@+id/mtAgoraBot" />
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/mtBottomSheetBotVolume"
+            android:id="@+id/mtAgoraBotVolume"
             style="@style/chatroom_bottom_sheet_text_style"
             android:layout_marginTop="1dp"
             android:drawableStart="@drawable/icon_chatroom_setting_volume"
             android:text="@string/chatroom_bot_volume"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/mtBottomSheetAgoraBot" />
+            app:layout_constraintTop_toBottomOf="@+id/mtAgoraBot" />
 
         <androidx.appcompat.widget.AppCompatSeekBar
-            android:id="@+id/pbChatroomBotVolume"
+            android:id="@+id/pbAgoraBotVolume"
             style="@style/chatroom_bottom_sheet_progress"
             android:layout_gravity="center_vertical"
             android:contentDescription="@string/chatroom_bot_volume"
             android:thumb="@drawable/icon_progress_thumb20"
-            app:layout_constraintBottom_toBottomOf="@+id/mtBottomSheetBotVolume"
-            app:layout_constraintEnd_toStartOf="@+id/mtChatroomBotVolume"
-            app:layout_constraintStart_toEndOf="@+id/mtBottomSheetBotVolume"
-            app:layout_constraintTop_toTopOf="@+id/mtBottomSheetBotVolume"
+            app:layout_constraintBottom_toBottomOf="@+id/mtAgoraBotVolume"
+            app:layout_constraintEnd_toStartOf="@+id/mtAgoraBotVolumeValue"
+            app:layout_constraintStart_toEndOf="@+id/mtAgoraBotVolume"
+            app:layout_constraintTop_toTopOf="@+id/mtAgoraBotVolume"
             tools:progress="10" />
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/mtChatroomBotVolume"
+            android:id="@+id/mtAgoraBotVolumeValue"
             style="@style/chatroom_bottom_sheet_right_text_style"
-            app:layout_constraintBottom_toBottomOf="@+id/mtBottomSheetBotVolume"
+            app:layout_constraintBottom_toBottomOf="@+id/mtAgoraBotVolume"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/mtBottomSheetBotVolume"
+            app:layout_constraintTop_toTopOf="@+id/mtAgoraBotVolume"
             tools:text="50" />
 
         <!-- Room Audio Settings  -->
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/mtBottomSheetRoomAudioBotSetting"
+            android:id="@+id/mtAgoraChatroomEQTitle"
             style="@style/chatroom_bottom_sheet_subtitle_style"
             android:layout_width="wrap_content"
             android:drawableEnd="@drawable/icon_chatroom_setting_new_tag"
             android:drawablePadding="5dp"
             android:text="@string/chatroom_room_audio_settings"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/mtBottomSheetBotVolume" />
+            app:layout_constraintTop_toBottomOf="@+id/mtAgoraBotVolume" />
 
         <View
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="@color/color_F7F8FB"
-            app:layout_constraintBottom_toBottomOf="@+id/mtBottomSheetRoomAudioBotSetting"
+            app:layout_constraintBottom_toBottomOf="@+id/mtAgoraChatroomEQTitle"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/mtBottomSheetRoomAudioBotSetting"
-            app:layout_constraintTop_toTopOf="@+id/mtBottomSheetRoomAudioBotSetting" />
+            app:layout_constraintStart_toEndOf="@+id/mtAgoraChatroomEQTitle"
+            app:layout_constraintTop_toTopOf="@+id/mtAgoraChatroomEQTitle" />
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/mtBottomSheetSoundEffect"
+            android:id="@+id/mtBestSoundEffect"
             style="@style/chatroom_bottom_sheet_text_style"
             android:drawableStart="@drawable/icon_chatroom_setting_sound_effect"
             android:text="@string/chatroom_best_sound_effect"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/mtBottomSheetRoomAudioBotSetting" />
+            app:layout_constraintTop_toBottomOf="@+id/mtAgoraChatroomEQTitle" />
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/mtBottomSheetSoundEffectArrow"
+            android:id="@+id/mtBestSoundEffectArrow"
             style="@style/chatroom_bottom_sheet_right_text_style"
             android:drawableEnd="@drawable/icon_chatroom_arrow_right_grey"
-            app:layout_constraintBottom_toBottomOf="@+id/mtBottomSheetSoundEffect"
+            app:layout_constraintBottom_toBottomOf="@+id/mtBestSoundEffect"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/mtBottomSheetSoundEffect"
+            app:layout_constraintTop_toTopOf="@+id/mtBestSoundEffect"
             tools:text="KTV" />
 
         <com.google.android.material.divider.MaterialDivider
@@ -135,24 +135,24 @@
             android:layout_marginEnd="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/mtBottomSheetSoundEffect" />
+            app:layout_constraintTop_toBottomOf="@+id/mtBestSoundEffect" />
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/mtBottomSheetNoiseSuppression"
+            android:id="@+id/mtNoiseSuppression"
             style="@style/chatroom_bottom_sheet_text_style"
             android:layout_marginTop="1dp"
             android:drawableStart="@drawable/icon_chatroom_setting_noise_suppression"
             android:text="@string/chatroom_noise_suppression"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/mtBottomSheetSoundEffect" />
+            app:layout_constraintTop_toBottomOf="@+id/mtBestSoundEffect" />
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/mtBottomSheetNoiseSuppressionArrow"
+            android:id="@+id/mtNoiseSuppressionArrow"
             style="@style/chatroom_bottom_sheet_right_text_style"
             android:drawableEnd="@drawable/icon_chatroom_arrow_right_grey"
-            app:layout_constraintBottom_toBottomOf="@+id/mtBottomSheetNoiseSuppression"
+            app:layout_constraintBottom_toBottomOf="@+id/mtNoiseSuppression"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/mtBottomSheetNoiseSuppression"
+            app:layout_constraintTop_toTopOf="@+id/mtNoiseSuppression"
             tools:text="@string/chatroom_medium" />
 
         <com.google.android.material.divider.MaterialDivider
@@ -161,10 +161,10 @@
             android:layout_marginEnd="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/mtBottomSheetNoiseSuppression" />
+            app:layout_constraintTop_toBottomOf="@+id/mtNoiseSuppression" />
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/mtBottomSheetSpatialAudio"
+            android:id="@+id/mtSpatialAudio"
             style="@style/chatroom_bottom_sheet_text_style"
             android:layout_marginTop="1dp"
             android:layout_marginBottom="15dp"
@@ -172,15 +172,15 @@
             android:text="@string/chatroom_spatial_audio"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/mtBottomSheetNoiseSuppression" />
+            app:layout_constraintTop_toBottomOf="@+id/mtNoiseSuppression" />
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/mtBottomSheetSpatialAudioArrow"
+            android:id="@+id/mtSpatialAudioArrow"
             style="@style/chatroom_bottom_sheet_right_text_style"
             android:drawableEnd="@drawable/icon_chatroom_arrow_right_grey"
-            app:layout_constraintBottom_toBottomOf="@+id/mtBottomSheetSpatialAudio"
+            app:layout_constraintBottom_toBottomOf="@+id/mtSpatialAudio"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/mtBottomSheetSpatialAudio"
+            app:layout_constraintTop_toTopOf="@+id/mtSpatialAudio"
             tools:text="@string/chatroom_off" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
