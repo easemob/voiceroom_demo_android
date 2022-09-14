@@ -28,5 +28,15 @@
         <activity
             android:name="io.agora.chatroom.ChatroomLiveActivity"
             android:exported="false"/>
+
+        <activity android:name=".activity.ChatroomListActivity"
+            android:exported="false"/>
+
+        <activity android:name=".activity.ChatroomCreateActivity"
+            android:exported="false"/>
+
+        <activity android:name=".activity.ChatroomProfileActivity"
+            android:exported="false"/>
+
     </application>
 </manifest>

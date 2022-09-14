@@ -55,6 +55,9 @@ android {
     buildFeatures {
         viewBinding true
     }
+    dataBinding{
+        enabled = true
+    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_11
         targetCompatibility JavaVersion.VERSION_11
@@ -97,6 +100,7 @@ dependencies {
         compileOnly project(':common:buddy')
         compileOnly project(':common:baseui')
         compileOnly project(':common:config')
+        compileOnly project(':common:network')
         compileOnly project(':component:secnceui')
     }
 }

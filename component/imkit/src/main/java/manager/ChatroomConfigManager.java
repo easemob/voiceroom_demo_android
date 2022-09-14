@@ -3,7 +3,6 @@ package manager;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.util.Log;
-
 import io.agora.CallBack;
 import io.agora.chat.ChatClient;
 import io.agora.chat.ChatOptions;
@@ -38,12 +37,12 @@ public class ChatroomConfigManager {
         ChatClient.getInstance().login("apex", "1", new CallBack() {
             @Override
             public void onSuccess() {
-                Log.e("DemoApplication","onSuccess");
+                Log.e("ChatroomConfigManager","Login onSuccess");
             }
 
             @Override
             public void onError(int code, String error) {
-                Log.e("DemoApplication","onError");
+                Log.e("ChatroomConfigManager","Login onError: " + error);
             }
         });
     }
@@ -51,6 +50,7 @@ public class ChatroomConfigManager {
     private ChatOptions initChatOptions(Context context){
         ChatOptions options = new ChatOptions();
         options.setAppKey("1107180814253417#myeasuichatdemo");
+        options.setAutoLogin(false);
         return options;
     }
 

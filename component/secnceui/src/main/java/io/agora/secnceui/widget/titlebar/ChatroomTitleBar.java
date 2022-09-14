@@ -94,56 +94,56 @@ public class ChatroomTitleBar extends RelativeLayout implements View.OnClickList
 
     private void parseStyle(Context context, AttributeSet attrs){
         if(attrs != null){
-            TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.AgoraTitleBar);
-            int titleId = ta.getResourceId(R.styleable.AgoraTitleBar_titleBarTitle, -1);
+            TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.RoomTitleBar);
+            int titleId = ta.getResourceId(R.styleable.RoomTitleBar_titleBarTitle, -1);
             if(titleId != -1) {
                 titleView.setText(titleId);
             }else {
-                String title = ta.getString(R.styleable.AgoraTitleBar_titleBarTitle);
+                String title = ta.getString(R.styleable.RoomTitleBar_titleBarTitle);
                 titleView.setText(title);
             }
 
-            Drawable leftDrawable = ta.getDrawable(R.styleable.AgoraTitleBar_titleBarLeftImage);
+            Drawable leftDrawable = ta.getDrawable(R.styleable.RoomTitleBar_titleBarLeftImage);
             if (null != leftDrawable) {
                 leftImage.setImageDrawable(leftDrawable);
             }
-            Drawable rightDrawable = ta.getDrawable(R.styleable.AgoraTitleBar_titleBarRightImage);
+            Drawable rightDrawable = ta.getDrawable(R.styleable.RoomTitleBar_titleBarRightImage);
             if (null != rightDrawable) {
                 rightImage.setImageDrawable(rightDrawable);
             }
 
-            mArrowColorId = ta.getResourceId(R.styleable.AgoraTitleBar_titleBarArrowColor, -1);
-            mArrowColor = ta.getColor(R.styleable.AgoraTitleBar_titleBarArrowColor, Color.BLACK);
+            mArrowColorId = ta.getResourceId(R.styleable.RoomTitleBar_titleBarArrowColor, -1);
+            mArrowColor = ta.getColor(R.styleable.RoomTitleBar_titleBarArrowColor, Color.BLACK);
 
-            Drawable menuDrawable = ta.getDrawable(R.styleable.AgoraTitleBar_titleBarMenuResource);
+            Drawable menuDrawable = ta.getDrawable(R.styleable.RoomTitleBar_titleBarMenuResource);
             if(menuDrawable != null) {
                 toolbar.setOverflowIcon(menuDrawable);
             }
 
-            int rightTitleId = ta.getResourceId(R.styleable.AgoraTitleBar_titleBarRightTitle, -1);
+            int rightTitleId = ta.getResourceId(R.styleable.RoomTitleBar_titleBarRightTitle, -1);
             if(rightTitleId != -1) {
                 titleMenu.setText(rightTitleId);
             }else {
-                String rightTitle = ta.getString(R.styleable.AgoraTitleBar_titleBarRightTitle);
+                String rightTitle = ta.getString(R.styleable.RoomTitleBar_titleBarRightTitle);
                 titleMenu.setText(rightTitle);
             }
 
-            boolean rightVisible = ta.getBoolean(R.styleable.AgoraTitleBar_titleBarRightVisible, false);
+            boolean rightVisible = ta.getBoolean(R.styleable.RoomTitleBar_titleBarRightVisible, false);
             rightLayout.setVisibility(rightVisible ? VISIBLE : GONE);
 
-            mDisplayHomeAsUpEnabled = ta.getBoolean(R.styleable.AgoraTitleBar_titleBarDisplayHomeAsUpEnabled, true);
+            mDisplayHomeAsUpEnabled = ta.getBoolean(R.styleable.RoomTitleBar_titleBarDisplayHomeAsUpEnabled, true);
 
-            int titlePosition = ta.getInteger(R.styleable.AgoraTitleBar_titleBarTitlePosition, 0);
+            int titlePosition = ta.getInteger(R.styleable.RoomTitleBar_titleBarTitlePosition, 0);
             setTitlePosition(titlePosition);
 
-            float titleTextSize = ta.getDimension(R.styleable.AgoraTitleBar_titleBarTitleTextSize, (int) sp2px(getContext(), 18));
+            float titleTextSize = ta.getDimension(R.styleable.RoomTitleBar_titleBarTitleTextSize, (int) sp2px(getContext(), 18));
             titleView.setTextSize(TypedValue.COMPLEX_UNIT_PX, titleTextSize);
 
-            int titleTextColor = ta.getResourceId(R.styleable.AgoraTitleBar_titleBarTitleTextColor, -1);
+            int titleTextColor = ta.getResourceId(R.styleable.RoomTitleBar_titleBarTitleTextColor, -1);
             if(titleTextColor != -1) {
                 mTitleTextColor = ContextCompat.getColor(getContext(), titleTextColor);
             }else {
-                mTitleTextColor = ta.getColor(R.styleable.AgoraTitleBar_titleBarTitleTextColor, ContextCompat.getColor(getContext(), R.color.color_000000));
+                mTitleTextColor = ta.getColor(R.styleable.RoomTitleBar_titleBarTitleTextColor, ContextCompat.getColor(getContext(), R.color.color_000000));
             }
             titleView.setTextColor(mTitleTextColor);
 

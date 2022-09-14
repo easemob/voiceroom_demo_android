@@ -11,6 +11,8 @@ import androidx.core.view.WindowInsetsCompat
 import com.alibaba.android.arouter.launcher.ARouter
 import io.agora.baseui.BaseUiActivity
 import io.agora.chatroom.databinding.ActivityChatroomSplashBinding
+import io.agora.config.RouterPath
+import manager.ChatroomConfigManager
 import java.util.*
 
 
@@ -28,11 +30,12 @@ class ChatroomSplashActivity : BaseUiActivity<ActivityChatroomSplashBinding>() {
         } else {
             binding.mtChatroom.letterSpacing = -0.05f
         }
+        ChatroomConfigManager.getInstance().initRoomConfig(this);
         Handler(Looper.getMainLooper()).postDelayed(Runnable { initSplashPage() }, SPLASH_DELAYED)
     }
 
     private fun initSplashPage() {
-        ARouter.getInstance().build(ChatroomTestActivity.PATH).navigation()
+        ARouter.getInstance().build(RouterPath.ChatroomListPath).navigation()
         finish()
     }
 

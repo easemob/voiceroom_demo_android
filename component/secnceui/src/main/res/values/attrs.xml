@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="AgoraTitleBar">
+    <declare-styleable name="RoomTitleBar">
         <!-- 标题文本 -->
         <attr name="titleBarTitle" format="reference|string"/>
         <!-- 左侧图片 -->

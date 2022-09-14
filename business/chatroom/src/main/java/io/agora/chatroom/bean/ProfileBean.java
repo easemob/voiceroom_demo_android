@@ -1,4 +1,4 @@
-package io.agora.secnceui.bean;
+package io.agora.chatroom.bean;
 
 public class ProfileBean {
    private boolean isChecked;

@@ -16,6 +16,10 @@ public class ErrorCode extends Error {
      * Network is unavailable
      */
     public static final int NETWORK_ERROR = -2;
+    /**
+     * Network problem, please try again later
+     */
+    public static final int ERR_UNKNOWN = -20;
 
 
     public enum Error {
