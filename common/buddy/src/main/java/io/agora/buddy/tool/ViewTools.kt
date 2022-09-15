@@ -1,12 +1,12 @@
 package io.agora.buddy.tool
 
 import android.app.Activity
+import android.content.Context
 import android.content.ContextWrapper
 import android.content.res.Resources
 import android.view.View
 import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
-import androidx.annotation.Nullable
 import androidx.core.content.res.ResourcesCompat
 
 object ViewTools {
@@ -26,5 +26,9 @@ object ViewTools {
     @ColorInt
     fun getColor(resources: Resources, @ColorRes id: Int, theme: Resources.Theme? = null): Int {
         return ResourcesCompat.getColor(resources, id, theme)
+    }
+
+    fun getDrawableId(context: Context, name: String): Int {
+        return context.resources.getIdentifier(name, "drawable", context.packageName)
     }
 }

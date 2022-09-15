@@ -56,8 +56,8 @@ class ChatroomSoundSelectionViewHolder(binding: ItemChatroomSoundSelectionBindin
                     addCustomerMargin(customerImage)
                 }
             }
-            mBinding.root.setOnClickListener { view ->
-                onItemClick(view)
+            mBinding.ivSoundSelectionToggle.setOnClickListener { view ->
+                onItemChildClick(it.isCurrentUsing, view)
             }
         }
     }

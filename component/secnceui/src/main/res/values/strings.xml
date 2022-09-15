@@ -8,6 +8,7 @@
     <string name="chatroom_best_sound_effect">Best Sound Effect</string>
     <string name="chatroom_noise_suppression">Noise Suppression</string>
     <string name="chatroom_spatial_audio">Spatial Audio</string>
+    <string name="chatroom_only_host_can_change_robot">Only host can change the robot settings</string>
     <string name="chatroom_agora_blue">Agora Blue</string>
     <string name="chatroom_agora_red">Agora Red</string>
     <string name="chatroom_agora_blue_bot">Agora Blue Bot</string>
@@ -16,6 +17,7 @@
     <string name="chatroom_air_absorb">Air absorb</string>
     <string name="chatroom_voice_blur">Voice blur</string>
     <string name="chatroom_sound_selection">Sound Selection</string>
+    <string name="chatroom_only_host_can_change_best_sound">Only host can change Best Agora Sound</string>
     <string name="chatroom_sound_selection_tips">Switching other Agora Sound Selection need to exit the chatroom.</string>
     <string name="chatroom_current_customer_usage">Current Customer Usage</string>
     <string name="chatroom_current_sound_selection">Current Sound Selection</string>
@@ -62,6 +64,7 @@
     <string name="chatroom_sounds_audio_feedback">Audio Feedback</string>
     <string name="chatroom_sounds_microphone_finger_rub_sound">Microphone Finger Rub Sound</string>
     <string name="chatroom_sounds_microphone_screen_tap_sound">Screen Tap Sound</string>
+    <string name="chatroom_only_host_can_change_anis">Only host can click to have bot play the sound</string>
     <string name="chatroom_invite">Invite</string>
     <string name="chatroom_mute">Mute</string>
     <string name="chatroom_block">Block</string>
@@ -75,6 +78,7 @@
     <string name="chatroom_submit">Submit</string>
     <string name="chatroom_confirm">Confirm</string>
     <string name="chatroom_cancel">Cancel</string>
+    <string name="chatroom_cancel_request">Cancel Request</string>
     <string name="chatroom_first_enter_room_notice_tips">Welcome to Agora Chat Room 2.0 I am therobot Agora Red. Can you see the robot assistant at the right coner? Click it and experience the new features.</string>
    <string name="chatroom_social_chat_following_customers">The following customers are using it:</string>
     <string name="chatroom_social_chat_more">More Best Agora Sound</string>

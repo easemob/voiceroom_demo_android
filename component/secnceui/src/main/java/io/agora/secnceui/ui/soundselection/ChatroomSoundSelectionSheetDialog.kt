@@ -9,13 +9,17 @@ import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import io.agora.baseui.adapter.BaseRecyclerViewAdapter
-import io.agora.baseui.adapter.OnItemClickListener
+import io.agora.baseui.adapter.OnItemChildClickListener
 import io.agora.baseui.dialog.BaseFixedHeightSheetDialog
+import io.agora.secnceui.R
 import io.agora.secnceui.bean.SoundSelectionBean
 import io.agora.secnceui.databinding.DialogChatroomSoundSelectionBinding
 import io.agora.secnceui.databinding.ItemChatroomSoundSelectionBinding
 
-class ChatroomSoundSelectionSheetDialog constructor(private val soundSelectionListener: OnClickSoundSelectionListener) :
+class ChatroomSoundSelectionSheetDialog constructor(
+    private val soundSelectionListener: OnClickSoundSelectionListener,
+    private val isEnable: Boolean = true
+) :
     BaseFixedHeightSheetDialog<DialogChatroomSoundSelectionBinding>() {
 
     companion object {
@@ -33,6 +37,7 @@ class ChatroomSoundSelectionSheetDialog constructor(private val soundSelectionLi
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        dialog?.window?.attributes?.windowAnimations = R.style.BottomSheetDialogAnimation
         dialog?.setCanceledOnTouchOutside(false)
         arguments?.apply {
             val currentSelection: Int = getInt(KEY_CURRENT_SELECTION)
@@ -48,16 +53,34 @@ class ChatroomSoundSelectionSheetDialog constructor(private val soundSelectionLi
             }
             initAdapter(rvBottomSheetSoundSelection)
         }
-
     }
 
     private fun initAdapter(recyclerView: RecyclerView) {
         soundSelectionAdapter =
-            BaseRecyclerViewAdapter(soundSelectionList, object : OnItemClickListener<SoundSelectionBean> {
-                override fun onItemClick(data: SoundSelectionBean, view: View, position: Int, viewType: Long) {
-                    Toast.makeText(context, "$data", Toast.LENGTH_SHORT).show()
-                    if (!data.isCurrentUsing) {
-                        soundSelectionListener.onSoundEffect(data)
+            BaseRecyclerViewAdapter(soundSelectionList, null, object : OnItemChildClickListener<SoundSelectionBean> {
+                override fun onItemChildClick(
+                    data: SoundSelectionBean?,
+                    extData: Any?,
+                    view: View,
+                    position: Int,
+                    itemViewType: Long
+                ) {
+                    if (isEnable) {
+                        if (extData is Boolean) {
+                            if (!extData) {
+                                data?.let {
+                                    soundSelectionListener.onSoundEffect(it)
+                                }
+                            } else {
+                                Toast.makeText(context, "$data", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    } else {
+                        Toast.makeText(
+                            view.context,
+                            getString(R.string.chatroom_only_host_can_change_best_sound),
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
             }, ChatroomSoundSelectionViewHolder::class.java)

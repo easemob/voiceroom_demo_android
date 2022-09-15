@@ -1,21 +1,18 @@
 package io.agora.secnceui.widget.wheat
 
 import android.content.Context
+import android.graphics.drawable.AnimationDrawable
 import android.util.AttributeSet
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
-import com.opensource.svgaplayer.SVGADrawable
-import com.opensource.svgaplayer.SVGAParser
-import com.opensource.svgaplayer.SVGAVideoEntity
-import io.agora.buddy.tool.logD
+import io.agora.buddy.tool.ViewTools
 import io.agora.secnceui.R
 import io.agora.secnceui.annotation.WheatSeatType
 import io.agora.secnceui.annotation.WheatUserRole
 import io.agora.secnceui.annotation.WheatUserStatus
 import io.agora.secnceui.bean.SeatInfoBean
 import io.agora.secnceui.databinding.ViewChatroom3dSeatBinding
-import java.io.File
 
 class Chatroom3DSeatView : ConstraintLayout {
 
@@ -33,9 +30,7 @@ class Chatroom3DSeatView : ConstraintLayout {
         init(context)
     }
 
-    private val svgaParser by lazy {
-        SVGAParser.shareParser()
-    }
+    private var arrowAnim: AnimationDrawable? = null
 
     private fun init(context: Context) {
         val root = View.inflate(context, R.layout.view_chatroom_3d_seat, this)
@@ -44,24 +39,15 @@ class Chatroom3DSeatView : ConstraintLayout {
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-        svgaParser.decodeFromAssets("chatroom_3d_arrow_one.svga", object : SVGAParser.ParseCompletion {
-            override fun onComplete(videoItem: SVGAVideoEntity) {
-                "ParseCompletion onComplete".logD()
-                val drawable = SVGADrawable(videoItem)
-                mBinding.svgaSeatArrow.setImageDrawable(drawable)
-                mBinding.svgaSeatArrow.startAnimation()
-            }
+        arrowAnim = mBinding.ivSeatArrowAnim.background as AnimationDrawable?
+        mBinding.ivSeatArrowAnim.rotation = 360f
+        arrowAnim?.start()
+    }
 
-            override fun onError() {
-                "ParseCompletion onError".logD()
-            }
-
-        }, object : SVGAParser.PlayCallback {
-            override fun onPlay(file: List<File>) {
-                "PlayCallback onPlay".logD()
-            }
-        })
-        mBinding.svgaSeatArrow.rotation = 360f
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        arrowAnim?.stop()
+        arrowAnim = null
     }
 
     fun binding(seatInfo: SeatInfoBean) {
@@ -101,11 +87,12 @@ class Chatroom3DSeatView : ConstraintLayout {
     private fun setNormalWheatView(seatInfo: SeatInfoBean) {
         mBinding.mtSeatInfoName.text = seatInfo.name
         mBinding.ivSeatInnerIcon.isVisible = false
+        val resId = ViewTools.getDrawableId(context, seatInfo.avatar)
         when (seatInfo.userRole) {
             WheatUserRole.Owner -> {
                 mBinding.ivSeatInfo.apply {
                     setBackgroundResource(R.drawable.bg_oval_white30)
-                    setImageResource(seatInfo.avatar.avatar)
+                    setImageResource(resId)
                 }
                 mBinding.mtSeatInfoName.setCompoundDrawablesWithIntrinsicBounds(
                     R.drawable.icon_seat_owner_tag, 0, 0, 0
@@ -114,7 +101,7 @@ class Chatroom3DSeatView : ConstraintLayout {
             else -> {
                 mBinding.ivSeatInfo.apply {
                     setBackgroundResource(R.drawable.bg_oval_white30)
-                    setImageResource(seatInfo.avatar.avatar)
+                    setImageResource(resId)
                 }
                 mBinding.mtSeatInfoName.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
             }
@@ -144,11 +131,11 @@ class Chatroom3DSeatView : ConstraintLayout {
 
 
     fun changeAngle(angle: Float) {
-        val layoutParams: ConstraintLayout.LayoutParams = mBinding.svgaSeatArrow.layoutParams as LayoutParams
+        val layoutParams: ConstraintLayout.LayoutParams = mBinding.ivSeatArrowAnim.layoutParams as LayoutParams
         layoutParams.circleAngle = angle
-        mBinding.svgaSeatArrow.rotation = angle
+        mBinding.ivSeatArrowAnim.rotation = angle
 
-        mBinding.svgaSeatArrow.layoutParams = layoutParams
+        mBinding.ivSeatArrowAnim.layoutParams = layoutParams
     }
 
 }

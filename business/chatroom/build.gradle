@@ -30,10 +30,8 @@ android {
                 arg("AROUTER_MODULE_NAME", project.getName())
             }
         }
-//        if (isChatroomModule.toBoolean()) {
-//            // 独立调试时添加 applicationId ，集成调试时移除
-//            applicationId "io.agora.chatroom"
-//        }
+        buildConfigField "String", "agora_app_id", "${AGORA_APP_ID}"
+        buildConfigField "String", "agora_app_token", "${AGORA_APP_TOKEN}"
     }
     sourceSets {
         main {

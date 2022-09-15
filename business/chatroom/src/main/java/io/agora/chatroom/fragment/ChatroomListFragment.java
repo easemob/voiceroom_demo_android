@@ -8,6 +8,9 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
+
+import com.alibaba.android.arouter.launcher.ARouter;
+
 import java.util.List;
 import io.agora.baseui.general.callback.OnResourceParseCallback;
 import io.agora.baseui.general.net.Resource;
@@ -15,6 +18,8 @@ import io.agora.chatroom.R;
 import io.agora.chatroom.adapter.ChatroomListAdapter;
 import io.agora.chatroom.model.PageViewModel;
 import io.agora.chatroom.model.ChatroomViewModel;
+import io.agora.config.RouterParams;
+import io.agora.config.RouterPath;
 import tools.bean.VRoomBean;
 
 public class ChatroomListFragment extends BaseChatroomListFragment<VRoomBean.RoomsBean> {
@@ -85,6 +90,11 @@ public class ChatroomListFragment extends BaseChatroomListFragment<VRoomBean.Roo
     @Override
     public void onItemClick(View view, int position) {
         VRoomBean.RoomsBean roomBean = listAdapter.getItem(position);
+        ARouter.getInstance()
+                .build(RouterPath.ChatroomPath)
+                .withInt(RouterParams.KEY_CHATROOM_TYPE, roomBean.getType())
+                .withSerializable(RouterParams.KEY_CHATROOM_INFO, roomBean)
+                .navigation();
     }
 
     @Override

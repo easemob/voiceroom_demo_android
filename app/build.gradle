@@ -73,7 +73,9 @@ dependencies {
     kapt dep["arouter-compiler"]
 
     // business
-    implementation project(":business:chatroom")
+    if (!isChatroomModule.toBoolean()){
+        implementation project(":business:chatroom")
+    }
     // basics depend
     implementation project(":basicsdepend")
 }

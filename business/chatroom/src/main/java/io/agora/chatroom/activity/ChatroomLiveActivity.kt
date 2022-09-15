@@ -1,15 +1,20 @@
 package io.agora.chatroom.activity
 
 import android.os.Bundle
+import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
+import androidx.lifecycle.Observer
 import com.alibaba.android.arouter.facade.annotation.Route
 import io.agora.baseui.BaseUiActivity
 import io.agora.baseui.BaseUiTool
+import io.agora.baseui.general.callback.OnResourceParseCallback
+import io.agora.baseui.general.net.Resource
+import io.agora.buddy.tool.logD
 import io.agora.chatroom.databinding.ActivityChatroomBinding
 import io.agora.chatroom.ui.ChatroomLiveTopViewModel
 import io.agora.chatroom.ui.ChatroomTopViewHelper
@@ -18,6 +23,8 @@ import io.agora.config.ConfigConstants
 import io.agora.config.RouterParams
 import io.agora.config.RouterPath
 import io.agora.secnceui.ui.wheat.ChatroomWheatConstructor
+import tools.bean.VRoomBean
+import tools.bean.VRoomInfoBean
 
 @Route(path = RouterPath.ChatroomPath)
 class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>() {
@@ -28,8 +35,8 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>() {
         intent.getIntExtra(RouterParams.KEY_CHATROOM_TYPE, ConfigConstants.Common_Chatroom)
     }
 
-    private val chatroomId by lazy {
-        intent.getStringExtra(RouterParams.KEY_CHATROOM_ID)
+    private val roomBean: VRoomBean.RoomsBean? by lazy {
+        intent.getSerializableExtra(RouterParams.KEY_CHATROOM_INFO) as VRoomBean.RoomsBean?
     }
 
     override fun getViewBinding(inflater: LayoutInflater): ActivityChatroomBinding {
@@ -43,6 +50,18 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>() {
         initView()
         // test
         test()
+        initData()
+    }
+
+    private fun initData() {
+        roomBean?.let {
+            chatroomLiveTopViewModel.getRoomInfo(it.room_id ?: "")
+        }
+        chatroomLiveTopViewModel.getRoomInfoObservable().observe(this,
+            Observer { response: Resource<VRoomInfoBean> ->
+                val roomInfoBean = response.data
+                "$roomInfoBean".logD()
+            })
     }
 
     private fun initListeners() {
@@ -57,10 +76,12 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>() {
         binding.cTopView.setOnLiveTopClickListener(
             ChatroomTopViewHelper.createTopViewClickListener(this, finishBack = {
                 finish()
-            })
+            }, false)
         )
-        binding.chatroomGiftView.init(chatroomId)
-        binding.messageView.init(chatroomId)
+//        roomBean?.let {
+//            binding.chatroomGiftView.init(it.room_id ?: "")
+//            binding.messageView.init(it.room_id ?: "")
+//        }
         chatroomLiveTopViewModel.setIChatroomLiveTopView(binding.cTopView)
     }
 

@@ -8,4 +8,7 @@ object ScenesConstant {
     const val KeySeat4 = "seat4"
     const val KeySeatRed = "seat5"
     const val KeySeatCenter = "seat6"
+
+    const val ENABLE_ALPHA = 1.0f
+    const val DISABLE_ALPHA = 0.4f
 }

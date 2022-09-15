@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import io.agora.baseui.adapter.OnItemClickListener
 import io.agora.baseui.dialog.BaseSheetDialog
-import io.agora.buddy.tool.GlideTools
+import io.agora.buddy.tool.ViewTools
 import io.agora.buddy.tool.dp
 import io.agora.secnceui.R
 import io.agora.secnceui.annotation.WheatSeatType
@@ -23,7 +23,7 @@ import io.agora.secnceui.databinding.DialogChatroomSeatManagerBinding
 import io.agora.secnceui.ui.seatmanger.ChatroomSeatManagerAdapter
 import io.agora.secnceui.ui.seatmanger.ChatroomSeatManagerViewHolder
 
-class ChatroomSeatManagerSheetDialog constructor(): BaseSheetDialog<DialogChatroomSeatManagerBinding>() {
+class ChatroomSeatManagerSheetDialog constructor() : BaseSheetDialog<DialogChatroomSeatManagerBinding>() {
 
     companion object {
         const val KEY_SEAT_INFO = "seat_info"
@@ -91,7 +91,7 @@ class ChatroomSeatManagerSheetDialog constructor(): BaseSheetDialog<DialogChatro
                 else -> {
                     mtSeatInfoName.text = seatInfo.name
                     ivSeatInnerIcon.isVisible = false
-                    ivSeatInfo.setImageResource(seatInfo.avatar.avatar)
+                    ivSeatInfo.setImageResource(ViewTools.getDrawableId(ivSeatInfo.context, seatInfo.avatar))
                     ivSeatMic.apply {
                         when (seatInfo.userStatus) {
                             WheatUserStatus.None -> {
@@ -112,8 +112,10 @@ class ChatroomSeatManagerSheetDialog constructor(): BaseSheetDialog<DialogChatro
                                 setImageResource(R.drawable.icon_seat_on_mic1)
                             }
                         }
+
                     }
                 }
+
             }
         }
     }

@@ -26,31 +26,35 @@ import io.agora.secnceui.widget.top.OnLiveTopClickListener
  */
 object ChatroomTopViewHelper {
 
-    fun createTopViewClickListener(activity: FragmentActivity, finishBack: () -> Unit): OnLiveTopClickListener {
+    fun createTopViewClickListener(
+        activity: FragmentActivity,
+        finishBack: () -> Unit,
+        isOwner: Boolean = true
+    ): OnLiveTopClickListener {
         val liveTopClickListener = object : OnLiveTopClickListener {
             override fun onClickView(view: View, action: Int) {
                 when (action) {
                     ChatroomLiveTopView.ClickAction.BACK -> {
-                            CommonFragmentAlertDialog()
-                                .titleText(activity.getString(R.string.chatroom_prompt))
-                                .contentText(activity.getString(R.string.chatroom_exit))
-                                .leftText(activity.getString(R.string.chatroom_cancel))
-                                .rightText(activity.getString(R.string.chatroom_confirm))
-                                .setOnClickListener(object : CommonFragmentAlertDialog.OnClickBottomListener {
-                                    override fun onConfirmClick() {
-                                        finishBack.invoke()
-                                    }
-                                })
-                                .show(activity.supportFragmentManager, "mtExitDialog")
+                        CommonFragmentAlertDialog()
+                            .titleText(activity.getString(R.string.chatroom_prompt))
+                            .contentText(activity.getString(R.string.chatroom_exit))
+                            .leftText(activity.getString(R.string.chatroom_cancel))
+                            .rightText(activity.getString(R.string.chatroom_confirm))
+                            .setOnClickListener(object : CommonFragmentAlertDialog.OnClickBottomListener {
+                                override fun onConfirmClick() {
+                                    finishBack.invoke()
+                                }
+                            })
+                            .show(activity.supportFragmentManager, "mtExitDialog")
                     }
                     ChatroomLiveTopView.ClickAction.RANK -> {
                         "排行榜".logD()
-                        ChatroomContributionAndAudienceSheetDialog(activity).show(
-                            activity.supportFragmentManager,
-                            "ContributionAndAudienceSheetDialog"
-                        )
+//                        ChatroomContributionAndAudienceSheetDialog(activity).show(
+//                            activity.supportFragmentManager,
+//                            "ContributionAndAudienceSheetDialog"
+//                        )
                         // TODO: test 音效设置
-                       // showAudioSettingsDialog(activity,finishBack)
+                        showAudioSettingsDialog(activity, finishBack, isOwner)
                     }
                     ChatroomLiveTopView.ClickAction.NOTICE -> {
                         CommonSheetContentDialog()
@@ -67,7 +71,7 @@ object ChatroomTopViewHelper {
                             ChatroomSocialChatSheetDialog.OnClickSocialChatListener {
 
                             override fun onMoreSound() {
-                                ChatroomSpatialAudioSheetDialog().show(
+                                ChatroomSpatialAudioSheetDialog(false).show(
                                     activity.supportFragmentManager, "mtSpatialAudio"
                                 )
                             }
@@ -81,13 +85,14 @@ object ChatroomTopViewHelper {
         return liveTopClickListener
     }
 
-    fun showAudioSettingsDialog(activity: FragmentActivity, finishBack: () -> Unit) {
+    fun showAudioSettingsDialog(activity: FragmentActivity, finishBack: () -> Unit, isOwner: Boolean) {
         ChatroomAudioSettingsSheetDialog(object :
             ChatroomAudioSettingsSheetDialog.OnClickAudioSettingsListener {
 
-            override fun onSoundEffect(@SoundSelectionType soundSelection: Int) {
+            override fun onSoundEffect(@SoundSelectionType soundSelection: Int, isEnable: Boolean) {
                 ChatroomSoundSelectionSheetDialog(object :
                     ChatroomSoundSelectionSheetDialog.OnClickSoundSelectionListener {
+
                     override fun onSoundEffect(soundSelection: SoundSelectionBean) {
                         CommonFragmentAlertDialog()
                             .titleText(activity.getString(R.string.chatroom_prompt))
@@ -103,7 +108,7 @@ object ChatroomTopViewHelper {
                             .show(activity.supportFragmentManager, "mtCenterDialog")
                     }
 
-                }).apply {
+                }, isEnable).apply {
                     arguments = Bundle().apply {
                         putInt(
                             ChatroomSoundSelectionSheetDialog.KEY_CURRENT_SELECTION,
@@ -114,8 +119,8 @@ object ChatroomTopViewHelper {
                     .show(activity.supportFragmentManager, "mtSoundSelection")
             }
 
-            override fun onNoiseSuppression(@AINSModeType ainsModeType: Int) {
-                ChatroomAINSSheetDialog().apply {
+            override fun onNoiseSuppression(@AINSModeType ainsModeType: Int, isEnable: Boolean) {
+                ChatroomAINSSheetDialog(isEnable).apply {
                     arguments = Bundle().apply {
                         putInt(ChatroomAINSSheetDialog.KEY_AINS_MODE, AINSModeType.High)
                     }
@@ -123,8 +128,8 @@ object ChatroomTopViewHelper {
                     .show(activity.supportFragmentManager, "mtAnis")
             }
 
-            override fun onSpatialAudio(isOpen: Boolean) {
-                ChatroomSpatialAudioSheetDialog().apply {
+            override fun onSpatialAudio(isOpen: Boolean, isEnable: Boolean) {
+                ChatroomSpatialAudioSheetDialog(isEnable).apply {
                     arguments = Bundle().apply {
                         putBoolean(ChatroomSpatialAudioSheetDialog.KEY_SPATIAL_OPEN, isOpen)
                     }
@@ -132,7 +137,7 @@ object ChatroomTopViewHelper {
                     .show(activity.supportFragmentManager, "mtSpatialAudio")
             }
 
-        }).apply {
+        }, isOwner).apply {
             arguments = Bundle().apply {
                 //test
                 val audioSettingsInfo = ChatroomAudioSettingsBean(

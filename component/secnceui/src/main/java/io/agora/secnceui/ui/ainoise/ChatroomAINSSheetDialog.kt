@@ -20,7 +20,9 @@ import io.agora.secnceui.databinding.DialogChatroomAinsBinding
 import io.agora.secnceui.databinding.ItemChatroomAgoraAinsBinding
 import io.agora.secnceui.databinding.ItemChatroomAinsAuditionBinding
 
-class ChatroomAINSSheetDialog constructor() : BaseFixedHeightSheetDialog<DialogChatroomAinsBinding>() {
+class ChatroomAINSSheetDialog constructor(
+    private val isEnable: Boolean = true
+) : BaseFixedHeightSheetDialog<DialogChatroomAinsBinding>() {
 
     companion object {
         const val KEY_AINS_MODE = "ains_mode"
@@ -44,6 +46,7 @@ class ChatroomAINSSheetDialog constructor() : BaseFixedHeightSheetDialog<DialogC
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        dialog?.window?.attributes?.windowAnimations = R.style.BottomSheetDialogAnimation
         dialog?.setCanceledOnTouchOutside(false)
         arguments?.apply {
             val anis = getInt(KEY_AINS_MODE)
@@ -75,14 +78,18 @@ class ChatroomAINSSheetDialog constructor() : BaseFixedHeightSheetDialog<DialogC
             ) {
                 super.onItemChildClick(data, extData, view, position, itemViewType)
                 data?.let {
-                    if (extData is Int) {
-                        if (it.anisMode == extData) {
-                            return
-                        } else {
-                            data.anisMode = extData
-                            anisModeAdapter?.notifyItemChanged(position)
+                    if (isEnable){
+                        if (extData is Int) {
+                            if (it.anisMode == extData) {
+                                return
+                            } else {
+                                data.anisMode = extData
+                                anisModeAdapter?.notifyItemChanged(position)
+                            }
+                            Toast.makeText(view.context, "AINS Mode $extData", Toast.LENGTH_SHORT).show()
                         }
-                        Toast.makeText(view.context, "AINS Mode $extData", Toast.LENGTH_SHORT).show()
+                    }else{
+                        Toast.makeText(view.context, getString(R.string.chatroom_only_host_can_change_anis), Toast.LENGTH_SHORT).show()
                     }
                 }
             }

@@ -18,6 +18,16 @@ class RtcMiddleServiceImpl : IRtcMiddleService {
         AgoraRtcClientEx()
     }
 
+    /**机器人小蓝*/
+    private val rtcBlueBotClient:RtcBaseClientEx<*> by lazy {
+        AgoraRtcClientEx()
+    }
+
+    /**机器人小红*/
+    private val rtcRedBotClient:RtcBaseClientEx<*> by lazy {
+        AgoraRtcClientEx()
+    }
+
     override fun initMain(context: Context, middleListener: IRtcMiddleServiceListener, config: RtcInitConfig) {
         this.rtcMiddleListener = middleListener
         rtcClient.createClient(context, config, middleListener)

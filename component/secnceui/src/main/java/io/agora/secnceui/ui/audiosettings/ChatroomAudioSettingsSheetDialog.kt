@@ -9,9 +9,15 @@ import io.agora.secnceui.R
 import io.agora.secnceui.annotation.AINSModeType
 import io.agora.secnceui.annotation.SoundSelectionType
 import io.agora.secnceui.bean.ChatroomAudioSettingsBean
+import io.agora.secnceui.constants.ScenesConstant
+import io.agora.secnceui.constants.ScenesConstant.DISABLE_ALPHA
+import io.agora.secnceui.constants.ScenesConstant.ENABLE_ALPHA
 import io.agora.secnceui.databinding.DialogChatroomAudioSettingBinding
 
-class ChatroomAudioSettingsSheetDialog constructor(private val audioSettingsListener: OnClickAudioSettingsListener) :
+class ChatroomAudioSettingsSheetDialog constructor(
+    private val audioSettingsListener: OnClickAudioSettingsListener,
+    private val isEnable: Boolean = true
+) :
     BaseFixedHeightSheetDialog<DialogChatroomAudioSettingBinding>() {
 
     companion object {
@@ -31,24 +37,36 @@ class ChatroomAudioSettingsSheetDialog constructor(private val audioSettingsList
         }
         binding?.apply {
             setOnApplyWindowInsets(clContent)
+            if (isEnable) {
+                mcbAgoraBot.alpha = ENABLE_ALPHA
+                pbAgoraBotVolume.alpha = ENABLE_ALPHA
+            } else {
+                mcbAgoraBot.alpha = DISABLE_ALPHA
+                pbAgoraBotVolume.alpha = DISABLE_ALPHA
+            }
+            mcbAgoraBot.isEnabled = isEnable
+            pbAgoraBotVolume.isEnabled = isEnable
+
             audioSettingsInfo?.let { audioInfo ->
-                mcbBottomSheetAgoraBot.isChecked = audioInfo.botOpen
-                pbChatroomBotVolume.progress = audioInfo.botVolume
-                mtChatroomBotVolume.text = audioInfo.botVolume.toString()
-                mtBottomSheetSoundEffectArrow.text =
+                mcbAgoraBot.isChecked = audioInfo.botOpen
+                pbAgoraBotVolume.progress = audioInfo.botVolume
+                mtAgoraBotVolumeValue.text = audioInfo.botVolume.toString()
+                mtBestSoundEffectArrow.text =
                     ChatroomAudioSettingsConstructor.getSoundEffectName(view.context, audioInfo.soundSelection)
-                mtBottomSheetNoiseSuppressionArrow.text =
+                mtNoiseSuppressionArrow.text =
                     ChatroomAudioSettingsConstructor.getAINSName(view.context, audioInfo.anisMode)
-                mtBottomSheetSpatialAudioArrow.text =
-                    if (audioInfo.spatialOpen) view.context.getString(R.string.chatroom_open) else view.context.getString(R.string.chatroom_off)
-                mtBottomSheetSoundEffectArrow.setOnClickListener {
-                    audioSettingsListener.onSoundEffect(audioInfo.soundSelection)
+                mtSpatialAudioArrow.text =
+                    if (audioInfo.spatialOpen) view.context.getString(R.string.chatroom_open) else view.context.getString(
+                        R.string.chatroom_off
+                    )
+                mtBestSoundEffectArrow.setOnClickListener {
+                    audioSettingsListener.onSoundEffect(audioInfo.soundSelection, isEnable)
                 }
-                mtBottomSheetNoiseSuppressionArrow.setOnClickListener {
-                    audioSettingsListener.onNoiseSuppression(audioInfo.anisMode)
+                mtNoiseSuppressionArrow.setOnClickListener {
+                    audioSettingsListener.onNoiseSuppression(audioInfo.anisMode, isEnable)
                 }
-                mtBottomSheetSpatialAudioArrow.setOnClickListener {
-                    audioSettingsListener.onSpatialAudio(audioInfo.spatialOpen)
+                mtSpatialAudioArrow.setOnClickListener {
+                    audioSettingsListener.onSpatialAudio(audioInfo.spatialOpen, isEnable)
                 }
             }
         }
@@ -56,10 +74,10 @@ class ChatroomAudioSettingsSheetDialog constructor(private val audioSettingsList
 
     interface OnClickAudioSettingsListener {
 
-        fun onSoundEffect(@SoundSelectionType soundSelection: Int)
+        fun onSoundEffect(@SoundSelectionType soundSelection: Int, isEnable: Boolean)
 
-        fun onNoiseSuppression(@AINSModeType ainsModeType: Int)
+        fun onNoiseSuppression(@AINSModeType ainsModeType: Int, isEnable: Boolean)
 
-        fun onSpatialAudio(isOpen: Boolean)
+        fun onSpatialAudio(isOpen: Boolean, isEnable: Boolean)
     }
 }
