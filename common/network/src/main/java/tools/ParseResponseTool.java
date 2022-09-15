@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 
 import tools.bean.VRGiftBean;
 import tools.bean.VRMicBean;
+import tools.bean.VRUserBean;
 import tools.bean.VRoomBean;
 import tools.bean.VRoomUserBean;
 
@@ -36,6 +37,10 @@ public class ParseResponseTool {
 
     public VRGiftBean parseVRGiftBean(String response){
         return gson.fromJson(response, VRGiftBean.class);
+    }
+
+    public VRUserBean parseVRUserBean(String response){
+        return gson.fromJson(response, VRUserBean.class);
     }
 
 }

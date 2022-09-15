@@ -78,6 +78,10 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>() {
                 finish()
             }, false)
         )
+//        roomBean?.let {
+//            binding.chatroomGiftView.init(it.room_id ?: "")
+//            binding.messageView.init(it.room_id ?: "")
+//        }
         chatroomLiveTopViewModel.setIChatroomLiveTopView(binding.cTopView)
     }
 
