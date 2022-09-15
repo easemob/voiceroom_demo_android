@@ -34,22 +34,11 @@ public class ChatroomConfigManager {
         }
         ChatClient.getInstance().init(context,options);
 
-        ChatClient.getInstance().login("apex", "1", new CallBack() {
-            @Override
-            public void onSuccess() {
-                Log.e("ChatroomConfigManager","Login onSuccess");
-            }
-
-            @Override
-            public void onError(int code, String error) {
-                Log.e("ChatroomConfigManager","Login onError: " + error);
-            }
-        });
     }
 
     private ChatOptions initChatOptions(Context context){
         ChatOptions options = new ChatOptions();
-        options.setAppKey("1107180814253417#myeasuichatdemo");
+        options.setAppKey("52117440#955012");
         options.setAutoLogin(false);
         return options;
     }

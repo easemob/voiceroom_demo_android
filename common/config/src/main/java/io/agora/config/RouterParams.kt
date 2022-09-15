@@ -5,4 +5,5 @@ package io.agora.config
  */
 object RouterParams {
     const val KEY_CHATROOM_TYPE = "chatroom_type"
+    const val KEY_CHATROOM_ID = "chatroom_id"
 }

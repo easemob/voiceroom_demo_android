@@ -28,6 +28,10 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>() {
         intent.getIntExtra(RouterParams.KEY_CHATROOM_TYPE, ConfigConstants.Common_Chatroom)
     }
 
+    private val chatroomId by lazy {
+        intent.getStringExtra(RouterParams.KEY_CHATROOM_ID)
+    }
+
     override fun getViewBinding(inflater: LayoutInflater): ActivityChatroomBinding {
         return ActivityChatroomBinding.inflate(inflater)
     }
@@ -55,6 +59,8 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>() {
                 finish()
             })
         )
+        binding.chatroomGiftView.init(chatroomId)
+        binding.messageView.init(chatroomId)
         chatroomLiveTopViewModel.setIChatroomLiveTopView(binding.cTopView)
     }
 

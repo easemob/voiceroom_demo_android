@@ -45,6 +45,6 @@ rootProject.ext {
             // rtc && im
             "agora-rtc"                 : 'io.agora.rtc:agora-full-beta:4.0.0-beta.1',
             "agora-im"                  : 'io.agora.rtm:rtm-sdk:1.5.0',
-            "agora-chat"                : 'io.agora.rtc:chat-sdk:1.0.6',
+//            "agora-chat"                : 'io.agora.rtc:chat-sdk:1.0.6',
     ]
 }
