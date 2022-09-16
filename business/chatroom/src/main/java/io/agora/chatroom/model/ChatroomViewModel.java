@@ -1,6 +1,7 @@
 package io.agora.chatroom.model;
 
 import android.app.Application;
+import android.content.Context;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -15,28 +16,34 @@ import tools.bean.VRoomBean;
 public class ChatroomViewModel extends AndroidViewModel {
     private ChatroomRepository mRepository;
     private SingleSourceLiveData<Resource<List<VRoomBean.RoomsBean>>> roomObservable;
+    private SingleSourceLiveData<Resource<Boolean>> joinObservable;
 
     public ChatroomViewModel(@NonNull Application application) {
         super(application);
-        mRepository = ChatroomRepository.getInstance();
+        mRepository = new ChatroomRepository();
         roomObservable = new SingleSourceLiveData<>();
+        joinObservable = new SingleSourceLiveData<>();
     }
 
     public LiveData<Resource<List<VRoomBean.RoomsBean>>> getRoomObservable() {
         return roomObservable;
     }
 
-
-    public void getDataList(int type){
-        roomObservable.setSource(mRepository.getRoomList(type));
+    public LiveData<Resource<Boolean>> getJoinObservable() {
+        return joinObservable;
     }
 
-    public void getAllDataList(){
-        roomObservable.setSource(mRepository.getAllRoomList());
+
+    public void getDataList(Context context,int pageSize,int type){
+        roomObservable.setSource(mRepository.getRoomList(context,pageSize,type));
     }
 
-    public ChatroomRepository getRoomRepository(){
-        return mRepository;
+    public void joinRoom(Context context,String roomId){
+        joinObservable.setSource(mRepository.joinRoom(context,roomId,""));
+    }
+
+    public void joinRoom(Context context,String roomId,String password){
+        joinObservable.setSource(mRepository.joinRoom(context,roomId,password));
     }
 
     /**
@@ -44,5 +51,6 @@ public class ChatroomViewModel extends AndroidViewModel {
      */
     public void clearRegisterInfo() {
         roomObservable.setValue(null);
+        joinObservable.setValue(null);
     }
 }

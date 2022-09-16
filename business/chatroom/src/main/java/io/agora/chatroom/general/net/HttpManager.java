@@ -1,25 +1,37 @@
 package io.agora.chatroom.general.net;
 
+import static http.VRHttpClientManager.Method_GET;
 import static http.VRHttpClientManager.Method_POST;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import http.VRHttpCallback;
 import http.VRHttpClientManager;
 import http.VRRequestApi;
-import io.agora.ValueCallBack;
+import io.agora.buddy.tool.GsonTools;
+import io.agora.chatroom.general.repositories.ProfileManager;
 import tools.ParseResponseTool;
+import tools.ValueCallBack;
 import tools.bean.VRUserBean;
+import tools.bean.VRoomBean;
+import tools.bean.VRoomDetail;
+import tools.bean.VRoomInfoBean;
+import tools.bean.VRoomMicInfo;
 
 public class HttpManager {
 
     private static HttpManager mInstance;
+    private static Context mContext;
 
-    public static HttpManager getInstance() {
+    public static HttpManager getInstance(Context context) {
         if (mInstance == null) {
             synchronized (HttpManager.class) {
                 if (mInstance == null) {
@@ -27,10 +39,11 @@ public class HttpManager {
                 }
             }
         }
+        mContext = context;
         return mInstance;
     }
    //登录
-   public void loginWithToken(Context context,String device, ValueCallBack<VRUserBean> callBack){
+   public void loginWithToken(String device, ValueCallBack<VRUserBean> callBack){
       Map<String, String> headers = new HashMap<>();
       headers.put("Content-Type", "application/json");
       JSONObject requestBody = new JSONObject();
@@ -38,12 +51,12 @@ public class HttpManager {
          requestBody.putOpt("deviceId", device);
           requestBody.putOpt("name", "apex");
           requestBody.putOpt("portrait", "");
-//          requestBody.putOpt("phone", "手机号");
-//          requestBody.putOpt("verify_code", "验证码");
+//          requestBody.putOpt("phone", "手机号后期上");
+//          requestBody.putOpt("verify_code", "验证码后期上");
       } catch (JSONException e) {
          e.printStackTrace();
       }
-      new VRHttpClientManager.Builder(context)
+      new VRHttpClientManager.Builder(mContext)
               .setUrl(VRRequestApi.get().login())
               .setHeaders(headers)
               .setParams(requestBody.toString())
@@ -83,7 +96,40 @@ public class HttpManager {
      * 获取指定语聊房信息
      * @param roomId
      */
-    public void getRoomDetails(String roomId){}
+    public void getRoomDetails(String roomId,ValueCallBack< VRoomInfoBean > callBack){
+//        Map<String, String> headers = new HashMap<>();
+//        headers.put("Content-Type", "application/json");
+//        JSONObject requestBody = new JSONObject();
+//        try {
+//            requestBody.putOpt("room", roomId);
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//        new VRHttpClientManager.Builder(mContext)
+//                .setUrl("https://a1.easemob.com/voice/room/" + roomId)
+//                .setHeaders(headers)
+//                .setParams(requestBody.toString())
+//                .setRequestMethod(Method_GET)
+//                .asyncExecute(new VRHttpCallback() {
+//                    @Override
+//                    public void onSuccess(String result) {
+//                        Log.e("HttpClient success1: ", result);
+//                        callBack.onSuccess(GsonTools.toBean(result, VRoomInfoBean.class));
+//                    }
+//
+//                    @Override
+//                    public void onError(int code, String msg) {
+//                        Log.e("HttpClient onError: ", code + " msg: " + msg);
+//                        callBack.onError(code, msg);
+//                    }
+//                });
+
+            List<VRoomMicInfo> micInfoList = new ArrayList<>();
+            VRoomDetail room = new VRoomDetail();
+            VRoomInfoBean vRoomInfoBean = new VRoomInfoBean(micInfoList, room);
+            callBack.onSuccess(vRoomInfoBean);
+
+    }
 
     /**
      * 根据id删除房间
@@ -105,11 +151,37 @@ public class HttpManager {
 
     /**
      * 获取房间列表
-     * @param cursor
      * @param limit
      * @param type
      */
-    public void getRoomFromServer(String cursor,int limit,int type){}
+    public void getRoomFromServer(int limit,int type,ValueCallBack<List<VRoomBean.RoomsBean>> callBack){
+        VRUserBean userBean = ProfileManager.getInstance().getProfile();
+        ArrayList<String> cursor = new ArrayList<>();
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Content-Type", "application/json");
+        headers.put("Authorization", "Bearer " + userBean.getAuthorization());
+        new VRHttpClientManager.Builder(mContext)
+                .setUrl(VRRequestApi.get().getRoomList(cursor.size() == 0 ? "": cursor.get(0), limit,type))
+                .setHeaders(headers)
+                .setParams("")
+                .setRequestMethod(Method_GET)
+                .asyncExecute(new VRHttpCallback() {
+                    @Override
+                    public void onSuccess(String result) {
+                        VRoomBean bean = GsonTools.toBean(result,VRoomBean.class);
+                        if (!TextUtils.isEmpty(bean.getCursor())){
+                            cursor.add(0,bean.getCursor());
+                        }
+                        callBack.onSuccess(bean.getRooms());
+                    }
+
+                    @Override
+                    public void onError(int code, String msg) {
+                        Log.e("getRoomFromServer onError: ",code + " msg: " + msg);
+                        callBack.onError(code,msg);
+                    }
+                });
+    }
 
     /**
      ***********************************Room user 操作请求***************************
@@ -128,7 +200,40 @@ public class HttpManager {
      * @param roomId
      * @param password
      */
-    public void joinRoom(String roomId,String password){}
+    public void joinRoom(String roomId,String password,ValueCallBack<Boolean> callBack){
+        VRUserBean userBean = ProfileManager.getInstance().getProfile();
+        Log.e("joinRoom","roomId:"+roomId);
+        Log.e("joinRoom","Authorization:"+ userBean.getAuthorization());
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Content-Type", "application/json");
+        headers.put("Authorization", "Bearer " + userBean.getAuthorization());
+        JSONObject requestBody = new JSONObject();
+        try {
+            if (!TextUtils.isEmpty(password)){
+                requestBody.putOpt("password", password);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        new VRHttpClientManager.Builder(mContext)
+                .setUrl(VRRequestApi.get().joinRoom(roomId))
+                .setHeaders(headers)
+                .setParams(requestBody.toString())
+                .setRequestMethod(Method_POST)
+                .asyncExecute(new VRHttpCallback() {
+                    @Override
+                    public void onSuccess(String result) {
+                        Log.e("joinRoom success: ",result);
+                        callBack.onSuccess(true);
+                    }
+
+                    @Override
+                    public void onError(int code, String msg) {
+                        Log.e("joinRoom onError: ",code + " msg: " + msg);
+                        callBack.onError(code,msg);
+                    }
+                });
+    }
 
     /**
      * 离开房间

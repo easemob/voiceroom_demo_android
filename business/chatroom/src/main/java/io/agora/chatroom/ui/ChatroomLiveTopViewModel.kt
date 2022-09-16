@@ -1,5 +1,6 @@
 package io.agora.chatroom.ui
 
+import android.content.Context
 import androidx.annotation.DrawableRes
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
@@ -18,7 +19,7 @@ class ChatroomLiveTopViewModel : ViewModel() {
     private var iChatroomLiveTopView: WeakReference<IChatroomLiveTopView>? = null
 
     private val repository: ChatroomRepository by lazy(LazyThreadSafetyMode.SYNCHRONIZED) {
-        ChatroomRepository.getInstance()
+       ChatroomRepository()
     }
 
     private val roomObservable: SingleSourceLiveData<Resource<VRoomInfoBean>> by lazy {
@@ -55,8 +56,8 @@ class ChatroomLiveTopViewModel : ViewModel() {
     }
 
 
-    fun getRoomInfo(roomId: String) {
-        roomObservable.setSource(repository.getRoomInfo(roomId))
+    fun getRoomInfo(context: Context, roomId: String) {
+        roomObservable.setSource(repository.getRoomInfo(context,roomId))
     }
 
     fun getRoomRepository(): ChatroomRepository = repository

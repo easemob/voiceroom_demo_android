@@ -36,6 +36,10 @@ public class ChatroomConfigManager {
 
     }
 
+    public Context getContext() {
+        return mContext;
+    }
+
     private ChatOptions initChatOptions(Context context){
         ChatOptions options = new ChatOptions();
         options.setAppKey("52117440#955012");
