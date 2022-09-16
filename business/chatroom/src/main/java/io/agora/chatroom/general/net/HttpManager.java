@@ -18,11 +18,11 @@ import java.util.List;
 import java.util.Map;
 import http.VRHttpCallback;
 import http.VRHttpClientManager;
+import http.VRHttpServer;
 import http.VRRequestApi;
 import io.agora.buddy.tool.GsonTools;
 import io.agora.buddy.tool.LogToolsKt;
 import io.agora.chatroom.general.repositories.ProfileManager;
-import tools.ParseResponseTool;
 import tools.ValueCallBack;
 import tools.bean.VRUserBean;
 import tools.bean.VRoomBean;
@@ -70,17 +70,39 @@ public class HttpManager {
               .asyncExecute(new VRHttpCallback() {
                  @Override
                  public void onSuccess(String result) {
-                    Log.e("loginWithToken success: ",result);
-                     VRUserBean bean = ParseResponseTool.getInstance().parseVRUserBean(result);
+                     LogToolsKt.logE("loginWithToken success: " + result, TAG);
+//                     VRUserBean bean = ParseResponseTool.getInstance().parseVRUserBean(result);
+                     VRUserBean bean = GsonTools.toBean(result,VRUserBean.class);
                      callBack.onSuccess(bean);
                  }
 
                  @Override
                  public void onError(int code, String msg) {
-                    Log.e("loginWithToken onError: ",code + " msg: " + msg);
+                     LogToolsKt.logE("loginWithToken onError: " + code + " msg: " + msg, TAG);
                     callBack.onError(code,msg);
                  }
               });
+
+//       Map<String, Object> body = new HashMap<>();
+//       body.put("deviceId", device);
+//       body.put("name", "apex");
+//       body.put("portrait", "");
+//          body.putOpt("phone", "手机号后期上");
+//          body.putOpt("verify_code", "验证码后期上");
+//       VRHttpServer.get().enqueuePost(VRRequestApi.get().login(), headers, body, VRUserBean.class, new VRHttpServer.IHttpCallback<VRUserBean>() {
+//
+//           @Override
+//           public void onSuccess(String bodyString, VRUserBean data) {
+//               Log.e("loginWithToken success: "+ bodyString,TAG);
+//               callBack.onSuccess(data);
+//           }
+//
+//           @Override
+//           public void onFail(int code, String message) {
+//               LogToolsKt.logE("loginWithToken onError: "+code + " msg: " + message,TAG);
+//               callBack.onError(code,message);
+//           }
+//       });
    }
 
    /**
@@ -120,13 +142,13 @@ public class HttpManager {
                 .asyncExecute(new VRHttpCallback() {
                     @Override
                     public void onSuccess(String result) {
-                        LogToolsKt.logE("HttpClient success1 " + result, TAG);
+                        LogToolsKt.logE("fetchRoomInfo onSuccess: " + result, TAG);
                         callBack.onSuccess(GsonTools.toBean(result, VRoomInfoBean.class));
                     }
 
                     @Override
                     public void onError(int code, String msg) {
-                        LogToolsKt.logE("HttpClient onError " + msg, TAG);
+                        LogToolsKt.logE("fetchRoomInfo onError：" + code + "msg:" + msg, TAG);
                         callBack.onError(code, msg);
                     }
                 });

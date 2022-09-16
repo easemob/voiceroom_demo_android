@@ -4,6 +4,7 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 
+import http.VRHttpServer;
 import io.agora.baseui.general.callback.ResultCallBack;
 import io.agora.baseui.general.net.Resource;
 import io.agora.chatroom.general.net.HttpManager;

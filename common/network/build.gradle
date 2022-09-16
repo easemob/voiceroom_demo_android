@@ -37,4 +37,6 @@ dependencies {
     api dep["core-ktx"]
 
     compileOnly dep["gson"]
+    compileOnly dep["okhttp"]
+    compileOnly project(':common:buddy')
 }
