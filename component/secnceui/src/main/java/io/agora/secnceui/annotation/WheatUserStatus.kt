@@ -27,6 +27,7 @@ annotation class WheatUserStatus {
 
         // 静音
         const val Mute = 3
+
         // 被强制静音
         const val ForceMute = 4
     }

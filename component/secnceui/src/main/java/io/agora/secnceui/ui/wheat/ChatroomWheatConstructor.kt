@@ -11,45 +11,35 @@ object ChatroomWheatConstructor {
     fun builder2dSeatList(): MutableList<SeatInfoBean> {
 
         return mutableListOf(
-            SeatInfoBean(
-                index = 0,
-                name = "Susan Stark",
-                avatar = "avatar6",
-                wheatSeatType = WheatSeatType.Normal,
-                userRole = WheatUserRole.Owner,
-                userStatus = WheatUserStatus.Speaking,
-            ),
+            SeatInfoBean(index = 0),
             SeatInfoBean(index = 1),
-            SeatInfoBean(index = 2, wheatSeatType = WheatSeatType.Mute),
-            SeatInfoBean(index = 3, wheatSeatType = WheatSeatType.Lock),
-            SeatInfoBean(
-                index = 4,
-                name = "Jim Scofield",
-                avatar = "avatar18",
-                wheatSeatType = WheatSeatType.NormalMute,
-                userRole = WheatUserRole.Guest,
-                userStatus = WheatUserStatus.Mute
-            ),
-            SeatInfoBean(index = 5, wheatSeatType = WheatSeatType.LockMute)
+            SeatInfoBean(index = 2),
+            SeatInfoBean(index = 3),
+            SeatInfoBean(index = 4),
+            SeatInfoBean(index = 5)
         )
     }
 
     fun builder2dBotSeatList(context: Context): MutableList<BotSeatInfoBean> {
         val blueBot = SeatInfoBean(
-            index = 0,
+            index = 6,
             wheatSeatType = WheatSeatType.Inactive,
             userRole = WheatUserRole.Robot,
             userStatus = WheatUserStatus.None,
-            name = context.getString(R.string.chatroom_agora_blue),
-            avatar = "icon_seat_blue_robot",
+            userInfo = ChatroomUserInfoBean().apply {
+                username = context.getString(R.string.chatroom_agora_blue)
+                userAvatar = "icon_seat_blue_robot"
+            }
         )
         val redBot = SeatInfoBean(
-            index = 1,
+            index = 7,
             wheatSeatType = WheatSeatType.Inactive,
             userRole = WheatUserRole.Robot,
             userStatus = WheatUserStatus.None,
-            name = context.getString(R.string.chatroom_agora_red),
-            avatar = "icon_seat_red_robot",
+            userInfo = ChatroomUserInfoBean().apply {
+                username = context.getString(R.string.chatroom_agora_red)
+                userAvatar = "icon_seat_red_robot"
+            }
         )
         return mutableListOf(BotSeatInfoBean(blueBot, redBot))
     }
@@ -57,22 +47,17 @@ object ChatroomWheatConstructor {
     fun builder3dSeatMap(context: Context): MutableMap<String, SeatInfoBean> {
 
         return mutableMapOf(
-            ScenesConstant.KeySeat0 to SeatInfoBean(
-                index = 0,
-                name = "Susan Stark",
-                avatar = "avatar11",
-                wheatSeatType = WheatSeatType.Normal,
-                userRole = WheatUserRole.Owner,
-                userStatus = WheatUserStatus.Speaking,
-            ),
+            ScenesConstant.KeySeat0 to SeatInfoBean(index = 0),
             ScenesConstant.KeySeat1 to SeatInfoBean(index = 1),
             ScenesConstant.KeySeatBlue to SeatInfoBean(
                 index = 2,
                 wheatSeatType = WheatSeatType.Inactive,
                 userRole = WheatUserRole.Robot,
                 userStatus = WheatUserStatus.None,
-                name = context.getString(R.string.chatroom_agora_blue),
-                avatar = "icon_seat_blue_robot",
+                userInfo = ChatroomUserInfoBean().apply {
+                    username = context.getString(R.string.chatroom_agora_blue)
+                    userAvatar = "icon_seat_blue_robot"
+                }
             ),
             ScenesConstant.KeySeat3 to SeatInfoBean(index = 3, wheatSeatType = WheatSeatType.Mute),
             ScenesConstant.KeySeat4 to SeatInfoBean(index = 4, wheatSeatType = WheatSeatType.Mute),
@@ -82,17 +67,12 @@ object ChatroomWheatConstructor {
                 wheatSeatType = WheatSeatType.Inactive,
                 userRole = WheatUserRole.Robot,
                 userStatus = WheatUserStatus.None,
-                name = context.getString(R.string.chatroom_agora_red),
-                avatar = "icon_seat_red_robot",
+                userInfo = ChatroomUserInfoBean().apply {
+                    username = context.getString(R.string.chatroom_agora_red)
+                    userAvatar = "icon_seat_red_robot"
+                }
             ),
-            ScenesConstant.KeySeatCenter to SeatInfoBean(
-                index = 6,
-                name = "Jim Scofield",
-                avatar = "avatar12",
-                wheatSeatType = WheatSeatType.NormalMute,
-                userRole = WheatUserRole.Guest,
-                userStatus = WheatUserStatus.Mute
-            ),
+            ScenesConstant.KeySeatCenter to SeatInfoBean(index = 6),
         )
     }
 

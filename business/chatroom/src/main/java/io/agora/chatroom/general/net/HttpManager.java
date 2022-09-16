@@ -7,6 +7,7 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.core.text.StringKt;
 
 import org.json.JSONException;
@@ -48,6 +49,20 @@ public class HttpManager {
         mContext = context;
         return mInstance;
     }
+
+    @NonNull
+    private static String buildAuth() {
+        VRUserBean userBean = ProfileManager.getInstance().getProfile();
+        String authorization = null;
+        if (userBean != null) {
+            authorization = userBean.getAuthorization();
+        }
+        if (authorization == null) {
+            authorization = "";
+        }
+        return "Bearer " + authorization;
+    }
+
    //登录
    public void loginWithToken(String device, ValueCallBack<VRUserBean> callBack){
       Map<String, String> headers = new HashMap<>();
@@ -127,17 +142,10 @@ public class HttpManager {
     public void getRoomDetails(String roomId,ValueCallBack< VRoomInfoBean > callBack){
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
-//        headers.put("Authorization", "Bearer " + ProfileManager.getInstance().getProfile().getAuthorization());
-        JSONObject requestBody = new JSONObject();
-        try {
-            requestBody.putOpt("room", roomId);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        headers.put("Authorization", buildAuth());
         new VRHttpClientManager.Builder(mContext)
                 .setUrl(VRRequestApi.get().fetchRoomInfo(roomId))
                 .setHeaders(headers)
-                .setParams(requestBody.toString())
                 .setRequestMethod(Method_GET)
                 .asyncExecute(new VRHttpCallback() {
                     @Override

@@ -90,17 +90,14 @@ class ChatroomLiveTopView : ConstraintLayout, View.OnClickListener, IChatroomLiv
 
     override fun onChatroomInfo(chatroomInfo: ChatroomInfoBean) {
         binding.apply {
-            mtChatroomOwnerName.text = chatroomInfo.ownerName
+            mtChatroomOwnerName.text = chatroomInfo.owner?.username
             mtChatroomName.text = chatroomInfo.chatroomName
-            mtChatroomMembers.text = chatroomInfo.audiencesCount.toString()
+            mtChatroomMembers.text = chatroomInfo.memberCount.toString()
             mtChatroomGifts.text = chatroomInfo.giftCount.toString()
             mtChatroomWatch.text = chatroomInfo.watchCount.toString()
             // 房主头像
             binding.ivChatroomOwner.setImageResource(
-                ViewTools.getDrawableId(
-                    binding.ivChatroomOwner.context,
-                    chatroomInfo.ownerAvatar
-                )
+                ViewTools.getDrawableId(binding.ivChatroomOwner.context, chatroomInfo.owner.userAvatar)
             )
             val topGifts = chatroomInfo.topGifts
             if (topGifts.isNullOrEmpty()) {

@@ -85,9 +85,9 @@ class Chatroom3DSeatView : ConstraintLayout {
     }
 
     private fun setNormalWheatView(seatInfo: SeatInfoBean) {
-        mBinding.mtSeatInfoName.text = seatInfo.name
+        mBinding.mtSeatInfoName.text = seatInfo.userInfo?.username ?: ""
         mBinding.ivSeatInnerIcon.isVisible = false
-        val resId = ViewTools.getDrawableId(context, seatInfo.avatar)
+        val resId = ViewTools.getDrawableId(context, seatInfo.userInfo?.userAvatar ?: "")
         when (seatInfo.userRole) {
             WheatUserRole.Owner -> {
                 mBinding.ivSeatInfo.apply {

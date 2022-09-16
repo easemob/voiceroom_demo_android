@@ -17,6 +17,7 @@ public class ProfileManager {
    private SharedPreferences.Editor editor;
    private SharedPreferences mSharedPreferences;
    private static String KEY_AT_PROFILE = "AT_PROFILE";
+   private VRUserBean vrUserBean;
 
    public synchronized static ProfileManager getInstance(){
       if(instance == null){
@@ -33,6 +34,7 @@ public class ProfileManager {
 
    public void setProfile(VRUserBean value) {
       try {
+         vrUserBean = value;
          String device = ChatClient.getInstance().getDeviceInfo().getString("deviceid");
          if (TextUtils.isEmpty(device)){
             editor.putString(KEY_AT_PROFILE, GsonTools.beanToString(value));
@@ -47,6 +49,7 @@ public class ProfileManager {
 
    public VRUserBean getProfile() {
       try {
+         if (vrUserBean != null) return vrUserBean;
          String device = ChatClient.getInstance().getDeviceInfo().getString("deviceid");
          String profile = mSharedPreferences.getString(device,"");
          if (!TextUtils.isEmpty(profile)){
@@ -56,5 +59,13 @@ public class ProfileManager {
          e.printStackTrace();
       }
       return null;
+   }
+
+   public boolean isChatroomOwner(int rtcUid){
+      VRUserBean currentUser = getProfile();
+      if (currentUser!=null){
+         return currentUser.getRtc_uid() == rtcUid;
+      }
+      return false;
    }
 }

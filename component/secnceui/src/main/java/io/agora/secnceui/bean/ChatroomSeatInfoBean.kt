@@ -3,18 +3,16 @@ package io.agora.secnceui.bean
 import io.agora.secnceui.annotation.*
 
 data class SeatInfoBean constructor(
-    val index: Int = 0,
-    val userId: String? = null,
-    val name: String? = null,
-    val avatar: String = "",
-    @WheatSeatType val wheatSeatType: Int = WheatSeatType.Idle,
-    @WheatUserRole val userRole: Int = WheatUserRole.None,
-    @WheatUserStatus val userStatus: Int = WheatUserStatus.None,
+    var index: Int = 0,
+    var userInfo: ChatroomUserInfoBean? = null,
+    @WheatSeatType var wheatSeatType: Int = WheatSeatType.Idle,
+    @WheatUserRole var userRole: Int = WheatUserRole.None,
+    @WheatUserStatus var userStatus: Int = WheatUserStatus.None,
 ) : BaseChatroomBean
 
 data class BotSeatInfoBean constructor(
-    val blueBot: SeatInfoBean,
-    val redBot: SeatInfoBean
+    var blueBot: SeatInfoBean,
+    var redBot: SeatInfoBean
 ) : BaseChatroomBean
 
 data class SeatManagerBean constructor(

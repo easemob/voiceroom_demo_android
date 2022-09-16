@@ -124,8 +124,10 @@ public class ChatroomListFragment extends BaseChatroomListFragment<VRoomBean.Roo
                 }
 
                 @Override
-                public void onError(int i, String s) {
-                    Log.e("ChatroomListFragment","Login onError" + "code: "+i + " desc: " + s);
+                public void onError(int code, String msg) {
+                    Log.e("ChatroomListFragment", "Login onError code:" + code + " desc: " + msg);
+                    // TODO: 2022/9/16  202
+                    checkPrivate();
                 }
             });
         }else {
