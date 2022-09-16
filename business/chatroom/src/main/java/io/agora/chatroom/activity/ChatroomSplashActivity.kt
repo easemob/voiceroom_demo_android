@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import androidx.core.view.ViewCompat
@@ -11,12 +12,14 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import com.alibaba.android.arouter.launcher.ARouter
 import io.agora.baseui.BaseUiActivity
+import io.agora.baseui.BaseUiTool
 import io.agora.baseui.general.callback.OnResourceParseCallback
 import io.agora.chatroom.ChatroomDataTestManager
 import io.agora.chatroom.databinding.ActivityChatroomSplashBinding
 import io.agora.chatroom.general.repositories.ProfileManager
 import io.agora.chatroom.model.ChatroomViewModel
 import io.agora.chatroom.model.LoginViewModel
+import io.agora.chatroom.ui.ChatroomLiveTopViewModel
 import io.agora.config.RouterPath
 import manager.ChatroomConfigManager
 import tools.bean.VRUserBean
@@ -38,14 +41,11 @@ class ChatroomSplashActivity : BaseUiActivity<ActivityChatroomSplashBinding>() {
             binding.mtChatroom.letterSpacing = -0.05f
         }
         ChatroomConfigManager.getInstance().initRoomConfig(this);
-        //测试假数据
-        val roomViewModel: ChatroomViewModel = ViewModelProvider(this)[ChatroomViewModel::class.java]
-        ChatroomDataTestManager.getInstance().setRoomListData(this, roomViewModel)
-
-        val loginViewModel: LoginViewModel = ViewModelProvider(this)[LoginViewModel::class.java]
+        val loginViewModel: LoginViewModel = BaseUiTool.getViewModel(LoginViewModel::class.java, this)
         loginViewModel.loginObservable.observe(this) { response ->
             parseResource(response, object : OnResourceParseCallback<VRUserBean?>(true) {
                 override fun onSuccess(data: VRUserBean?) {
+                    Log.e("loginViewModel","onSuccess")
                     ProfileManager.getInstance().profile = data
                 }
             })
