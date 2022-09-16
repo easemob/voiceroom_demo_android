@@ -37,7 +37,7 @@ internal class AgoraRtcEventHandler(var rtcListener: IRtcClientListener?) : IRtc
 
     override fun onJoinChannelSuccess(channel: String, uid: Int, elapsed: Int) {
         super.onJoinChannelSuccess(channel, uid, elapsed)
-        rtcListener?.onJoinChannelSuccess(channel, uid.toString())
+        rtcListener?.onJoinChannelSuccess(channel, uid)
         "onJoinChannelSuccess channel:$channel,uid:$uid,elapsed:$elapsed".logD(TAG)
     }
 
@@ -48,7 +48,7 @@ internal class AgoraRtcEventHandler(var rtcListener: IRtcClientListener?) : IRtc
 
     override fun onUserJoined(uid: Int, elapsed: Int) {
         super.onUserJoined(uid, elapsed)
-        rtcListener?.onUserJoined(uid.toString())
+        rtcListener?.onUserJoined(uid)
         "onUserJoined uid:$uid,elapsed:$elapsed".logD(TAG)
     }
 
@@ -63,7 +63,7 @@ internal class AgoraRtcEventHandler(var rtcListener: IRtcClientListener?) : IRtc
 
     override fun onUserOffline(uid: Int, reason: Int) {
         super.onUserOffline(uid, reason)
-        rtcListener?.onUserLeave(uid.toString())
+        rtcListener?.onUserLeave(uid)
         "onUserOffline uid:$uid,reason:${getUserOfflineReason(reason)}".logD(TAG)
     }
 
@@ -144,20 +144,20 @@ internal class AgoraRtcEventHandler(var rtcListener: IRtcClientListener?) : IRtc
      */
     override fun onAudioVolumeIndication(speakers: Array<out AudioVolumeInfo>?, totalVolume: Int) {
         super.onAudioVolumeIndication(speakers, totalVolume)
-        speakers?.let {
-            val speakerInfos: Array<RtcAudioVolumeInfo?> = arrayOfNulls(it.size)
+        if (!speakers.isNullOrEmpty()) {
+            val speakerInfos: Array<RtcAudioVolumeInfo?> = arrayOfNulls(speakers.size)
 
-            it.forEachIndexed { index, audioVolumeInfo ->
+            speakers.forEachIndexed { index, audioVolumeInfo ->
                 speakerInfos[index] = RtcAudioVolumeInfo(
                     uid = audioVolumeInfo.uid,
                     volume = audioVolumeInfo.volume,
                     vad = audioVolumeInfo.vad,
                     voicePitch = audioVolumeInfo.voicePitch
                 )
+                "onAudioVolumeIndication speakers index:${speakerInfos[index]},totalVolume:$totalVolume".logD(TAG)
             }
             rtcListener?.onAudioVolumeIndication(RtcAudioVolumeIndicationStatus(speakerInfos, totalVolume))
         }
-        "onAudioVolumeIndication speakers:$speakers,totalVolume:$totalVolume".logD(TAG)
     }
 
     private fun getClientRole(role: Int): String {

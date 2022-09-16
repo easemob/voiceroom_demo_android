@@ -11,25 +11,21 @@ internal object RtcServiceHelper {
     fun createListener(middleListener: IRtcMiddleServiceListener): IRtcClientListener {
         return object : IRtcClientListener {
 
-            override fun onJoinChannelStart(channel: String, userId: String) {
+            override fun onJoinChannelStart(channel: String, userId: Int) {
                 middleListener.onChannelStatus(RtcChannelStatus.Start(channel, userId))
             }
 
-            override fun onJoinChannelSuccess(channel: String, userId: String) {
+            override fun onJoinChannelSuccess(channel: String, userId: Int) {
                 middleListener.onChannelStatus(RtcChannelStatus.Success(channel, userId))
             }
 
-            override fun onUserLeave(userId: String) {
+            override fun onUserLeave(userId: Int) {
                 middleListener.onChannelStatus(RtcChannelStatus.Leave(userId))
             }
 
 
-            override fun onUserJoined(userId: String) {
+            override fun onUserJoined(userId: Int) {
                 middleListener.onUserJoined(userId)
-            }
-
-            override fun onChannelStatus(channelStatus: RtcChannelStatus) {
-                middleListener.onChannelStatus(channelStatus)
             }
 
             override fun onError(code: Int, msg: String) {

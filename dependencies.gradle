@@ -31,6 +31,7 @@ rootProject.ext {
             "retrofit"                  : "com.squareup.retrofit2:retrofit:2.9.0",
             "retrofit-converter-gson"   : "com.squareup.retrofit2:converter-gson:2.9.0",
             "gson"                      : "com.google.code.gson:gson:2.9.0",
+            "easypermissions"                      : "pub.devrel:easypermissions:3.0.0",
 
             // image process
             "glide"                     : "com.github.bumptech.glide:glide:4.13.0",

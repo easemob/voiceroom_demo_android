@@ -16,7 +16,7 @@ interface IRtcMiddleServiceListener {
     fun onAudioStatus(audioChangeStatus: RtcAudioChangeStatus)
 
     /**用户进入rtc 房间*/
-    fun onUserJoined(userId: String)
+    fun onUserJoined(userId: Int)
 
     /**频道状态，用户开始加入频道、成功加入频道，用户退出等*/
     fun onChannelStatus(userStatus: RtcChannelStatus)

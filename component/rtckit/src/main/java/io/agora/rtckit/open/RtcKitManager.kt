@@ -45,7 +45,7 @@ class RtcKitManager {
                     rtcManagerListener?.onAudioStatus(audioChangeStatus)
                 }
 
-                override fun onUserJoined(userId: String) {
+                override fun onUserJoined(userId: Int) {
                     rtcManagerListener?.onUserJoin(userId)
                 }
 

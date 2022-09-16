@@ -82,13 +82,13 @@ public class ChatroomListFragment extends BaseChatroomListFragment<VRoomBean.Roo
             parseResource(response, new OnResourceParseCallback<Boolean>(true) {
                 @Override
                 public void onSuccess(@Nullable Boolean data) {
-                    if (ChatClient.getInstance().isLoggedIn()){
-                        ARouter.getInstance()
-                                .build(RouterPath.ChatroomPath)
-                                .withInt(RouterParams.KEY_CHATROOM_TYPE, roomBean.getType())
-                                .withSerializable(RouterParams.KEY_CHATROOM_INFO, roomBean)
-                                .navigation();
-                    }
+//                    if (ChatClient.getInstance().isLoggedIn()){
+//                        ARouter.getInstance()
+//                                .build(RouterPath.ChatroomPath)
+//                                .withInt(RouterParams.KEY_CHATROOM_TYPE, roomBean.getType())
+//                                .withSerializable(RouterParams.KEY_CHATROOM_INFO, roomBean)
+//                                .navigation();
+//                    }
                 }
 
                 @Override
@@ -133,6 +133,14 @@ public class ChatroomListFragment extends BaseChatroomListFragment<VRoomBean.Roo
         }
     }
 
+    private void goChatroomPage(VRoomBean.RoomsBean roomBean) {
+        ARouter.getInstance()
+                .build(RouterPath.ChatroomPath)
+                .withInt(RouterParams.KEY_CHATROOM_TYPE, roomBean.getType())
+                .withSerializable(RouterParams.KEY_CHATROOM_INFO, roomBean)
+                .navigation();
+    }
+
     private void checkPrivate(){
         ThreadManager.getInstance().runOnMainThread(new Runnable() {
             @Override
@@ -140,7 +148,8 @@ public class ChatroomListFragment extends BaseChatroomListFragment<VRoomBean.Roo
                 if (roomBean.isIs_private()){
                     // TODO: 2022/9/15  //弹窗 输入密码
                 }else {
-                    chatroomViewModel.joinRoom(getActivity(),roomBean.getRoom_id());
+                    goChatroomPage(roomBean);
+//                    chatroomViewModel.joinRoom(getActivity(),roomBean.getRoom_id());
                 }
             }
         });

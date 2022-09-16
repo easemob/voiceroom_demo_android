@@ -1,7 +1,17 @@
 package http;
 
 import java.net.HttpURLConnection;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 import java.util.Map;
+
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 
 public class VRHttpClientConfig {
     private static final String TAG = VRHttpClientConfig.class.getSimpleName();
@@ -31,7 +41,36 @@ public class VRHttpClientConfig {
         return timeout;
     }
 
+    private static TrustManager trustManager = new X509TrustManager() {
+        @Override
+        public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+
+        }
+
+        @Override
+        public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+
+        }
+
+        @Override
+        public X509Certificate[] getAcceptedIssuers() {
+            return new X509Certificate[0];
+        }
+    };
+
     static void checkAndProcessSSL(String url, HttpURLConnection conn) {
+        try {
+            SSLContext sslContext = SSLContext.getInstance("TLS");
+            sslContext.init(null, new TrustManager[]{trustManager}, new SecureRandom());
+            SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
+//            conn.sslSocketFactory(sslSocketFactory, (X509TrustManager) trustManager);
+        } catch ( NoSuchAlgorithmException | KeyManagementException |IllegalStateException e) {
+            e.printStackTrace();
+        }
+
     }
+
+
+
 
 }

@@ -4,9 +4,9 @@ package tools.bean
  * @author create by zhangwei03
  *
  */
-data class VRoomInfoBean(
-    val mic_info: List<VRoomMicInfo>,
-    val room: VRoomDetail
+data class VRoomInfoBean constructor(
+    val mic_info: List<VRoomMicInfo> = mutableListOf(),
+    val room: VRoomDetail? = null
 )
 
 data class VRoomMicInfo constructor(

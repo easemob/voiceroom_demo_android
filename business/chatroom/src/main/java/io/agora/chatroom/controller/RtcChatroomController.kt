@@ -13,7 +13,17 @@ import io.agora.rtckit.open.status.*
  * @author create by zhangwei03
  */
 class RtcChatroomController : IRtcKitListener {
-    private lateinit var rtcManger: RtcKitManager
+
+    companion object {
+
+        @JvmStatic
+        fun get() = InstanceHelper.sSingle
+    }
+    object InstanceHelper {
+        val sSingle = RtcChatroomController()
+    }
+
+    private  var rtcManger: RtcKitManager? = null
 
     /**机器人小蓝rtcManager*/
     private var blueRtcManger: RtcKitManager? = null
@@ -39,7 +49,15 @@ class RtcChatroomController : IRtcKitListener {
     }
 
     fun joinChannel(roomId: String, userId: Int) {
-        rtcManger.operateChannel(RtcChannelEvent.JoinChannel(RtcChannelConfig(BuildConfig.agora_app_token, roomId, userId)))
+        rtcManger?.operateChannel(RtcChannelEvent.JoinChannel(RtcChannelConfig(BuildConfig.agora_app_token, roomId, userId)))
+    }
+
+    fun leaveChannel() {
+        rtcManger?.operateChannel(RtcChannelEvent.LeaveChannel())
+    }
+
+    fun destroy(){
+        rtcManger?.destroy()
     }
 
     override fun onNetworkStatus(netWorkStatus: RtcNetWorkStatus) {
@@ -49,7 +67,7 @@ class RtcChatroomController : IRtcKitListener {
     override fun onAudioStatus(audioChangeStatus: RtcAudioChangeStatus) {
     }
 
-    override fun onUserJoin(userId: String) {
+    override fun onUserJoin(userId: Int) {
     }
 
     override fun onChannelStatus(userStatus: RtcChannelStatus) {

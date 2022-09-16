@@ -7,15 +7,15 @@ package io.agora.rtckit.open.status
  */
 sealed class RtcChannelStatus constructor(
     var channel: String = "",
-    var userId: String = ""
+    var userId: Int
 ) {
 
     /**开始加入房间*/
-    class Start(channel: String, userId: String) : RtcChannelStatus(channel, userId)
+    class Start(channel: String, userId: Int) : RtcChannelStatus(channel, userId)
 
     /**加入房间成功*/
-    class Success(channel: String, userId: String) : RtcChannelStatus(channel, userId)
+    class Success(channel: String, userId: Int) : RtcChannelStatus(channel, userId)
 
     /**离开房间*/
-    class Leave(userId: String) : RtcChannelStatus(userId)
+    class Leave(userId: Int) : RtcChannelStatus("", userId)
 }
