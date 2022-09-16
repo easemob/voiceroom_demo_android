@@ -4,110 +4,153 @@ import java.io.Serializable;
 import java.util.List;
 
 public class VRoomBean implements Serializable {
-
-
    /**
-    * total : 0
-    * rooms : [{"room_id":"string","channel_id":"string","chat_room_id":0,"name":"string","owner":{"uid":"string","chat_uid":"string","name":"string","portrait":"string"},"is_private":true,"type":0,"created_at":0}]
-    * cursor : string
+    * total : 14
+    * cursor : NQ==
+    * rooms : [{"name":"createroom787","owner":{"uid":"rOVLNPgy4JFEZrC3L9LWjQO=","name":"test1","portrait":"https://beidou-ktv-user.oss-cn-beijing.aliyuncs.com/1658044795022NaEWFm.png"},"type":0,"room_id":"aQCOA_Ay8S8B1WNHbjSewg==","channel_id":"673965dea3fd4a0085ee89fc562f6bf3","chatroom_id":"192760762138625","is_private":true,"created_at":1663200589000,"member_count":2},{"name":"createroom953","owner":{"uid":"rOVLNPgy4JFEZrC3L9LWjQO=","name":"test1","portrait":"https://beidou-ktv-user.oss-cn-beijing.aliyuncs.com/1658044795022NaEWFm.png"},"type":0,"room_id":"G3ew9PWGD7XDZsTMSiTKFw==","channel_id":"68774db1178b4157a9c06c3c71b35e82","chatroom_id":"192753402183681","is_private":false,"created_at":1663193570000,"member_count":2},{"name":"testRoom8","owner":{"uid":"LBRAtHE37B3I5mtHMUfGwA==","name":"test2","portrait":"avatar2"},"type":0,"room_id":"D2kYcCKssLoZP3Z2iu6OvQ==","channel_id":"d8ce543f119f440899f06a1ea1bb710f","chatroom_id":"192744408547329","is_private":false,"created_at":1663184993000,"member_count":0},{"name":"testRoom7","owner":{"uid":"LBRAtHE37B3I5mtHMUfGwA==","name":"test2","portrait":"avatar2"},"type":0,"room_id":"9BUSWPYsMWTaNWXv0kDFwA==","channel_id":"42a9e9668bcf467cb960c2036e975814","chatroom_id":"192679627522049","is_private":true,"created_at":1663123213000,"member_count":12},{"name":"testRoom6","owner":{"uid":"LBRAtHE37B3I5mtHMUfGwA==","name":"test2","portrait":"avatar2"},"type":0,"room_id":"iJ2G0gY7rIPTMXwcA_HZFA==","channel_id":"24d4c62e8ad643e7999e6b0d59c03fc8","chatroom_id":"192679614939137","is_private":true,"created_at":1663123202000,"member_count":0},{"name":"testRoom5","owner":{"uid":"LBRAtHE37B3I5mtHMUfGwA==","name":"test2","portrait":"avatar2"},"type":0,"room_id":"TwKVbYCQbp_GBq9vj13zMA==","channel_id":"72149fca5e6b48f08df71e69719f1329","chatroom_id":"192678635569153","is_private":true,"created_at":1663122268000,"member_count":0},{"name":"testRoom4","owner":{"uid":"LBRAtHE37B3I5mtHMUfGwA==","name":"test2","portrait":"avatar2"},"type":0,"room_id":"quLNe5LUxzKZr1ZKVPWNcg==","channel_id":"41bfce25c6e2463393580b4b5bdcd656","chatroom_id":"192678581043201","is_private":true,"created_at":1663122215000,"member_count":0},{"name":"testRoom3","owner":{"uid":"LBRAtHE37B3I5mtHMUfGwA==","name":"test2","portrait":"avatar2"},"type":0,"room_id":"z9OOnOBHLN_Ps7bDZHJtQF==","channel_id":"03b8c58fce1e4169a2c160a7367e195b","chatroom_id":"192677721210881","is_private":true,"created_at":1663121395000,"member_count":0},{"name":"testRoom2","owner":{"uid":"LBRAtHE37B3I5mtHMUfGwA==","name":"test2","portrait":"avatar2"},"type":0,"room_id":"H_L3PItek7hyM3jHgZuaAL==","channel_id":"40f9d687e39c4dd9beff767b10706df2","chatroom_id":"192677285003265","is_private":true,"created_at":1663120979000,"member_count":1},{"name":"testRoom3","owner":{"uid":"LBRAtHE37B3I5mtHMUfGwA==","name":"test2","portrait":"avatar2"},"type":0,"room_id":"YAWZXSYLNqOzIz8mswhICAY=","channel_id":"3ae1607ceffc4fc4ab85497c29ef2da2","chatroom_id":"192674919415809","is_private":true,"created_at":1663118723000,"member_count":0}]
     */
 
    private int total;
    private String cursor;
-   private List<RoomsBean> roomList;
-
-   public List<RoomsBean> getRooms() {
-      return roomList;
-   }
+   private List<RoomsBean> rooms;
 
    public String getCursor() {
       return cursor;
+   }
+
+   public void setCursor(String cursor) {
+      this.cursor = cursor;
+   }
+
+   public List<RoomsBean> getRooms() {
+      return rooms;
+   }
+
+   public void setRooms(List<RoomsBean> rooms) {
+      this.rooms = rooms;
    }
 
    public int getTotal() {
       return total;
    }
 
-   public RoomDetailsBean getRoomDetails() {
-      return roomDetails;
-   }
-
-   public List<MicInfoBean> getMic_info() {
-      return mic_info;
+   public void setTotal(int total) {
+      this.total = total;
    }
 
    public static class RoomsBean implements Serializable {
       /**
-       * room_id : string
-       * channel_id : string
-       * chat_room_id : 0
-       * name : string
-       * owner : {"uid":"string","chat_uid":"string","name":"string","portrait":"string"}
-       * is_private : true
+       * name : createroom787
+       * owner : {"uid":"rOVLNPgy4JFEZrC3L9LWjQO=","name":"test1","portrait":"https://beidou-ktv-user.oss-cn-beijing.aliyuncs.com/1658044795022NaEWFm.png"}
        * type : 0
-       * created_at : 0
+       * room_id : aQCOA_Ay8S8B1WNHbjSewg==
+       * channel_id : 673965dea3fd4a0085ee89fc562f6bf3
+       * chatroom_id : 192760762138625
+       * is_private : true
+       * created_at : 1663200589000
+       * member_count : 2
        */
 
+      private String name;
+      private RoomsBean.OwnerBean owner;
+      private int type;
       private String room_id;
       private String channel_id;
-      private int chat_room_id;
-      private String name;
-      private OwnerBean owner;
+      private String chatroom_id;
       private boolean is_private;
-      private int type;
-      private int created_at;
+      private long created_at;
+      private int member_count;
 
-      public void setType(int type) {
-         this.type = type;
-      }
-      public int getType() {
-         return type;
+      public String getName() {
+         return name;
       }
 
       public void setName(String name) {
          this.name = name;
       }
 
-      public String getName() {
-         return name;
+      public RoomsBean.OwnerBean getOwner() {
+         return owner;
+      }
+
+      public void setOwner(RoomsBean.OwnerBean owner) {
+         this.owner = owner;
+      }
+
+      public int getType() {
+         return type;
+      }
+
+      public void setType(int type) {
+         this.type = type;
       }
 
       public String getRoom_id() {
          return room_id;
       }
 
-      public void setIs_private(boolean is_private) {
-         this.is_private = is_private;
-      }
-
-      public boolean isIs_private() {
-         return is_private;
-      }
-
-      public void setOwner(OwnerBean owner) {
-         this.owner = owner;
-      }
-
-      public OwnerBean getOwner() {
-         return owner;
+      public void setRoom_id(String room_id) {
+         this.room_id = room_id;
       }
 
       public String getChannel_id() {
          return channel_id;
       }
 
+      public void setChannel_id(String channel_id) {
+         this.channel_id = channel_id;
+      }
+
+      public String getChatroom_id() {
+         return chatroom_id;
+      }
+
+      public void setChatroom_id(String chatroom_id) {
+         this.chatroom_id = chatroom_id;
+      }
+
+      public boolean isIs_private() {
+         return is_private;
+      }
+
+      public void setIs_private(boolean is_private) {
+         this.is_private = is_private;
+      }
+
+      public long getCreated_at() {
+         return created_at;
+      }
+
+      public void setCreated_at(long created_at) {
+         this.created_at = created_at;
+      }
+
+      public int getMember_count() {
+         return member_count;
+      }
+
+      public void setMember_count(int member_count) {
+         this.member_count = member_count;
+      }
+
       public static class OwnerBean implements Serializable {
          /**
-          * uid : string
-          * chat_uid : string
-          * name : string
-          * portrait : string
+          * uid : rOVLNPgy4JFEZrC3L9LWjQO=
+          * name : test1
+          * portrait : https://beidou-ktv-user.oss-cn-beijing.aliyuncs.com/1658044795022NaEWFm.png
           */
 
          private String uid;
-         private String chat_uid;
          private String name;
          private String portrait;
+
+         public String getUid() {
+            return uid;
+         }
+
+         public void setUid(String uid) {
+            this.uid = uid;
+         }
 
          public String getName() {
             return name;
@@ -117,159 +160,13 @@ public class VRoomBean implements Serializable {
             this.name = name;
          }
 
-         public String getUid() {
-            return uid;
-         }
-
-         public String getChat_uid() {
-            return chat_uid;
-         }
-
-         public String getPortrait() {
-            return portrait;
-         }
-      }
-   }
-
-   /////////////////////////房间详情//////////////////
-
-   /**
-    * room : {"room_id":"string","channel_id":"string","chat_room_id":0,"name":"string","type":0,"is_private":true,"allowed_free_join_mic":true,"owner":{"uid":"string","chat_uid":"string","name":"string","portrait":"string"},"members_total":0,"click_count":0,"announcement":"string","ranking_list":[{"name":"string","portrait":"string","amount":0}],"member_list":[{"uid":"string","chat_uid":"string","name":"string","portrait":"string"}]}
-    * mic_info : [{"index":0,"status":0,"user":{"uid":"string","chat_uid":"string","name":"string","portrait":"string"}}]
-    */
-
-   private RoomDetailsBean roomDetails;
-   private List<MicInfoBean> mic_info;
-
-   public static class RoomDetailsBean implements Serializable {
-      /**
-       * room_id : string
-       * channel_id : string
-       * chat_room_id : 0
-       * name : string
-       * type : 0
-       * is_private : true
-       * allowed_free_join_mic : true
-       * owner : {"uid":"string","chat_uid":"string","name":"string","portrait":"string"}
-       * members_total : 0
-       * click_count : 0
-       * announcement : string
-       * ranking_list : [{"name":"string","portrait":"string","amount":0}]
-       * member_list : [{"uid":"string","chat_uid":"string","name":"string","portrait":"string"}]
-       */
-
-      private String room_id;
-      private String channel_id;
-      private int chat_room_id;
-      private String name;
-      private int type;
-      private boolean is_private;
-      private boolean allowed_free_join_mic;
-      private RoomsBean.OwnerBean owner;
-      private int members_total;
-      private int click_count;
-      private String announcement;
-      private List<RankingListBean> ranking_list;
-      private List<RoomsBean.OwnerBean> member_list;
-
-      public String getRoom_id() {
-         return room_id;
-      }
-
-      public String getChannel_id() {
-         return channel_id;
-      }
-
-      public int getChat_room_id() {
-         return chat_room_id;
-      }
-
-      public String getName() {
-         return name;
-      }
-
-      public int getType() {
-         return type;
-      }
-
-      public boolean isIs_private() {
-         return is_private;
-      }
-
-      public boolean isAllowed_free_join_mic() {
-         return allowed_free_join_mic;
-      }
-
-      public RoomsBean.OwnerBean getOwner() {
-         return owner;
-      }
-
-      public int getMembers_total() {
-         return members_total;
-      }
-
-      public int getClick_count() {
-         return click_count;
-      }
-
-      public String getAnnouncement() {
-         return announcement;
-      }
-
-      public List<RankingListBean> getRanking_list() {
-         return ranking_list;
-      }
-
-      public List<RoomsBean.OwnerBean> getMember_list() {
-         return member_list;
-      }
-
-      public static class RankingListBean implements Serializable {
-         /**
-          * name : string
-          * portrait : string
-          * amount : 0
-          */
-
-         private String name;
-         private String portrait;
-         private int amount;
-
-         public String getName() {
-            return name;
-         }
-
          public String getPortrait() {
             return portrait;
          }
 
-         public int getAmount() {
-            return amount;
+         public void setPortrait(String portrait) {
+            this.portrait = portrait;
          }
-      }
-   }
-
-   public static class MicInfoBean implements Serializable {
-      /**
-       * index : 0
-       * status : 0
-       * user : {"uid":"string","chat_uid":"string","name":"string","portrait":"string"}
-       */
-
-      private int index;
-      private int status;
-      private RoomsBean.OwnerBean user;
-
-      public int getIndex() {
-         return index;
-      }
-
-      public int getStatus() {
-         return status;
-      }
-
-      public RoomsBean.OwnerBean getUser() {
-         return user;
       }
    }
 

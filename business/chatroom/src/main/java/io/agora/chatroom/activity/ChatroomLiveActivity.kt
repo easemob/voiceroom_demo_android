@@ -1,7 +1,6 @@
 package io.agora.chatroom.activity
 
 import android.os.Bundle
-import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -12,7 +11,6 @@ import androidx.lifecycle.Observer
 import com.alibaba.android.arouter.facade.annotation.Route
 import io.agora.baseui.BaseUiActivity
 import io.agora.baseui.BaseUiTool
-import io.agora.baseui.general.callback.OnResourceParseCallback
 import io.agora.baseui.general.net.Resource
 import io.agora.buddy.tool.logD
 import io.agora.chatroom.databinding.ActivityChatroomBinding
@@ -55,7 +53,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>() {
 
     private fun initData() {
         roomBean?.let {
-            chatroomLiveTopViewModel.getRoomInfo(it.room_id ?: "")
+            chatroomLiveTopViewModel.getRoomInfo(this,it.room_id ?: "")
         }
         chatroomLiveTopViewModel.getRoomInfoObservable().observe(this,
             Observer { response: Resource<VRoomInfoBean> ->

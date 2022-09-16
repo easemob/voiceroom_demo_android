@@ -1,6 +1,7 @@
 package http;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 public class VRRequestApi {
     VRRequestApi(){}
@@ -8,16 +9,17 @@ public class VRRequestApi {
     private final String BASE_URL = "https://a1-test-voiceroom.easemob.com";
     private final String BASE_ROOM = "/%1$d";
     private final String LOGIN = "/user/login/device";
-    private final String BASE_MEMBERS = "%1$s/members";
-    private final String BASE_MIC = "%1$s/mic";
+    private final String ROOM_LIST = "/voice/room/list?limit=%1$s";
+    private final String BASE_MEMBERS = "/voice/room/%1$s/members";
+    private final String BASE_MIC = "/%1$s/mic";
     private final String CREATE_ROOM = "/create";
     private final String FETCH_ROOM_MEMBERS = "%1$s/members/list?limit=%2$s";
     private final String JOIN_ROOM = "/join";
     private final String LEAVE_ROOM = "/leave";
     private final String KICK_USER = "/kick";
-    private final String FETCH_GIFT_CONTRIBUTE = "%1$s/gift/list?limit=%2$s";
-    private final String GIFT_TO = "%1$s/gift/add";
-    private final String FETCH_APPLY_MEMBERS = "%1$s/mic/apply?limit=%2$s";
+    private final String FETCH_GIFT_CONTRIBUTE = "/%1$s/gift/list?limit=%2$s";
+    private final String GIFT_TO = "/%1$s/gift/add";
+    private final String FETCH_APPLY_MEMBERS = "/%1$s/mic/apply?limit=%2$s";
     private final String MIC_APPLY = "/apply";
     private final String MIC_CLOSE = "/close";
     private final String MIC_LEAVE = "/leave";
@@ -63,7 +65,8 @@ public class VRRequestApi {
     }
 
     public String joinRoom(String roomId){
-        return String.format(BASE_MEMBERS,roomId) + JOIN_ROOM;
+        Log.e("joinRoom","url: "+BASE_URL + String.format(BASE_MEMBERS,roomId) + JOIN_ROOM);
+        return BASE_URL + String.format(BASE_MEMBERS,roomId) + JOIN_ROOM;
     }
 
     public String leaveRoom(String roomId){
@@ -148,5 +151,17 @@ public class VRRequestApi {
 
     public String login(){
         return BASE_URL+LOGIN;
+    }
+
+    public String getRoomList(String cursor,int limit,int type){
+        String api = BASE_URL + String.format(ROOM_LIST,limit);
+        if (type != -1){
+            api = api + "&type=" + type;
+        }
+        if (!TextUtils.isEmpty(cursor)){
+            api = api + "&cursor=" + cursor;
+        }
+
+        return api;
     }
 }

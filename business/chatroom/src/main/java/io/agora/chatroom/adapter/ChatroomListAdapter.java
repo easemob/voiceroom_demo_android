@@ -18,7 +18,6 @@ public class ChatroomListAdapter extends RoomBaseRecyclerViewAdapter<VRoomBean.R
     @Override
     public ViewHolder<VRoomBean.RoomsBean> getViewHolder(ViewGroup parent, int viewType) {
         return new RoomListViewHolder(LayoutInflater.from(mContext).inflate(R.layout.fragment_room_item_layout, parent, false));
-
     }
 
     public class RoomListViewHolder extends ViewHolder<VRoomBean.RoomsBean> {
@@ -51,11 +50,11 @@ public class ChatroomListAdapter extends RoomBaseRecyclerViewAdapter<VRoomBean.R
 
         @Override
         public void setData(VRoomBean.RoomsBean item, int position) {
-            itemType(item.getType());
+            itemType( item.getType());
             showPrivate(item.isIs_private(),item.getType());
             roomName.setText(item.getName());
             ownerName.setText(item.getOwner().getName());
-            roomCount.setText(mContext.getString(R.string.room_list_count,"10"));
+            roomCount.setText(mContext.getString(R.string.room_list_count,String.valueOf(item.getMember_count())));
         }
 
         private void itemType(int type){

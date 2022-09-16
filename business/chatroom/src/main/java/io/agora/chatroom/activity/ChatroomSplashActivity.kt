@@ -4,19 +4,17 @@ import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import com.alibaba.android.arouter.launcher.ARouter
-import io.agora.CallBack
 import io.agora.baseui.BaseUiActivity
 import io.agora.baseui.general.callback.OnResourceParseCallback
-import io.agora.chat.ChatClient
 import io.agora.chatroom.ChatroomDataTestManager
 import io.agora.chatroom.databinding.ActivityChatroomSplashBinding
+import io.agora.chatroom.general.repositories.ProfileManager
 import io.agora.chatroom.model.ChatroomViewModel
 import io.agora.chatroom.model.LoginViewModel
 import io.agora.config.RouterPath
@@ -48,17 +46,7 @@ class ChatroomSplashActivity : BaseUiActivity<ActivityChatroomSplashBinding>() {
         loginViewModel.loginObservable.observe(this) { response ->
             parseResource(response, object : OnResourceParseCallback<VRUserBean?>(true) {
                 override fun onSuccess(data: VRUserBean?) {
-                    Log.e("ChatroomConfigManager","chat_uid: " + data!!.chat_uid)
-                    Log.e("ChatroomConfigManager","im_token: " + data.im_token)
-                    ChatClient.getInstance().loginWithAgoraToken(data!!.chat_uid, data.im_token, object : CallBack {
-                        override fun onSuccess() {
-                            Log.e("ChatroomConfigManager", "Login onSuccess")
-                        }
-
-                        override fun onError(code: Int, error: String) {
-                            Log.e("ChatroomConfigManager", "Login onError: $error")
-                        }
-                    })
+                    ProfileManager.getInstance().profile = data
                 }
             })
         }

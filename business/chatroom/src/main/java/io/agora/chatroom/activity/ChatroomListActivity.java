@@ -20,7 +20,6 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
-
 import io.agora.baseui.BaseActivity;
 import io.agora.chatroom.R;
 import io.agora.chatroom.fragment.ChatroomListFragment;
@@ -108,7 +107,13 @@ public class ChatroomListActivity extends BaseActivity implements ChatroomTitleB
             public void onPageSelected(int position) {
                 Log.e("apex-w","onPageSelected: "+position);
                 pageViewModel.clearRegisterInfo();
-                pageViewModel.setPageSelect(position);
+                if (position == 0){
+                    pageViewModel.setPageSelect(-1);
+                }else if (position == 1){
+                    pageViewModel.setPageSelect(0);
+                }else if (position == 2){
+                    pageViewModel.setPageSelect(1);
+                }
             }
         });
 
