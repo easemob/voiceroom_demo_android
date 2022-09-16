@@ -12,21 +12,16 @@ import io.agora.rtckit.open.status.RtcNetWorkStatus
  */
 internal interface IRtcClientListener {
     //开始加入房间
-    fun onJoinChannelStart(channel: String, userId: String)
+    fun onJoinChannelStart(channel: String, userId: Int)
 
     //加入房间成功
-    fun onJoinChannelSuccess(channel: String, userId: String)
+    fun onJoinChannelSuccess(channel: String, userId: Int)
 
     //离开房间
-    fun onUserLeave(userId: String)
+    fun onUserLeave(userId: Int)
 
     // 用户加入
-    fun onUserJoined(userId: String)
-
-    /**
-     * 频道状态，开始加入、加入成功，离开频道等
-     */
-    fun onChannelStatus(channelStatus: RtcChannelStatus)
+    fun onUserJoined(userId: Int)
 
     fun onAudioChangeStatus(audioStatus: RtcAudioChangeStatus)
 

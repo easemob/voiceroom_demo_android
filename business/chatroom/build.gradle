@@ -77,9 +77,6 @@ dependencies {
     androidTestImplementation dep["junit-android"]
     androidTestImplementation dep["espresso-core"]
 
-    implementation dep["arouter-api"]
-    kapt dep["arouter-compiler"]
-
     if (isChatroomModule.toBoolean()) {
         implementation project(":basicsdepend")
         implementation dep["navigation-fragment-ktx"]
@@ -94,6 +91,7 @@ dependencies {
         annotationProcessor dep["glide-compiler"]
         implementation dep["arouter-api"]
         kapt dep["arouter-compiler"]
+        implementation dep["easypermissions"]
     } else {
         compileOnly project(':common:buddy')
         compileOnly project(':common:baseui')

@@ -11,18 +11,21 @@ import io.agora.baseui.general.net.Resource;
 import io.agora.chatroom.general.livedatas.SingleSourceLiveData;
 import io.agora.chatroom.general.repositories.ChatroomRepository;
 import tools.bean.VRoomBean;
+import tools.bean.VRoomInfoBean;
 
 
 public class ChatroomViewModel extends AndroidViewModel {
     private ChatroomRepository mRepository;
     private SingleSourceLiveData<Resource<List<VRoomBean.RoomsBean>>> roomObservable;
     private SingleSourceLiveData<Resource<Boolean>> joinObservable;
+    private SingleSourceLiveData<Resource<VRoomInfoBean>> roomDetailsObservable;
 
     public ChatroomViewModel(@NonNull Application application) {
         super(application);
         mRepository = new ChatroomRepository();
         roomObservable = new SingleSourceLiveData<>();
         joinObservable = new SingleSourceLiveData<>();
+        roomDetailsObservable = new SingleSourceLiveData<>();
     }
 
     public LiveData<Resource<List<VRoomBean.RoomsBean>>> getRoomObservable() {
@@ -33,9 +36,16 @@ public class ChatroomViewModel extends AndroidViewModel {
         return joinObservable;
     }
 
+    public LiveData<Resource<VRoomInfoBean>> getRoomDetailObservable() {
+        return roomDetailsObservable;
+    }
 
     public void getDataList(Context context,int pageSize,int type){
         roomObservable.setSource(mRepository.getRoomList(context,pageSize,type));
+    }
+
+    public void getDetails(Context context, String roomId) {
+        roomDetailsObservable.setSource(mRepository.getRoomInfo(context, roomId));
     }
 
     public void joinRoom(Context context,String roomId){

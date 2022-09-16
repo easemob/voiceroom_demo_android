@@ -47,11 +47,12 @@ class ChatroomSplashActivity : BaseUiActivity<ActivityChatroomSplashBinding>() {
                 override fun onSuccess(data: VRUserBean?) {
                     Log.e("loginViewModel","onSuccess")
                     ProfileManager.getInstance().profile = data
+                    initSplashPage()
                 }
             })
         }
         loginViewModel.LoginFromServer(this)
-        Handler(Looper.getMainLooper()).postDelayed(Runnable { initSplashPage() }, SPLASH_DELAYED)
+//        Handler(Looper.getMainLooper()).postDelayed(Runnable { initSplashPage() }, SPLASH_DELAYED)
     }
 
     private fun initSplashPage() {

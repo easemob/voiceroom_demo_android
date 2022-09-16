@@ -1,10 +1,10 @@
 package io.agora.rtckit.open.config
 
 /**初始化*/
-data class RtcInitConfig(var appId: String? = null)
+data class RtcInitConfig constructor(var appId: String? = null)
 
 /**频道配置*/
-data class RtcChannelConfig(
+data class RtcChannelConfig constructor(
     var appToken: String,
     var roomId: String,
     var userId: Int,

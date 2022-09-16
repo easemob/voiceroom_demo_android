@@ -48,13 +48,11 @@ internal class AgoraRtcClientEx : RtcBaseClientEx<RtcEngineEx>() {
             config.mAppId = initConfig?.appId
             config.mEventHandler = eventHandler
             config.mChannelProfile = Constants.CHANNEL_PROFILE_LIVE_BROADCASTING
-            config.mAudioScenario = Constants.AUDIO_SCENARIO_CHORUS
-
-            rtcEngine = RtcEngineEx.create(config) as RtcEngineEx?
-            eventHandler?.init(context, rtcEngine)
+            config.mAudioScenario = Constants.AUDIO_SCENARIO_CHATROOM
 
             try {
                 rtcEngine = RtcEngineEx.create(config) as RtcEngineEx?
+                eventHandler?.init(context, rtcEngine)
             } catch (e: Exception) {
                 e.printStackTrace()
                 "rtc engine init error:${e.message}".logE(TAG)

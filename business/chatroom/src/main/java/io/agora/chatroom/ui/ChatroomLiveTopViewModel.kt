@@ -3,12 +3,13 @@ package io.agora.chatroom.ui
 import android.content.Context
 import androidx.annotation.DrawableRes
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import io.agora.baseui.general.net.Resource
 import io.agora.chatroom.general.livedatas.SingleSourceLiveData
 import io.agora.chatroom.general.repositories.ChatroomRepository
 import io.agora.secnceui.bean.ChatroomInfoBean
-import io.agora.secnceui.bean.ChatroomUserInfoBean
+import io.agora.secnceui.bean.SeatInfoBean
 import io.agora.secnceui.widget.top.ChatroomLiveTopView
 import io.agora.secnceui.widget.top.IChatroomLiveTopView
 import tools.bean.VRoomInfoBean
@@ -22,6 +23,18 @@ class ChatroomLiveTopViewModel : ViewModel() {
        ChatroomRepository()
     }
 
+    private val _roomInfo: MutableLiveData<ChatroomInfoBean> = MutableLiveData<ChatroomInfoBean>()
+
+    fun roomInfo(): LiveData<ChatroomInfoBean> {
+        return _roomInfo
+    }
+
+    private val _seatInfo: MutableLiveData<SeatInfoBean> = MutableLiveData<SeatInfoBean>()
+
+    fun seatInfo(): LiveData<SeatInfoBean> {
+        return _seatInfo
+    }
+
     private val roomObservable: SingleSourceLiveData<Resource<VRoomInfoBean>> by lazy {
         SingleSourceLiveData<Resource<VRoomInfoBean>>()
     }
@@ -32,22 +45,22 @@ class ChatroomLiveTopViewModel : ViewModel() {
 
     fun initChatroomInfo() {
         // test
-        iChatroomLiveTopView?.get()?.onChatroomInfo(
-
-            ChatroomInfoBean(
-                ownerName = "Susan Stark",
-                ownerAvatar = "avatar9",
-                chatroomName = "Chatroom-0728-001",
-                topGifts = mutableListOf(
-                    ChatroomUserInfoBean("1", "", "", "avatar5"),
-                    ChatroomUserInfoBean("2", "", "", "avatar6"),
-                    ChatroomUserInfoBean("3", "", "", "avatar7"),
-                ),
-                audiencesCount = 10,
-                giftCount = 100,
-                watchCount = 200,
-            )
-        )
+//        iChatroomLiveTopView?.get()?.onChatroomInfo(
+//
+//            ChatroomInfoBean(
+//                ownerName = "Susan Stark",
+//                ownerAvatar = "avatar9",
+//                chatroomName = "Chatroom-0728-001",
+//                topGifts = mutableListOf(
+//                    ChatroomUserInfoBean("1", "", "", "avatar5"),
+//                    ChatroomUserInfoBean("2", "", "", "avatar6"),
+//                    ChatroomUserInfoBean("3", "", "", "avatar7"),
+//                ),
+//                audiencesCount = 10,
+//                giftCount = 100,
+//                watchCount = 200,
+//            )
+//        )
     }
 
 
@@ -59,8 +72,6 @@ class ChatroomLiveTopViewModel : ViewModel() {
     fun getRoomInfo(context: Context, roomId: String) {
         roomObservable.setSource(repository.getRoomInfo(context,roomId))
     }
-
-    fun getRoomRepository(): ChatroomRepository = repository
 
     /**
      * 清理注册信息

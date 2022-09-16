@@ -19,5 +19,5 @@ sealed class RtcChannelEvent {
     object RefreshChannel : RtcChannelEvent()
 
     /**离开频道*/
-    object LeaveChannel : RtcChannelEvent()
+    class LeaveChannel : RtcChannelEvent()
 }

@@ -3,7 +3,6 @@ package io.agora.chatroom.ui
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.FragmentActivity
-import io.agora.buddy.tool.logD
 import io.agora.secnceui.R
 import io.agora.secnceui.annotation.AINSModeType
 import io.agora.secnceui.annotation.SoundSelectionType
@@ -48,13 +47,10 @@ object ChatroomTopViewHelper {
                             .show(activity.supportFragmentManager, "mtExitDialog")
                     }
                     ChatroomLiveTopView.ClickAction.RANK -> {
-                        "排行榜".logD()
-//                        ChatroomContributionAndAudienceSheetDialog(activity).show(
-//                            activity.supportFragmentManager,
-//                            "ContributionAndAudienceSheetDialog"
-//                        )
-                        // TODO: test 音效设置
-                        showAudioSettingsDialog(activity, finishBack, isOwner)
+                        ChatroomContributionAndAudienceSheetDialog(activity).show(
+                            activity.supportFragmentManager,
+                            "ContributionAndAudienceSheetDialog"
+                        )
                     }
                     ChatroomLiveTopView.ClickAction.NOTICE -> {
                         CommonSheetContentDialog()

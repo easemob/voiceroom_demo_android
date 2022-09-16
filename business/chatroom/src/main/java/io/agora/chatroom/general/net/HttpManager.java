@@ -6,6 +6,9 @@ import static http.VRHttpClientManager.Method_POST;
 import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
+
+import androidx.core.text.StringKt;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -17,6 +20,7 @@ import http.VRHttpCallback;
 import http.VRHttpClientManager;
 import http.VRRequestApi;
 import io.agora.buddy.tool.GsonTools;
+import io.agora.buddy.tool.LogToolsKt;
 import io.agora.chatroom.general.repositories.ProfileManager;
 import tools.ParseResponseTool;
 import tools.ValueCallBack;
@@ -30,6 +34,8 @@ public class HttpManager {
 
     private static HttpManager mInstance;
     private static Context mContext;
+
+    private static final String TAG = "HttpManager";
 
     public static HttpManager getInstance(Context context) {
         if (mInstance == null) {
@@ -97,38 +103,33 @@ public class HttpManager {
      * @param roomId
      */
     public void getRoomDetails(String roomId,ValueCallBack< VRoomInfoBean > callBack){
-//        Map<String, String> headers = new HashMap<>();
-//        headers.put("Content-Type", "application/json");
-//        JSONObject requestBody = new JSONObject();
-//        try {
-//            requestBody.putOpt("room", roomId);
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-//        new VRHttpClientManager.Builder(mContext)
-//                .setUrl("https://a1.easemob.com/voice/room/" + roomId)
-//                .setHeaders(headers)
-//                .setParams(requestBody.toString())
-//                .setRequestMethod(Method_GET)
-//                .asyncExecute(new VRHttpCallback() {
-//                    @Override
-//                    public void onSuccess(String result) {
-//                        Log.e("HttpClient success1: ", result);
-//                        callBack.onSuccess(GsonTools.toBean(result, VRoomInfoBean.class));
-//                    }
-//
-//                    @Override
-//                    public void onError(int code, String msg) {
-//                        Log.e("HttpClient onError: ", code + " msg: " + msg);
-//                        callBack.onError(code, msg);
-//                    }
-//                });
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Content-Type", "application/json");
+//        headers.put("Authorization", "Bearer " + ProfileManager.getInstance().getProfile().getAuthorization());
+        JSONObject requestBody = new JSONObject();
+        try {
+            requestBody.putOpt("room", roomId);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        new VRHttpClientManager.Builder(mContext)
+                .setUrl(VRRequestApi.get().fetchRoomInfo(roomId))
+                .setHeaders(headers)
+                .setParams(requestBody.toString())
+                .setRequestMethod(Method_GET)
+                .asyncExecute(new VRHttpCallback() {
+                    @Override
+                    public void onSuccess(String result) {
+                        LogToolsKt.logE("HttpClient success1 " + result, TAG);
+                        callBack.onSuccess(GsonTools.toBean(result, VRoomInfoBean.class));
+                    }
 
-            List<VRoomMicInfo> micInfoList = new ArrayList<>();
-            VRoomDetail room = new VRoomDetail();
-            VRoomInfoBean vRoomInfoBean = new VRoomInfoBean(micInfoList, room);
-            callBack.onSuccess(vRoomInfoBean);
-
+                    @Override
+                    public void onError(int code, String msg) {
+                        LogToolsKt.logE("HttpClient onError " + msg, TAG);
+                        callBack.onError(code, msg);
+                    }
+                });
     }
 
     /**

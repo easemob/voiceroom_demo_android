@@ -5,6 +5,7 @@ import io.agora.rtc2.IRtcEngineEventHandler
 import io.agora.rtc2.RtcEngineEx
 import io.agora.rtckit.open.config.RtcChannelConfig
 import io.agora.rtckit.internal.base.RtcBaseChannelEngine
+import io.agora.rtckit.open.status.RtcChannelStatus
 
 /**
  * @author create by zhangwei03
@@ -20,6 +21,7 @@ internal class AgoraChannelEngine : RtcBaseChannelEngine<RtcEngineEx>() {
     }
 
     private fun checkJoinChannel(config: RtcChannelConfig): Boolean {
+        listener?.onJoinChannelStart(config.roomId,config.userId)
         val status =
             engine?.joinChannel(config.appToken, config.roomId, "", config.userId)
 
