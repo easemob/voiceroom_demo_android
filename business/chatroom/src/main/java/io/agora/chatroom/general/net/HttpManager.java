@@ -8,10 +8,7 @@ import static http.VRHttpClientManager.Method_PUT;
 import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
-
 import androidx.annotation.NonNull;
-import androidx.core.text.StringKt;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -21,17 +18,17 @@ import java.util.List;
 import java.util.Map;
 import http.VRHttpCallback;
 import http.VRHttpClientManager;
-import http.VRHttpServer;
 import http.VRRequestApi;
 import io.agora.buddy.tool.GsonTools;
 import io.agora.buddy.tool.LogToolsKt;
 import io.agora.chatroom.general.repositories.ProfileManager;
 import tools.ValueCallBack;
+import tools.bean.VRGiftBean;
+import tools.bean.VRMicBean;
 import tools.bean.VRUserBean;
 import tools.bean.VRoomBean;
-import tools.bean.VRoomDetail;
 import tools.bean.VRoomInfoBean;
-import tools.bean.VRoomMicInfo;
+import tools.bean.VRoomUserBean;
 
 public class HttpManager {
 
@@ -157,14 +154,14 @@ public class HttpManager {
                 .asyncExecute(new VRHttpCallback() {
                     @Override
                     public void onSuccess(String result) {
-                        Log.e("createRoom success: ",result);
+                        LogToolsKt.logE("createRoom success: " + result, TAG);
                         VRoomInfoBean bean = GsonTools.toBean(result,VRoomInfoBean.class);
                         callBack.onSuccess(bean);
                     }
 
                     @Override
                     public void onError(int code, String msg) {
-                        Log.e("createRoom onError: ",code + " msg: " + msg);
+                        LogToolsKt.logE("createRoom onError: " + code + " msg: " + msg, TAG);
                         callBack.onError(code,msg);
                     }
                 });
@@ -284,11 +281,11 @@ public class HttpManager {
         new VRHttpClientManager.Builder(mContext)
                 .setUrl(VRRequestApi.get().getRoomList(cursor.size() == 0 ? "": cursor.get(0), limit,type))
                 .setHeaders(headers)
-                .setParams("")
                 .setRequestMethod(Method_GET)
                 .asyncExecute(new VRHttpCallback() {
                     @Override
                     public void onSuccess(String result) {
+                        LogToolsKt.logE("getRoomFromServer success: " + result, TAG);
                         VRoomBean bean = GsonTools.toBean(result,VRoomBean.class);
                         if (!TextUtils.isEmpty(bean.getCursor())){
                             cursor.add(0,bean.getCursor());
@@ -298,7 +295,7 @@ public class HttpManager {
 
                     @Override
                     public void onError(int code, String msg) {
-                        Log.e("getRoomFromServer onError: ",code + " msg: " + msg);
+                        LogToolsKt.logE("getRoomFromServer onError " + msg, TAG);
                         callBack.onError(code,msg);
                     }
                 });
@@ -311,10 +308,35 @@ public class HttpManager {
     /**
      * 获取房间内成员
      * @param roomId
-     * @param cursor
      * @param limit
      */
-    public void getRoomMembers(String roomId,String cursor,int limit){}
+    public void getRoomMembers(String roomId, int limit, ValueCallBack<VRoomUserBean> callBack){
+        ArrayList<String> cursor = new ArrayList<>();
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Content-Type", "application/json");
+        headers.put("Authorization", "Bearer " + ProfileManager.getInstance().getProfile().getAuthorization());
+        new VRHttpClientManager.Builder(mContext)
+                .setUrl(VRRequestApi.get().fetchRoomMembers(roomId,cursor.size() == 0 ? "": cursor.get(0), limit))
+                .setHeaders(headers)
+                .setRequestMethod(Method_GET)
+                .asyncExecute(new VRHttpCallback() {
+                    @Override
+                    public void onSuccess(String result) {
+                        LogToolsKt.logE("getRoomMembers success: " + result, TAG);
+                        VRoomUserBean bean = GsonTools.toBean(result,VRoomUserBean.class);
+                        if (!TextUtils.isEmpty(bean.getCursor())){
+                            cursor.add(0,bean.getCursor());
+                        }
+                        callBack.onSuccess(bean);
+                    }
+
+                    @Override
+                    public void onError(int code, String msg) {
+                        LogToolsKt.logE("getRoomMembers onError " + msg, TAG);
+                        callBack.onError(code,msg);
+                    }
+                });
+    }
 
     /**
      * 加入房间
@@ -322,35 +344,25 @@ public class HttpManager {
      * @param password
      */
     public void joinRoom(String roomId,String password,ValueCallBack<Boolean> callBack){
-        VRUserBean userBean = ProfileManager.getInstance().getProfile();
         Log.e("joinRoom","roomId:"+roomId);
-        Log.e("joinRoom","Authorization:"+ userBean.getAuthorization());
+        Log.e("joinRoom","Authorization:"+ ProfileManager.getInstance().getProfile().getAuthorization());
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
-        headers.put("Authorization", "Bearer " + userBean.getAuthorization());
-        JSONObject requestBody = new JSONObject();
-        try {
-            if (!TextUtils.isEmpty(password)){
-                requestBody.putOpt("password", password);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        headers.put("Authorization", "Bearer " + ProfileManager.getInstance().getProfile().getAuthorization());
         new VRHttpClientManager.Builder(mContext)
                 .setUrl(VRRequestApi.get().joinRoom(roomId))
                 .setHeaders(headers)
-                .setParams(requestBody.toString())
                 .setRequestMethod(Method_POST)
                 .asyncExecute(new VRHttpCallback() {
                     @Override
                     public void onSuccess(String result) {
-                        Log.e("joinRoom success: ",result);
+                        LogToolsKt.logE("joinRoom success: " + result, TAG);
                         callBack.onSuccess(true);
                     }
 
                     @Override
                     public void onError(int code, String msg) {
-                        Log.e("joinRoom onError: ",code + " msg: " + msg);
+                        LogToolsKt.logE("joinRoom onError " + msg, TAG);
                         callBack.onError(code,msg);
                     }
                 });
@@ -360,14 +372,66 @@ public class HttpManager {
      * 离开房间
      * @param roomId
      */
-    public void leaveRoom(String roomId){}
+    public void leaveRoom(String roomId,ValueCallBack<Boolean> callBack){
+        Log.e("leaveRoom","roomId:"+roomId);
+        Log.e("leaveRoom","Authorization:"+ ProfileManager.getInstance().getProfile().getAuthorization());
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Content-Type", "application/json");
+        headers.put("Authorization", "Bearer " + ProfileManager.getInstance().getProfile().getAuthorization());
+        new VRHttpClientManager.Builder(mContext)
+                .setUrl(VRRequestApi.get().leaveRoom(roomId))
+                .setHeaders(headers)
+                .setRequestMethod(Method_DELETE)
+                .asyncExecute(new VRHttpCallback() {
+                    @Override
+                    public void onSuccess(String result) {
+                        LogToolsKt.logE("joinRoom success: " + result, TAG);
+                        callBack.onSuccess(true);
+                    }
+
+                    @Override
+                    public void onError(int code, String msg) {
+                        LogToolsKt.logE("joinRoom onError " + msg, TAG);
+                        callBack.onError(code,msg);
+                    }
+                });
+    }
 
     /**
      * 踢出房间
      * @param roomId
      * @param uid
      */
-    public void kickRoomMember(String roomId,String uid){}
+    public void kickRoomMember(String roomId,String uid,ValueCallBack<String> callBack){
+        Log.e("kickRoomMember","roomId:"+roomId);
+        Log.e("kickRoomMember","Authorization:"+ ProfileManager.getInstance().getProfile().getAuthorization());
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Content-Type", "application/json");
+        headers.put("Authorization", "Bearer " + ProfileManager.getInstance().getProfile().getAuthorization());
+        JSONObject requestBody = new JSONObject();
+        try {
+            requestBody.putOpt("uid", uid);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        new VRHttpClientManager.Builder(mContext)
+                .setUrl(VRRequestApi.get().kickUser(roomId))
+                .setHeaders(headers)
+                .setRequestMethod(Method_DELETE)
+                .asyncExecute(new VRHttpCallback() {
+                    @Override
+                    public void onSuccess(String result) {
+                        LogToolsKt.logE("kickRoomMember success: " + result, TAG);
+                        callBack.onSuccess(result);
+                    }
+
+                    @Override
+                    public void onError(int code, String msg) {
+                        LogToolsKt.logE("kickRoomMember onError " + msg, TAG);
+                        callBack.onError(code,msg);
+                    }
+                });
+    }
 
     /**
      *************************************Mic 麦位操作请求***************************
@@ -376,63 +440,301 @@ public class HttpManager {
     /**
      * 获取上麦申请列表
      * @param roomId
-     * @param cursor
      * @param limit
      */
-    public void getApplyMicList(String roomId,String cursor,int limit){}
+    public void getApplyMicList(String roomId,int limit,ValueCallBack<VRMicBean> callBack){
+        ArrayList<String> cursor = new ArrayList<>();
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Content-Type", "application/json");
+        headers.put("Authorization", "Bearer " + ProfileManager.getInstance().getProfile().getAuthorization());
+        new VRHttpClientManager.Builder(mContext)
+                .setUrl(VRRequestApi.get().fetchApplyMembers(roomId,cursor.size() == 0 ? "": cursor.get(0), limit))
+                .setHeaders(headers)
+                .setRequestMethod(Method_GET)
+                .asyncExecute(new VRHttpCallback() {
+                    @Override
+                    public void onSuccess(String result) {
+                        LogToolsKt.logE("getApplyMicList success: " + result, TAG);
+                        VRMicBean bean = GsonTools.toBean(result, VRMicBean.class);
+                        if (!TextUtils.isEmpty(bean.getCursor())){
+                            cursor.add(0,bean.getCursor());
+                        }
+                        callBack.onSuccess(bean);
+                    }
+
+                    @Override
+                    public void onError(int code, String msg) {
+                        LogToolsKt.logE("getApplyMicList onError " + msg, TAG);
+                        callBack.onError(code,msg);
+                    }
+                });
+    }
 
     /**
      * 提交上麦申请
      * @param roomId
      * @param mic_index
      */
-    public void submitMic(String roomId,int mic_index){}
+    public void submitMic(String roomId,int mic_index,ValueCallBack<Boolean> callBack){
+        Log.e("submitMic","roomId:"+roomId);
+        Log.e("submitMic","Authorization:"+ ProfileManager.getInstance().getProfile().getAuthorization());
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Content-Type", "application/json");
+        headers.put("Authorization", "Bearer " + ProfileManager.getInstance().getProfile().getAuthorization());
+        JSONObject requestBody = new JSONObject();
+        try {
+            requestBody.putOpt("mic_index", mic_index);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        new VRHttpClientManager.Builder(mContext)
+                .setUrl(VRRequestApi.get().submitApply(roomId))
+                .setHeaders(headers)
+                .setParams(requestBody.toString())
+                .setRequestMethod(Method_POST)
+                .asyncExecute(new VRHttpCallback() {
+                    @Override
+                    public void onSuccess(String result) {
+                        LogToolsKt.logE("submitMic success: " + result, TAG);
+                        callBack.onSuccess(true);
+                    }
+
+                    @Override
+                    public void onError(int code, String msg) {
+                        LogToolsKt.logE("submitMic onError " + msg, TAG);
+                        callBack.onError(code,msg);
+                    }
+                });
+    }
 
     /**
      * 撤销上麦申请
      * @param roomId
      */
-    public void cancelSubmitMic(String roomId){}
+    public void cancelSubmitMic(String roomId,ValueCallBack<Boolean> callBack){
+        Log.e("cancelSubmitMic","roomId:"+roomId);
+        Log.e("cancelSubmitMic","Authorization:"+ ProfileManager.getInstance().getProfile().getAuthorization());
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Content-Type", "application/json");
+        headers.put("Authorization", "Bearer " + ProfileManager.getInstance().getProfile().getAuthorization());
+        new VRHttpClientManager.Builder(mContext)
+                .setUrl(VRRequestApi.get().cancelApply(roomId))
+                .setHeaders(headers)
+                .setRequestMethod(Method_DELETE)
+                .asyncExecute(new VRHttpCallback() {
+                    @Override
+                    public void onSuccess(String result) {
+                        LogToolsKt.logE("cancelSubmitMic success: " + result, TAG);
+                        callBack.onSuccess(true);
+                    }
+
+                    @Override
+                    public void onError(int code, String msg) {
+                        LogToolsKt.logE("cancelSubmitMic onError " + msg, TAG);
+                        callBack.onError(code,msg);
+                    }
+                });
+    }
 
     /**
      * 获取麦位信息
      * @param roomId
      */
-    public void getMicInfo(String roomId){}
+    public void getMicInfo(String roomId,ValueCallBack<VRoomUserBean> callBack){
+        Log.e("getMicInfo","roomId:"+roomId);
+        Log.e("getMicInfo","Authorization:"+ ProfileManager.getInstance().getProfile().getAuthorization());
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Content-Type", "application/json");
+        headers.put("Authorization", "Bearer " + ProfileManager.getInstance().getProfile().getAuthorization());
+        new VRHttpClientManager.Builder(mContext)
+                .setUrl(VRRequestApi.get().fetchMicsInfo(roomId))
+                .setHeaders(headers)
+                .setRequestMethod(Method_GET)
+                .asyncExecute(new VRHttpCallback() {
+                    @Override
+                    public void onSuccess(String result) {
+                        LogToolsKt.logE("getMicInfo success: " + result, TAG);
+                        VRoomUserBean bean = GsonTools.toBean(result,VRoomUserBean.class);
+                        callBack.onSuccess(bean);
+                    }
+
+                    @Override
+                    public void onError(int code, String msg) {
+                        LogToolsKt.logE("getMicInfo onError " + msg, TAG);
+                        callBack.onError(code,msg);
+                    }
+                });
+    }
 
     /**
      * 关麦
      * @param roomId
      * @param mic_index
      */
-    public void closeMic(String roomId,int mic_index){}
+    public void closeMic(String roomId,int mic_index,ValueCallBack<Boolean> callBack){
+        Log.e("closeMic","roomId:"+roomId);
+        Log.e("closeMic","Authorization:"+ ProfileManager.getInstance().getProfile().getAuthorization());
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Content-Type", "application/json");
+        headers.put("Authorization", "Bearer " + ProfileManager.getInstance().getProfile().getAuthorization());
+        JSONObject requestBody = new JSONObject();
+        try {
+            requestBody.putOpt("mic_index", mic_index);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        new VRHttpClientManager.Builder(mContext)
+                .setUrl(VRRequestApi.get().closeMic(roomId))
+                .setHeaders(headers)
+                .setParams(requestBody.toString())
+                .setRequestMethod(Method_POST)
+                .asyncExecute(new VRHttpCallback() {
+                    @Override
+                    public void onSuccess(String result) {
+                        LogToolsKt.logE("closeMic success: " + result, TAG);
+                        callBack.onSuccess(true);
+                    }
+
+                    @Override
+                    public void onError(int code, String msg) {
+                        LogToolsKt.logE("closeMic onError " + msg, TAG);
+                        callBack.onError(code,msg);
+                    }
+                });
+    }
 
     /**
      * 取消关麦
      * @param roomId
      * @param mic_index
      */
-    public void cancelCloseMic(String roomId,int mic_index){}
+    public void cancelCloseMic(String roomId,int mic_index,ValueCallBack<Boolean> callBack){
+        Log.e("cancelCloseMic","roomId:"+roomId);
+        Log.e("cancelCloseMic","Authorization:"+ ProfileManager.getInstance().getProfile().getAuthorization());
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Content-Type", "application/json");
+        headers.put("Authorization", "Bearer " + ProfileManager.getInstance().getProfile().getAuthorization());
+        new VRHttpClientManager.Builder(mContext)
+                .setUrl(VRRequestApi.get().cancelCloseMic(roomId))
+                .setHeaders(headers)
+                .setRequestMethod(Method_DELETE)
+                .asyncExecute(new VRHttpCallback() {
+                    @Override
+                    public void onSuccess(String result) {
+                        LogToolsKt.logE("cancelCloseMic success: " + result, TAG);
+                        callBack.onSuccess(true);
+                    }
+
+                    @Override
+                    public void onError(int code, String msg) {
+                        LogToolsKt.logE("cancelCloseMic onError " + msg, TAG);
+                        callBack.onError(code,msg);
+                    }
+                });
+    }
 
     /**
      * 下麦
      * @param roomId
      */
-    public void leaveMic(String roomId){}
+    public void leaveMic(String roomId,ValueCallBack<Boolean> callBack){
+        Log.e("leaveMic","roomId:"+roomId);
+        Log.e("leaveMic","Authorization:"+ ProfileManager.getInstance().getProfile().getAuthorization());
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Content-Type", "application/json");
+        headers.put("Authorization", "Bearer " + ProfileManager.getInstance().getProfile().getAuthorization());
+        new VRHttpClientManager.Builder(mContext)
+                .setUrl(VRRequestApi.get().leaveMic(roomId))
+                .setHeaders(headers)
+                .setRequestMethod(Method_DELETE)
+                .asyncExecute(new VRHttpCallback() {
+                    @Override
+                    public void onSuccess(String result) {
+                        LogToolsKt.logE("leaveMic success: " + result, TAG);
+                        callBack.onSuccess(true);
+                    }
+
+                    @Override
+                    public void onError(int code, String msg) {
+                        LogToolsKt.logE("leaveMic onError " + msg, TAG);
+                        callBack.onError(code,msg);
+                    }
+                });
+    }
 
     /**
      * 禁止指定麦位
      * @param roomId
      * @param mic_index
      */
-    public void muteMic(String roomId,int mic_index){}
+    public void muteMic(String roomId,int mic_index,ValueCallBack<String> callBack){
+        Log.e("muteMic","roomId:"+roomId);
+        Log.e("muteMic","Authorization:"+ ProfileManager.getInstance().getProfile().getAuthorization());
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Content-Type", "application/json");
+        headers.put("Authorization", "Bearer " + ProfileManager.getInstance().getProfile().getAuthorization());
+        JSONObject requestBody = new JSONObject();
+        try {
+            requestBody.putOpt("mic_index", mic_index);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        new VRHttpClientManager.Builder(mContext)
+                .setUrl(VRRequestApi.get().muteMic(roomId))
+                .setHeaders(headers)
+                .setParams(requestBody.toString())
+                .setRequestMethod(Method_POST)
+                .asyncExecute(new VRHttpCallback() {
+                    @Override
+                    public void onSuccess(String result) {
+                        LogToolsKt.logE("muteMic success: " + result, TAG);
+                        callBack.onSuccess(result);
+                    }
+
+                    @Override
+                    public void onError(int code, String msg) {
+                        LogToolsKt.logE("muteMic onError " + msg, TAG);
+                        callBack.onError(code,msg);
+                    }
+                });
+    }
 
     /**
      * 取消禁止指定麦位
      * @param roomId
      * @param mic_index
      */
-    public void cancelMuteMic(String roomId,int mic_index){}
+    public void cancelMuteMic(String roomId,int mic_index,ValueCallBack<String> callBack){
+        Log.e("cancelMuteMic","roomId:"+roomId);
+        Log.e("cancelMuteMic","Authorization:"+ ProfileManager.getInstance().getProfile().getAuthorization());
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Content-Type", "application/json");
+        headers.put("Authorization", "Bearer " + ProfileManager.getInstance().getProfile().getAuthorization());
+        JSONObject requestBody = new JSONObject();
+        try {
+            requestBody.putOpt("mic_index", mic_index);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        new VRHttpClientManager.Builder(mContext)
+                .setUrl(VRRequestApi.get().unMuteMic(roomId))
+                .setHeaders(headers)
+                .setParams(requestBody.toString())
+                .setRequestMethod(Method_DELETE)
+                .asyncExecute(new VRHttpCallback() {
+                    @Override
+                    public void onSuccess(String result) {
+                        LogToolsKt.logE("cancelMuteMic success: " + result, TAG);
+                        callBack.onSuccess(result);
+                    }
+
+                    @Override
+                    public void onError(int code, String msg) {
+                        LogToolsKt.logE("cancelMuteMic onError " + msg, TAG);
+                        callBack.onError(code,msg);
+                    }
+                });
+    }
 
     /**
      * 交换麦位
@@ -440,47 +742,247 @@ public class HttpManager {
      * @param form
      * @param to
      */
-    public void exChangeMic(String roomId,int form,int to){}
+    public void exChangeMic(String roomId,int form,int to,ValueCallBack<Boolean> callBack){
+        Log.e("exChangeMic","roomId:"+roomId);
+        Log.e("exChangeMic","Authorization:"+ ProfileManager.getInstance().getProfile().getAuthorization());
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Content-Type", "application/json");
+        headers.put("Authorization", "Bearer " + ProfileManager.getInstance().getProfile().getAuthorization());
+        JSONObject requestBody = new JSONObject();
+        try {
+            requestBody.putOpt("from", form);
+            requestBody.putOpt("to", to);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        new VRHttpClientManager.Builder(mContext)
+                .setUrl(VRRequestApi.get().exchangeMic(roomId))
+                .setHeaders(headers)
+                .setParams(requestBody.toString())
+                .setRequestMethod(Method_POST)
+                .asyncExecute(new VRHttpCallback() {
+                    @Override
+                    public void onSuccess(String result) {
+                        LogToolsKt.logE("exChangeMic success: " + result, TAG);
+                        callBack.onSuccess(true);
+                    }
+
+                    @Override
+                    public void onError(int code, String msg) {
+                        LogToolsKt.logE("exChangeMic onError " + msg, TAG);
+                        callBack.onError(code,msg);
+                    }
+                });
+    }
 
     /**
      * 踢用户下麦
+     * @param roomId
      * @param uid
      * @param mic_index
      */
-    public void kickMic(String uid,int mic_index){}
+    public void kickMic(String roomId,String uid,int mic_index,ValueCallBack<Boolean> callBack){
+        Log.e("kickMic","uid: "+uid);
+        Log.e("kickMic","Authorization:"+ ProfileManager.getInstance().getProfile().getAuthorization());
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Content-Type", "application/json");
+        headers.put("Authorization", "Bearer " + ProfileManager.getInstance().getProfile().getAuthorization());
+        JSONObject requestBody = new JSONObject();
+        try {
+            requestBody.putOpt("uid", uid);
+            requestBody.putOpt("mic_index", mic_index);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        new VRHttpClientManager.Builder(mContext)
+                .setUrl(VRRequestApi.get().kickMic(roomId))
+                .setHeaders(headers)
+                .setParams(requestBody.toString())
+                .setRequestMethod(Method_POST)
+                .asyncExecute(new VRHttpCallback() {
+                    @Override
+                    public void onSuccess(String result) {
+                        LogToolsKt.logE("kickMic success: " + result, TAG);
+                        callBack.onSuccess(true);
+                    }
+
+                    @Override
+                    public void onError(int code, String msg) {
+                        LogToolsKt.logE("kickMic onError " + msg, TAG);
+                        callBack.onError(code,msg);
+                    }
+                });
+    }
 
     /**
      * 用户拒绝上麦邀请
      * @param roomId
      */
-    public void rejectMicInvitation(String roomId){}
+    public void rejectMicInvitation(String roomId,ValueCallBack<VRoomBean> callBack){
+        Log.e("rejectMicInvitation","roomId:"+roomId);
+        Log.e("rejectMicInvitation","Authorization:"+ ProfileManager.getInstance().getProfile().getAuthorization());
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Content-Type", "application/json");
+        headers.put("Authorization", "Bearer " + ProfileManager.getInstance().getProfile().getAuthorization());
+        new VRHttpClientManager.Builder(mContext)
+                .setUrl(VRRequestApi.get().rejectMicInvitation(roomId))
+                .setHeaders(headers)
+                .setRequestMethod(Method_GET)
+                .asyncExecute(new VRHttpCallback() {
+                    @Override
+                    public void onSuccess(String result) {
+                        LogToolsKt.logE("rejectMicInvitation success: " + result, TAG);
+                        VRoomBean bean = GsonTools.toBean(result,VRoomBean.class);
+                        callBack.onSuccess(bean);
+                    }
+
+                    @Override
+                    public void onError(int code, String msg) {
+                        LogToolsKt.logE("rejectMicInvitation onError " + msg, TAG);
+                        callBack.onError(code,msg);
+                    }
+                });
+    }
 
     /**
      * 锁麦
      * @param roomId
      * @param mic_index
      */
-    public void lockMic(String roomId,int mic_index){}
+    public void lockMic(String roomId,int mic_index,ValueCallBack<Boolean> callBack){
+        Log.e("lockMic","roomId:"+roomId);
+        Log.e("lockMic","Authorization:"+ ProfileManager.getInstance().getProfile().getAuthorization());
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Content-Type", "application/json");
+        headers.put("Authorization", "Bearer " + ProfileManager.getInstance().getProfile().getAuthorization());
+        JSONObject requestBody = new JSONObject();
+        try {
+            requestBody.putOpt("mic_index", mic_index);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        new VRHttpClientManager.Builder(mContext)
+                .setUrl(VRRequestApi.get().lockMic(roomId))
+                .setHeaders(headers)
+                .setParams(requestBody.toString())
+                .setRequestMethod(Method_POST)
+                .asyncExecute(new VRHttpCallback() {
+                    @Override
+                    public void onSuccess(String result) {
+                        LogToolsKt.logE("lockMic success: " + result, TAG);
+                        callBack.onSuccess(true);
+                    }
+
+                    @Override
+                    public void onError(int code, String msg) {
+                        LogToolsKt.logE("lockMic onError " + msg, TAG);
+                        callBack.onError(code,msg);
+                    }
+                });
+    }
 
     /**
      * 取消锁麦
      * @param roomId
      */
-    public void cancelLockMic(String roomId){}
+    public void cancelLockMic(String roomId,ValueCallBack<Boolean> callBack){
+        Log.e("cancelLockMic","roomId:"+roomId);
+        Log.e("cancelLockMic","Authorization:"+ ProfileManager.getInstance().getProfile().getAuthorization());
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Content-Type", "application/json");
+        headers.put("Authorization", "Bearer " + ProfileManager.getInstance().getProfile().getAuthorization());
+        new VRHttpClientManager.Builder(mContext)
+                .setUrl(VRRequestApi.get().unlockMic(roomId))
+                .setHeaders(headers)
+                .setRequestMethod(Method_DELETE)
+                .asyncExecute(new VRHttpCallback() {
+                    @Override
+                    public void onSuccess(String result) {
+                        LogToolsKt.logE("cancelLockMic success: " + result, TAG);
+                        callBack.onSuccess(true);
+                    }
+
+                    @Override
+                    public void onError(int code, String msg) {
+                        LogToolsKt.logE("cancelLockMic onError " + msg, TAG);
+                        callBack.onError(code,msg);
+                    }
+                });
+    }
 
     /**
      * 邀请上麦
      * @param roomId
      * @param uid
      */
-    public void invitationMic(String roomId,String uid){}
+    public void invitationMic(String roomId,String uid,ValueCallBack<Boolean> callBack){
+        Log.e("invitationMic","roomId:"+roomId);
+        Log.e("invitationMic","Authorization:"+ ProfileManager.getInstance().getProfile().getAuthorization());
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Content-Type", "application/json");
+        headers.put("Authorization", "Bearer " + ProfileManager.getInstance().getProfile().getAuthorization());
+        JSONObject requestBody = new JSONObject();
+        try {
+            requestBody.putOpt("uid", uid);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        new VRHttpClientManager.Builder(mContext)
+                .setUrl(VRRequestApi.get().inviteUserToMic(roomId))
+                .setHeaders(headers)
+                .setParams(requestBody.toString())
+                .setRequestMethod(Method_POST)
+                .asyncExecute(new VRHttpCallback() {
+                    @Override
+                    public void onSuccess(String result) {
+                        LogToolsKt.logE("invitationMic success: " + result, TAG);
+                        callBack.onSuccess(true);
+                    }
+
+                    @Override
+                    public void onError(int code, String msg) {
+                        LogToolsKt.logE("closeMic onError " + msg, TAG);
+                        callBack.onError(code,msg);
+                    }
+                });
+    }
 
     /**
      * 拒绝上麦申请
      * @param roomId
      * @param uid
      */
-    public void rejectSubmitMic(String roomId,String uid){}
+    public void rejectSubmitMic(String roomId,String uid,ValueCallBack<Boolean> callBack){
+        Log.e("rejectSubmitMic","roomId:"+roomId);
+        Log.e("rejectSubmitMic","Authorization:"+ ProfileManager.getInstance().getProfile().getAuthorization());
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Content-Type", "application/json");
+        headers.put("Authorization", "Bearer " + ProfileManager.getInstance().getProfile().getAuthorization());
+        JSONObject requestBody = new JSONObject();
+        try {
+            requestBody.putOpt("uid", uid);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        new VRHttpClientManager.Builder(mContext)
+                .setUrl(VRRequestApi.get().rejectApplyInvitation(roomId))
+                .setHeaders(headers)
+                .setParams(requestBody.toString())
+                .setRequestMethod(Method_POST)
+                .asyncExecute(new VRHttpCallback() {
+                    @Override
+                    public void onSuccess(String result) {
+                        LogToolsKt.logE("rejectSubmitMic success: " + result, TAG);
+                        callBack.onSuccess(true);
+                    }
+
+                    @Override
+                    public void onError(int code, String msg) {
+                        LogToolsKt.logE("rejectSubmitMic onError " + msg, TAG);
+                        callBack.onError(code,msg);
+                    }
+                });
+    }
 
     /**
      * 同意上麦申请
@@ -488,7 +990,38 @@ public class HttpManager {
      * @param uid
      * @param mic_index
      */
-    public void applySubmitMic(String roomId,String uid,int mic_index){}
+    public void applySubmitMic(String roomId,String uid,int mic_index,ValueCallBack<Boolean> callBack){
+        Log.e("applySubmitMic","roomId:"+roomId);
+        Log.e("applySubmitMic","Authorization:"+ ProfileManager.getInstance().getProfile().getAuthorization());
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Content-Type", "application/json");
+        headers.put("Authorization", "Bearer " + ProfileManager.getInstance().getProfile().getAuthorization());
+        JSONObject requestBody = new JSONObject();
+        try {
+            requestBody.putOpt("mic_index", mic_index);
+            requestBody.putOpt("uid", uid);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        new VRHttpClientManager.Builder(mContext)
+                .setUrl(VRRequestApi.get().ApplyAgreeInvitation(roomId))
+                .setHeaders(headers)
+                .setParams(requestBody.toString())
+                .setRequestMethod(Method_POST)
+                .asyncExecute(new VRHttpCallback() {
+                    @Override
+                    public void onSuccess(String result) {
+                        LogToolsKt.logE("applySubmitMic success: " + result, TAG);
+                        callBack.onSuccess(true);
+                    }
+
+                    @Override
+                    public void onError(int code, String msg) {
+                        LogToolsKt.logE("applySubmitMic onError " + msg, TAG);
+                        callBack.onError(code,msg);
+                    }
+                });
+    }
 
     /**
      ************************************Gift 礼物操作请求***************************
@@ -498,7 +1031,29 @@ public class HttpManager {
      * 获取赠送礼物榜单
      * @param roomId
      */
-    public void getGiftList(String roomId){}
+    public void getGiftList(String roomId,ValueCallBack<VRGiftBean> callBack){
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Content-Type", "application/json");
+        headers.put("Authorization", "Bearer " + ProfileManager.getInstance().getProfile().getAuthorization());
+        new VRHttpClientManager.Builder(mContext)
+                .setUrl(VRRequestApi.get().fetchGiftContribute(roomId))
+                .setHeaders(headers)
+                .setRequestMethod(Method_GET)
+                .asyncExecute(new VRHttpCallback() {
+                    @Override
+                    public void onSuccess(String result) {
+                        LogToolsKt.logE("getGiftList success: " + result, TAG);
+                        VRGiftBean bean = GsonTools.toBean(result, VRGiftBean.class);
+                        callBack.onSuccess(bean);
+                    }
+
+                    @Override
+                    public void onError(int code, String msg) {
+                        LogToolsKt.logE("getGiftList onError " + msg, TAG);
+                        callBack.onError(code,msg);
+                    }
+                });
+    }
 
     /**
      * 赠送礼物
@@ -507,7 +1062,39 @@ public class HttpManager {
      * @param num
      * @param to_uid
      */
-    public void sendGift(String roomId,String gift_id,int num,int to_uid){}
+    public void sendGift(String roomId,String gift_id,int num,int to_uid,ValueCallBack<Boolean> callBack){
+        Log.e("sendGift","roomId:"+roomId);
+        Log.e("sendGift","Authorization:"+ ProfileManager.getInstance().getProfile().getAuthorization());
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Content-Type", "application/json");
+        headers.put("Authorization", "Bearer " + ProfileManager.getInstance().getProfile().getAuthorization());
+        JSONObject requestBody = new JSONObject();
+        try {
+            requestBody.putOpt("gift_id", gift_id);
+            requestBody.putOpt("num", num);
+            requestBody.putOpt("to_uid", to_uid);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        new VRHttpClientManager.Builder(mContext)
+                .setUrl(VRRequestApi.get().giftTo(roomId))
+                .setHeaders(headers)
+                .setParams(requestBody.toString())
+                .setRequestMethod(Method_POST)
+                .asyncExecute(new VRHttpCallback() {
+                    @Override
+                    public void onSuccess(String result) {
+                        LogToolsKt.logE("sendGift success: " + result, TAG);
+                        callBack.onSuccess(true);
+                    }
+
+                    @Override
+                    public void onError(int code, String msg) {
+                        LogToolsKt.logE("sendGift onError " + msg, TAG);
+                        callBack.onError(code,msg);
+                    }
+                });
+    }
 
 
 }

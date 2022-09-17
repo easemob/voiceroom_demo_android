@@ -13,6 +13,7 @@ import java.util.Map;
 
 import io.agora.buddy.tool.ThreadManager;
 
+
 public class VRHttpClientManager {
     private static final String TAG = "HttpClientManager";
     public static String Method_GET = "GET";
