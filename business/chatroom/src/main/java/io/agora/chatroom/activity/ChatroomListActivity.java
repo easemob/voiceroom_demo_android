@@ -37,7 +37,7 @@ public class ChatroomListActivity extends BaseActivity implements ChatroomTitleB
     private TabLayout mTableLayout;
     private ViewPager2 mViewPager;
     private PageViewModel pageViewModel;
-    private int[] titles = {R.string.tab_layout_all,R.string.tab_layout_chat_room,R.string.tab_layout_audio_room,R.string.tab_layout_karaoke_room};
+    private int[] titles = {R.string.tab_layout_all,R.string.tab_layout_chat_room,R.string.tab_layout_audio_room};
 
     @Override
     protected int getLayoutId() {
@@ -67,7 +67,7 @@ public class ChatroomListActivity extends BaseActivity implements ChatroomTitleB
 
     @Override
     protected void initListener() {
-        pageViewModel = new ViewModelProvider(mContext).get(PageViewModel.class);
+        pageViewModel = new ViewModelProvider(this).get(PageViewModel.class);
 
         mVRTitleBar.setOnBackPressListener(this);
         mButtonLayout.setOnClickListener(new View.OnClickListener() {
@@ -106,7 +106,6 @@ public class ChatroomListActivity extends BaseActivity implements ChatroomTitleB
             @Override
             public void onPageSelected(int position) {
                 Log.e("apex-w","onPageSelected: "+position);
-                pageViewModel.clearRegisterInfo();
                 if (position == 0){
                     pageViewModel.setPageSelect(-1);
                 }else if (position == 1){

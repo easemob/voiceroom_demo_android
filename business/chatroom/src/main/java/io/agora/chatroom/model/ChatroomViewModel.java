@@ -60,7 +60,7 @@ public class ChatroomViewModel extends AndroidViewModel {
      * 清理注册信息
      */
     public void clearRegisterInfo() {
-        roomObservable.setValue(null);
-        joinObservable.setValue(null);
+        roomObservable.call();
+        joinObservable.call();
     }
 }
