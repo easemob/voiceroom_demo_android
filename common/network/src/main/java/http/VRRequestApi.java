@@ -12,7 +12,7 @@ public class VRRequestApi {
     private final String ROOM_LIST = "/voice/room/list?limit=%1$s";
     private final String BASE_MEMBERS = "/voice/room/%1$s/members";
     private final String BASE_MIC = "/%1$s/mic";
-    private final String CREATE_ROOM = "/create";
+    private final String CREATE_ROOM = "/voice/room/create";
     private final String ROOM_DETAILS = "/voice/room/%1$s";
     private final String FETCH_ROOM_MEMBERS = "%1$s/members/list?limit=%2$s";
     private final String JOIN_ROOM = "/join";
@@ -42,7 +42,7 @@ public class VRRequestApi {
     }
 
     public String createRoom(){
-        return CREATE_ROOM;
+        return BASE_URL+CREATE_ROOM;
     }
 
     public String fetchRoomInfo(String roomId) {
@@ -54,7 +54,7 @@ public class VRRequestApi {
     }
 
     public String modifyRoomInfo(String roomId){
-        return CREATE_ROOM;
+        return BASE_URL + String.format(ROOM_DETAILS,roomId);
     }
 
     public String fetchRoomMembers(String roomId,String cursor,int limit){

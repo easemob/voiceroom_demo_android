@@ -40,6 +40,6 @@ public class PageViewModel extends AndroidViewModel {
     * 清理注册信息
     */
    public void clearRegisterInfo() {
-      pageObservable.setValue(-1);
+      pageObservable.setValue(null);
    }
 }
