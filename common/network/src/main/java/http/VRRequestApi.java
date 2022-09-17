@@ -46,7 +46,7 @@ public class VRRequestApi {
     }
 
     public String fetchRoomInfo(String roomId) {
-        return String.format(ROOM_DETAILS, roomId);
+        return BASE_URL + String.format(ROOM_DETAILS, roomId);
     }
 
     public String deleteRoom(String roomId){

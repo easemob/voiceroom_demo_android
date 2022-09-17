@@ -5,6 +5,7 @@ import androidx.annotation.IntDef
 /**
  * 语聊房麦位状态
  */
+@Target(AnnotationTarget.CLASS, AnnotationTarget.PROPERTY, AnnotationTarget.VALUE_PARAMETER, AnnotationTarget.TYPE)
 @kotlin.annotation.Retention(AnnotationRetention.SOURCE)
 @IntDef(
     WheatSeatType.Idle,

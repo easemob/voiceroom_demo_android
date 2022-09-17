@@ -11,6 +11,8 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.util.Map;
 
+import io.agora.buddy.tool.ThreadManager;
+
 public class VRHttpClientManager {
     private static final String TAG = "HttpClientManager";
     public static String Method_GET = "GET";
@@ -315,11 +317,9 @@ public class VRHttpClientManager {
         }
 
         private void asyncExecuteNormal(VRHttpCallback callback) {
-            new Thread(){
-                public void run(){
-                    executeNormal(callback);
-                }
-            }.start();
+            ThreadManager.getInstance().runOnIOThread(() -> {
+                executeNormal(callback);
+            });
         }
 
         /**

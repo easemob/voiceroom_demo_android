@@ -7,7 +7,7 @@ public class VRUserBean {
     private String authorization;
     private String chat_uid;
     private String im_token;
-    private String rtc_uid;
+    private int rtc_uid;
 
     public String getUid() {
         return uid;
@@ -57,11 +57,11 @@ public class VRUserBean {
         this.im_token = im_token;
     }
 
-    public String getRtc_uid() {
+    public int getRtc_uid() {
         return rtc_uid;
     }
 
-    public void setRtc_uid(String rtc_uid) {
+    public void setRtc_uid(int rtc_uid) {
         this.rtc_uid = rtc_uid;
     }
 }

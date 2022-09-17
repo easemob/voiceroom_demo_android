@@ -5,14 +5,14 @@ package tools.bean
  *
  */
 data class VRoomInfoBean constructor(
-    val mic_info: List<VRoomMicInfo> = mutableListOf(),
+    val mic_info: List<VRoomMicInfo>? = null,
     val room: VRoomDetail? = null
 )
 
 data class VRoomMicInfo constructor(
-    val index: Int,
-    val status: Int,
-    val user: VRoomUser
+    val index: Int = 0,
+    val status: Int = -1,
+    val user: VRoomUser? = null
 )
 
 data class VRoomDetail constructor(
@@ -23,37 +23,25 @@ data class VRoomDetail constructor(
     val click_count: Int = 0,
     val is_private: Boolean = false,
     val member_count: Int = 0,
-    val member_list: List<VRoomMember>? = null,
+    val gift_amount: Int = 0,
+    val member_list: List<VRoomUser>? = null,
     val name: String? = null,
-    val owner: VRoomOwner? = null,
+    val owner: VRoomUser? = null,
     val ranking_list: List<VRoomRanking>? = null,
     val room_id: String? = null,
     val type: Int = 0
 )
 
 data class VRoomUser constructor(
-    val chat_uid: String,
-    val name: String,
-    val portrait: String,
-    val uid: String
-)
-
-data class VRoomMember constructor(
-    val chat_uid: String,
-    val name: String,
-    val portrait: String,
-    val uid: String
-)
-
-data class VRoomOwner constructor(
-    val chat_uid: String,
-    val name: String,
-    val portrait: String,
-    val uid: String
+    val chat_uid: String? = null,
+    val name: String? = null,
+    val portrait: String? = null,
+    val uid: String? = null,
+    val rtcUid: Int = 0
 )
 
 data class VRoomRanking constructor(
-    val amount: Int,
-    val name: String,
-    val portrait: String
+    val amount: Int = 0,
+    val name: String? = null,
+    val portrait: String? = null,
 )

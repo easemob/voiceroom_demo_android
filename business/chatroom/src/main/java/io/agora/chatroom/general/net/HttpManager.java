@@ -9,6 +9,7 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.core.text.StringKt;
 
 import org.json.JSONException;
@@ -20,11 +21,11 @@ import java.util.List;
 import java.util.Map;
 import http.VRHttpCallback;
 import http.VRHttpClientManager;
+import http.VRHttpServer;
 import http.VRRequestApi;
 import io.agora.buddy.tool.GsonTools;
 import io.agora.buddy.tool.LogToolsKt;
 import io.agora.chatroom.general.repositories.ProfileManager;
-import tools.ParseResponseTool;
 import tools.ValueCallBack;
 import tools.bean.VRUserBean;
 import tools.bean.VRoomBean;
@@ -50,6 +51,20 @@ public class HttpManager {
         mContext = context;
         return mInstance;
     }
+
+    @NonNull
+    private static String buildAuth() {
+        VRUserBean userBean = ProfileManager.getInstance().getProfile();
+        String authorization = null;
+        if (userBean != null) {
+            authorization = userBean.getAuthorization();
+        }
+        if (authorization == null) {
+            authorization = "";
+        }
+        return "Bearer " + authorization;
+    }
+
    //登录
    public void loginWithToken(String device, ValueCallBack<VRUserBean> callBack){
       Map<String, String> headers = new HashMap<>();
@@ -72,17 +87,38 @@ public class HttpManager {
               .asyncExecute(new VRHttpCallback() {
                  @Override
                  public void onSuccess(String result) {
-                     Log.e("loginWithToken success: ",result);
+                     LogToolsKt.logE("loginWithToken success: " + result, TAG);
                      VRUserBean bean = GsonTools.toBean(result,VRUserBean.class);
                      callBack.onSuccess(bean);
                  }
 
                  @Override
                  public void onError(int code, String msg) {
-                    Log.e("loginWithToken onError: ",code + " msg: " + msg);
+                     LogToolsKt.logE("loginWithToken onError: " + code + " msg: " + msg, TAG);
                     callBack.onError(code,msg);
                  }
               });
+
+//       Map<String, Object> body = new HashMap<>();
+//       body.put("deviceId", device);
+//       body.put("name", "apex");
+//       body.put("portrait", "");
+//          body.putOpt("phone", "手机号后期上");
+//          body.putOpt("verify_code", "验证码后期上");
+//       VRHttpServer.get().enqueuePost(VRRequestApi.get().login(), headers, body, VRUserBean.class, new VRHttpServer.IHttpCallback<VRUserBean>() {
+//
+//           @Override
+//           public void onSuccess(String bodyString, VRUserBean data) {
+//               Log.e("loginWithToken success: "+ bodyString,TAG);
+//               callBack.onSuccess(data);
+//           }
+//
+//           @Override
+//           public void onFail(int code, String message) {
+//               LogToolsKt.logE("loginWithToken onError: "+code + " msg: " + message,TAG);
+//               callBack.onError(code,message);
+//           }
+//       });
    }
 
    /**
@@ -141,28 +177,21 @@ public class HttpManager {
     public void getRoomDetails(String roomId,ValueCallBack< VRoomInfoBean > callBack){
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
-//        headers.put("Authorization", "Bearer " + ProfileManager.getInstance().getProfile().getAuthorization());
-        JSONObject requestBody = new JSONObject();
-        try {
-            requestBody.putOpt("room", roomId);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        headers.put("Authorization", buildAuth());
         new VRHttpClientManager.Builder(mContext)
                 .setUrl(VRRequestApi.get().fetchRoomInfo(roomId))
                 .setHeaders(headers)
-                .setParams(requestBody.toString())
                 .setRequestMethod(Method_GET)
                 .asyncExecute(new VRHttpCallback() {
                     @Override
                     public void onSuccess(String result) {
-                        LogToolsKt.logE("HttpClient success1 " + result, TAG);
+                        LogToolsKt.logE("fetchRoomInfo onSuccess: " + result, TAG);
                         callBack.onSuccess(GsonTools.toBean(result, VRoomInfoBean.class));
                     }
 
                     @Override
                     public void onError(int code, String msg) {
-                        LogToolsKt.logE("HttpClient onError " + msg, TAG);
+                        LogToolsKt.logE("fetchRoomInfo onError：" + code + "msg:" + msg, TAG);
                         callBack.onError(code, msg);
                     }
                 });

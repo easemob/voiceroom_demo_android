@@ -13,10 +13,10 @@ import com.alibaba.android.arouter.launcher.ARouter;
 
 import java.util.List;
 import io.agora.CallBack;
-import io.agora.baseui.general.ThreadManager;
 import io.agora.baseui.general.callback.OnResourceParseCallback;
 import io.agora.baseui.general.enums.Status;
 import io.agora.baseui.general.net.Resource;
+import io.agora.buddy.tool.ThreadManager;
 import io.agora.chat.ChatClient;
 import io.agora.chatroom.R;
 import io.agora.chatroom.adapter.ChatroomListAdapter;
@@ -124,8 +124,10 @@ public class ChatroomListFragment extends BaseChatroomListFragment<VRoomBean.Roo
                 }
 
                 @Override
-                public void onError(int i, String s) {
-                    Log.e("ChatroomListFragment","Login onError" + "code: "+i + " desc: " + s);
+                public void onError(int code, String msg) {
+                    Log.e("ChatroomListFragment", "Login onError code:" + code + " desc: " + msg);
+                    // TODO: 2022/9/16  202
+                    checkPrivate();
                 }
             });
         }else {

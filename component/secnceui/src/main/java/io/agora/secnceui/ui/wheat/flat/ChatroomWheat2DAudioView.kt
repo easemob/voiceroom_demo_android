@@ -96,4 +96,9 @@ class ChatroomWheat2DAudioView : ConstraintLayout {
             adapter = concatAdapter
         }
     }
+
+    fun updateAdapter(seatInfoList: List<SeatInfoBean>, botSeatList: List<BotSeatInfoBean>){
+        wheat2DSeatAdapter?.submitListAndPurge(seatInfoList)
+        wheat2DSeatBotAdapter?.submitListAndPurge(botSeatList)
+    }
 }

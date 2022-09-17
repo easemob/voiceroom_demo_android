@@ -1,4 +1,4 @@
-package io.agora.baseui.general;
+package io.agora.buddy.tool;
 
 import android.os.Process;
 

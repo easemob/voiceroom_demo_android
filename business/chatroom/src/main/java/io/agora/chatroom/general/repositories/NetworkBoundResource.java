@@ -8,11 +8,11 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import io.agora.baseui.general.ThreadManager;
 import io.agora.baseui.general.callback.ResultCallBack;
 import io.agora.baseui.general.net.ErrorCode;
 import io.agora.baseui.general.net.Resource;
 import io.agora.baseui.general.net.Result;
+import io.agora.buddy.tool.ThreadManager;
 
 
 /**

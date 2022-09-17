@@ -184,7 +184,7 @@ class VRHttpClientController {
     * @throws IOException
     */
    public HttpURLConnection connect() throws IOException {
-      printRequestInfo(false);
+      printRequestInfo(true);
       mConn.connect();
       return mConn;
    }

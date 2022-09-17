@@ -1,13 +1,13 @@
 package io.agora.secnceui.bean
 
 data class ChatroomInfoBean constructor(
+    var roomId: String = "",
     var channelId: String = "",
+    var chatroomId: String = "",
     var chatroomName: String = "",
-    var ownerUserId: String = "",
-    var ownerName: String = "",
-    var ownerAvatar: String = "",
-    val topGifts: List<ChatroomUserInfoBean>? = null, // 前三名
-    var audiencesCount: Int = 0,
+    var owner: ChatroomUserInfoBean = ChatroomUserInfoBean(),
+    var memberCount: Int = 0,
     var giftCount: Int = 0,
     var watchCount: Int = 0,
+    val topGifts: List<ChatroomUserInfoBean> = emptyList(), // 前三名
 ) : BaseChatroomBean

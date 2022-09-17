@@ -58,7 +58,7 @@ object ChatroomWheatViewHelper {
         return object : OnItemClickListener<SeatInfoBean> {
             override fun onItemClick(data: SeatInfoBean, view: View, position: Int, viewType: Long) {
                 super.onItemClick(data, view, position, viewType)
-                Toast.makeText(activity, "${data.name}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(activity, "${data.userInfo?.username}", Toast.LENGTH_SHORT).show()
             }
         }
     }

@@ -86,6 +86,7 @@ dependencies {
         implementation dep["lifecycle-runtime-ktx"]
         implementation dep["annotation"]
         implementation dep["gson"]
+        implementation dep["okhttp"]
         // glide
         implementation dep["glide"]
         annotationProcessor dep["glide-compiler"]

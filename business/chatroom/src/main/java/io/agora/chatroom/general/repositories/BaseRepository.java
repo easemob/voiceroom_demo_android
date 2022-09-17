@@ -3,7 +3,7 @@ package io.agora.chatroom.general.repositories;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import io.agora.baseui.general.ThreadManager;
+import io.agora.buddy.tool.ThreadManager;
 
 public class BaseRepository {
 

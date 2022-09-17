@@ -89,9 +89,11 @@ class ChatroomSeatManagerSheetDialog constructor() : BaseSheetDialog<DialogChatr
                     mtSeatInfoName.text = seatInfo.index.toString()
                 }
                 else -> {
-                    mtSeatInfoName.text = seatInfo.name
+                    mtSeatInfoName.text = seatInfo.userInfo?.username ?: ""
                     ivSeatInnerIcon.isVisible = false
-                    ivSeatInfo.setImageResource(ViewTools.getDrawableId(ivSeatInfo.context, seatInfo.avatar))
+                    ivSeatInfo.setImageResource(
+                        ViewTools.getDrawableId(ivSeatInfo.context, seatInfo.userInfo?.userAvatar ?: "")
+                    )
                     ivSeatMic.apply {
                         when (seatInfo.userStatus) {
                             WheatUserStatus.None -> {

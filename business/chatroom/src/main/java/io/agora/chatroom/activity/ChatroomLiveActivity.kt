@@ -8,12 +8,11 @@ import android.view.View
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.alibaba.android.arouter.facade.annotation.Route
 import io.agora.baseui.BaseUiActivity
+import io.agora.baseui.general.callback.OnResourceParseCallback
 import io.agora.baseui.general.net.Resource
-import io.agora.buddy.tool.logD
 import io.agora.buddy.tool.logE
 import io.agora.chatroom.controller.RtcChatroomController
 import io.agora.chatroom.databinding.ActivityChatroomBinding
@@ -31,6 +30,7 @@ import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
 import pub.devrel.easypermissions.PermissionRequest
 import tools.bean.VRoomBean
+import tools.bean.VRoomBean.RoomsBean
 import tools.bean.VRoomInfoBean
 
 @Route(path = RouterPath.ChatroomPath)
@@ -60,23 +60,34 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
         roomViewModel = ViewModelProvider(this)[ChatroomViewModel::class.java]
         initListeners()
         initView()
-        // test
-        test()
         initData()
         requestAudioPermission()
     }
 
     private fun initData() {
         roomBean?.let {
-            roomViewModel.getDetails(this,it.room_id ?: "")
+            roomViewModel.getDetails(this, it.room_id ?: "")
         }
-        roomViewModel.roomDetailObservable.observe(this,
-            Observer { response: Resource<VRoomInfoBean> ->
-                val roomInfoBean = response.data
-                val chatroomBean = ChatroomInfoConstructor.convertUiBean(roomInfoBean)
 
-                "$roomInfoBean".logD()
+        roomViewModel.roomDetailObservable.observe(this) { response: Resource<VRoomInfoBean> ->
+            parseResource(response, object : OnResourceParseCallback<VRoomInfoBean>() {
+
+                override fun onSuccess(data: VRoomInfoBean?) {
+                    "roomDetailObservable onSuccess".logE()
+                    data?.let {
+                        binding.cTopView.onChatroomInfo(ChatroomInfoConstructor.convertTopUiBean(it))
+                        val seatInfoList = ChatroomInfoConstructor.convertMicUiBean(it)
+                        val botInfo = ChatroomInfoConstructor.convertMicBotUiBean(it)
+                        binding.rvChatroomWheat2dSeat.updateAdapter(seatInfoList, mutableListOf(botInfo))
+                    }
+                }
+
+                override fun onError(code: Int, message: String?) {
+                    "roomDetailObservable onError $code,message $message".logE()
+                }
             })
+        }
+
     }
 
     private fun initListeners() {
@@ -88,42 +99,6 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
     }
 
     private fun initView() {
-        binding.cTopView.setOnLiveTopClickListener(
-            ChatroomTopViewHelper.createTopViewClickListener(this, finishBack = {
-                finish()
-            }, false)
-        )
-//        roomBean?.let {
-//            binding.chatroomGiftView.init(it.room_id ?: "")
-//            binding.messageView.init(it.room_id ?: "")
-//        }
-        binding.chatBottom.setMenuItemOnClickListener(object : MenuItemClickListener{
-            override fun onChatExtendMenuItemClick(itemId: Int, view: View?) {
-                when(itemId){
-                    R.id.extend_item_eq ->{
-                        ChatroomTopViewHelper.showAudioSettingsDialog(this@ChatroomLiveActivity, finishBack = {
-                            finish()
-                        }, false)
-                    }else ->{
-
-                    }
-                }
-            }
-
-            override fun onInputViewFocusChange(focus: Boolean) {
-            }
-
-            override fun onEmojiClick() {
-            }
-
-            override fun onSendMessage(content: String?) {
-
-            }
-
-        })
-    }
-
-    private fun test() {
         if (chatroomType == ConfigConstants.Common_Chatroom) {
             binding.rvChatroomWheat2dSeat.isVisible = true
             binding.rvChatroomWheat3dSeat.isVisible = false
@@ -142,6 +117,40 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
                 ChatroomWheatViewHelper.createBotClickListener(this),
             ).setUpSeatInfoMap(ChatroomWheatConstructor.builder3dSeatMap(this))
         }
+        binding.cTopView.setOnLiveTopClickListener(
+            ChatroomTopViewHelper.createTopViewClickListener(this, finishBack = {
+                finish()
+            }, false)
+        )
+//        roomBean?.let {
+//            binding.chatroomGiftView.init(it.room_id ?: "")
+//            binding.messageView.init(it.room_id ?: "")
+//        }
+        binding.chatBottom.setMenuItemOnClickListener(object : MenuItemClickListener {
+            override fun onChatExtendMenuItemClick(itemId: Int, view: View?) {
+                when (itemId) {
+                    R.id.extend_item_eq -> {
+                        ChatroomTopViewHelper.showAudioSettingsDialog(this@ChatroomLiveActivity, finishBack = {
+                            finish()
+                        }, false)
+                    }
+                    else -> {
+
+                    }
+                }
+            }
+
+            override fun onInputViewFocusChange(focus: Boolean) {
+            }
+
+            override fun onEmojiClick() {
+            }
+
+            override fun onSendMessage(content: String?) {
+
+            }
+
+        })
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
@@ -163,13 +172,13 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
             onPermissionGrant()
         } else {
             // Do not have permissions, request them now
-            EasyPermissions.requestPermissions( PermissionRequest.Builder(this, RC_PERMISSIONS, *perms).build())
+            EasyPermissions.requestPermissions(PermissionRequest.Builder(this, RC_PERMISSIONS, *perms).build())
         }
     }
 
     private fun onPermissionGrant() {
         RtcChatroomController.get().initMain(application)
-        RtcChatroomController.get().joinChannel(roomBean?.room_id?:"1111",111)
+        RtcChatroomController.get().joinChannel(roomBean?.room_id ?: "1111", 111)
     }
 
     override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>) {
@@ -178,14 +187,14 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
     }
 
     override fun onPermissionsDenied(requestCode: Int, perms: MutableList<String>) {
-       "onPermissionsDenied $perms ".logE()
+        "onPermissionsDenied $perms ".logE()
     }
 
     override fun onRationaleAccepted(requestCode: Int) {
         "onRationaleAccepted requestCode$requestCode ".logE()
-       if (requestCode == RC_PERMISSIONS){
-           onPermissionGrant()
-       }
+        if (requestCode == RC_PERMISSIONS) {
+            onPermissionGrant()
+        }
     }
 
     override fun onRationaleDenied(requestCode: Int) {
