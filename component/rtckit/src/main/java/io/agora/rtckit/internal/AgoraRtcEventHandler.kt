@@ -69,16 +69,16 @@ internal class AgoraRtcEventHandler(var rtcListener: IRtcClientListener?) : IRtc
 
     override fun onNetworkQuality(uid: Int, txQuality: Int, rxQuality: Int) {
         super.onNetworkQuality(uid, txQuality, rxQuality)
-        val status = RtcNetWorkStatus(
-            userId = uid.toString(),
-            txQuality = coverNetworkQuality(txQuality),
-            rxQuality = coverNetworkQuality(rxQuality)
-        )
-        if (0 == uid) {//自己
-            rtcListener?.onNetWorkStatus(status)
-            "onNetworkQuality uid:$uid,txQuality:${getNetWorkQualityValue(txQuality)}," +
-                    "rxQuality:${getNetWorkQualityValue(rxQuality)}".logD(TAG)
-        }
+//        val status = RtcNetWorkStatus(
+//            userId = uid.toString(),
+//            txQuality = coverNetworkQuality(txQuality),
+//            rxQuality = coverNetworkQuality(rxQuality)
+//        )
+//        if (0 == uid) {//自己
+//            rtcListener?.onNetWorkStatus(status)
+//            "onNetworkQuality uid:$uid,txQuality:${getNetWorkQualityValue(txQuality)}," +
+//                    "rxQuality:${getNetWorkQualityValue(rxQuality)}".logD(TAG)
+//        }
     }
 
     override fun onUserMuteAudio(uid: Int, muted: Boolean) {
@@ -131,7 +131,7 @@ internal class AgoraRtcEventHandler(var rtcListener: IRtcClientListener?) : IRtc
     override fun onConnectionStateChanged(state: Int, reason: Int) {
         super.onConnectionStateChanged(state, reason)
         rtcListener?.onConnectionStateChanged(state, reason)
-        "onUserMuteAudio state:$state,reason:$reason,see:\n https://docs.agora.io/cn/voice-call-4.x/API%20Reference/java_ng/API/class_irtcengineeventhandler.html?platform=Android#callback_onconnectionstatechanged".logD(
+        "onConnectionStateChanged state:$state,reason:$reason,see:\n https://docs.agora.io/cn/voice-call-4.x/API%20Reference/java_ng/API/class_irtcengineeventhandler.html?platform=Android#callback_onconnectionstatechanged".logD(
             TAG
         )
     }
@@ -144,20 +144,20 @@ internal class AgoraRtcEventHandler(var rtcListener: IRtcClientListener?) : IRtc
      */
     override fun onAudioVolumeIndication(speakers: Array<out AudioVolumeInfo>?, totalVolume: Int) {
         super.onAudioVolumeIndication(speakers, totalVolume)
-        if (!speakers.isNullOrEmpty()) {
-            val speakerInfos: Array<RtcAudioVolumeInfo?> = arrayOfNulls(speakers.size)
-
-            speakers.forEachIndexed { index, audioVolumeInfo ->
-                speakerInfos[index] = RtcAudioVolumeInfo(
-                    uid = audioVolumeInfo.uid,
-                    volume = audioVolumeInfo.volume,
-                    vad = audioVolumeInfo.vad,
-                    voicePitch = audioVolumeInfo.voicePitch
-                )
-                "onAudioVolumeIndication speakers index:${speakerInfos[index]},totalVolume:$totalVolume".logD(TAG)
-            }
-            rtcListener?.onAudioVolumeIndication(RtcAudioVolumeIndicationStatus(speakerInfos, totalVolume))
-        }
+//        if (!speakers.isNullOrEmpty()) {
+//            val speakerInfos: Array<RtcAudioVolumeInfo?> = arrayOfNulls(speakers.size)
+//
+//            speakers.forEachIndexed { index, audioVolumeInfo ->
+//                speakerInfos[index] = RtcAudioVolumeInfo(
+//                    uid = audioVolumeInfo.uid,
+//                    volume = audioVolumeInfo.volume,
+//                    vad = audioVolumeInfo.vad,
+//                    voicePitch = audioVolumeInfo.voicePitch
+//                )
+//                "onAudioVolumeIndication speakers index:${speakerInfos[index]},totalVolume:$totalVolume".logD(TAG)
+//            }
+//            rtcListener?.onAudioVolumeIndication(RtcAudioVolumeIndicationStatus(speakerInfos, totalVolume))
+//        }
     }
 
     private fun getClientRole(role: Int): String {

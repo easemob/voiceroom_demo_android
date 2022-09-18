@@ -16,8 +16,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <io.agora.secnceui.ui.wheat.flat.ChatroomWheat2DAudioView
-        android:id="@+id/rvChatroomWheat2dSeat"
+    <io.agora.secnceui.ui.mic.flat.Room2DMicLayout
+        android:id="@+id/rvChatroom2dMicLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="60dp"
@@ -36,7 +36,7 @@
     <io.agora.secnceui.widget.gift.ChatroomGiftView
         android:id="@+id/chatroom_gift_view"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rvChatroomWheat2dSeat"
+        app:layout_constraintTop_toBottomOf="@+id/rvChatroom2dMicLayout"
         app:layout_constraintBottom_toTopOf="@+id/glHorizontal72"
         android:layout_width="300dp"
         android:layout_height="0dp"/>
@@ -65,8 +65,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"/>
 
-    <io.agora.secnceui.ui.wheat.spatial.ChatroomWheat3DAudioView
-        android:id="@+id/rvChatroomWheat3dSeat"
+    <io.agora.secnceui.ui.mic.spatial.Room3DMicLayout
+        android:id="@+id/rvChatroom3dMicLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="18dp"

@@ -1,11 +1,13 @@
 package io.agora.rtckit.internal.impl
 
+import io.agora.rtc2.ChannelMediaOptions
 import io.agora.rtc2.Constants
 import io.agora.rtc2.IRtcEngineEventHandler
 import io.agora.rtc2.RtcEngineEx
-import io.agora.rtckit.open.config.RtcChannelConfig
+import io.agora.rtckit.annotation.SoundSelection
 import io.agora.rtckit.internal.base.RtcBaseChannelEngine
-import io.agora.rtckit.open.status.RtcChannelStatus
+import io.agora.rtckit.open.config.RtcChannelConfig
+
 
 /**
  * @author create by zhangwei03
@@ -21,21 +23,35 @@ internal class AgoraChannelEngine : RtcBaseChannelEngine<RtcEngineEx>() {
     }
 
     private fun checkJoinChannel(config: RtcChannelConfig): Boolean {
-        listener?.onJoinChannelStart(config.roomId,config.userId)
-        val status =
-            engine?.joinChannel(config.appToken, config.roomId, "", config.userId)
+        if (config.roomId.isEmpty() || config.userId < 0) {
+            listener?.onError(
+                IRtcEngineEventHandler.ErrorCode.ERR_FAILED,
+                "join channel error roomId or rtcUid illegal!(roomId:${config.roomId} rtcUid:${config.userId})"
+            )
+            return false
+        }
+        listener?.onJoinChannelStart(config.roomId, config.userId)
+        val options = ChannelMediaOptions()
+        if (config.broadcaster) {
+            engine?.setClientRole(Constants.CLIENT_ROLE_BROADCASTER)
+        } else {
+            engine?.setClientRole(Constants.CLIENT_ROLE_AUDIENCE)
+        }
+        when(config.soundType){
+            SoundSelection.SocialChat ->{
+                engine?.setChannelProfile(Constants.CHANNEL_PROFILE_LIVE_BROADCASTING)
+                engine?.setAudioProfile(Constants.AUDIO_PROFILE_MUSIC_HIGH_QUALITY)
+                engine?.setAudioScenario(Constants.AUDIO_SCENARIO_GAME_STREAMING)
+            }else ->{
+            // TODO:
+            engine?.setChannelProfile(Constants.CHANNEL_PROFILE_COMMUNICATION)
+            }
+        }
+        val status = engine?.joinChannel(config.appToken, config.roomId, config.userId, options);
 
         if (status != IRtcEngineEventHandler.ErrorCode.ERR_OK) {
             listener?.onError(status ?: IRtcEngineEventHandler.ErrorCode.ERR_FAILED, "join channel error!")
             return false
-        }
-        engine?.apply {
-            if (config.broadcaster) {
-                setClientRole(Constants.CLIENT_ROLE_BROADCASTER)
-            } else {
-                setClientRole(Constants.CLIENT_ROLE_AUDIENCE)
-            }
-            enableLocalAudio(config.audioEnabled)
         }
         return true
     }

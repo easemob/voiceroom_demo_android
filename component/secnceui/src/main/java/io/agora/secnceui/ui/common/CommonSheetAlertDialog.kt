@@ -34,11 +34,11 @@ class CommonSheetAlertDialog constructor(): BaseSheetDialog<DialogBottomSheetAle
                 mbRight.text = rightText
             }
             mbLeft.setOnClickListener {
-                clickListener?.onCancelClick()
+                clickListener?.onConfirmClick()
                 dismiss()
             }
             mbLeft.setOnClickListener {
-                clickListener?.onConfirmClick()
+                clickListener?.onCancelClick()
                 dismiss()
             }
         }

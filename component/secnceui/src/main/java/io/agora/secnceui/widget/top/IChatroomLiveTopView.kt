@@ -1,15 +1,15 @@
 package io.agora.secnceui.widget.top
 
-import androidx.annotation.DrawableRes
-import io.agora.secnceui.bean.ChatroomInfoBean
+import io.agora.secnceui.annotation.ChatroomTopType
+import io.agora.secnceui.bean.RoomInfoBean
 
 interface IChatroomLiveTopView {
     /**头部初始化*/
-    fun onChatroomInfo(chatroomInfo: ChatroomInfoBean)
+    fun onChatroomInfo(chatroomInfo: RoomInfoBean)
 
     /**头部 text 更新*/
-    fun onTextUpdate(@ChatroomLiveTopView.ChatroomTopType type: Int, text: String)
+    fun onTextUpdate(@ChatroomTopType type: Int, text: String)
 
     /**头部 image 更新*/
-    fun onImageUpdate(@ChatroomLiveTopView.ChatroomTopType type: Int, @DrawableRes avatarRes: Int)
+    fun onImageUpdate(@ChatroomTopType type: Int, avatar: String)
 }

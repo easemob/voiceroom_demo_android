@@ -34,7 +34,7 @@ class RtcKitManager {
     }
 
     private fun create(appContext: Application) {
-        RtcMiddleServiceImpl().apply {
+        middleService = RtcMiddleServiceImpl().apply {
             initMain(appContext, object : IRtcMiddleServiceListener {
 
                 override fun onNetworkStatus(netWorkStatus: RtcNetWorkStatus) {

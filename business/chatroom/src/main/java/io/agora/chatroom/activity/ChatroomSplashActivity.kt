@@ -2,24 +2,18 @@ package io.agora.chatroom.activity
 
 import android.content.Context
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.lifecycle.ViewModelProvider
 import com.alibaba.android.arouter.launcher.ARouter
 import io.agora.baseui.BaseUiActivity
 import io.agora.baseui.BaseUiTool
 import io.agora.baseui.general.callback.OnResourceParseCallback
-import io.agora.chatroom.ChatroomDataTestManager
 import io.agora.chatroom.databinding.ActivityChatroomSplashBinding
 import io.agora.chatroom.general.repositories.ProfileManager
-import io.agora.chatroom.model.ChatroomViewModel
 import io.agora.chatroom.model.LoginViewModel
-import io.agora.chatroom.ui.ChatroomLiveTopViewModel
 import io.agora.config.RouterPath
 import manager.ChatroomConfigManager
 import tools.bean.VRUserBean
