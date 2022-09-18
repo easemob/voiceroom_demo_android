@@ -128,7 +128,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="6dp"
                 android:layout_marginEnd="20dp"
-                android:text="@string/chatroom_current_customer_usage"
+                android:text="@string/chatroom_social_chat_following_customers"
                 android:textColor="@color/dark_grey_color_979CBB"
                 android:textSize="@dimen/sp_11"
                 app:layout_constraintEnd_toEndOf="parent"

@@ -54,10 +54,7 @@ class RoomAudioSettingsSheetDialog constructor(
                     RoomAudioSettingsConstructor.getSoundEffectName(view.context, audioInfo.soundSelection)
                 mtNoiseSuppressionArrow.text =
                     RoomAudioSettingsConstructor.getAINSName(view.context, audioInfo.anisMode)
-                mtSpatialAudioArrow.text =
-                    if (audioInfo.spatialOpen) view.context.getString(R.string.chatroom_open) else view.context.getString(
-                        R.string.chatroom_off
-                    )
+                mtSpatialAudioArrow.text = view.context.getString(R.string.chatroom_off)
                 mtBestSoundEffectArrow.setOnClickListener {
                     audioSettingsListener.onSoundEffect(audioInfo.soundSelection, isEnable)
                 }

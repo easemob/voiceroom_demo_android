@@ -1,11 +1,11 @@
-<resources >
+<resources>
     <string name="chatroom_notice">Notice</string>
     <string name="chatroom_audio_settings">Audio Settings</string>
     <string name="chatroom_bot_settings">Bot Settings</string>
-    <string name="chatroom_agora_bot">Agora Blue &amp; Red Bot</string>
+    <string name="chatroom_agora_bot">Agora Blue &#038; Red Bot</string>
     <string name="chatroom_bot_volume">Bot Volume</string>
     <string name="chatroom_room_audio_settings">Room Audio Settings</string>
-    <string name="chatroom_best_sound_effect">Best Sound Effect</string>
+    <string name="chatroom_best_sound_effect">Best Agora Sound</string>
     <string name="chatroom_noise_suppression">Noise Suppression</string>
     <string name="chatroom_spatial_audio">Spatial Audio</string>
     <string name="chatroom_only_host_can_change_robot">Only host can change the robot settings</string>
@@ -19,26 +19,23 @@
     <string name="chatroom_sound_selection">Sound Selection</string>
     <string name="chatroom_only_host_can_change_best_sound">Only host can change Best Agora Sound</string>
     <string name="chatroom_sound_selection_tips">Switching other Agora Sound Selection need to exit the chatroom.</string>
-    <string name="chatroom_current_customer_usage">Current Customer Usage</string>
     <string name="chatroom_current_sound_selection">Current Sound Selection</string>
     <string name="chatroom_other_sound_selection">Other Sound Selection</string>
     <string name="chatroom_social_chat">Social Chat</string>
-    <string name="chatroom_social_chat_introduce">This scenario focuses on echo cancellation, noise reduction in a multi-person chat setting, creating a quiet chat atmosphere</string>
+    <string name="chatroom_social_chat_introduce">This sound effect focuses on solving the voice call problem of Social Chat scene, including noise cancellation and echo suppression of the anchor&#180;s voice. It can enable users of different network environments and models to enjoy ultra-low delay, clear and beautiful voice in multi person chat.</string>
     <string name="chatroom_karaoke">Karaoke</string>
-    <string name="chatroom_karaoke_introduce">The scene deals with the coordination of your voice and the musical accompaniment through high sound quality and echo cancellation to ensure the best karaoke experience</string>
+    <string name="chatroom_karaoke_introduce">This sound effect focuses on solving all kinds of problems in the Karaoke scene of single person or multi person singing, including the balance processing of accompaniment and voice, the beautification of sound melody and voice line, the volume balance and real-time synchronization of multi person chorus, etc. It can make the scenes of Karaoke more realistic and the singers&#180; songs more beautiful.</string>
     <string name="chatroom_gaming_buddy">Gaming Buddy</string>
-    <string name="chatroom_gaming_buddy_introduce">This scene focuses on the coordination of human voice and in-game sound during live, interactive game sessions</string>
-    <string name="chatroom_sound_card_hq">Sound Card HQ</string>
-    <string name="chatroom_sound_card_hq_introduce">This sound effect focuses on solving the problems of poor sound quality of mono anchors and compatibility with mainstream external sound cards. The sound network stereo collection and high sound quality technology can greatly improve the sound quality of anchors using sound cards and enhance the attraction of live broadcasting rooms. At present, it has been adapted to mainstream sound cards in the market.</string>
+    <string name="chatroom_gaming_buddy_introduce">This sound effect focuses on solving all kinds of problems in the game scene where the anchor plays with him, including the collaborative reverberation processing of voice and game sound, the melody of sound and the beautification of sound lines. It can make the voice of the accompanying anchor more attractive and ensure the scene feeling of the game voice.</string>
+    <string name="chatroom_professional_broadcaster">Professional Broadcaster</string>
+    <string name="chatroom_professional_broadcaster_introduce">This sound effect focuses on solving the problems of poor sound quality of mono anchors and compatibility with mainstream external sound cards. The sound network stereo collection and high sound quality technology can greatly improve the sound quality of anchors using sound cards and enhance the attraction of live broadcasting rooms. At present, it has been adapted to mainstream sound cards in the market.</string>
     <string name="chatroom_sound_selection_more">Need more Agora Sound Selection or custom sound. Visit <![CDATA[<font color=\'#3C4267\'><strong><u>www.agora.io.</u></strong></font>]]></string>
-    <string name="chatroom_ains_sounds">Agora AINS supports the following sounds, click to have bot play the sound:</string>
     <string name="chatroom_ains_settings">AINS Settings</string>
-    <string name="chatroom_your_ains">You AINS</string>
+    <string name="chatroom_your_ains">Your AINS</string>
     <string name="chatroom_agora_blue_bot_ains">Agora Blue Bot AINS</string>
     <string name="chatroom_agora_red_bot_ains">Agora Red Bot AINS</string>
     <string name="chatroom_high">High</string>
     <string name="chatroom_medium">Medium</string>
-    <string name="chatroom_open">Open</string>
     <string name="chatroom_off">Off</string>
     <string name="chatroom_ains">AINS</string>
     <string name="chatroom_none">None</string>
@@ -69,7 +66,7 @@
     <string name="chatroom_mute">Mute</string>
     <string name="chatroom_block">Block</string>
     <string name="chatroom_unblock">Unblock</string>
-    <string name="chatroom_kickoff">Kick Off</string>
+    <string name="chatroom_kickoff">Kick Off Stage</string>
     <string name="chatroom_unmute">Unmute</string>
     <string name="chatroom_off_stage">Off-Stage</string>
     <string name="chatroom_host">Host</string>
@@ -79,14 +76,14 @@
     <string name="chatroom_confirm">Confirm</string>
     <string name="chatroom_cancel">Cancel</string>
     <string name="chatroom_cancel_request">Cancel Request</string>
-    <string name="chatroom_first_enter_room_notice_tips">Welcome to Agora Chat Room 2.0 I am therobot Agora Red. Can you see the robot assistant at the right coner? Click it and experience the new features.</string>
-   <string name="chatroom_social_chat_following_customers">The following customers are using it:</string>
+    <string name="chatroom_first_enter_room_notice_tips">Welcome to Agora Chat Room 2.0 I am the robot Agora Red. Can you see the robot assistant at the right coner? Click it and experience the new features.</string>
+    <string name="chatroom_social_chat_following_customers">The following customers are using it</string>
     <string name="chatroom_social_chat_more">More Best Agora Sound</string>
-    <string name="chatroom_3d_spatial_audio">3D Spatial Audio Seat Tutorial</string>
+    <string name="chatroom_3d_spatial_audio">3D Spatial Audio Seat</string>
+    <string name="chatroom_3d_spatial_audio_tips">3D Spatial Audio Seat Tutorial</string>
     <string name="chatroom_3d_spatial_audio_part1">Put on headset</string>
-    <string name="chatroom_3d_spatial_audio_part2">ove avatar around to hear different spatial audio effects</string>
+    <string name="chatroom_3d_spatial_audio_part2">Move avatar around to hear different spatial audio effects</string>
     <string name="chatroom_request_speak">Request to Speak?</string>
-    <string name="chatroom_cancel_request_speak">Cancel Request</string>
     <string name="chatroom_prompt">Prompt</string>
     <string name="chatroom_exit">Exit the chatroom?</string>
     <string name="chatroom_exit_and_create_one">Exit the chatroom and recreate a new one?</string>
@@ -94,7 +91,6 @@
     <string name="chatroom_audience_list">Audience List</string>
     <string name="chatroom_contribution_value">Contribution Value</string>
     <string name="chatroom_contribution_empty">No data</string>
-    <string name="chatroom_search">search</string>
 
     <string name="chatroom_input_chat_title">Let\'s Chat</string>
     <string name="chatroom_system_msg_member_add">Joined</string>

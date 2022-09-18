@@ -1,6 +1,8 @@
 package io.agora.secnceui.ui.soundselection
 
+import android.os.Build
 import android.os.Bundle
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -84,7 +86,7 @@ class RoomSoundSelectionSheetDialog constructor(
                     }
                 }
             }, RoomSoundSelectionViewHolder::class.java)
-        val footerList = mutableListOf("")
+        val footerList = mutableListOf(recyclerView.context.getString(R.string.chatroom_sound_selection_more))
         val footerAdapter = BaseRecyclerViewAdapter(footerList, RoomSoundSelectionFooterViewHolder::class.java)
         val config = ConcatAdapter.Config.Builder().setIsolateViewTypes(true).build()
         val concatAdapter = ConcatAdapter(config, soundSelectionAdapter, footerAdapter)

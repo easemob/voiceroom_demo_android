@@ -4,7 +4,6 @@ import android.os.Build
 import android.text.Html
 import android.view.View
 import android.widget.LinearLayout
-import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
@@ -71,9 +70,14 @@ class RoomSoundSelectionViewHolder(binding: ItemChatroomSoundSelectionBinding) :
 
 class RoomSoundSelectionFooterViewHolder(binding: ItemChatroomSoundSelectionFooterBinding) :
     BaseRecyclerViewAdapter.BaseViewHolder<ItemChatroomSoundSelectionFooterBinding, String>(binding) {
-    @RequiresApi(Build.VERSION_CODES.N)
+
     override fun binding(data: String?, selectedIndex: Int) {
-        mBinding.mtChatroomSoundSelectionMore.text =
-            Html.fromHtml(context.getString(R.string.chatroom_sound_selection_more), Html.FROM_HTML_MODE_LEGACY)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            mBinding.mtChatroomSoundSelectionMore.text =
+                Html.fromHtml(context.getString(R.string.chatroom_sound_selection_more), Html.FROM_HTML_MODE_LEGACY)
+        } else {
+            mBinding.mtChatroomSoundSelectionMore.text =
+                Html.fromHtml(context.getString(R.string.chatroom_sound_selection_more))
+        }
     }
 }

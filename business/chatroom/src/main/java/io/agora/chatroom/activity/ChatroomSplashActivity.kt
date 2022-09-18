@@ -39,14 +39,13 @@ class ChatroomSplashActivity : BaseUiActivity<ActivityChatroomSplashBinding>() {
         loginViewModel.loginObservable.observe(this) { response ->
             parseResource(response, object : OnResourceParseCallback<VRUserBean?>(true) {
                 override fun onSuccess(data: VRUserBean?) {
-                    Log.e("loginViewModel","onSuccess")
+                    Log.e("loginViewModel", "onSuccess")
                     ProfileManager.getInstance().profile = data
                     initSplashPage()
                 }
             })
         }
         loginViewModel.LoginFromServer(this)
-//        Handler(Looper.getMainLooper()).postDelayed(Runnable { initSplashPage() }, SPLASH_DELAYED)
     }
 
     private fun initSplashPage() {

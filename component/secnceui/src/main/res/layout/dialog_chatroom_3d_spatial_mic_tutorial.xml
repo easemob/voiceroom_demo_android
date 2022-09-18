@@ -19,7 +19,7 @@
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/mtBottomSheetTitle"
         style="@style/chatroom_bottom_sheet_title_style"
-        android:text="@string/chatroom_3d_spatial_audio"
+        android:text="@string/chatroom_3d_spatial_audio_tips"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ivBottomSheetTitle" />
