@@ -9,6 +9,9 @@ import io.agora.rtckit.open.status.*
  */
 interface IRtcKitListener {
 
+    /**网络情况*/
+    fun onConnectionStateChanged(state: Int, reason: Int)
+
     /**网络等状态*/
     fun onNetworkStatus(netWorkStatus: RtcNetWorkStatus)
 
@@ -18,8 +21,7 @@ interface IRtcKitListener {
     /**用户进入rtc 房间*/
     fun onUserJoin(userId: Int)
 
-    /**频道状态，用户开始加入频道、成功加入频道，用户退出等*/
-    fun onChannelStatus(channelStatus: RtcChannelStatus)
+    fun onLeaveChannel(userId: Int)
 
     /**错误回调*/
     fun onError(rtcErrorStatus: RtcErrorStatus)

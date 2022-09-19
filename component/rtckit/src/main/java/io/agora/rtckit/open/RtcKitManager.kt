@@ -1,12 +1,13 @@
 package io.agora.rtckit.open
 
-import android.app.Application
+import android.content.Context
+import io.agora.rtckit.internal.IRtcClientListener
 import io.agora.rtckit.open.config.RtcInitConfig
 import io.agora.rtckit.open.event.*
 import io.agora.rtckit.open.status.*
 import io.agora.rtckit.middle.RtcMiddleServiceImpl
-import io.agora.rtckit.middle.IRtcMiddleServiceListener
 import io.agora.rtckit.middle.IRtcMiddleService
+import io.agora.rtckit.open.config.RtcChannelConfig
 
 /**
  * @author create by zhangwei03
@@ -14,63 +15,59 @@ import io.agora.rtckit.middle.IRtcMiddleService
  */
 class RtcKitManager {
 
+    private lateinit var initConfig: RtcInitConfig
     private var middleService: IRtcMiddleService? = null
-    lateinit var initConfig: RtcInitConfig
-    var rtcManagerListener: IRtcKitListener? = null
 
     companion object {
 
-        fun initRTC(
-            appContext: Application,
-            initConfig: RtcInitConfig,
-            managerListener: IRtcKitListener
-        ): RtcKitManager {
-            return RtcKitManager().apply {
-                this.rtcManagerListener = managerListener
+        fun initRTC(context: Context, initConfig: RtcInitConfig, rtcKitListener: IRtcKitListener): RtcKitManager {
+            val rtcKitManager = RtcKitManager().apply {
                 this.initConfig = initConfig
-                create(appContext)
+                this.middleService = RtcMiddleServiceImpl(context, initConfig, object : IRtcClientListener {
+
+                    override fun onConnectionStateChanged(state: Int, reason: Int) {
+                        TODO("Not yet implemented")
+                    }
+
+                    override fun onUserJoined(userId: Int, joined: Boolean) {
+                        if (joined) {
+                            rtcKitListener.onUserJoin(userId)
+                        } else {
+                            rtcKitListener.onLeaveChannel(userId)
+                        }
+                    }
+
+                    override fun onNetworkStatus(netWorkStatus: RtcNetWorkStatus) {
+                        rtcKitListener.onNetworkStatus(netWorkStatus)
+                    }
+
+                    override fun onAudioStatus(audioChangeStatus: RtcAudioChangeStatus) {
+                        rtcKitListener.onAudioStatus(audioChangeStatus)
+                    }
+
+                    override fun onError(rtcErrorStatus: RtcErrorStatus) {
+                        rtcKitListener.onError(rtcErrorStatus)
+                    }
+
+                    override fun onAudioVolumeIndication(volumeIndicationStatus: RtcAudioVolumeIndicationStatus) {
+                        rtcKitListener.onAudioVolumeIndication(volumeIndicationStatus)
+                    }
+                })
             }
+            return rtcKitManager
         }
     }
 
-    private fun create(appContext: Application) {
-        middleService = RtcMiddleServiceImpl().apply {
-            initMain(appContext, object : IRtcMiddleServiceListener {
+    fun joinChannel(channelConfig: RtcChannelConfig, joinCallback: IRtcValueCallback<Boolean>) {
+        middleService?.joinChannel(channelConfig, joinCallback)
+    }
 
-                override fun onNetworkStatus(netWorkStatus: RtcNetWorkStatus) {
-                    rtcManagerListener?.onNetworkStatus(netWorkStatus)
-                }
-
-                override fun onAudioStatus(audioChangeStatus: RtcAudioChangeStatus) {
-                    rtcManagerListener?.onAudioStatus(audioChangeStatus)
-                }
-
-                override fun onUserJoined(userId: Int) {
-                    rtcManagerListener?.onUserJoin(userId)
-                }
-
-                override fun onChannelStatus(userStatus: RtcChannelStatus) {
-                    rtcManagerListener?.onChannelStatus(userStatus)
-                }
-
-                override fun onError(rtcErrorStatus: RtcErrorStatus) {
-                    rtcManagerListener?.onError(rtcErrorStatus)
-                }
-
-                override fun onAudioVolumeIndication(volumeIndicationStatus: RtcAudioVolumeIndicationStatus) {
-                    rtcManagerListener?.onAudioVolumeIndication(volumeIndicationStatus)
-                }
-
-            }, initConfig)
-        }
+    fun leaveChannel() {
+        middleService?.leaveChannel()
     }
 
     fun operateAudio(audioEvent: RtcAudioEvent) {
         middleService?.onAudioEvent(audioEvent)
-    }
-
-    fun operateChannel(channelEvent: RtcChannelEvent) {
-        middleService?.onChannelEvent(channelEvent)
     }
 
     fun operateSoundEffect(soundEffect: RtcSoundEffectEvent) {
@@ -86,7 +83,6 @@ class RtcKitManager {
     }
 
     fun destroy() {
-        rtcManagerListener = null
         middleService?.destroy()
         middleService = null
     }

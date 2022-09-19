@@ -87,8 +87,7 @@ public class ChatroomViewModel extends AndroidViewModel {
     public void initSdkJoin(VRoomBean.RoomsBean roomBean) {
         joinRtcChannel.set(false);
         joinImRoom.set(false);
-        RtcRoomController.get().initMain(getApplication());
-        RtcRoomController.get().joinChannel(roomBean.getChannel_id(),
+        RtcRoomController.get().joinChannel(getApplication(), roomBean.getChannel_id(),
                 ProfileManager.getInstance().getProfile().getRtc_uid(),
                 RoomInfoConstructor.isOwner(roomBean),
                 new DefaultValueCallBack<Boolean>() {

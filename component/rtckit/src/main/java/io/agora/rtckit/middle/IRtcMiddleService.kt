@@ -1,7 +1,7 @@
 package io.agora.rtckit.middle
 
-import android.content.Context
-import io.agora.rtckit.open.config.RtcInitConfig
+import io.agora.rtckit.open.IRtcValueCallback
+import io.agora.rtckit.open.config.RtcChannelConfig
 import io.agora.rtckit.open.event.*
 
 /**
@@ -11,13 +11,12 @@ import io.agora.rtckit.open.event.*
  */
 interface IRtcMiddleService {
 
-    fun initMain(context: Context, middleListener: IRtcMiddleServiceListener, config: RtcInitConfig)
+    fun joinChannel(config: RtcChannelConfig, joinCallback: IRtcValueCallback<Boolean>)
+
+    fun leaveChannel()
 
     /**处理音频事件*/
     fun onAudioEvent(audioEvent: RtcAudioEvent)
-
-    /**处理频道事件*/
-    fun onChannelEvent(channelEvent: RtcChannelEvent)
 
     /**处理最佳音效事件*/
     fun onSoundEffectEvent(soundEffect: RtcSoundEffectEvent)

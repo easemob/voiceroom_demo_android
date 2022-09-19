@@ -14,25 +14,25 @@ internal class AgoraAudioEngine : RtcBaseAudioEngine<RtcEngineEx>() {
 
     override fun enableLocalAudio(enabled: Boolean): Boolean {
         val isSuccess = isSuccess(engine?.enableLocalAudio(enabled))
-        listener?.onAudioChangeStatus(RtcAudioChangeStatus.LocalAudio("", true))
+        listener?.onAudioStatus(RtcAudioChangeStatus.LocalAudio("", true))
         return isSuccess
     }
 
     override fun muteLocalAudio(mute: Boolean): Boolean {
         val isSuccess = isSuccess(engine?.muteLocalAudioStream(mute))
-        listener?.onAudioChangeStatus(RtcAudioChangeStatus.MutedAudio("", mute))
+        listener?.onAudioStatus(RtcAudioChangeStatus.MutedAudio("", mute))
         return isSuccess
     }
 
     override fun muteRemoteAudio(uid: String, mute: Boolean): Boolean {
         val isSuccess = isSuccess(engine?.muteRemoteAudioStream(uid.toIntOrNull() ?: -1, mute))
-        listener?.onAudioChangeStatus(RtcAudioChangeStatus.RemoteAudio(uid, mute))
+        listener?.onAudioStatus(RtcAudioChangeStatus.RemoteAudio(uid, mute))
         return isSuccess
     }
 
     override fun muteRemoteAllAudio(mute: Boolean): Boolean {
         val isSuccess = isSuccess(engine?.muteAllRemoteAudioStreams(mute))
-        listener?.onAudioChangeStatus(RtcAudioChangeStatus.RemoteAudio("", mute))
+        listener?.onAudioStatus(RtcAudioChangeStatus.RemoteAudio("", mute))
         return isSuccess
     }
 
