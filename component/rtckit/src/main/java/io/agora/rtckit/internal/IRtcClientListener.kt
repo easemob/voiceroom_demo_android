@@ -17,6 +17,9 @@ internal interface IRtcClientListener {
     //加入房间成功
     fun onJoinChannelSuccess(channel: String, userId: Int)
 
+    //加入房间成功
+    fun onJoinChannelError(channel: String, code: Int)
+
     //离开房间
     fun onUserLeave(userId: Int)
 

@@ -17,6 +17,7 @@ object RoomInfoConstructor {
         return !currentUid.isNullOrEmpty() && TextUtils.equals(currentUid, vRoomBean?.room?.owner?.uid)
     }
 
+    @JvmStatic
     fun isOwner(vRoomBean: VRoomBean.RoomsBean?): Boolean {
         val currentUid = ProfileManager.getInstance().profile?.uid
         return !currentUid.isNullOrEmpty() && TextUtils.equals(currentUid, vRoomBean?.owner?.uid)

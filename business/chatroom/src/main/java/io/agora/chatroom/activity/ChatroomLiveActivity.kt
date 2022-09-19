@@ -32,8 +32,11 @@ import io.agora.secnceui.widget.top.OnLiveTopClickListener
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
 import pub.devrel.easypermissions.PermissionRequest
+import tools.DefaultValueCallBack
+import tools.ValueCallBack
 import tools.bean.VRoomBean
 import tools.bean.VRoomInfoBean
+import java.util.concurrent.atomic.AtomicBoolean
 
 @Route(path = RouterPath.ChatroomPath)
 class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPermissions.PermissionCallbacks,
@@ -212,6 +215,9 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
 
     override fun finish() {
         RtcRoomController.get().leaveChannel()
+        roomBean?.room_id?.let {
+            roomViewModel.leaveRoom(this, it)
+        }
         super.finish()
     }
 
@@ -227,13 +233,9 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
     }
 
     private fun onPermissionGrant() {
-        RtcRoomController.get().initMain(application)
-        RtcRoomController.get()
-            .joinChannel(
-                roomBean?.channel_id ?: "",
-                ProfileManager.getInstance().profile?.rtc_uid ?: -1,
-                RoomInfoConstructor.isOwner(roomBean)
-            )
+        roomBean?.let {
+            roomViewModel.initSdkJoin(it)
+        }
     }
 
     override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>) {

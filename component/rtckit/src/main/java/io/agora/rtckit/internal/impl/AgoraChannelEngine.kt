@@ -50,7 +50,7 @@ internal class AgoraChannelEngine : RtcBaseChannelEngine<RtcEngineEx>() {
         val status = engine?.joinChannel(config.appToken, config.roomId, config.userId, options);
 
         if (status != IRtcEngineEventHandler.ErrorCode.ERR_OK) {
-            listener?.onError(status ?: IRtcEngineEventHandler.ErrorCode.ERR_FAILED, "join channel error!")
+            listener?.onJoinChannelError(config.roomId,status ?: IRtcEngineEventHandler.ErrorCode.ERR_FAILED)
             return false
         }
         return true

@@ -75,9 +75,28 @@ public class ChatroomRepository extends BaseRepository {
         }.asLiveData();
     }
 
+    public LiveData<Resource<Boolean>> leaveRoom(Context context, String roomId) {
+        return new NetworkOnlyResource<Boolean>() {
+            @Override
+            protected void createCall(@NonNull ResultCallBack<LiveData<Boolean>> callBack) {
+                HttpManager.getInstance(context).leaveRoom(roomId, new ValueCallBack<Boolean>() {
+                    @Override
+                    public void onSuccess(Boolean data) {
+                        callBack.onSuccess(createLiveData(data));
+                    }
+
+                    @Override
+                    public void onError(int code, String desc) {
+                        callBack.onError(code, desc);
+                    }
+                });
+            }
+        }.asLiveData();
+    }
+
     public LiveData<Resource<VRoomInfoBean>> createRoom(Context context,String name,boolean is_privacy,String password,
-        int type,boolean allow_free_join_mic,String sound_effect ) {
-        return new NetworkOnlyResource<VRoomInfoBean>() {
+                                                        int type,boolean allow_free_join_mic,String sound_effect ) {
+        return new NetworkOnlyResource<VRoomInfoBean>(){
             @Override
             protected void createCall(@NonNull ResultCallBack<LiveData<VRoomInfoBean>> callBack) {
                 HttpManager.getInstance(context).createRoom(name, is_privacy, password, type,
@@ -89,11 +108,10 @@ public class ChatroomRepository extends BaseRepository {
 
                             @Override
                             public void onError(int code, String desc) {
-                                callBack.onError(code,desc);
+                                callBack.onError(code, desc);
                             }
                         });
             }
         }.asLiveData();
     }
-
 }
