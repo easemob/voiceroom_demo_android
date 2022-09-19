@@ -19,7 +19,7 @@ interface IRtcKitListener {
     fun onUserJoin(userId: Int)
 
     /**频道状态，用户开始加入频道、成功加入频道，用户退出等*/
-    fun onChannelStatus(userStatus: RtcChannelStatus)
+    fun onChannelStatus(channelStatus: RtcChannelStatus)
 
     /**错误回调*/
     fun onError(rtcErrorStatus: RtcErrorStatus)

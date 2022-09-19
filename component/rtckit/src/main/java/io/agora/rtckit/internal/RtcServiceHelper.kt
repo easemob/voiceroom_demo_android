@@ -16,7 +16,11 @@ internal object RtcServiceHelper {
             }
 
             override fun onJoinChannelSuccess(channel: String, userId: Int) {
-                middleListener.onChannelStatus(RtcChannelStatus.Success(channel, userId))
+                middleListener.onChannelStatus(RtcChannelStatus.JoinSuccess(channel, userId))
+            }
+
+            override fun onJoinChannelError(channel: String, code: Int) {
+                middleListener.onChannelStatus(RtcChannelStatus.JoinError(channel, code))
             }
 
             override fun onUserLeave(userId: Int) {

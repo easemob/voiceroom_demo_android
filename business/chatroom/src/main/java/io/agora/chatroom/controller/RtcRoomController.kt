@@ -8,6 +8,7 @@ import io.agora.rtckit.open.config.RtcChannelConfig
 import io.agora.rtckit.open.config.RtcInitConfig
 import io.agora.rtckit.open.event.RtcChannelEvent
 import io.agora.rtckit.open.status.*
+import tools.ValueCallBack
 
 /**
  * @author create by zhangwei03
@@ -32,6 +33,8 @@ class RtcRoomController : IRtcKitListener {
     /**机器人小红rtcManager*/
     private var redRtcManger: RtcKitManager? = null
 
+    private val joinCallbackMap: MutableMap<String, ValueCallBack<Boolean>> = mutableMapOf()
+
     fun initMain(appContext: Application) {
         rtcManger = RtcKitManager.initRTC(appContext, RtcInitConfig(BuildConfig.agora_app_id), this)
     }
@@ -49,7 +52,13 @@ class RtcRoomController : IRtcKitListener {
         }
     }
 
-    fun joinChannel(roomId: String, userId: Int, broadcaster: Boolean = false) {
+    fun joinChannel(
+        roomId: String,
+        userId: Int,
+        broadcaster: Boolean = false,
+        joinChannelCallback: ValueCallBack<Boolean>
+    ) {
+        joinCallbackMap[roomId] = joinChannelCallback
         rtcManger?.operateChannel(
             RtcChannelEvent.JoinChannel(
                 RtcChannelConfig(BuildConfig.agora_app_token, roomId, userId, broadcaster = broadcaster)
@@ -75,7 +84,20 @@ class RtcRoomController : IRtcKitListener {
     override fun onUserJoin(userId: Int) {
     }
 
-    override fun onChannelStatus(userStatus: RtcChannelStatus) {
+    override fun onChannelStatus(channelStatus: RtcChannelStatus) {
+        when (channelStatus) {
+            is RtcChannelStatus.Start -> {
+
+            }
+            is RtcChannelStatus.JoinSuccess -> { // 加入房间成功
+                joinCallbackMap[channelStatus.channel]?.onSuccess(true)
+            }
+            is RtcChannelStatus.JoinError -> {
+                joinCallbackMap[channelStatus.channel]?.onError(channelStatus.code, "")
+            }
+            is RtcChannelStatus.Leave -> {
+            }
+        }
     }
 
     override fun onError(rtcErrorStatus: RtcErrorStatus) {

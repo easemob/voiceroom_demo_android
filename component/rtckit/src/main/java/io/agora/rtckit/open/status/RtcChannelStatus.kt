@@ -14,7 +14,10 @@ sealed class RtcChannelStatus constructor(
     class Start(channel: String, userId: Int) : RtcChannelStatus(channel, userId)
 
     /**加入房间成功*/
-    class Success(channel: String, userId: Int) : RtcChannelStatus(channel, userId)
+    class JoinSuccess(channel: String, userId: Int) : RtcChannelStatus(channel, userId)
+
+    /**加入房间失败*/
+    class JoinError(channel: String, val code: Int) : RtcChannelStatus(channel, code)
 
     /**离开房间*/
     class Leave(userId: Int) : RtcChannelStatus("", userId)
