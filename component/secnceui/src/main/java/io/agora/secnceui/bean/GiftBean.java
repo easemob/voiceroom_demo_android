@@ -10,6 +10,7 @@ public class GiftBean implements Serializable {
     private int resource;
     private String name;
     private boolean isChecked;
+    private String price;
 
     public String getId() {
         return id;
@@ -65,5 +66,13 @@ public class GiftBean implements Serializable {
 
     public void setChecked(boolean checked) {
         isChecked = checked;
+    }
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
     }
 }

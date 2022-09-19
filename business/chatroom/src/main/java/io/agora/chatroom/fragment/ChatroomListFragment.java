@@ -8,9 +8,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
-
 import com.alibaba.android.arouter.launcher.ARouter;
-
 import java.util.List;
 import io.agora.CallBack;
 import io.agora.baseui.general.callback.OnResourceParseCallback;
@@ -34,6 +32,8 @@ public class ChatroomListFragment extends BaseChatroomListFragment<VRoomBean.Roo
     private PageViewModel pageViewModel;
     private static final int pageSize = 10;
     private VRoomBean.RoomsBean roomBean;
+    private itemCountListener listener;
+    private int mCurrentPage = 0;
 
     public ChatroomListFragment(){
 
@@ -68,6 +68,7 @@ public class ChatroomListFragment extends BaseChatroomListFragment<VRoomBean.Roo
                     Log.e("viewModel"," -+- " + data.size());
                     listAdapter.addData(data);
                     chatroomViewModel.clearRegisterInfo();
+                    listener.getItemCount(listAdapter.getData().size());
                 }
             });
         });
@@ -75,7 +76,11 @@ public class ChatroomListFragment extends BaseChatroomListFragment<VRoomBean.Roo
         pageViewModel = new ViewModelProvider(mContext).get(PageViewModel.class);
         pageViewModel.getPageSelect().observe(this, page -> {
             Log.e("viewModel","getPageSelect -+- " + page);
+            if (mCurrentPage != page){
+                listAdapter.getData().clear();
+            }
             chatroomViewModel.getDataList(mContext,pageSize,page);
+            mCurrentPage = page;
         });
 
         chatroomViewModel.getJoinObservable().observe(this,response ->{
@@ -190,6 +195,14 @@ public class ChatroomListFragment extends BaseChatroomListFragment<VRoomBean.Roo
         }else if(response.status == Status.LOADING) {
             callback.onLoading(response.data);
         }
+    }
+
+    public interface itemCountListener{
+        void getItemCount(int count);
+    }
+
+    public void SetItemCountChangeListener(itemCountListener listener){
+        this.listener = listener;
     }
 
 }

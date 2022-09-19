@@ -19,6 +19,7 @@ import java.util.Map;
 import http.VRHttpCallback;
 import http.VRHttpClientManager;
 import http.VRRequestApi;
+import io.agora.baseui.general.net.ErrorCode;
 import io.agora.buddy.tool.GsonTools;
 import io.agora.buddy.tool.LogToolsKt;
 import io.agora.chatroom.general.repositories.ProfileManager;
@@ -139,7 +140,9 @@ public class HttpManager {
         try {
             requestBody.putOpt("name", name);
             requestBody.putOpt("is_privacy", is_privacy);
-            requestBody.putOpt("password", password);
+            if (!TextUtils.isEmpty(password)){
+                requestBody.putOpt("password", password);
+            }
             requestBody.putOpt("type", type);
             requestBody.putOpt("allow_free_join_mic", allow_free_join_mic);
             requestBody.putOpt("sound_effect", sound_effect);

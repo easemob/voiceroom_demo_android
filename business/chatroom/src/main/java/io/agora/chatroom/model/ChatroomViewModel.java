@@ -19,6 +19,7 @@ public class ChatroomViewModel extends AndroidViewModel {
     private SingleSourceLiveData<Resource<List<VRoomBean.RoomsBean>>> roomObservable;
     private SingleSourceLiveData<Resource<Boolean>> joinObservable;
     private SingleSourceLiveData<Resource<VRoomInfoBean>> roomDetailsObservable;
+    private SingleSourceLiveData<Resource<VRoomInfoBean>> createObservable;
 
     public ChatroomViewModel(@NonNull Application application) {
         super(application);
@@ -26,10 +27,15 @@ public class ChatroomViewModel extends AndroidViewModel {
         roomObservable = new SingleSourceLiveData<>();
         joinObservable = new SingleSourceLiveData<>();
         roomDetailsObservable = new SingleSourceLiveData<>();
+        createObservable = new SingleSourceLiveData<>();
     }
 
     public LiveData<Resource<List<VRoomBean.RoomsBean>>> getRoomObservable() {
         return roomObservable;
+    }
+
+    public LiveData<Resource<VRoomInfoBean>> getCreateObservable() {
+        return createObservable;
     }
 
     public LiveData<Resource<Boolean>> getJoinObservable() {
@@ -56,11 +62,24 @@ public class ChatroomViewModel extends AndroidViewModel {
         joinObservable.setSource(mRepository.joinRoom(context,roomId,password));
     }
 
+    public void createRoom(Context context,String name,boolean is_privacy,String password,
+                           int type,boolean allow_free_join_mic,String sound_effect){
+        createObservable.setSource(mRepository.createRoom(context,name,is_privacy,password,type,
+                allow_free_join_mic,sound_effect));
+    }
+
+    public void createRoom(Context context,String name,boolean is_privacy,
+                           int type,boolean allow_free_join_mic,String sound_effect){
+        createObservable.setSource(mRepository.createRoom(context,name,is_privacy,"",type,
+                allow_free_join_mic,sound_effect));
+    }
+
     /**
      * 清理注册信息
      */
     public void clearRegisterInfo() {
         roomObservable.call();
         joinObservable.call();
+        createObservable.call();
     }
 }

@@ -23,7 +23,6 @@ public class ChatroomRepository extends BaseRepository {
                 HttpManager.getInstance(context).getRoomFromServer(pageSize, type, new ValueCallBack<List<VRoomBean.RoomsBean>>() {
                     @Override
                     public void onSuccess(List<VRoomBean.RoomsBean> bean) {
-//                        Log.e("ChatroomRepository","getRoomList: " + bean.size());
                         callBack.onSuccess(createLiveData(bean));
                     }
 
@@ -73,6 +72,27 @@ public class ChatroomRepository extends BaseRepository {
                 });
             }
 
+        }.asLiveData();
+    }
+
+    public LiveData<Resource<VRoomInfoBean>> createRoom(Context context,String name,boolean is_privacy,String password,
+        int type,boolean allow_free_join_mic,String sound_effect ) {
+        return new NetworkOnlyResource<VRoomInfoBean>() {
+            @Override
+            protected void createCall(@NonNull ResultCallBack<LiveData<VRoomInfoBean>> callBack) {
+                HttpManager.getInstance(context).createRoom(name, is_privacy, password, type,
+                        allow_free_join_mic, sound_effect, new ValueCallBack<VRoomInfoBean>() {
+                            @Override
+                            public void onSuccess(VRoomInfoBean var1) {
+                                callBack.onSuccess(createLiveData(var1));
+                            }
+
+                            @Override
+                            public void onError(int code, String desc) {
+                                callBack.onError(code,desc);
+                            }
+                        });
+            }
         }.asLiveData();
     }
 

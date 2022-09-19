@@ -14,6 +14,7 @@ import io.agora.secnceui.bean.GiftBean;
  */
 public class GiftRepository {
     static int SIZE = 9;
+    public static String [] Price = {"1","5","10","20","50","100","500","1000","1500"};
 
     public static List<GiftBean> getDefaultGifts(Context context) {
         List<GiftBean> gifts = new ArrayList<>();
@@ -26,7 +27,21 @@ public class GiftRepository {
             bean.setResource(resId);
             bean.setName(context.getString(nameId));
             bean.setId("gift_"+i);
+            bean.setPrice(Price[i]);
             gifts.add(bean);
+        }
+        return gifts;
+    }
+
+    public static List<GiftBean> getGiftsByPage(Context context,int page){
+        int base = 4;
+        int index = page * base;
+        List<GiftBean> gifts = new ArrayList<>();
+        List<GiftBean> data =  getDefaultGifts(context);
+        for (int i = 1; i <= data.size(); i++) {
+            if (index <= i && i<= base+(page*base)){
+                gifts.add(data.get(i));
+            }
         }
         return gifts;
     }

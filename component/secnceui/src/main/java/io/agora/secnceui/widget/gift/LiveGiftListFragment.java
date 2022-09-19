@@ -17,6 +17,14 @@ public class LiveGiftListFragment extends BaseInitFragment implements OnItemClic
     private GiftListAdapter adapter;
     private GiftBean giftBean;
     private OnConfirmClickListener listener;
+    private int position;
+
+    @Override
+    protected void initArgument() {
+        super.initArgument();
+        Bundle data = getArguments();
+        if (null != data) position = data.getInt("position");
+    }
 
     @Override
     protected int getLayoutId() {
@@ -50,7 +58,7 @@ public class LiveGiftListFragment extends BaseInitFragment implements OnItemClic
     @Override
     protected void initData() {
         super.initData();
-        adapter.setData(GiftRepository.getDefaultGifts(getContext()));
+        adapter.setData(GiftRepository.getGiftsByPage(getContext(),position));
     }
 
     @Override

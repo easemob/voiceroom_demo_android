@@ -8,14 +8,12 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
-
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.tabs.TabLayout;
@@ -37,6 +35,8 @@ public class ChatroomListActivity extends BaseActivity implements ChatroomTitleB
     private TabLayout mTableLayout;
     private ViewPager2 mViewPager;
     private PageViewModel pageViewModel;
+    private int mCount;
+    private static final int pageSize = 10;
     private int[] titles = {R.string.tab_layout_all,R.string.tab_layout_chat_room,R.string.tab_layout_audio_room};
 
     @Override
@@ -127,7 +127,14 @@ public class ChatroomListActivity extends BaseActivity implements ChatroomTitleB
             @NonNull
             @Override
             public Fragment createFragment(int position) {
-                return new ChatroomListFragment();
+                ChatroomListFragment fragment = new ChatroomListFragment();
+                fragment.SetItemCountChangeListener(new ChatroomListFragment.itemCountListener() {
+                    @Override
+                    public void getItemCount(int count) {
+                        mCount = count;
+                    }
+                });
+                return fragment;
             }
 
             @Override
@@ -143,8 +150,11 @@ public class ChatroomListActivity extends BaseActivity implements ChatroomTitleB
             public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
                 tab.setCustomView(R.layout.tab_item_layout);
                 TextView title = tab.getCustomView().findViewById(R.id.tab_item_title);
-                title.setText(titles[position]);
-//                titleCount.setText(getString(R.string.tab_layout_count,"1"));
+                if (mCount > 0){
+                    title.setText(titles[position] + getString(R.string.room_tab_layout_count,String.valueOf(mCount)));
+                }else {
+                    title.setText(titles[position]);
+                }
             }
         });
         // setup with viewpager2

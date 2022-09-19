@@ -1,10 +1,11 @@
 package io.agora.chatroom.bean;
 
 public class PageBean {
-   String tab_title;
-   String room_name;
-   String room_desc;
-   int room_type;
+   private String tab_title;
+   private String room_name;
+   private String room_desc;
+   private int room_type;
+   private int page;
 
    public void setTab_title(String tab_title) {
       this.tab_title = tab_title;
@@ -36,5 +37,13 @@ public class PageBean {
 
    public String getRoom_desc() {
       return room_desc;
+   }
+
+   public int getPage() {
+      return page;
+   }
+
+   public void setPage(int page) {
+      this.page = page;
    }
 }
