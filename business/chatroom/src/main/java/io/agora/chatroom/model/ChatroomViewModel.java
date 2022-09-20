@@ -125,16 +125,26 @@ public class ChatroomViewModel extends AndroidViewModel {
         });
     }
 
-    public void createRoom(Context context,String name,boolean is_privacy,String password,
-                           int type,boolean allow_free_join_mic,String sound_effect){
-        createObservable.setSource(mRepository.createRoom(context,name,is_privacy,password,type,
+    public void createNormalRoom(Context context,String name,boolean is_private,String password,
+                           boolean allow_free_join_mic,String sound_effect){
+        createObservable.setSource(mRepository.createRoom(context,name,is_private,password,0,
                 allow_free_join_mic,sound_effect));
     }
 
-    public void createRoom(Context context,String name,boolean is_privacy,
-                           int type,boolean allow_free_join_mic,String sound_effect){
-        createObservable.setSource(mRepository.createRoom(context,name,is_privacy,"",type,
+    public void createNormalRoom(Context context,String name,boolean is_private,
+                           boolean allow_free_join_mic,String sound_effect){
+        createObservable.setSource(mRepository.createRoom(context,name,is_private,"",0,
                 allow_free_join_mic,sound_effect));
+    }
+
+    public void createSpatial(Context context,String name,boolean is_private,String password){
+        createObservable.setSource(mRepository.createRoom(context,name,is_private,password,1,
+                false,""));
+    }
+
+    public void createSpatial(Context context,String name,boolean is_private){
+        createObservable.setSource(mRepository.createRoom(context,name,is_private,"",1,
+                false,""));
     }
 
     /**

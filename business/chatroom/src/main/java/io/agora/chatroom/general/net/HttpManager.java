@@ -139,13 +139,16 @@ public class HttpManager {
         JSONObject requestBody = new JSONObject();
         try {
             requestBody.putOpt("name", name);
-            requestBody.putOpt("is_privacy", is_privacy);
+            requestBody.putOpt("is_private", is_privacy);
             if (!TextUtils.isEmpty(password)){
                 requestBody.putOpt("password", password);
             }
             requestBody.putOpt("type", type);
-            requestBody.putOpt("allow_free_join_mic", allow_free_join_mic);
-            requestBody.putOpt("sound_effect", sound_effect);
+            if (type == 0){
+                requestBody.putOpt("allow_free_join_mic", allow_free_join_mic);
+                requestBody.putOpt("sound_effect", sound_effect);
+            }
+
         } catch (JSONException e) {
             e.printStackTrace();
         }

@@ -97,6 +97,7 @@ public class GiftBottomDialog extends BaseDialogFragment implements View.OnClick
         adapter.setOnVpFragmentItemListener(new GiftFragmentAdapter.OnVpFragmentItemListener() {
             @Override
             public void onVpFragmentItem(int position, Object bean) {
+                reset();
                 giftBean = (GiftBean) bean;
             }
         });
@@ -166,6 +167,10 @@ public class GiftBottomDialog extends BaseDialogFragment implements View.OnClick
                                    if (giftBean != null && GiftNum >= 1){
                                        giftBean.setNum(GiftNum);
                                        count.setText(num);
+                                       //礼物金额大于100的 数量只能选1
+                                       if (Integer.parseInt(giftBean.getPrice()) >= 100){
+                                           reset();
+                                       }
                                    }
                                    popupWindow.dismiss();
                                }
@@ -183,6 +188,11 @@ public class GiftBottomDialog extends BaseDialogFragment implements View.OnClick
                            location[0]-DeviceUtils.dp2px(getContext(),60)/3,
                            location[1]-DeviceUtils.dp2px(getContext(),186));
        }
+   }
+
+   public void reset(){
+       giftBean.setNum(1);
+       count.setText("1");
    }
 
 }

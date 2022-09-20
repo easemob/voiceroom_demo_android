@@ -16,6 +16,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.CompositePageTransformer;
 import androidx.viewpager2.widget.MarginPageTransformer;
@@ -26,6 +27,8 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import java.util.ArrayList;
+
+import io.agora.CallBack;
 import io.agora.ValueCallBack;
 import io.agora.baseui.BaseActivity;
 import io.agora.baseui.general.callback.OnResourceParseCallback;
@@ -34,11 +37,15 @@ import io.agora.chat.ChatRoom;
 import io.agora.chatroom.general.repositories.PageRepository;
 import io.agora.chatroom.R;
 import io.agora.chatroom.bean.PageBean;
+import io.agora.chatroom.general.repositories.ProfileManager;
 import io.agora.chatroom.model.ChatroomViewModel;
 import io.agora.config.RouterParams;
 import io.agora.config.RouterPath;
+import io.agora.secnceui.ui.soundselection.RoomSocialChatSheetDialog;
 import io.agora.secnceui.widget.encryption.ChatroomEncryptionInputView;
 import io.agora.secnceui.widget.titlebar.ChatroomTitleBar;
+import manager.ChatroomConfigManager;
+import tools.bean.VRUserBean;
 import tools.bean.VRoomInfoBean;
 
 @Route(path = RouterPath.ChatroomCreatePath)
@@ -58,6 +65,8 @@ public class ChatroomCreateActivity extends BaseActivity implements RadioGroup.O
    private ConstraintLayout baseLayout;
    private ChatroomViewModel chatroomViewModel;
    private int roomType;
+   private String encryption;
+   private String roomName;
 
    @Override
    protected int getLayoutId() {
@@ -137,29 +146,31 @@ public class ChatroomCreateActivity extends BaseActivity implements RadioGroup.O
    @Override
    protected void initData() {
       super.initData();
+      chatroomViewModel = new ViewModelProvider(this).get(ChatroomViewModel.class);
       chatroomViewModel.getCreateObservable().observe(this,response -> {
               parseResource(response, new OnResourceParseCallback<VRoomInfoBean>() {
                  @Override
                  public void onSuccess(@Nullable VRoomInfoBean data) {
-                    if (null != data){
-                       ChatClient.getInstance().chatroomManager().joinChatRoom(data.getRoom().getRoom_id(), new ValueCallBack<ChatRoom>() {
-                          @Override
-                          public void onSuccess(ChatRoom value) {
-                             Log.e("ChatroomCreateActivity","joinChatRoom onSuccess");
-                                if (ChatClient.getInstance().isLoggedIn()){
-                                ARouter.getInstance()
-                                         .build(RouterPath.ChatroomPath)
-                                         .withInt(RouterParams.KEY_CHATROOM_TYPE, roomType)
-//                                         .withSerializable(RouterParams.KEY_CHATROOM_INFO, data)
-                                         .navigation();
-                                }
-                           }
+                    if (null != data && null != data.getRoom()){
+                       if (ChatClient.getInstance().isLoggedIn()){
+                           joinRoom(data.getRoom().getRoom_id());
+                       }else {
+                          VRUserBean userinfo = ProfileManager.getInstance().getProfile();
+                          Log.d("ChatroomCreateActivity","chat_uid: " + userinfo.getChat_uid());
+                          Log.d("ChatroomCreateActivity","im_token: " + userinfo.getIm_token());
+                          ChatroomConfigManager.getInstance().login(userinfo.getChat_uid(), userinfo.getIm_token(), new CallBack() {
+                             @Override
+                             public void onSuccess() {
+                                joinRoom(data.getRoom().getRoom_id());
+                             }
 
-                          @Override
-                          public void onError(int error, String errorMsg) {
-                             Log.e("ChatroomCreateActivity","joinChatRoom onError" + error +"  "+ errorMsg);
-                          }
-                       });
+                             @Override
+                             public void onError(int code, String desc) {
+
+                             }
+                          });
+                       }
+
                     }
                  }
               });
@@ -246,6 +257,25 @@ public class ChatroomCreateActivity extends BaseActivity implements RadioGroup.O
       mediator.attach();
    }
 
+   public void joinRoom(String roomId){
+      ChatClient.getInstance().chatroomManager().joinChatRoom(roomId, new ValueCallBack<ChatRoom>() {
+         @Override
+         public void onSuccess(ChatRoom value) {
+            Log.e("ChatroomCreateActivity","joinChatRoom onSuccess");
+            ARouter.getInstance()
+                    .build(RouterPath.ChatroomPath)
+                    .withInt(RouterParams.KEY_CHATROOM_TYPE, roomType)
+//                  .withSerializable(RouterParams.KEY_CHATROOM_INFO, data)
+                    .navigation();
+         }
+
+         @Override
+         public void onError(int error, String errorMsg) {
+            Log.e("ChatroomCreateActivity","joinChatRoom onError" + error +"  "+ errorMsg);
+         }
+      });
+   }
+
    private void chickPrivate(){
        if (isPublic){
           mEditText.setVisibility(View.GONE);
@@ -264,17 +294,14 @@ public class ChatroomCreateActivity extends BaseActivity implements RadioGroup.O
    @Override
    public void onClick(View v) {
       if (v.getId() == R.id.bottom_next){
-            String encryption =  mEditText.getText().toString().trim();
-            String roomName = mEdRoomName.getText().toString().trim();
-         if (isPublic){
-            chatroomViewModel.createRoom(this,roomName,true,roomType,false,"");
-         }else {
-            if (!TextUtils.isEmpty(encryption) && encryption.length() == 4){
-               chatroomViewModel.createRoom(this,roomName,true,encryption,roomType,false,"");
-            }else {
-               // TODO: 2022/8/30  show Toast  4 Digit Password Required
+            encryption =  mEditText.getText().toString().trim();
+            roomName = mEdRoomName.getText().toString().trim();
+            if(roomType == 0){
+               // TODO: 2022/9/20  跳转音效设置
+
+            }else if (roomType ==1){
+               createSpatialRoom();
             }
-         }
       }else if (v.getId() == R.id.ed_room_name){
 
          getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
@@ -289,6 +316,30 @@ public class ChatroomCreateActivity extends BaseActivity implements RadioGroup.O
          mEditText.setFocusableInTouchMode(true);
          mEditText.requestFocus();
 
+      }
+   }
+
+   public void createNormalRoom(boolean allow_free_join_mic,String sound_effect){
+      if (isPublic){
+         chatroomViewModel.createNormalRoom(this,roomName,false,allow_free_join_mic,sound_effect);
+      }else {
+         if (!TextUtils.isEmpty(encryption) && encryption.length() == 4){
+            chatroomViewModel.createNormalRoom(this,roomName,true,encryption,allow_free_join_mic,sound_effect);
+         }else {
+            // TODO: 2022/8/30  show Toast  4 Digit Password Required
+         }
+      }
+   }
+
+   public void createSpatialRoom(){
+      if (isPublic){
+         chatroomViewModel.createSpatial(this,roomName,false);
+      }else {
+         if (!TextUtils.isEmpty(encryption) && encryption.length() == 4){
+            chatroomViewModel.createSpatial(this,roomName,true,encryption);
+         }else {
+            // TODO: 2022/8/30  show Toast  4 Digit Password Required
+         }
       }
    }
 

@@ -114,6 +114,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
     }
 
     private fun initView() {
+        binding.chatBottom.initMenu(chatroomType)
         if (chatroomType == ConfigConstants.Common_Chatroom) {
             audio2DViewDelegate = Room2DMicViewDelegate(this, binding.rvChatroom2dMicLayout)
             binding.rvChatroom2dMicLayout.isVisible = true

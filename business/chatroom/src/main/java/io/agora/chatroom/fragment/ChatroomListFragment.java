@@ -76,7 +76,7 @@ public class ChatroomListFragment extends BaseChatroomListFragment<VRoomBean.Roo
         pageViewModel = new ViewModelProvider(mContext).get(PageViewModel.class);
         pageViewModel.getPageSelect().observe(this, page -> {
             Log.e("viewModel","getPageSelect -+- " + page);
-            if (mCurrentPage != page){
+            if (listAdapter.getData() != null && mCurrentPage != page && listAdapter.getData().size() >0){
                 listAdapter.getData().clear();
             }
             chatroomViewModel.getDataList(mContext,pageSize,page);

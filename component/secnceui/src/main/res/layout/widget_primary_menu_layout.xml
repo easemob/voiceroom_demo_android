@@ -1,47 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/bottom_menu_layout"
     android:background="@color/transparent"
     android:layout_width="match_parent"
-    android:layout_height="50dp">
+    android:layout_height="wrap_content">
 
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:id="@+id/input_layout"
-        android:layout_width="111dp"
-        android:layout_height="38dp"
-        android:layout_centerVertical="true"
-        android:layout_marginStart="15dp"
-        android:background="@drawable/bg_primary_bottom"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
+    <RelativeLayout
+        android:id="@+id/spatial_layout"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
 
-        <ImageView
-            android:layout_width="17dp"
-            android:layout_height="17dp"
-            android:layout_marginStart="10dp"
-            android:src="@drawable/icon_input_bg" />
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/left_layout"
+            android:layout_width="126dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="15dp"
+            android:gravity="center_vertical|left"
+            android:layout_marginRight="15dp"
+            />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:text="@string/chatroom_input_chat_title"
-            android:textColor="@color/black"
-            android:textSize="@dimen/text_size_12sp" />
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/right_layout"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:gravity="center_vertical|right"
+            android:layout_marginEnd="15dp"
+            />
 
-    </androidx.appcompat.widget.LinearLayoutCompat>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/normal_layout"
+        android:visibility="gone"
+        android:background="@color/transparent"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/input_layout"
+            android:layout_width="111dp"
+            android:layout_height="38dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="15dp"
+            android:background="@drawable/bg_primary_bottom"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="17dp"
+                android:layout_height="17dp"
+                android:layout_marginStart="10dp"
+                android:src="@drawable/icon_input_bg" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:text="@string/chatroom_input_chat_title"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_12sp" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
 
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:id="@+id/menu_layout"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="35dp"
-        android:layout_toEndOf="@+id/input_layout"
-        android:gravity="center_vertical"
-        />
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/menu_layout"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="35dp"
+            android:layout_toEndOf="@+id/input_layout"
+            android:gravity="center_vertical|right"
+            android:layout_marginRight="15dp"
+            />
+
+    </RelativeLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/input_view"
