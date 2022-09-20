@@ -145,8 +145,6 @@ public class ChatPrimaryMenuView extends RelativeLayout {
             registerMenuItem(R.drawable.icon_handuphard,R.id.extend_item_hand_up);
             registerMenuItem(R.drawable.icon_eq,R.id.extend_item_eq);
             registerMenuItem(R.drawable.icon_gift,R.id.extend_item_gift);
-//            ViewGroup.LayoutParams  params =  menuLayout.getLayoutParams();
-//            params.width = itemModels.size();
             addView();
         }else if (roomType == 1){
             spatialLayout.setVisibility(VISIBLE);
@@ -163,29 +161,41 @@ public class ChatPrimaryMenuView extends RelativeLayout {
             LinearLayoutCompat.LayoutParams marginLayoutParams = new LinearLayoutCompat.LayoutParams(dp2px(activity,38), dp2px(activity,38));
             marginLayoutParams.leftMargin = dp2px(activity,5);
             marginLayoutParams.setMarginStart(dp2px(activity,5));
-            imageView.setLayoutParams(marginLayoutParams);
-            imageView.setPadding(dp2px(activity,7),dp2px(activity,7)
-                    ,dp2px(activity,7),dp2px(activity,7));
+            imageView.setPadding(dp2px(activity,5),dp2px(activity,7)
+                    ,dp2px(activity,5),dp2px(activity,7));
             imageView.setImageResource(itemModel.image);
             imageView.setBackgroundResource(R.drawable.bg_primary_menu_item_icon);
             imageView.setId(itemModel.id);
-            if (itemModel.id == R.id.extend_item_hand_up){
-                ImageView status = new ImageView(activity);
-                LinearLayoutCompat.LayoutParams statusLayoutParams = new LinearLayoutCompat.LayoutParams(dp2px(activity,6), dp2px(activity,6));
-                statusLayoutParams.gravity = Gravity.TOP | Gravity.RIGHT;
-                statusLayoutParams.setMargins(0,dp2px(activity,5),dp2px(activity,5),0);
-                status.setId(R.id.extend_item_hand_up_status);
-                status.setImageResource(R.drawable.bg_primary_hand_status);
-                status.setLayoutParams(statusLayoutParams);
-                menuLayout.addView(status);
+
+            if (itemModel.id == R.id.extend_item_gift){
+                marginLayoutParams.setMarginEnd(dp2px(activity,15));
             }
+            imageView.setLayoutParams(marginLayoutParams);
             imageView.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (null != clickListener)
-                    clickListener.onChatExtendMenuItemClick(v.getId(),v);
+                        clickListener.onChatExtendMenuItemClick(v.getId(),v);
                 }
             });
+            if (itemModel.id == R.id.extend_item_hand_up){
+                RelativeLayout relativeLayout = new RelativeLayout(activity);
+                relativeLayout.setLayoutParams(new RelativeLayout.LayoutParams(dp2px(activity,40), dp2px(activity,38)));
+
+                ImageView status = new ImageView(activity);
+                status.setId(R.id.extend_item_hand_up_status);
+                status.setImageResource(R.drawable.bg_primary_hand_status);
+
+                RelativeLayout.LayoutParams imgLayout = new RelativeLayout.LayoutParams(
+                        RelativeLayout.LayoutParams.WRAP_CONTENT,
+                        RelativeLayout.LayoutParams.WRAP_CONTENT);
+                imgLayout.addRule(RelativeLayout.ALIGN_PARENT_TOP | ALIGN_PARENT_RIGHT);
+                imgLayout.setMargins(0,13,13,0);
+                relativeLayout.addView(imageView, marginLayoutParams);
+                relativeLayout.addView(status, imgLayout);
+                menuLayout.addView(relativeLayout);
+                continue;
+            }
             menuLayout.addView(imageView);
         }
     }
@@ -194,7 +204,7 @@ public class ChatPrimaryMenuView extends RelativeLayout {
         for (MenuItemModel itemModel : itemModels) {
             ImageView imageView = new ImageView(activity);
             LinearLayoutCompat.LayoutParams marginLayoutParams = new LinearLayoutCompat.LayoutParams(dp2px(activity,38), dp2px(activity,38));
-            marginLayoutParams.leftMargin = dp2px(activity,5);
+            marginLayoutParams.setMarginEnd(dp2px(activity,5));
             marginLayoutParams.setMarginStart(dp2px(activity,5));
             imageView.setLayoutParams(marginLayoutParams);
             imageView.setPadding(dp2px(activity,7),dp2px(activity,7)
@@ -242,6 +252,15 @@ public class ChatPrimaryMenuView extends RelativeLayout {
             hand.setImageResource(R.drawable.icon_vector);
         }else {
             hand.setImageResource(R.drawable.icon_handuphard);
+        }
+    }
+
+    public void setEnableMic(boolean isEnable){
+        ImageView mic = menuLayout.findViewById(R.id.extend_item_mic);
+        if (isEnable){
+            mic.setImageResource(R.drawable.icon_mic);
+        }else {
+            mic.setImageResource(R.drawable.icon_close_mic);
         }
     }
 

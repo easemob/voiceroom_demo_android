@@ -24,7 +24,6 @@ public class PageViewModel extends AndroidViewModel {
     * @param page
     */
    public void setPageSelect(int page) {
-      Log.e("setPageSelect"," " + page);
       pageObservable.setValue(page);
    }
 

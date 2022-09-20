@@ -2,7 +2,6 @@ package io.agora.chatroom.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -35,8 +34,9 @@ public class ChatroomListActivity extends BaseActivity implements ChatroomTitleB
     private TabLayout mTableLayout;
     private ViewPager2 mViewPager;
     private PageViewModel pageViewModel;
+    private TextView title;
     private int mCount;
-    private static final int pageSize = 10;
+    private int index;
     private int[] titles = {R.string.tab_layout_all,R.string.tab_layout_chat_room,R.string.tab_layout_audio_room};
 
     @Override
@@ -80,11 +80,14 @@ public class ChatroomListActivity extends BaseActivity implements ChatroomTitleB
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 if(tab.getCustomView() != null) {
-                    TextView title = tab.getCustomView().findViewById(R.id.tab_item_title);
+                    index = tab.getPosition();
+                    title = tab.getCustomView().findViewById(R.id.tab_item_title);
                     ViewGroup.LayoutParams layoutParams = title.getLayoutParams();
                     layoutParams.height = (int)dip2px(mContext, 26);
                     title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
                     title.setGravity(Gravity.CENTER);
+                    String content = getString(titles[index]) + getString(R.string.room_tab_layout_count,String.valueOf(mCount));
+                    title.setText(content);
                 }
             }
 
@@ -93,6 +96,7 @@ public class ChatroomListActivity extends BaseActivity implements ChatroomTitleB
                 if(tab.getCustomView() != null) {
                     TextView title = tab.getCustomView().findViewById(R.id.tab_item_title);
                     title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+                    title.setText(titles[tab.getPosition()]);
                 }
             }
 
@@ -105,7 +109,6 @@ public class ChatroomListActivity extends BaseActivity implements ChatroomTitleB
         mViewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
-                Log.e("apex-w","onPageSelected: "+position);
                 if (position == 0){
                     pageViewModel.setPageSelect(-1);
                 }else if (position == 1){
@@ -132,6 +135,8 @@ public class ChatroomListActivity extends BaseActivity implements ChatroomTitleB
                     @Override
                     public void getItemCount(int count) {
                         mCount = count;
+                        String content = getString(titles[index]) + getString(R.string.room_tab_layout_count,String.valueOf(count));
+                        title.setText(content);
                     }
                 });
                 return fragment;
@@ -150,11 +155,7 @@ public class ChatroomListActivity extends BaseActivity implements ChatroomTitleB
             public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
                 tab.setCustomView(R.layout.tab_item_layout);
                 TextView title = tab.getCustomView().findViewById(R.id.tab_item_title);
-                if (mCount > 0){
-                    title.setText(titles[position] + getString(R.string.room_tab_layout_count,String.valueOf(mCount)));
-                }else {
-                    title.setText(titles[position]);
-                }
+                title.setText(titles[position]);
             }
         });
         // setup with viewpager2

@@ -25,4 +25,22 @@ public interface OnCustomMsgReceiveListener {
      */
     void onReceiveNormalMsg(ChatMessageData message);
 
+    /**
+     * 接收申请消息
+     * @param message
+     */
+    void onReceiveApplySite(ChatMessageData message);
+
+    /**
+     * 接收邀请消息
+     * @param message
+     */
+    void onReceiveInviteSite(ChatMessageData message);
+
+    /**
+     * 接收拒绝申请消息
+     * @param message
+     */
+    void onReceiveDeclineApply(ChatMessageData message);
+
 }

@@ -16,13 +16,13 @@ import tools.bean.VRoomInfoBean;
 
 public class ChatroomRepository extends BaseRepository {
 
-    public LiveData<Resource<List<VRoomBean.RoomsBean>>> getRoomList(Context context,int pageSize,int type) {
-        return new NetworkOnlyResource<List<VRoomBean.RoomsBean>>() {
+    public LiveData<Resource<VRoomBean>> getRoomList(Context context,int pageSize,int type,String cursor) {
+        return new NetworkOnlyResource<VRoomBean>() {
             @Override
-            protected void createCall(@NonNull ResultCallBack<LiveData<List<VRoomBean.RoomsBean>>> callBack) {
-                HttpManager.getInstance(context).getRoomFromServer(pageSize, type, new ValueCallBack<List<VRoomBean.RoomsBean>>() {
+            protected void createCall(@NonNull ResultCallBack<LiveData<VRoomBean>> callBack) {
+                HttpManager.getInstance(context).getRoomFromServer(pageSize, type, cursor,new ValueCallBack<VRoomBean>() {
                     @Override
-                    public void onSuccess(List<VRoomBean.RoomsBean> bean) {
+                    public void onSuccess(VRoomBean bean) {
                         callBack.onSuccess(createLiveData(bean));
                     }
 

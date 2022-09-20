@@ -16,7 +16,24 @@ public enum CustomMsgType {
     /**
      * 普通消息
      */
-    CHATROOM_NORMAL("chatroom_normal");
+    CHATROOM_NORMAL("chatroom_normal"),
+
+    /**
+     * 申请消息
+     */
+    CHATROOM_APPLY_SITE("chatroom_applySiteNotify"),
+
+    /**
+     * 拒绝申请消息
+     */
+    CHATROOM_DECLINE_APPLY("chatroom_applyRefusedNotify"),
+
+    /**
+     * 邀请消息
+     */
+    CHATROOM_INVITE_SITE("chatroom_inviteSiteNotify"),
+
+    ;
 
     private String name;
     private CustomMsgType(String name) {

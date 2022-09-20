@@ -279,13 +279,12 @@ public class HttpManager {
      * @param limit
      * @param type
      */
-    public void getRoomFromServer(int limit,int type,ValueCallBack<List<VRoomBean.RoomsBean>> callBack){
-        ArrayList<String> cursor = new ArrayList<>();
+    public void getRoomFromServer(int limit,int type,String cursor,ValueCallBack<VRoomBean> callBack){
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
         headers.put("Authorization", "Bearer " + ProfileManager.getInstance().getProfile().getAuthorization());
         new VRHttpClientManager.Builder(mContext)
-                .setUrl(VRRequestApi.get().getRoomList(cursor.size() == 0 ? "": cursor.get(0), limit,type))
+                .setUrl(VRRequestApi.get().getRoomList(!TextUtils.isEmpty(cursor) ? cursor:"" , limit,type))
                 .setHeaders(headers)
                 .setRequestMethod(Method_GET)
                 .asyncExecute(new VRHttpCallback() {
@@ -293,10 +292,7 @@ public class HttpManager {
                     public void onSuccess(String result) {
                         LogToolsKt.logE("getRoomFromServer success: " + result, TAG);
                         VRoomBean bean = GsonTools.toBean(result,VRoomBean.class);
-                        if (!TextUtils.isEmpty(bean.getCursor())){
-                            cursor.add(0,bean.getCursor());
-                        }
-                        callBack.onSuccess(bean.getRooms());
+                        callBack.onSuccess(bean);
                     }
 
                     @Override

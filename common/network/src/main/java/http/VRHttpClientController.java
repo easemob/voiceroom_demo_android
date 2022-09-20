@@ -151,7 +151,7 @@ class VRHttpClientController {
     * @throws IOException
     */
    public void addParams(Map<String, String> params, OutputStream out) throws IOException {
-      Log.d(TAG, "request params = "+params.toString());
+      Log.d(TAG, "request Map params = "+params.toString());
       if (params == null || params.size() <= 0) {
          return;
       }
@@ -170,7 +170,7 @@ class VRHttpClientController {
     * @throws IOException
     */
    public void addParams(String params, OutputStream out) throws IOException {
-      Log.d(TAG, "request params = "+params);
+      Log.d(TAG, "request String params = "+params);
       if(TextUtils.isEmpty(params)) {
          return;
       }
