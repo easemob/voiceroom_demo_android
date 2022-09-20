@@ -40,7 +40,7 @@ public class ChatroomGiftView extends LinearLayout {
    private Context mContext;
    private Handler handler = new Handler();
    private Runnable task;
-   private int delay = 3000;
+   private int delay = 1500;
 
    // 开启定时任务
    private void startTask() {

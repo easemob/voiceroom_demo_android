@@ -44,6 +44,7 @@ public class GiftListAdapter extends RoomBaseRecyclerViewAdapter<GiftBean> {
             Log.e("GiftListAdapter","setData: " + position);
             ivGift.setImageResource(item.getResource());
             tvGiftName.setText(item.getName());
+            price.setText(item.getPrice());
 
             if(selectedPosition == position) {
                 item.setChecked(true);

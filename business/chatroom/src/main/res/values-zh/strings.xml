@@ -27,4 +27,5 @@
     <string name="room_list_title_private">Private</string>
     <string name="room_list_title_official">Official</string>
     <string name="room_list_count">%1$s人</string>
+    <string name="room_tab_layout_count">(%1$s)</string>
 </resources>

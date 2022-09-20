@@ -1,5 +1,6 @@
 package io.agora.secnceui.widget.gift;
 
+import android.os.Bundle;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -26,6 +27,9 @@ public class GiftFragmentAdapter extends FragmentStateAdapter {
     @Override
     public Fragment createFragment(int position) {
         LiveGiftListFragment fragment = new LiveGiftListFragment();
+        Bundle args = new Bundle();
+        args.putInt("position",position);
+        fragment.setArguments(args);
         fragment.setOnItemSelectClickListener(new OnConfirmClickListener() {
             @Override
             public void onConfirmClick(View view, Object bean) {

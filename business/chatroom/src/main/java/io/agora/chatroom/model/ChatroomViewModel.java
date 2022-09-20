@@ -32,8 +32,8 @@ public class ChatroomViewModel extends AndroidViewModel {
     private SingleSourceLiveData<Resource<List<VRoomBean.RoomsBean>>> roomObservable;
     private SingleSourceLiveData<Resource<Boolean>> joinObservable;
     private SingleSourceLiveData<Resource<VRoomInfoBean>> roomDetailsObservable;
+    private SingleSourceLiveData<Resource<VRoomInfoBean>> createObservable;
     private SingleSourceLiveData<Resource<Boolean>> leaveObservable;
-
     private final AtomicBoolean joinRtcChannel = new AtomicBoolean(false);
     private final AtomicBoolean joinImRoom = new AtomicBoolean(false);
 
@@ -43,11 +43,16 @@ public class ChatroomViewModel extends AndroidViewModel {
         roomObservable = new SingleSourceLiveData<>();
         joinObservable = new SingleSourceLiveData<>();
         roomDetailsObservable = new SingleSourceLiveData<>();
+        createObservable = new SingleSourceLiveData<>();
         leaveObservable = new SingleSourceLiveData<>();
     }
 
     public LiveData<Resource<List<VRoomBean.RoomsBean>>> getRoomObservable() {
         return roomObservable;
+    }
+
+    public LiveData<Resource<VRoomInfoBean>> getCreateObservable() {
+        return createObservable;
     }
 
     public LiveData<Resource<Boolean>> getJoinObservable() {
@@ -119,11 +124,34 @@ public class ChatroomViewModel extends AndroidViewModel {
         });
     }
 
+    public void createNormalRoom(Context context,String name,boolean is_private,String password,
+                           boolean allow_free_join_mic,String sound_effect){
+        createObservable.setSource(mRepository.createRoom(context,name,is_private,password,0,
+                allow_free_join_mic,sound_effect));
+    }
+
+    public void createNormalRoom(Context context,String name,boolean is_private,
+                           boolean allow_free_join_mic,String sound_effect){
+        createObservable.setSource(mRepository.createRoom(context,name,is_private,"",0,
+                allow_free_join_mic,sound_effect));
+    }
+
+    public void createSpatial(Context context,String name,boolean is_private,String password){
+        createObservable.setSource(mRepository.createRoom(context,name,is_private,password,1,
+                false,""));
+    }
+
+    public void createSpatial(Context context,String name,boolean is_private){
+        createObservable.setSource(mRepository.createRoom(context,name,is_private,"",1,
+                false,""));
+    }
+
     /**
      * 清理注册信息
      */
     public void clearRegisterInfo() {
         roomObservable.call();
         joinObservable.call();
+        createObservable.call();
     }
 }
