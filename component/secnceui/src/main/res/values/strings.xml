@@ -91,6 +91,7 @@
     <string name="chatroom_audience_list">Audience List</string>
     <string name="chatroom_contribution_value">Contribution Value</string>
     <string name="chatroom_contribution_empty">No data</string>
+    <string name="chatroom_open_bot_prompt">Add bot to listen to sound effect?</string>
 
     <string name="chatroom_input_chat_title">Let\'s Chat</string>
     <string name="chatroom_system_msg_member_add">Joined</string>

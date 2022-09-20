@@ -2,7 +2,7 @@ package io.agora.rtckit.internal
 
 import io.agora.rtckit.open.status.RtcAudioChangeStatus
 import io.agora.rtckit.open.status.RtcAudioVolumeIndicationStatus
-import io.agora.rtckit.open.status.RtcChannelStatus
+import io.agora.rtckit.open.status.RtcErrorStatus
 import io.agora.rtckit.open.status.RtcNetWorkStatus
 
 /**
@@ -10,29 +10,23 @@ import io.agora.rtckit.open.status.RtcNetWorkStatus
  *
  * rtc 监听
  */
-internal interface IRtcClientListener {
-    //开始加入房间
-    fun onJoinChannelStart(channel: String, userId: Int)
+interface IRtcClientListener {
 
-    //加入房间成功
-    fun onJoinChannelSuccess(channel: String, userId: Int)
-
-    //加入房间成功
-    fun onJoinChannelError(channel: String, code: Int)
-
-    //离开房间
-    fun onUserLeave(userId: Int)
-
-    // 用户加入
-    fun onUserJoined(userId: Int)
-
-    fun onAudioChangeStatus(audioStatus: RtcAudioChangeStatus)
-
-    fun onNetWorkStatus(netWorkStatus: RtcNetWorkStatus)
-
+    /**网络情况*/
     fun onConnectionStateChanged(state: Int, reason: Int)
 
-    fun onAudioVolumeIndication(volumeIndicationStatus: RtcAudioVolumeIndicationStatus)
+    /**用户进入/离开 rtc 房间*/
+    fun onUserJoined(userId: Int, joined: Boolean)
 
-    fun onError(code: Int, msg: String)
+    /**网络等状态，自己*/
+    fun onNetworkStatus(netWorkStatus: RtcNetWorkStatus)
+
+    /**音频状态：本地静音，远程静音等*/
+    fun onAudioStatus(audioChangeStatus: RtcAudioChangeStatus)
+
+    /**错误回调*/
+    fun onError(rtcErrorStatus: RtcErrorStatus)
+
+    /**用户音量提示回调*/
+    fun onAudioVolumeIndication(volumeIndicationStatus: RtcAudioVolumeIndicationStatus)
 }

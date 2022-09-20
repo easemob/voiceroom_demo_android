@@ -4,7 +4,8 @@ import android.content.Context
 import io.agora.rtckit.open.config.RtcInitConfig
 import io.agora.rtckit.constants.RtcKitConstant
 import io.agora.rtckit.internal.base.*
-import io.agora.rtckit.middle.IRtcMiddleServiceListener
+import io.agora.rtckit.open.IRtcValueCallback
+import io.agora.rtckit.open.config.RtcChannelConfig
 
 internal abstract class RtcBaseClientEx<T> {
 
@@ -18,14 +19,11 @@ internal abstract class RtcBaseClientEx<T> {
     private val engineMap = HashMap<Class<*>, RtcBaseEngine<*>?>()
 
     /**创建rtc*/
-    abstract fun createClient(
-        context: Context,
-        initConfig: RtcInitConfig,
-        middleServiceListener: IRtcMiddleServiceListener
-    ): T?
+    abstract fun createClient(context: Context, config: RtcInitConfig, rtcClientListener: IRtcClientListener): T?
 
-    /**创建频道管理引擎*/
-    abstract fun createChannelEngine(): RtcBaseChannelEngine<T>?
+    abstract fun joinChannel(config: RtcChannelConfig, joinCallback: IRtcValueCallback<Boolean>)
+
+    abstract fun leaveChannel()
 
     /**创建音频管理引擎*/
     abstract fun createAudioEngine(): RtcBaseAudioEngine<T>?
@@ -39,14 +37,8 @@ internal abstract class RtcBaseClientEx<T> {
     /**创建空间音频管理引擎*/
     abstract fun createSpatialAudioEngine(): RtcBaseSpatialAudioEngine<T>?
 
-    fun getChannelEngine(): RtcBaseChannelEngine<T>? {
-        var engine = engineMap[RtcBaseChannelEngine::class.java]
-        if (engine == null) {
-            engine = createChannelEngine()
-            engine?.attach(rtcEngine, rtcListener)
-            engineMap[RtcBaseChannelEngine::class.java] = engine
-        }
-        return engine as RtcBaseChannelEngine<T>?
+    fun getRtcEngine1(): T? {
+        return rtcEngine
     }
 
     fun getAudioEngine(): RtcBaseAudioEngine<T>? {

@@ -1,19 +1,15 @@
 package io.agora.rtckit.internal
 
-import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import io.agora.buddy.tool.logD
 import io.agora.buddy.tool.logE
 import io.agora.rtc2.Constants
 import io.agora.rtc2.IRtcEngineEventHandler
-import io.agora.rtc2.RtcEngineEx
 import io.agora.rtckit.annotation.RtcNetWorkQuality
 import io.agora.rtckit.constants.RtcKitConstant
 import io.agora.rtckit.open.status.RtcAudioChangeStatus
-import io.agora.rtckit.open.status.RtcAudioVolumeIndicationStatus
-import io.agora.rtckit.open.status.RtcAudioVolumeInfo
-import io.agora.rtckit.open.status.RtcNetWorkStatus
+import io.agora.rtckit.open.status.RtcErrorStatus
 
 /**
  * @author create by zhangwei03
@@ -26,19 +22,16 @@ internal class AgoraRtcEventHandler(var rtcListener: IRtcClientListener?) : IRtc
         const val TAG = "${RtcKitConstant.TAG_PREFIX} EventHandler"
     }
 
-    private var rtcClient: RtcEngineEx? = null
     private var handler = Handler(Looper.getMainLooper())
-    private var context: Context? = null
-
-    fun init(context: Context?, engine: RtcEngineEx?) {
-        this.context = context
-        this.rtcClient = engine
-    }
 
     override fun onJoinChannelSuccess(channel: String, uid: Int, elapsed: Int) {
         super.onJoinChannelSuccess(channel, uid, elapsed)
-        rtcListener?.onJoinChannelSuccess(channel, uid)
         "onJoinChannelSuccess channel:$channel,uid:$uid,elapsed:$elapsed".logD(TAG)
+    }
+
+    override fun onLeaveChannel(stats: RtcStats?) {
+        super.onLeaveChannel(stats)
+        "onLeaveChannel stats:$stats".logE(RtcBaseClientEx.TAG)
     }
 
     override fun onClientRoleChanged(oldRole: Int, newRole: Int) {
@@ -48,7 +41,7 @@ internal class AgoraRtcEventHandler(var rtcListener: IRtcClientListener?) : IRtc
 
     override fun onUserJoined(uid: Int, elapsed: Int) {
         super.onUserJoined(uid, elapsed)
-        rtcListener?.onUserJoined(uid)
+        rtcListener?.onUserJoined(uid, true)
         "onUserJoined uid:$uid,elapsed:$elapsed".logD(TAG)
     }
 
@@ -63,7 +56,7 @@ internal class AgoraRtcEventHandler(var rtcListener: IRtcClientListener?) : IRtc
 
     override fun onUserOffline(uid: Int, reason: Int) {
         super.onUserOffline(uid, reason)
-        rtcListener?.onUserLeave(uid)
+        rtcListener?.onUserJoined(uid, false)
         "onUserOffline uid:$uid,reason:${getUserOfflineReason(reason)}".logD(TAG)
     }
 
@@ -83,21 +76,16 @@ internal class AgoraRtcEventHandler(var rtcListener: IRtcClientListener?) : IRtc
 
     override fun onUserMuteAudio(uid: Int, muted: Boolean) {
         super.onUserMuteAudio(uid, muted)
-        rtcListener?.onAudioChangeStatus(RtcAudioChangeStatus.RemoteAudio(uid.toString(), muted))
+        rtcListener?.onAudioStatus(RtcAudioChangeStatus.RemoteAudio(uid.toString(), muted))
         "onUserMuteAudio uid:$uid,muted:$muted".logD(TAG)
     }
 
     override fun onError(err: Int) {
         super.onError(err)
-        rtcListener?.onError(err, "An error occurred during SDK runtime.")
+        rtcListener?.onError(RtcErrorStatus(err, "An error occurred during SDK runtime."))
         "onError err:$err,see:\n https://docs.agora.io/cn/voice-call-4.x/API%20Reference/java_ng/API/class_irtcengineeventhandler.html?platform=Android#callback_onerror".logE(
             TAG
         )
-    }
-
-    fun sendErrorEvent(err: Int, msg: String) {
-        rtcListener?.onError(err, msg)
-        "onError err:$err,msg:$msg".logE(TAG)
     }
 
     /**
@@ -130,7 +118,7 @@ internal class AgoraRtcEventHandler(var rtcListener: IRtcClientListener?) : IRtc
      */
     override fun onConnectionStateChanged(state: Int, reason: Int) {
         super.onConnectionStateChanged(state, reason)
-        rtcListener?.onConnectionStateChanged(state, reason)
+//        rtcListener?.onConnectionStateChanged(state, reason)
         "onConnectionStateChanged state:$state,reason:$reason,see:\n https://docs.agora.io/cn/voice-call-4.x/API%20Reference/java_ng/API/class_irtcengineeventhandler.html?platform=Android#callback_onconnectionstatechanged".logD(
             TAG
         )
@@ -198,11 +186,8 @@ internal class AgoraRtcEventHandler(var rtcListener: IRtcClientListener?) : IRtc
         }
     }
 
-
     fun destroy() {
         rtcListener = null
         handler.removeCallbacksAndMessages(null)
-        rtcClient = null
-        context = null
     }
 }

@@ -117,6 +117,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
         binding.chatBottom.initMenu(chatroomType)
         if (chatroomType == ConfigConstants.Common_Chatroom) {
             audio2DViewDelegate = Room2DMicViewDelegate(this, binding.rvChatroom2dMicLayout)
+            audio2DViewDelegate.roomBean = roomBean
             binding.rvChatroom2dMicLayout.isVisible = true
             binding.rvChatroom3dMicLayout.isVisible = false
             binding.rvChatroom2dMicLayout.onItemClickListener(
@@ -215,7 +216,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
     }
 
     override fun finish() {
-        RtcRoomController.get().leaveChannel()
+        RtcRoomController.get().destroy()
         roomBean?.room_id?.let {
             roomViewModel.leaveRoom(this, it)
         }
