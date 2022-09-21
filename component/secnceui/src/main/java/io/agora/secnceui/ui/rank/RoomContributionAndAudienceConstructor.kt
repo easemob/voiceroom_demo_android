@@ -2,7 +2,6 @@ package io.agora.secnceui.ui.rank
 
 import android.content.Context
 import io.agora.secnceui.annotation.MicClickAction
-import io.agora.secnceui.annotation.UserRole
 import io.agora.secnceui.bean.AudienceInfoBean
 import io.agora.secnceui.bean.ContributionBean
 
@@ -25,41 +24,36 @@ object RoomContributionAndAudienceConstructor {
                 name = "123",
                 avatar = "",
                 userId = "",
-                userRole = UserRole.Owner
+                isOwner = true
             ),
             AudienceInfoBean(
                 name = "233",
                 avatar = "",
                 userId = "",
-                userRole = UserRole.Guest,
                 micClickAction = MicClickAction.Invite
             ),
             AudienceInfoBean(
                 name = "444",
                 avatar = "",
                 userId = "",
-                userRole = UserRole.Guest,
                 micClickAction = MicClickAction.KickOff
             ),
             AudienceInfoBean(
                 name = "66",
                 avatar = "",
                 userId = "",
-                userRole = UserRole.Guest,
                 micClickAction = MicClickAction.Invite
             ),
             AudienceInfoBean(
                 name = "88",
                 avatar = "",
                 userId = "",
-                userRole = UserRole.Guest,
                 micClickAction = MicClickAction.Invite
             ),
             AudienceInfoBean(
                 name = "90",
                 avatar = "",
                 userId = "",
-                userRole = UserRole.Guest,
                 micClickAction = MicClickAction.Invite
             )
         )

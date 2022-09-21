@@ -22,7 +22,7 @@ interface IRtcMiddleService {
     fun onSoundEffectEvent(soundEffect: RtcSoundEffectEvent)
 
     /**处理AI 降噪事件*/
-    fun onDeNoiseEvent(rtcDeNoiseEvent: RtcDeNoiseEvent)
+    fun onDeNoiseEvent(deNoiseEvent: RtcDeNoiseEvent,callback: IRtcValueCallback<Boolean>?)
 
     /**处理空间音频事件*/
     fun onSpatialAudioEvent(spatialAudioEvent: RtcSpatialAudioEvent)

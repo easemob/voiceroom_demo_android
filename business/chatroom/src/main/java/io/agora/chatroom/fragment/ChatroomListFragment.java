@@ -17,6 +17,7 @@ import io.agora.ValueCallBack;
 import io.agora.baseui.general.callback.OnResourceParseCallback;
 import io.agora.baseui.general.enums.Status;
 import io.agora.baseui.general.net.Resource;
+import io.agora.baseui.interfaces.IParserSource;
 import io.agora.buddy.tool.ThreadManager;
 import io.agora.chat.ChatClient;
 import io.agora.chat.ChatRoom;
@@ -151,6 +152,7 @@ public class ChatroomListFragment extends BaseChatroomListFragment<VRoomBean.Roo
             public void run() {
                 if (roomBean.isIs_private()){
                     // TODO: 2022/9/15  //弹窗 输入密码
+                    goChatroomPage(roomBean);
                 }else {
                     ChatroomConfigManager.getInstance().joinRoom(roomBean.getRoom_id(), new ValueCallBack<ChatRoom>() {
                         @Override
@@ -178,30 +180,6 @@ public class ChatroomListFragment extends BaseChatroomListFragment<VRoomBean.Roo
     @Override
     public void onDestroy() {
         super.onDestroy();
-    }
-
-    /**
-     * Parse Resource<T>
-     * @param response
-     * @param callback
-     * @param <T>
-     */
-    public <T> void parseResource(Resource<T> response, @NonNull OnResourceParseCallback<T> callback) {
-        if(response == null) {
-            return;
-        }
-        if(response.status == Status.SUCCESS) {
-            callback.onHideLoading();
-            callback.onSuccess(response.data);
-        }else if(response.status == Status.ERROR) {
-            callback.onHideLoading();
-            if(!callback.hideErrorMsg) {
-                Log.e("parseResource ",response.getMessage());
-            }
-            callback.onError(response.errorCode, response.getMessage());
-        }else if(response.status == Status.LOADING) {
-            callback.onLoading(response.data);
-        }
     }
 
     public interface itemCountListener{

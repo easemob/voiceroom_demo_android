@@ -74,9 +74,6 @@ class RoomAINSSoundsViewHolder(binding: ItemChatroomAinsAuditionBinding) :
             mBinding.mtChatroomAinsNone.setOnClickListener { view ->
                 onItemChildClick(AINSSoundType.None, view)
             }
-//            mBinding.ivChatroomAinsSounds.tag = AINSSoundType.Audition
-//            mBinding.mtChatroomAins.tag = AINSSoundType.AINS
-//            mBinding.mtChatroomAinsNone.tag = AINSSoundType.None
             if (TextUtils.isEmpty(it.soundSubName)) {
                 mBinding.mtChatroomAinsSubName.text = ""
                 mBinding.mtChatroomAinsSubName.isVisible = false
@@ -84,12 +81,19 @@ class RoomAINSSoundsViewHolder(binding: ItemChatroomAinsAuditionBinding) :
                 mBinding.mtChatroomAinsSubName.text = it.soundSubName
                 mBinding.mtChatroomAinsSubName.isVisible = false
             }
-            if (it.soundsType == AINSSoundType.AINS) {
-                setViewHighlight(mBinding.mtChatroomAins)
-                resetViewDefault(mBinding.mtChatroomAinsNone)
-            } else {
-                setViewHighlight(mBinding.mtChatroomAinsNone)
-                resetViewDefault(mBinding.mtChatroomAins)
+            when (it.soundsType) {
+                AINSSoundType.AINS -> {
+                    setViewHighlight(mBinding.mtChatroomAins)
+                    resetViewDefault(mBinding.mtChatroomAinsNone)
+                }
+                AINSSoundType.None -> {
+                    setViewHighlight(mBinding.mtChatroomAinsNone)
+                    resetViewDefault(mBinding.mtChatroomAins)
+                }
+                else -> {
+                    resetViewDefault(mBinding.mtChatroomAinsNone)
+                    resetViewDefault(mBinding.mtChatroomAins)
+                }
             }
         }
     }

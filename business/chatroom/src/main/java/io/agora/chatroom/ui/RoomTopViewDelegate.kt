@@ -3,6 +3,7 @@ package io.agora.chatroom.ui
 import android.os.Bundle
 import android.text.TextUtils
 import androidx.fragment.app.FragmentActivity
+import io.agora.chatroom.controller.RtcRoomController
 import io.agora.chatroom.general.constructor.RoomInfoConstructor
 import io.agora.secnceui.R
 import io.agora.secnceui.annotation.AINSModeType
@@ -138,10 +139,16 @@ class RoomTopViewDelegate constructor(
             }
 
             override fun onNoiseSuppression(@AINSModeType ainsModeType: Int, isEnable: Boolean) {
-                RoomAINSSheetDialog(isEnable).apply {
-                    arguments = Bundle().apply {
-                        putInt(RoomAINSSheetDialog.KEY_AINS_MODE, AINSModeType.High)
+                RoomAINSSheetDialog(isEnable,
+                    anisModeCallback = {
+                        RtcRoomController.get().setAnisMode(it.anisMode)
+                        RtcRoomController.get().deNoise(it)
+                    },
+                    anisSoundCallback = {
+                        RtcRoomController.get().playEffect(it)
                     }
+                ).apply {
+                    arguments?.putInt(RoomAINSSheetDialog.KEY_AINS_MODE, RtcRoomController.get().anisMode())
                 }
                     .show(activity.supportFragmentManager, "mtAnis")
             }

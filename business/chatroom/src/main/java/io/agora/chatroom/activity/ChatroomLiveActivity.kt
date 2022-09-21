@@ -137,7 +137,6 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
                 binding.messageView.init(it.chatroom_id ?: "")
             }
             audio2DViewDelegate = Room2DMicViewDelegate(this, binding.rvChatroom2dMicLayout)
-            audio2DViewDelegate.roomBean = roomBean
             binding.rvChatroom2dMicLayout.isVisible = true
             binding.rvChatroom3dMicLayout.isVisible = false
             binding.rvChatroom2dMicLayout.onItemClickListener(

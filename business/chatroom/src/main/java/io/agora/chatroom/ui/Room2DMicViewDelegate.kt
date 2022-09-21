@@ -1,6 +1,5 @@
 package io.agora.chatroom.ui
 
-import android.app.Application
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
@@ -8,11 +7,13 @@ import android.widget.Toast
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import io.agora.baseui.adapter.OnItemClickListener
+import io.agora.baseui.general.callback.OnResourceParseCallback
+import io.agora.baseui.general.net.Resource
+import io.agora.baseui.interfaces.IParserSource
 import io.agora.buddy.tool.ToastTools
 import io.agora.buddy.tool.logE
 import io.agora.chatroom.controller.RtcRoomController
 import io.agora.chatroom.general.constructor.RoomInfoConstructor
-import io.agora.chatroom.general.constructor.RoomInfoConstructor.isOwner
 import io.agora.chatroom.general.repositories.ProfileManager
 import io.agora.chatroom.model.ChatroomViewModel
 import io.agora.chatroom.model.RoomMicViewModel
@@ -26,7 +27,6 @@ import io.agora.secnceui.ui.common.CommonSheetAlertDialog
 import io.agora.secnceui.ui.mic.flat.IRoom2DMicView
 import io.agora.secnceui.ui.micmanger.RoomMicManagerSheetDialog
 import tools.DefaultValueCallBack
-import tools.bean.VRoomBean
 import tools.bean.VRoomInfoBean
 
 /**
@@ -35,7 +35,7 @@ import tools.bean.VRoomInfoBean
 class Room2DMicViewDelegate constructor(
     private val activity: FragmentActivity,
     private val room2dMicView: IRoom2DMicView
-) {
+) : IParserSource {
 
     companion object {
         private const val TAG = "Room2DMicViewDelegate"
@@ -45,7 +45,10 @@ class Room2DMicViewDelegate constructor(
         ViewModelProvider(activity)[RoomMicViewModel::class.java]
     }
 
-    var roomBean: VRoomBean.RoomsBean? = null
+    private val chatroomViewModel: ChatroomViewModel by lazy {
+        ViewModelProvider(activity)[ChatroomViewModel::class.java]
+    }
+
     private var vRoomBean: VRoomInfoBean? = null
 
     private val roomId by lazy {
@@ -53,14 +56,47 @@ class Room2DMicViewDelegate constructor(
     }
 
     init {
-        roomAudioViewModel.submitMicObservable().apply {
+        roomAudioViewModel.submitMicObservable().observe(activity) { response: Resource<Boolean> ->
 
+        }
+        chatroomViewModel.openBotObservable.observe(activity) { response: Resource<Boolean> ->
+            parseResource(response, object : OnResourceParseCallback<Boolean>() {
+                override fun onSuccess(data: Boolean?) {
+                    "open bot onSuccess：$data".logE(TAG)
+                    if (data == true) {
+                        room2dMicView.activeBot(true)
+                    }
+                }
+
+                override fun onError(code: Int, message: String?) {
+                    // TODO: test
+                    "close bot code:$code message:$message".logE(TAG)
+                    room2dMicView.activeBot(true)
+                }
+            })
+        }
+        chatroomViewModel.closeBotObservable.observe(activity) { response: Resource<Boolean> ->
+            parseResource(response, object : OnResourceParseCallback<Boolean>() {
+                override fun onSuccess(data: Boolean?) {
+                    "close bot onSuccess：$data".logE(TAG)
+                    if (data == true) {
+                        room2dMicView.activeBot(false)
+                    }
+                }
+
+                override fun onError(code: Int, message: String?) {
+                    // TODO: test
+                    "close bot code:$code message:$message".logE(TAG)
+                    room2dMicView.activeBot(false)
+                }
+
+            })
         }
     }
 
     private fun isOwner(): Boolean {
         val currentUid = ProfileManager.getInstance().profile?.uid
-        val ownerUid = roomBean?.owner?.uid
+        val ownerUid = vRoomBean?.room?.owner?.uid
         "currentUid：$currentUid ownerUid:$ownerUid".logE(TAG)
         return !currentUid.isNullOrEmpty() && TextUtils.equals(currentUid, ownerUid)
     }
@@ -74,8 +110,8 @@ class Room2DMicViewDelegate constructor(
     fun onRoomDetails(vRoomBean: VRoomInfoBean) {
         this.vRoomBean = vRoomBean
         val micInfoList = RoomInfoConstructor.convertMicUiBean(vRoomBean)
-        val botInfo = RoomInfoConstructor.convertMicBotUiBean(vRoomBean)
-        room2dMicView.updateAdapter(micInfoList, mutableListOf(botInfo))
+        val isBotActive = RoomInfoConstructor.isBotActive(vRoomBean)
+        room2dMicView.updateAdapter(micInfoList, isBotActive)
     }
 
     fun onUserMicClick(data: MicInfoBean, view: View, position: Int, viewType: Long) {
@@ -138,6 +174,7 @@ class Room2DMicViewDelegate constructor(
     }
 
     private fun activeBot(active: Boolean = true) {
+        chatroomViewModel.activeBot(activity, roomId, active)
         RtcRoomController.get()
             .activeBot(roomAudioViewModel.getApplication(), active, object : DefaultValueCallBack<Boolean> {
                 override fun onSuccess(isSuccess: Boolean) {

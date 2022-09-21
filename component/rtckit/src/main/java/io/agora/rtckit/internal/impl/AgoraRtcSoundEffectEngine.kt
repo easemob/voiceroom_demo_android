@@ -1,5 +1,6 @@
 package io.agora.rtckit.internal.impl
 
+import io.agora.rtc2.IRtcEngineEventHandler
 import io.agora.rtc2.RtcEngineEx
 import io.agora.rtckit.internal.base.RtcBaseSoundEffectEngine
 
@@ -10,7 +11,8 @@ import io.agora.rtckit.internal.base.RtcBaseSoundEffectEngine
  */
 internal class AgoraRtcSoundEffectEngine : RtcBaseSoundEffectEngine<RtcEngineEx>() {
     override fun playEffect(soundId: Int, filePath: String, loopCount: Int, publish: Boolean): Boolean {
-        return true
+        val result = engine?.playEffect(soundId, filePath, loopCount, 1.0, 0.0, 100.0, true)
+        return result == IRtcEngineEventHandler.ErrorCode.ERR_OK
     }
 
     override fun stopEffect(soundId: Int): Boolean {

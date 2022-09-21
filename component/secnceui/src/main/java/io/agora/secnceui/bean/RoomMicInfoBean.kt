@@ -5,8 +5,9 @@ import io.agora.secnceui.annotation.*
 data class MicInfoBean constructor(
     var index: Int = 0,
     var userInfo: RoomUserInfoBean? = null,
+    var isOwner: Boolean = false,
+    var isBot: Boolean = false,
     @MicStatus var micStatus: Int = MicStatus.Idle,
-    @UserRole var userRole: Int = UserRole.None,
     @AudioVolumeStatus var audioVolume: Int = AudioVolumeStatus.None,
 ) : BaseRoomBean
 

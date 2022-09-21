@@ -74,8 +74,8 @@ class RtcKitManager {
         middleService?.onSoundEffectEvent(soundEffect)
     }
 
-    fun operateDeNoise(rtcANISEvent: RtcDeNoiseEvent) {
-        middleService?.onDeNoiseEvent(rtcANISEvent)
+    fun operateDeNoise(deNoiseEvent: RtcDeNoiseEvent, callback: IRtcValueCallback<Boolean>? = null) {
+        middleService?.onDeNoiseEvent(deNoiseEvent, callback)
     }
 
     fun operateSpatialAudio(spatialAudioEvent: RtcSpatialAudioEvent) {

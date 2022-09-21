@@ -1,9 +1,6 @@
 package io.agora.chatroom.general.constructor
 
-import android.text.TextUtils
-import io.agora.chatroom.general.repositories.ProfileManager
 import io.agora.secnceui.annotation.MicStatus
-import io.agora.secnceui.annotation.UserRole
 import io.agora.secnceui.bean.*
 import tools.bean.*
 
@@ -12,16 +9,8 @@ import tools.bean.*
  */
 object RoomInfoConstructor {
 
-    fun isOwner(vRoomBean: VRoomInfoBean?): Boolean {
-        val currentUid = ProfileManager.getInstance().profile?.uid
-        return !currentUid.isNullOrEmpty() && TextUtils.equals(currentUid, vRoomBean?.room?.owner?.uid)
-    }
-
-    @JvmStatic
-    fun isOwner(vRoomBean: VRoomBean.RoomsBean?): Boolean {
-        val currentUid = ProfileManager.getInstance().profile?.uid
-        return !currentUid.isNullOrEmpty() && TextUtils.equals(currentUid, vRoomBean?.owner?.uid)
-    }
+    // 机器人位置
+    private const val botIndex = 6
 
     /**
      * 服务端roomInfo bean 转 ui bean
@@ -55,7 +44,7 @@ object RoomInfoConstructor {
         return RoomUserInfoBean().apply {
             userId = vUser.uid ?: ""
             chatUid = vUser.chat_uid ?: ""
-            rtcUid = vUser.rtcUid ?: 0
+            rtcUid = vUser.rtcUid
             username = vUser.name ?: ""
             userAvatar = vUser.portrait ?: ""
         }
@@ -83,72 +72,18 @@ object RoomInfoConstructor {
                     index = serverMicInfo.index
                     serverMicInfo.user?.let { roomUser ->
                         userInfo = serverUser2UiUser(roomUser)
-                        userInfo?.userRole = if (isOwner(roomUser, roomInfo)) {
-                            UserRole.Owner
-                        } else {
-                            UserRole.Guest
-                        }
-                    }
 
+                    }
                 }
-                convertMicStatus(serverMicInfo, micInfo)
+                micInfo.micStatus = serverMicInfo.status
                 micInfoList.add(micInfo)
             }
         }
         return micInfoList
     }
 
-    private fun isOwner(user: VRoomUser, roomInfo: VRoomInfoBean): Boolean {
-        return !user.uid.isNullOrEmpty() && TextUtils.equals(user.uid, roomInfo.room?.owner?.uid)
-    }
-
-    /**
-     * 0:正常状态 1:闭麦 2:禁言 3:锁麦 4:锁麦和禁言 -1:空闲
-     */
-    private fun convertMicStatus(micInfo: VRoomMicInfo, micInfoBean: MicInfoBean) {
-        when (micInfo.status) {
-            0 -> micInfoBean.micStatus = MicStatus.UserNormal   // 正常状态
-            1 -> {
-                // 闭麦，用户行为
-                micInfoBean.micStatus = MicStatus.UserNormal
-                micInfoBean.userInfo?.mute = true
-            }
-            2 -> {
-                // 禁麦
-                if (micInfo.user == null) {
-                    micInfoBean.micStatus = MicStatus.ForceMute
-                } else {
-                    micInfoBean.micStatus = MicStatus.UserForceMute
-                }
-            }
-            3 -> micInfoBean.micStatus = MicStatus.Lock  // 锁麦
-            4 -> micInfoBean.micStatus = MicStatus.LockForceMute  // 既锁麦又禁麦
-            else -> micInfoBean.micStatus = MicStatus.Idle
-        }
-    }
-
-    fun convertMicBotUiBean(roomInfo: VRoomInfoBean): BotMicInfoBean {
-        val blueBotMicInfo = MicInfoBean()
-        val redBotMicInfo = MicInfoBean()
-        roomInfo.mic_info?.let {
-            for (i in it.indices) {
-                if (i == 6) {
-                    it[i].user?.let { roomUser ->
-                        blueBotMicInfo.userInfo = serverUser2UiUser(roomUser)
-                        blueBotMicInfo.userInfo?.userRole = UserRole.Robot
-                        convertMicStatus(it[i], blueBotMicInfo)
-                    }
-                } else if (i == 7) {
-                    it[i].user?.let { roomUser ->
-                        redBotMicInfo.userInfo = serverUser2UiUser(roomUser)
-                        redBotMicInfo.userInfo?.userRole = UserRole.Robot
-                        convertMicStatus(it[i], redBotMicInfo)
-                    }
-                } else {
-                    continue
-                }
-            }
-        }
-        return BotMicInfoBean(blueBotMicInfo, redBotMicInfo)
+    fun isBotActive(roomInfo: VRoomInfoBean):Boolean{
+        val status = roomInfo.mic_info?.get(botIndex)?.status
+        return status == MicStatus.BotActivated
     }
 }

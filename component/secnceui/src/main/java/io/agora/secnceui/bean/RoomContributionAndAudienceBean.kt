@@ -1,7 +1,6 @@
 package io.agora.secnceui.bean
 
 import io.agora.secnceui.annotation.MicClickAction
-import io.agora.secnceui.annotation.UserRole
 
 data class ContributionBean constructor(
     val number: Int = 1,
@@ -15,6 +14,6 @@ data class AudienceInfoBean constructor(
     val name: String,
     val avatar: String = "",
     val userId: String? = null,
-    @UserRole val userRole: Int = UserRole.Audience,
+    val isOwner:Boolean = false,
     @MicClickAction var micClickAction: Int = MicClickAction.Invite
 ) : BaseRoomBean

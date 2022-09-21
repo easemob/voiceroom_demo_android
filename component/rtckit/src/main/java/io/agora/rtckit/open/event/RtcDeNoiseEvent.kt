@@ -5,7 +5,13 @@ package io.agora.rtckit.open.event
  *
  * AI 降噪操作事件
  */
-sealed class RtcDeNoiseEvent{
+sealed class RtcDeNoiseEvent {
 
-    // TODO:
+    // 关闭降噪
+    class CloseEvent: RtcDeNoiseEvent()
+    // 中降噪
+    class MediumEvent: RtcDeNoiseEvent()
+    // 高降噪
+    class HeightEvent: RtcDeNoiseEvent()
+
 }

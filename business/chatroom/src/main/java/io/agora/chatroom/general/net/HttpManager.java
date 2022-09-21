@@ -70,8 +70,8 @@ public class HttpManager {
       JSONObject requestBody = new JSONObject();
       try {
          requestBody.putOpt("deviceId", device);
-          requestBody.putOpt("name", "apex");
-          requestBody.putOpt("portrait", "");
+          requestBody.putOpt("name", "username001");
+          requestBody.putOpt("portrait", "avatar1");
 //          requestBody.putOpt("phone", "手机号后期上");
 //          requestBody.putOpt("verify_code", "验证码后期上");
       } catch (JSONException e) {
@@ -177,7 +177,7 @@ public class HttpManager {
      * 获取指定语聊房信息
      * @param roomId
      */
-    public void getRoomDetails(String roomId,ValueCallBack< VRoomInfoBean > callBack){
+    public void getRoomDetails(String roomId,ValueCallBack<VRoomInfoBean> callBack){
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
         headers.put("Authorization", buildAuth());
@@ -188,13 +188,13 @@ public class HttpManager {
                 .asyncExecute(new VRHttpCallback() {
                     @Override
                     public void onSuccess(String result) {
-                        LogToolsKt.logE("fetchRoomInfo onSuccess: " + result, TAG);
+                        LogToolsKt.logE("getRoomDetails onSuccess: " + result, TAG);
                         callBack.onSuccess(GsonTools.toBean(result, VRoomInfoBean.class));
                     }
 
                     @Override
                     public void onError(int code, String msg) {
-                        LogToolsKt.logE("fetchRoomInfo onError：" + code + "msg:" + msg, TAG);
+                        LogToolsKt.logE("getRoomDetails onError：" + code + "msg:" + msg, TAG);
                         callBack.onError(code, msg);
                     }
                 });
@@ -237,20 +237,20 @@ public class HttpManager {
      * @param use_robot
      * @param allowed_free_join_mic
      */
-    public void updateRoomInfo(String roomId,String name,String announcement,boolean is_private,
-                               String password,boolean use_robot,boolean allowed_free_join_mic,
-                               ValueCallBack<Boolean> callBack){
+    public void updateRoomInfo(String roomId, String name, String announcement, Boolean is_private,
+                               String password, Boolean use_robot, Boolean allowed_free_join_mic,
+                               ValueCallBack<Boolean> callBack) {
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
         headers.put("Authorization", "Bearer " + ProfileManager.getInstance().getProfile().getAuthorization());
         JSONObject requestBody = new JSONObject();
         try {
-            requestBody.putOpt("name", name);
-            requestBody.putOpt("announcement", announcement);
-            requestBody.putOpt("is_private", is_private);
-            requestBody.putOpt("password", password);
-            requestBody.putOpt("use_rebot", use_robot);
-            requestBody.putOpt("allowed_free_join_mic", allowed_free_join_mic);
+            if (name != null) requestBody.putOpt("name", name);
+            if (announcement != null) requestBody.putOpt("announcement", announcement);
+            if (is_private != null) requestBody.putOpt("is_private", is_private);
+            if (password != null) requestBody.putOpt("password", password);
+            if (use_robot != null) requestBody.putOpt("use_rebot", use_robot);
+            if (allowed_free_join_mic != null) requestBody.putOpt("allowed_free_join_mic", allowed_free_join_mic);
         } catch (JSONException e) {
             e.printStackTrace();
         }

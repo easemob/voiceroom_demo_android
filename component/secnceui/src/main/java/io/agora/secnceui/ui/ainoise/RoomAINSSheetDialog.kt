@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -12,8 +11,11 @@ import com.google.android.material.divider.MaterialDividerItemDecoration
 import io.agora.baseui.adapter.BaseRecyclerViewAdapter
 import io.agora.baseui.adapter.OnItemChildClickListener
 import io.agora.baseui.dialog.BaseFixedHeightSheetDialog
+import io.agora.buddy.tool.ToastTools
 import io.agora.buddy.tool.ViewTools
 import io.agora.secnceui.R
+import io.agora.secnceui.annotation.AINSModeType
+import io.agora.secnceui.annotation.AINSSoundType
 import io.agora.secnceui.bean.AINSModeBean
 import io.agora.secnceui.bean.AINSSoundsBean
 import io.agora.secnceui.databinding.DialogChatroomAinsBinding
@@ -21,7 +23,9 @@ import io.agora.secnceui.databinding.ItemChatroomAgoraAinsBinding
 import io.agora.secnceui.databinding.ItemChatroomAinsAuditionBinding
 
 class RoomAINSSheetDialog constructor(
-    private val isEnable: Boolean = true
+    private val isEnable: Boolean = true,
+    private val anisModeCallback: (AINSModeBean) -> Unit,
+    private val anisSoundCallback: (AINSSoundsBean) -> Unit
 ) : BaseFixedHeightSheetDialog<DialogChatroomAinsBinding>() {
 
     companion object {
@@ -37,6 +41,10 @@ class RoomAINSSheetDialog constructor(
 
     private val anisSoundsList = mutableListOf<AINSSoundsBean>()
 
+    private val anisMode by lazy {
+        arguments?.getInt(KEY_AINS_MODE, AINSModeType.Medium) ?: AINSModeType.Medium
+    }
+
     override fun getViewBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
@@ -48,10 +56,7 @@ class RoomAINSSheetDialog constructor(
         super.onViewCreated(view, savedInstanceState)
         dialog?.window?.attributes?.windowAnimations = R.style.BottomSheetDialogAnimation
         dialog?.setCanceledOnTouchOutside(false)
-        arguments?.apply {
-            val anis = getInt(KEY_AINS_MODE)
-            anisModeList.addAll(RoomAINSConstructor.builderDefaultAINSList(view.context, anis))
-        }
+        anisModeList.addAll(RoomAINSConstructor.builderDefaultAINSList(view.context, anisMode))
         anisSoundsList.addAll(RoomAINSConstructor.builderDefaultSoundList(view.context))
         binding?.apply {
             setOnApplyWindowInsets(rvNoiseSuppression)
@@ -70,26 +75,22 @@ class RoomAINSSheetDialog constructor(
         anisModeAdapter = BaseRecyclerViewAdapter(anisModeList, null, object : OnItemChildClickListener<AINSModeBean> {
 
             override fun onItemChildClick(
-                data: AINSModeBean?,
-                extData: Any?,
-                view: View,
-                position: Int,
-                itemViewType: Long
+                data: AINSModeBean?, extData: Any?, view: View, position: Int, itemViewType: Long
             ) {
-                super.onItemChildClick(data, extData, view, position, itemViewType)
-                data?.let {
-                    if (isEnable){
+                data?.let { anisMode ->
+                    if (isEnable) {
                         if (extData is Int) {
-                            if (it.anisMode == extData) {
+                            if (anisMode.anisMode == extData) {
                                 return
                             } else {
-                                data.anisMode = extData
+                                anisMode.anisMode = extData
                                 anisModeAdapter?.notifyItemChanged(position)
+                                anisModeCallback.invoke(anisMode)
                             }
-                            Toast.makeText(view.context, "AINS Mode $extData", Toast.LENGTH_SHORT).show()
+                            ToastTools.show(view.context, "AINS Mode $extData")
                         }
-                    }else{
-                        Toast.makeText(view.context, getString(R.string.chatroom_only_host_can_change_anis), Toast.LENGTH_SHORT).show()
+                    } else {
+                        ToastTools.show(view.context, getString(R.string.chatroom_only_host_can_change_anis))
                     }
                 }
             }
@@ -111,22 +112,28 @@ class RoomAINSSheetDialog constructor(
             anisSoundsList, null, object : OnItemChildClickListener<AINSSoundsBean> {
 
                 override fun onItemChildClick(
-                    data: AINSSoundsBean?,
-                    extData: Any?,
-                    view: View,
-                    position: Int,
-                    itemViewType: Long
+                    data: AINSSoundsBean?, extData: Any?, view: View, position: Int, itemViewType: Long
                 ) {
-                    super.onItemChildClick(data, extData, view, position, itemViewType)
-                    data?.let {
+                    data?.let { anisSound ->
                         if (extData is Int) {
-                            if (it.soundsType == extData) {
+                            if (anisSound.soundsType == extData) {
                                 return
                             } else {
-                                data.soundsType = extData
+                                val selectedIndex = anisSoundsAdapter?.selectedIndex ?: -1
+                                if (selectedIndex >= 0) {
+                                    anisSoundsAdapter?.dataList?.get(selectedIndex)?.soundsType = AINSSoundType.Unknown
+                                    anisSoundsAdapter?.notifyItemChanged(selectedIndex)
+                                }
+                                anisSoundsAdapter?.selectedIndex = position
+                                anisSound.soundsType = extData
                                 anisSoundsAdapter?.notifyItemChanged(position)
+                                if (anisSound.soundsType == AINSSoundType.AINS) {
+                                    ToastTools.show(view.context, "试听降噪")
+                                } else {
+                                    ToastTools.show(view.context, "试听无降噪")
+                                }
+                                anisSoundCallback.invoke(anisSound)
                             }
-                            Toast.makeText(view.context, "AINS Sound $extData", Toast.LENGTH_SHORT).show()
                         }
                     }
                 }
