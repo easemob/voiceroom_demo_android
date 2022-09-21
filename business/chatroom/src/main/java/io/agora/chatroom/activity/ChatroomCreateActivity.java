@@ -298,7 +298,7 @@ public class ChatroomCreateActivity extends BaseActivity implements RadioGroup.O
             roomName = mEdRoomName.getText().toString().trim();
             if(roomType == 0){
                // TODO: 2022/9/20  跳转音效设置
-
+               createNormalRoom(false,"");
             }else if (roomType ==1){
                createSpatialRoom();
             }

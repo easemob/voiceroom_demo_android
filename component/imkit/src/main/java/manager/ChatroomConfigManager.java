@@ -14,9 +14,11 @@ import io.agora.ChatRoomChangeListener;
 import io.agora.ConnectionListener;
 import io.agora.Error;
 import io.agora.MessageListener;
+import io.agora.ValueCallBack;
 import io.agora.chat.ChatClient;
 import io.agora.chat.ChatMessage;
 import io.agora.chat.ChatOptions;
+import io.agora.chat.ChatRoom;
 import io.agora.chat.GroupReadAck;
 import io.agora.util.EMLog;
 
@@ -64,6 +66,21 @@ public class ChatroomConfigManager {
             @Override
             public void onReceiveNormalMsg(ChatMessageData message) {
                 ChatListener.receiveTextMessage(message.getConversationId(),message);
+            }
+
+            @Override
+            public void onReceiveApplySite(ChatMessageData message) {
+                ChatListener.receiveApplySite(message.getConversationId(),message);
+            }
+
+            @Override
+            public void onReceiveInviteSite(ChatMessageData message) {
+                ChatListener.receiveInviteSite(message.getConversationId(),message);
+            }
+
+            @Override
+            public void onReceiveDeclineApply(ChatMessageData message) {
+                ChatListener.receiveDeclineApply(message.getConversationId(),message);
             }
         });
     }
@@ -136,11 +153,26 @@ public class ChatroomConfigManager {
         });
     }
 
+    public void joinRoom(String roomId,ValueCallBack<ChatRoom> callBack){
+        ChatClient.getInstance().chatroomManager().joinChatRoom(roomId, new ValueCallBack<ChatRoom>() {
+            @Override
+            public void onSuccess(ChatRoom chatRoom) {
+                callBack.onSuccess(chatRoom);
+            }
+
+            @Override
+            public void onError(int code, String desc) {
+                callBack.onError(code,desc);
+            }
+        });
+    }
+
     public interface ChatroomListener{
         void receiveTextMessage(String roomId,ChatMessageData message);
-        void receiveGift(String roomId, ChatMessageData messageData);
-        void receiveApplySite(String roomId);
-        void receiveInviteSite(String roomId);
+        void receiveGift(String roomId, ChatMessageData message);
+        void receiveApplySite(String roomId,ChatMessageData message);
+        void receiveInviteSite(String roomId,ChatMessageData message);
+        void receiveDeclineApply(String roomId,ChatMessageData message);
         void userJoinedRoom(String roomId,String uid);
         void announcementChanged(String roomId,String announcement);
         void userBeKicked(String roomId,int reason);

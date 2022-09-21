@@ -2,14 +2,19 @@ package io.agora.chatroom.activity
 
 import android.Manifest
 import android.os.Bundle
+import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.TextView
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
+import bean.ChatMessageData
 import com.alibaba.android.arouter.facade.annotation.Route
+import custormgift.CustomMsgHelper
+import custormgift.OnMsgCallBack
 import io.agora.baseui.BaseUiActivity
 import io.agora.baseui.adapter.OnItemClickListener
 import io.agora.baseui.general.callback.OnResourceParseCallback
@@ -17,26 +22,26 @@ import io.agora.baseui.general.net.Resource
 import io.agora.buddy.tool.logE
 import io.agora.chatroom.controller.RtcRoomController
 import io.agora.chatroom.databinding.ActivityChatroomBinding
-import io.agora.chatroom.general.constructor.RoomInfoConstructor
-import io.agora.chatroom.general.repositories.ProfileManager
 import io.agora.chatroom.model.ChatroomViewModel
 import io.agora.chatroom.ui.*
 import io.agora.config.ConfigConstants
 import io.agora.config.RouterParams
 import io.agora.config.RouterPath
 import io.agora.secnceui.R
+import io.agora.secnceui.bean.GiftBean
 import io.agora.secnceui.bean.MicInfoBean
 import io.agora.secnceui.ui.mic.RoomMicConstructor
+import io.agora.secnceui.widget.barrage.ChatroomMessagesView
+import io.agora.secnceui.widget.gift.GiftBottomDialog
+import io.agora.secnceui.widget.gift.OnSendClickListener
 import io.agora.secnceui.widget.primary.MenuItemClickListener
 import io.agora.secnceui.widget.top.OnLiveTopClickListener
+import manager.ChatroomMsgHelper
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
 import pub.devrel.easypermissions.PermissionRequest
-import tools.DefaultValueCallBack
-import tools.ValueCallBack
 import tools.bean.VRoomBean
 import tools.bean.VRoomInfoBean
-import java.util.concurrent.atomic.AtomicBoolean
 
 @Route(path = RouterPath.ChatroomPath)
 class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPermissions.PermissionCallbacks,
@@ -111,11 +116,26 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
             binding.clMain.setPaddingRelative(0, inset.top, 0, inset.bottom)
             WindowInsetsCompat.CONSUMED
         }
-    }
+        binding.messageView.setMessageViewListener(object : ChatroomMessagesView.MessageViewListener{
+            override fun onItemClickListener(message: ChatMessageData?) {
+                TODO("Not yet implemented")
+            }
 
+            override fun onListClickListener() {
+                TODO("Not yet implemented")
+            }
+        })
+    }
     private fun initView() {
         binding.chatBottom.initMenu(chatroomType)
         if (chatroomType == ConfigConstants.Common_Chatroom) {
+            binding.likeView.likeView.setOnClickListener(
+                View.OnClickListener { binding.likeView.addFavor() }
+            )
+            roomBean?.let {
+                binding.chatroomGiftView.init(it.chatroom_id ?: "")
+                binding.messageView.init(it.chatroom_id ?: "")
+            }
             audio2DViewDelegate = Room2DMicViewDelegate(this, binding.rvChatroom2dMicLayout)
             audio2DViewDelegate.roomBean = roomBean
             binding.rvChatroom2dMicLayout.isVisible = true
@@ -136,6 +156,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
                 RoomMicConstructor.builderDefault2dBotMicList(this)
             )
         } else {
+            binding.likeView.isVisible = false
             audio3DViewDelegate = Room3DMicViewDelegate(this, binding.rvChatroom3dMicLayout)
             binding.rvChatroom2dMicLayout.isVisible = false
             binding.rvChatroom3dMicLayout.isVisible = true
@@ -177,10 +198,6 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
                 }
             }
         })
-//        roomBean?.let {
-//            binding.chatroomGiftView.init(it.room_id ?: "")
-//            binding.messageView.init(it.room_id ?: "")
-//        }
         binding.chatBottom.setMenuItemOnClickListener(object : MenuItemClickListener {
             override fun onChatExtendMenuItemClick(itemId: Int, view: View?) {
                 when (itemId) {
@@ -189,20 +206,38 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
                             finish()
                         }, false)
                     }
-                    else -> {
+                    R.id.extend_item_mic -> {}
+                    R.id.extend_item_hand_up -> {}
+                    R.id.extend_item_gift -> {
 
                     }
                 }
             }
 
             override fun onInputViewFocusChange(focus: Boolean) {
+                if (focus) {
+                    binding.bottomLayout.isVisible = false
+                    binding.likeView.isVisible = false
+                } else {
+                    binding.bottomLayout.isVisible = true
+                    binding.likeView.isVisible = true
+                }
             }
 
-            override fun onEmojiClick() {
+            override fun onEmojiClick(isShow: Boolean) {
+
             }
 
             override fun onSendMessage(content: String?) {
+                ChatroomMsgHelper.getInstance().sendTxtMsg(content,object : OnMsgCallBack(){
+                    override fun onSuccess(message: ChatMessageData?) {
 
+                    }
+
+                    override fun onError(messageId: String?, code: Int, error: String?) {
+
+                    }
+                })
             }
 
         })
@@ -258,5 +293,10 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
 
     override fun onRationaleDenied(requestCode: Int) {
         "onRationaleDenied requestCode$requestCode ".logE()
+    }
+
+    public fun showGiftDialog() {
+        supportFragmentManager.findFragmentByTag("live_gift")
+
     }
 }

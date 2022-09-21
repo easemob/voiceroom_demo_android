@@ -29,7 +29,7 @@ public class ChatroomViewModel extends AndroidViewModel {
     private static final String TAG = "ChatroomViewModel";
 
     private ChatroomRepository mRepository;
-    private SingleSourceLiveData<Resource<List<VRoomBean.RoomsBean>>> roomObservable;
+    private SingleSourceLiveData<Resource<VRoomBean>> roomObservable;
     private SingleSourceLiveData<Resource<Boolean>> joinObservable;
     private SingleSourceLiveData<Resource<VRoomInfoBean>> roomDetailsObservable;
     private SingleSourceLiveData<Resource<VRoomInfoBean>> createObservable;
@@ -47,7 +47,7 @@ public class ChatroomViewModel extends AndroidViewModel {
         leaveObservable = new SingleSourceLiveData<>();
     }
 
-    public LiveData<Resource<List<VRoomBean.RoomsBean>>> getRoomObservable() {
+    public LiveData<Resource<VRoomBean>> getRoomObservable() {
         return roomObservable;
     }
 
@@ -67,8 +67,8 @@ public class ChatroomViewModel extends AndroidViewModel {
         return leaveObservable;
     }
 
-    public void getDataList(Context context, int pageSize, int type) {
-        roomObservable.setSource(mRepository.getRoomList(context, pageSize, type));
+    public void getDataList(Context context, int pageSize, int type,String cursor) {
+        roomObservable.setSource(mRepository.getRoomList(context, pageSize, type,cursor));
     }
 
     public void getDetails(Context context, String roomId) {
