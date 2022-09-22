@@ -135,7 +135,6 @@ public class ChatroomGiftView extends LinearLayout {
       if (getChildCount() > 0){
          startTask();
       }
-
    }
 
    /**

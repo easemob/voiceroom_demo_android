@@ -71,7 +71,7 @@ public class ChatroomMessagesView extends RelativeLayout{
 
     public void init(String chatroomId){
         this.chatroomId = chatroomId;
-        adapter = new ListAdapter(getContext(), CustomMsgHelper.getInstance().getNormalData(chatroomId));
+        adapter = new ListAdapter(getContext(), ChatroomMsgHelper.getInstance().getMessageData(chatroomId));
         ScrollSpeedLinearLayoutManger scrollSpeedLinearLayoutManger = new ScrollSpeedLinearLayoutManger(getContext());
         //设置item滑动速度
         scrollSpeedLinearLayoutManger.setSpeedSlow();
@@ -170,7 +170,8 @@ public class ChatroomMessagesView extends RelativeLayout{
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
             final ChatMessageData message = messages.get(position);
-            String from = message.getFrom();
+            String from = ChatroomMsgHelper.getInstance().getUserName(message);
+//            String from = message.getFrom();
             String s = message.getContent();
 
             if (holder instanceof MyViewHolder){
@@ -221,15 +222,19 @@ public class ChatroomMessagesView extends RelativeLayout{
         }
 
         public void refresh(){
-            messages = ChatroomMsgHelper.getInstance().getMessageData(chatroomId);
-            Log.e("room_refresh",messages.size()+"");
+            int startPosition = messages.size();
+            messages.addAll(startPosition,CustomMsgHelper.getInstance().getNormalData(chatroomId));
+            Log.e("room_refresh",messages.size()+" startPosition" + startPosition);
 
-            ((Activity)getContext()).runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    notifyDataSetChanged();
-                }
-            });
+            if (messages.size() > 0){
+                ((Activity)context).runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        notifyItemRangeInserted(startPosition,messages.size());
+                        listview.smoothScrollToPosition(adapter.getItemCount()-1);
+                    }
+                });
+            }
         }
 
     }

@@ -114,6 +114,11 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-
+    <io.agora.secnceui.widget.expression.ExpressionView
+        android:layout_below="@+id/normal_layout"
+        android:id="@+id/expression_view"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"/>
 
 </RelativeLayout>

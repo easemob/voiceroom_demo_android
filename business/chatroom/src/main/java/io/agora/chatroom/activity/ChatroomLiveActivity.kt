@@ -7,6 +7,9 @@ import android.os.Looper
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.OnTouchListener
+import android.view.WindowManager
+import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -36,9 +39,9 @@ import io.agora.secnceui.bean.MicInfoBean
 import io.agora.secnceui.ui.mic.RoomMicConstructor
 import io.agora.secnceui.widget.barrage.ChatroomMessagesView
 import io.agora.secnceui.widget.gift.GiftBottomDialog
-import io.agora.secnceui.widget.gift.OnSendClickListener
 import io.agora.secnceui.widget.primary.MenuItemClickListener
 import io.agora.secnceui.widget.top.OnLiveTopClickListener
+import manager.ChatroomConfigManager
 import manager.ChatroomMsgHelper
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
@@ -48,7 +51,7 @@ import tools.bean.VRoomInfoBean
 
 @Route(path = RouterPath.ChatroomPath)
 class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPermissions.PermissionCallbacks,
-    EasyPermissions.RationaleCallbacks {
+    EasyPermissions.RationaleCallbacks, ChatroomConfigManager.ChatroomListener {
 
     companion object {
         const val RC_PERMISSIONS = 101
@@ -120,14 +123,14 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
             binding.clMain.setPaddingRelative(0, inset.top, 0, inset.bottom)
             WindowInsetsCompat.CONSUMED
         }
+        binding.clMain.setOnTouchListener(OnTouchListener { v, event ->
+            reset()
+            false
+        })
         binding.messageView.setMessageViewListener(object : ChatroomMessagesView.MessageViewListener{
-            override fun onItemClickListener(message: ChatMessageData?) {
-                TODO("Not yet implemented")
-            }
+            override fun onItemClickListener(message: ChatMessageData?) {}
 
-            override fun onListClickListener() {
-                TODO("Not yet implemented")
-            }
+            override fun onListClickListener() { reset() }
         })
     }
     private fun initView() {
@@ -235,7 +238,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
                 ChatroomMsgHelper.getInstance().sendTxtMsg(content,
                     ProfileManager.getInstance().profile.name,object : OnMsgCallBack(){
                     override fun onSuccess(message: ChatMessageData?) {
-
+                        binding.messageView.refresh()
                     }
 
                     override fun onError(messageId: String?, code: Int, error: String?) {
@@ -243,8 +246,20 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
                     }
                 })
             }
-
         })
+        ChatroomConfigManager.getInstance().setChatRoomListener(this)
+    }
+
+    private fun hideKeyboard(){
+        val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        if (window.attributes.softInputMode != WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN) {
+            if (currentFocus != null) {
+                imm.hideSoftInputFromWindow(
+                    currentFocus!!.windowToken,
+                    InputMethodManager.HIDE_NOT_ALWAYS
+                )
+            }
+        }
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
@@ -298,6 +313,16 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
     override fun onRationaleDenied(requestCode: Int) {
         "onRationaleDenied requestCode$requestCode ".logE()
     }
+
+    private fun reset(){
+        binding.clMain.isFocusable = true
+        binding.chatBottom.hideExpressionView()
+        binding.chatBottom.showInput()
+        binding.chatBottom.checkShowExpression(false)
+        binding.likeView.isVisible = true
+        hideKeyboard()
+    }
+
     private var dialog: GiftBottomDialog? = null
 
     private fun showGiftDialog() {
@@ -325,6 +350,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
             }
         }
     }
+
     private var time = 2
     private val handler = Handler(Looper.getMainLooper())
     private var task: Runnable? = null
@@ -356,5 +382,13 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
             task = null
             time = 2
         }
+    }
+
+    override fun receiveTextMessage(roomId: String?, message: ChatMessageData?) {
+        binding.messageView.refresh()
+    }
+
+    override fun receiveGift(roomId: String?, message: ChatMessageData?) {
+        binding.chatroomGiftView.refresh()
     }
 }

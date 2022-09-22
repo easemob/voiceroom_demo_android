@@ -153,7 +153,7 @@ public class ChatroomCreateActivity extends BaseActivity implements RadioGroup.O
                  public void onSuccess(@Nullable VRoomInfoBean data) {
                     if (null != data && null != data.getRoom()){
                        if (ChatClient.getInstance().isLoggedIn()){
-                           joinRoom(data.getRoom().getRoom_id());
+                           joinRoom(data.getRoom().getChatroom_id());
                        }else {
                           VRUserBean userinfo = ProfileManager.getInstance().getProfile();
                           Log.d("ChatroomCreateActivity","chat_uid: " + userinfo.getChat_uid());
@@ -161,7 +161,7 @@ public class ChatroomCreateActivity extends BaseActivity implements RadioGroup.O
                           ChatroomConfigManager.getInstance().login(userinfo.getChat_uid(), userinfo.getIm_token(), new CallBack() {
                              @Override
                              public void onSuccess() {
-                                joinRoom(data.getRoom().getRoom_id());
+                                joinRoom(data.getRoom().getChatroom_id());
                              }
 
                              @Override

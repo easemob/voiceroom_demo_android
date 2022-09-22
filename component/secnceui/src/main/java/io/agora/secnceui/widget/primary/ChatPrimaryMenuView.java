@@ -2,10 +2,15 @@ package io.agora.secnceui.widget.primary;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Rect;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -21,8 +26,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import io.agora.secnceui.R;
+import io.agora.secnceui.widget.expression.ExpressionIcon;
+import io.agora.secnceui.widget.expression.ExpressionView;
+import io.agora.secnceui.widget.expression.SmileUtils;
 
-public class ChatPrimaryMenuView extends RelativeLayout {
+public class ChatPrimaryMenuView extends RelativeLayout implements ExpressionView.ExpressionClickListener {
 
     protected Activity activity;
     protected InputMethodManager inputManager;
@@ -37,6 +45,8 @@ public class ChatPrimaryMenuView extends RelativeLayout {
     private TextView mSend;
     private boolean isShowEmoji;
     private RelativeLayout normalLayout;
+    private ExpressionView expressionView;
+    private ViewGroup rootView;
 
 
     public ChatPrimaryMenuView(Context context) {
@@ -63,7 +73,11 @@ public class ChatPrimaryMenuView extends RelativeLayout {
         icon = findViewById(R.id.icon_emoji);
         mSend = findViewById(R.id.input_send);
         normalLayout = findViewById(R.id.normal_layout);
+        expressionView = findViewById(R.id.expression_view);
+        rootView =activity.getWindow().getDecorView().findViewById(android.R.id.content);
 
+        expressionView.setExpressionListener(this);
+        expressionView.init(7);
 
         edContent.setOnFocusChangeListener(new OnFocusChangeListener() {
             @Override
@@ -91,11 +105,7 @@ public class ChatPrimaryMenuView extends RelativeLayout {
             @Override
             public void onClick(View v) {
                 isShowEmoji = !isShowEmoji;
-                if (isShowEmoji){
-                    icon.setImageResource(R.drawable.icon_key);
-                }else {
-                    icon.setImageResource(R.drawable.icon_face);
-                }
+                checkShowExpression(isShowEmoji);
                 if (null != clickListener)
                     clickListener.onEmojiClick(isShowEmoji);
             }
@@ -106,6 +116,18 @@ public class ChatPrimaryMenuView extends RelativeLayout {
                 if (null != clickListener)
                     clickListener.onSendMessage(edContent.getText().toString().trim());
                 edContent.setText("");
+            }
+        });
+
+        rootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                Rect r = new Rect();
+                rootView.getWindowVisibleDisplayFrame(r);
+                int displayHeight = r.bottom - r.top;
+                int rootHeight = rootView.getHeight();
+                int softKeyHeight = rootHeight - displayHeight;
+                Log.e("onGlobalLayout","softKeyHeight" + softKeyHeight +" rootHeight:" + rootHeight +" displayHeight:" + displayHeight);
             }
         });
     }
@@ -258,6 +280,39 @@ public class ChatPrimaryMenuView extends RelativeLayout {
         }
     }
 
+    public void checkShowExpression(boolean isShow){
+        isShowEmoji = isShow;
+        if (isShowEmoji){
+            icon.setImageResource(R.drawable.icon_key);
+            expressionView.setVisibility(VISIBLE);
+        }else {
+            icon.setImageResource(R.drawable.icon_face);
+            expressionView.setVisibility(GONE);
+        }
+    }
+
+    @Override
+    public void onDeleteImageClicked() {
+        if (!TextUtils.isEmpty(edContent.getText())) {
+            KeyEvent event = new KeyEvent(0, 0, 0, KeyEvent.KEYCODE_DEL, 0, 0, 0, 0, KeyEvent.KEYCODE_ENDCALL);
+            edContent.dispatchKeyEvent(event);
+        }
+    }
+
+    @Override
+    public void onExpressionClicked(ExpressionIcon expressionIcon) {
+        if(expressionIcon != null) {
+            edContent.append(SmileUtils.getSmiledText(getContext(),expressionIcon.getLabelString()));
+        }
+    }
+
+    public void hideExpressionView(){
+        expressionView.setVisibility(GONE);
+    }
+
+    public void showInput(){
+        inputView.setVisibility(View.GONE);
+    }
 
     public static class MenuItemModel{
         public int image;
