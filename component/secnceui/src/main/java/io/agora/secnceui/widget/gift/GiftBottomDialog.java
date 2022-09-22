@@ -11,7 +11,6 @@ import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.viewpager2.widget.ViewPager2;
 import java.util.List;
-import io.agora.baseui.BaseDialogFragment;
 import io.agora.baseui.popupwindow.CommonPopupWindow;
 import io.agora.secnceui.R;
 import io.agora.secnceui.bean.GiftBean;
@@ -19,7 +18,7 @@ import io.agora.secnceui.databinding.ChatroomGiftPopupwindowLayoutBinding;
 import io.agora.secnceui.utils.DeviceUtils;
 
 
-public class GiftBottomDialog extends BaseDialogFragment implements View.OnClickListener {
+public class GiftBottomDialog extends BottomDialogFragment implements View.OnClickListener {
     private int currentIndex = 0;//当前页面,默认首页
     private LinearLayoutCompat linearLayout;
     private ViewPager2 mViewPager;
@@ -191,7 +190,9 @@ public class GiftBottomDialog extends BaseDialogFragment implements View.OnClick
    }
 
    public void reset(){
-       giftBean.setNum(1);
+        if (null != giftBean){
+            giftBean.setNum(1);
+        }
        count.setText("1");
    }
 

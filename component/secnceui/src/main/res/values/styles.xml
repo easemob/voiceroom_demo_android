@@ -141,4 +141,10 @@
         <attr name="anim_duration" format="integer" />
     </declare-styleable>
 
+    <style name="BottomDialogFragment.Animation" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/bottom_anim_enter</item>
+        <item name="android:windowExitAnimation">@anim/bottom_anim_exit</item>
+    </style>
+
+
 </resources>

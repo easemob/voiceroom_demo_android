@@ -2,7 +2,8 @@ package io.agora.chatroom.activity
 
 import android.Manifest
 import android.os.Bundle
-import android.util.Log
+import android.os.Handler
+import android.os.Looper
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -13,7 +14,6 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import bean.ChatMessageData
 import com.alibaba.android.arouter.facade.annotation.Route
-import custormgift.CustomMsgHelper
 import custormgift.OnMsgCallBack
 import io.agora.baseui.BaseUiActivity
 import io.agora.baseui.adapter.OnItemClickListener
@@ -22,8 +22,11 @@ import io.agora.baseui.general.net.Resource
 import io.agora.buddy.tool.logE
 import io.agora.chatroom.controller.RtcRoomController
 import io.agora.chatroom.databinding.ActivityChatroomBinding
+import io.agora.chatroom.general.repositories.ProfileManager
 import io.agora.chatroom.model.ChatroomViewModel
-import io.agora.chatroom.ui.*
+import io.agora.chatroom.ui.Room2DMicViewDelegate
+import io.agora.chatroom.ui.Room3DMicViewDelegate
+import io.agora.chatroom.ui.RoomTopViewDelegate
 import io.agora.config.ConfigConstants
 import io.agora.config.RouterParams
 import io.agora.config.RouterPath
@@ -83,6 +86,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
     private fun initData() {
         roomBean?.let {
             roomViewModel.getDetails(this, it.room_id ?: "")
+            ChatroomMsgHelper.getInstance().init(it.chatroom_id)
         }
         // 房间详情
         roomViewModel.roomDetailObservable.observe(this) { response: Resource<VRoomInfoBean> ->
@@ -208,7 +212,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
                     R.id.extend_item_mic -> {}
                     R.id.extend_item_hand_up -> {}
                     R.id.extend_item_gift -> {
-
+                        showGiftDialog()
                     }
                 }
             }
@@ -228,7 +232,8 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
             }
 
             override fun onSendMessage(content: String?) {
-                ChatroomMsgHelper.getInstance().sendTxtMsg(content,object : OnMsgCallBack(){
+                ChatroomMsgHelper.getInstance().sendTxtMsg(content,
+                    ProfileManager.getInstance().profile.name,object : OnMsgCallBack(){
                     override fun onSuccess(message: ChatMessageData?) {
 
                     }
@@ -293,9 +298,63 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
     override fun onRationaleDenied(requestCode: Int) {
         "onRationaleDenied requestCode$requestCode ".logE()
     }
+    private var dialog: GiftBottomDialog? = null
 
-    public fun showGiftDialog() {
-        supportFragmentManager.findFragmentByTag("live_gift")
+    private fun showGiftDialog() {
+        supportFragmentManager.findFragmentByTag("live_gift").apply {
+             if (dialog == null){
+                 dialog = GiftBottomDialog.getNewInstance()
+             }
+            dialog!!.show(supportFragmentManager, "live_gift")
+            dialog!!.setOnConfirmClickListener { view, bean ->
+                val giftBean: GiftBean = bean as GiftBean
 
+                ChatroomMsgHelper.getInstance().sendGiftMsg(
+                    ProfileManager.getInstance().profile.name,ProfileManager.getInstance().profile.portrait,
+                    giftBean.id, giftBean.num,giftBean.price,giftBean.name, object : OnMsgCallBack() {
+                        override fun onSuccess(message: ChatMessageData?) {
+                            binding.chatroomGiftView.refresh()
+                            if (view is TextView) {
+                                send = view
+                                send!!.text = time.toString() + "s"
+                                send!!.isEnabled = false
+                                startTask()
+                            }
+                        }
+                    })
+            }
+        }
+    }
+    private var time = 2
+    private val handler = Handler(Looper.getMainLooper())
+    private var task: Runnable? = null
+    private var send: TextView? = null
+
+    // 开启倒计时任务
+    private fun startTask() {
+        handler.postDelayed(object : Runnable {
+            override fun run() {
+                // 在这里执行具体的任务
+                time--
+                send!!.text = (time.toString() + "s")
+                // 任务执行完后再次调用postDelayed开启下一次任务
+                if (time == 0) {
+                    stopTask()
+                    send!!.isEnabled = true
+                    send!!.text = "Send"
+                } else {
+                    handler.postDelayed(this, 1000)
+                }
+            }
+        }.also { task = it }, 1000)
+    }
+
+    // 停止计时任务
+    private fun stopTask() {
+        if (task != null) {
+            handler.removeCallbacks(task!!)
+            task = null
+            time = 2
+        }
     }
 }

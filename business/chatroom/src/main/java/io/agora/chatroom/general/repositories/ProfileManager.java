@@ -1,6 +1,5 @@
 package io.agora.chatroom.general.repositories;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
@@ -26,7 +25,6 @@ public class ProfileManager {
       return instance;
    }
 
-   @SuppressLint("CommitPrefEdits")
    private ProfileManager(){
       mSharedPreferences = ChatroomConfigManager.getInstance().getContext().getSharedPreferences("SP_AT_PROFILE", Context.MODE_PRIVATE);
       editor = mSharedPreferences.edit();

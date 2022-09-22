@@ -2,6 +2,7 @@ package io.agora.secnceui.widget.gift;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
 
 
 import java.util.ArrayList;
@@ -26,8 +27,8 @@ public class GiftRepository {
             int nameId = context.getResources().getIdentifier("gift_default_name_" + i, "string", context.getPackageName());
             bean.setResource(resId);
             bean.setName(context.getString(nameId));
-            bean.setId("gift_"+i);
-            bean.setPrice(Price[i]);
+            bean.setId("VoiceRoomGift"+i);
+            bean.setPrice(Price[i-1]);
             gifts.add(bean);
         }
         return gifts;
@@ -38,7 +39,7 @@ public class GiftRepository {
         int index = page * base;
         List<GiftBean> gifts = new ArrayList<>();
         List<GiftBean> data =  getDefaultGifts(context);
-        for (int i = 1; i <= data.size(); i++) {
+        for (int i = 1; i <= data.size()-1; i++) {
             if (index <= i && i<= base+(page*base)){
                 gifts.add(data.get(i));
             }

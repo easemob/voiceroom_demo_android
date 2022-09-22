@@ -1,6 +1,9 @@
 package manager;
 
+import android.text.TextUtils;
+
 import java.util.ArrayList;
+import java.util.Map;
 
 import bean.ChatMessageData;
 import custormgift.CustomMsgHelper;
@@ -68,8 +71,9 @@ public class ChatroomMsgHelper {
      * @param content
      * @param callBack
      */
-    public void sendTxtMsg(String content, OnMsgCallBack callBack) {
+    public void sendTxtMsg(String content,String nickName, OnMsgCallBack callBack) {
         ChatMessage message = ChatMessage.createTextSendMessage(content, chatroomId);
+        message.setAttribute("userName",nickName);
         message.setChatType(ChatMessage.ChatType.ChatRoom);
         message.setMessageStatusCallback(new CallBack() {
             @Override
@@ -95,10 +99,11 @@ public class ChatroomMsgHelper {
      * 发送礼物消息
      * @param giftId
      * @param num
+     * @param nickName
      * @param callBack
      */
-    public void sendGiftMsg(String giftId, int num, OnMsgCallBack callBack) {
-        CustomMsgHelper.getInstance().sendGiftMsg(giftId, num, new OnMsgCallBack() {
+    public void sendGiftMsg(String nickName,String portrait,String giftId,int num,String price,String giftName, OnMsgCallBack callBack) {
+        CustomMsgHelper.getInstance().sendGiftMsg(nickName,portrait,giftId,num,price,giftName ,new OnMsgCallBack() {
             @Override
             public void onSuccess(ChatMessageData message) {
                 if(callBack != null) {
@@ -206,6 +211,30 @@ public class ChatroomMsgHelper {
 
     public void setOnCustomMsgReceiveListener(OnCustomMsgReceiveListener listener) {
         CustomMsgHelper.getInstance().setOnCustomMsgReceiveListener(listener);
+    }
+
+    public String getUserName(ChatMessageData msg){
+        String userName = "";
+        Map<String,String> params = msg.getCustomParams();
+        if (params.containsKey("userName")){
+            userName = params.get("userName");
+        }
+        if (TextUtils.isEmpty(userName)){
+            Map<String,Object> ext = msg.getExt();
+            if (ext.containsKey("userName")){
+                userName = (String) ext.get("userName");
+            }
+        }
+        return userName;
+    }
+
+    public String getUserPortrait(ChatMessageData msg){
+        String userPortrait = "";
+        Map<String,String> ext = msg.getCustomParams();
+        if (ext.containsKey("portrait")){
+            userPortrait = ext.get("portrait");
+        }
+        return userPortrait;
     }
 
 

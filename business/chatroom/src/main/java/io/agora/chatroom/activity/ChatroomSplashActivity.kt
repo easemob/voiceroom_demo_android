@@ -34,7 +34,7 @@ class ChatroomSplashActivity : BaseUiActivity<ActivityChatroomSplashBinding>() {
         } else {
             binding.mtChatroom.letterSpacing = -0.05f
         }
-        ChatroomConfigManager.getInstance().initRoomConfig(this);
+
         val loginViewModel: LoginViewModel = BaseUiTool.getViewModel(LoginViewModel::class.java, this)
         loginViewModel.loginObservable.observe(this) { response ->
             parseResource(response, object : OnResourceParseCallback<VRUserBean?>(true) {

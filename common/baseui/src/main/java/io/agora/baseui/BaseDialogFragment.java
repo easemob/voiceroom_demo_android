@@ -26,12 +26,12 @@ import io.agora.baseui.general.net.Resource;
  * 作为dialog fragment的基类
  */
 public abstract class BaseDialogFragment extends DialogFragment {
-    public BaseActivity mContext;
+    public BaseUiActivity mContext;
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        mContext = (BaseActivity) context;
+        mContext = (BaseUiActivity) context;
     }
 
     @Nullable
@@ -113,17 +113,17 @@ public abstract class BaseDialogFragment extends DialogFragment {
     }
 
 
-    /**
-     * 解析Resource<T>
-     * @param response
-     * @param callback
-     * @param <T>
-     */
-    public <T> void parseResource(Resource<T> response, @NonNull OnResourceParseCallback<T> callback) {
-        if(mContext != null) {
-            mContext.parseResource(response, callback);
-        }
-    }
+//    /**
+//     * 解析Resource<T>
+//     * @param response
+//     * @param callback
+//     * @param <T>
+//     */
+//    public <T> void parseResource(Resource<T> response, @NonNull OnResourceParseCallback<T> callback) {
+//        if(mContext != null) {
+//            mContext.parseResource(response, callback);
+//        }
+//    }
 
     /**
      * dialog宽度占满，高度自定义

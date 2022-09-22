@@ -157,6 +157,7 @@ public class ChatroomConfigManager {
         ChatClient.getInstance().chatroomManager().joinChatRoom(roomId, new ValueCallBack<ChatRoom>() {
             @Override
             public void onSuccess(ChatRoom chatRoom) {
+                Log.e("joinRoom","sdk join success");
                 callBack.onSuccess(chatRoom);
             }
 
@@ -189,6 +190,7 @@ public class ChatroomConfigManager {
 
         @Override
         public void onMemberJoined(String s, String s1) {
+            if (ChatListener != null)
             ChatListener.userJoinedRoom(s,s1);
         }
 
@@ -199,6 +201,7 @@ public class ChatroomConfigManager {
 
         @Override
         public void onRemovedFromChatRoom(final int reason, final String roomId, final String roomName, final String participant) {
+            if (ChatListener != null)
             ChatListener.userBeKicked(roomId,reason);
         }
 
@@ -244,16 +247,19 @@ public class ChatroomConfigManager {
 
         @Override
         public void onAnnouncementChanged(String s, String s1) {
+            if (ChatListener != null)
             ChatListener.announcementChanged(s,s1);
         }
 
         @Override
         public void onAttributesUpdate(String chatRoomId, Map<String, String> attributeMap, String from) {
+            if (ChatListener != null)
             ChatListener.roomAttributesDidUpdated(chatRoomId,attributeMap,from);
         }
 
         @Override
         public void onAttributesRemoved(String chatRoomId, Map<String, String> attributeMap, String from) {
+            if (ChatListener != null)
             ChatListener.roomAttributesDidRemoved(chatRoomId,attributeMap,from);
         }
     };

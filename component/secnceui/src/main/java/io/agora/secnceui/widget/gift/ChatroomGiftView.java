@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Handler;
 import android.text.SpannableString;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -31,6 +32,7 @@ import custormgift.CustomMsgHelper;
 import io.agora.secnceui.R;
 import io.agora.secnceui.bean.GiftBean;
 import io.agora.secnceui.utils.DeviceUtils;
+import manager.ChatroomMsgHelper;
 
 
 public class ChatroomGiftView extends LinearLayout {
@@ -40,7 +42,7 @@ public class ChatroomGiftView extends LinearLayout {
    private Context mContext;
    private Handler handler = new Handler();
    private Runnable task;
-   private int delay = 1500;
+   private int delay = 3000;
 
    // 开启定时任务
    private void startTask() {
@@ -160,17 +162,27 @@ public class ChatroomGiftView extends LinearLayout {
       @Override
       public void onBindViewHolder(@NonNull GiftViewHolder holder, int position) {
          final ChatMessageData message = messages.get(position);
-         holder.avatar.setImageResource(R.drawable.avatar1);
-         show(holder.icon,holder.name,message);
+         show(holder.avatar,holder.icon,holder.name,message);
          holder.icon_count.setText("X"+CustomMsgHelper.getInstance().getMsgGiftNum(message));
       }
 
-      public void show(ImageView icon,TextView name,ChatMessageData message){
+      public void show(ShapeableImageView avatar,ImageView icon,TextView name,ChatMessageData message){
+         int resId = 0;
          String gift_id = CustomMsgHelper.getInstance().getMsgGiftId(message);
+         String userName = ChatroomMsgHelper.getInstance().getUserName(message);
+         String userPortrait = ChatroomMsgHelper.getInstance().getUserPortrait(message);
          GiftBean giftBean = GiftRepository.getGiftById(context,gift_id);
+         try {
+            resId = context.getResources().getIdentifier(userPortrait, "drawable", context.getPackageName());
+         }catch (Exception ignored){
+            Log.e("getResources()", ignored.getMessage());
+         }
+         if (resId != 0){
+            avatar.setImageResource(resId);
+         }
          StringBuilder builder = new StringBuilder();
          if (null != giftBean){
-            builder.append(message.getFrom()).append(":").append("\n").append("sent ").append(giftBean.getName());
+            builder.append(!TextUtils.isEmpty(userName)? userName:message.getFrom()).append(":").append("\n").append("sent ").append(giftBean.getName());
             icon.setImageResource(giftBean.getResource());
             icon.setTag(System.currentTimeMillis());
          }

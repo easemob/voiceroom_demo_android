@@ -25,7 +25,7 @@ import manager.ChatroomMsgHelper;
  *      用于接收不同的自定义消息类型（目前仅礼物，点赞及弹幕消息）。
  * （4）发送自定义消息：
  *      a、如果自定义消息类型与library相同，且所传参数相同或者相近，可以直接调用如下方法：
- *      {@link #sendGiftMsg(String, int, OnMsgCallBack)},
+ *      {@link #sendGiftMsg(String,String,String,int,String,String,OnMsgCallBack)},
  *      {@link #sendPraiseMsg(int, OnMsgCallBack)},
  *      {@link #sendGiftMsg(Map, OnMsgCallBack)},
  *      {@link #sendPraiseMsg(Map, OnMsgCallBack)},
@@ -209,14 +209,22 @@ public class CustomMsgHelper implements MessageListener {
 
     /**
      * 发送礼物消息
-     * @param giftId
-     * @param num
-     * @param callBack
+     * @param nickName 用户名称
+     * @param portrait 用户头像
+     * @param giftId   礼物id
+     * @param num      礼物数量
+     * @param price    礼物金额
+     * @param giftName 礼物名称
+     * @param callBack 发送消息成功或者失败的回调
      */
-    public void sendGiftMsg(String giftId, int num, OnMsgCallBack callBack) {
+    public void sendGiftMsg(String nickName,String portrait,String giftId,int num,String price,String giftName, OnMsgCallBack callBack) {
         Map<String, String> params = new HashMap<>();
         params.put(MsgConstant.CUSTOM_GIFT_KEY_ID, giftId);
         params.put(MsgConstant.CUSTOM_GIFT_KEY_NUM, String.valueOf(num));
+        params.put(MsgConstant.CUSTOM_GIFT_NAME,giftName);
+        params.put(MsgConstant.CUSTOM_GIFT_PRICE,price);
+        params.put(MsgConstant.CUSTOM_GIFT_USERNAME,nickName);
+        params.put(MsgConstant.CUSTOM_GIFT_PORTRAIT,portrait);
         sendGiftMsg(params, callBack);
     }
 
