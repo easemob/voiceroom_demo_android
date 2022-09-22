@@ -23,7 +23,7 @@ public abstract class BaseListFragment<T> extends BaseInitFragment implements On
     protected void initView(Bundle savedInstanceState) {
         super.initView(savedInstanceState);
         mRecyclerView = initRecyclerView();
-        mRecyclerView.setLayoutManager(getLayoutManager());
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         concatAdapter = new ConcatAdapter();
         addHeader(concatAdapter);
         mListAdapter = initAdapter();
@@ -48,14 +48,6 @@ public abstract class BaseListFragment<T> extends BaseInitFragment implements On
      */
     public void addHeader(ConcatAdapter adapter) {
         // Add header adapter by adapter
-    }
-
-    /**
-     * Can change the RecyclerView's orientation
-     * @return
-     */
-    protected RecyclerView.LayoutManager getLayoutManager() {
-        return new LinearLayoutManager(mContext);
     }
 
     /**

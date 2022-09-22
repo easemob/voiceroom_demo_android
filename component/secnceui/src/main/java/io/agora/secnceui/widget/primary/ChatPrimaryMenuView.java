@@ -105,6 +105,7 @@ public class ChatPrimaryMenuView extends RelativeLayout {
             public void onClick(View v) {
                 if (null != clickListener)
                     clickListener.onSendMessage(edContent.getText().toString().trim());
+                edContent.setText("");
             }
         });
     }

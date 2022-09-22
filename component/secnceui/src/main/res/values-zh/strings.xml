@@ -95,4 +95,15 @@
 
     <string name="chatroom_input_chat_title">⼀起语聊吧</string>
     <string name="chatroom_system_msg_member_add">加入</string>
+
+    <!-- gift -->
+    <string name="gift_default_name_1">Sweet Heart</string>
+    <string name="gift_default_name_2">Flower</string>
+    <string name="gift_default_name_3">Crystal Box</string>
+    <string name="gift_default_name_4">Super Agora</string>
+    <string name="gift_default_name_5">Star</string>
+    <string name="gift_default_name_6">Lollipop</string>
+    <string name="gift_default_name_7">Diamond</string>
+    <string name="gift_default_name_8">Crown</string>
+    <string name="gift_default_name_9">Rocket</string>
 </resources>

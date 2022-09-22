@@ -9,9 +9,10 @@ import android.view.ViewGroup;
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 
-public abstract class BaseInitFragment extends BaseFragment {
+public abstract class BaseInitFragment extends Fragment {
 
     @Nullable
     @Override

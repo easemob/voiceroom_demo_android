@@ -29,4 +29,16 @@
     <string name="room_list_count">%1$s人</string>
     <string name="room_tab_layout_count">(%1$s)</string>
 
+
+    <!-- gift -->
+    <string name="gift_default_name_1">Sweet Heart</string>
+    <string name="gift_default_name_2">Flower</string>
+    <string name="gift_default_name_3">Crystal Box</string>
+    <string name="gift_default_name_4">Super Agora</string>
+    <string name="gift_default_name_5">Star</string>
+    <string name="gift_default_name_6">Lollipop</string>
+    <string name="gift_default_name_7">Diamond</string>
+    <string name="gift_default_name_8">Crown</string>
+    <string name="gift_default_name_9">Rocket</string>
+
 </resources>

@@ -81,13 +81,14 @@ public class ChatroomListFragment extends BaseChatroomListFragment<VRoomBean.Roo
                     Log.e("chatroomViewModel"," dataList " + dataList.size());
                     listAdapter.setData(dataList);
                     chatroomViewModel.clearRegisterInfo();
+                    if (null != listener)
                     listener.getItemCount(data.getTotal());
                     finishRefresh();
                 }
             });
         });
 
-        pageViewModel = new ViewModelProvider(mContext).get(PageViewModel.class);
+        pageViewModel = new ViewModelProvider(getActivity()).get(PageViewModel.class);
         pageViewModel.getPageSelect().observe(this, page -> {
             Log.e("pageViewModel","getPageSelect " + page);
             if (listAdapter.getData() != null && mCurrentPage != page && listAdapter.getData().size() >0){
@@ -95,7 +96,7 @@ public class ChatroomListFragment extends BaseChatroomListFragment<VRoomBean.Roo
                 listAdapter.clearData();
                 index = 0;
             }
-            chatroomViewModel.getDataList(mContext,pageSize,page,Cursor);
+            chatroomViewModel.getDataList(getActivity(),pageSize,page,Cursor);
             mCurrentPage = page;
         });
 
@@ -152,7 +153,7 @@ public class ChatroomListFragment extends BaseChatroomListFragment<VRoomBean.Roo
                 if (roomBean.isIs_private()){
                     // TODO: 2022/9/15  //弹窗 输入密码
                 }else {
-                    ChatroomConfigManager.getInstance().joinRoom(roomBean.getRoom_id(), new ValueCallBack<ChatRoom>() {
+                    ChatroomConfigManager.getInstance().joinRoom(roomBean.getChatroom_id(), new ValueCallBack<ChatRoom>() {
                         @Override
                         public void onSuccess(ChatRoom chatRoom) {
                             goChatroomPage(roomBean);
@@ -172,7 +173,7 @@ public class ChatroomListFragment extends BaseChatroomListFragment<VRoomBean.Roo
     @Override
     public void onRefresh() {
         super.onRefresh();
-        chatroomViewModel.getDataList(mContext,pageSize,mCurrentPage,Cursor);
+        chatroomViewModel.getDataList(getActivity(),pageSize,mCurrentPage,Cursor);
     }
 
     @Override

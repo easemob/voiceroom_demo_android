@@ -6,6 +6,7 @@ import static http.VRHttpClientManager.Method_POST;
 import static http.VRHttpClientManager.Method_PUT;
 
 import android.content.Context;
+import android.service.autofill.FieldClassification;
 import android.text.TextUtils;
 import android.util.Log;
 import androidx.annotation.NonNull;
@@ -68,10 +69,12 @@ public class HttpManager {
       Map<String, String> headers = new HashMap<>();
       headers.put("Content-Type", "application/json");
       JSONObject requestBody = new JSONObject();
+      String portrait = ProfileManager.getInstance().getProfile().getPortrait();
+      String randomPortrait = "avatar"+ Math.round((Math.random()*18)+1);
       try {
          requestBody.putOpt("deviceId", device);
           requestBody.putOpt("name", "apex");
-          requestBody.putOpt("portrait", "");
+          requestBody.putOpt("portrait",!TextUtils.isEmpty(portrait)? portrait:randomPortrait);
 //          requestBody.putOpt("phone", "手机号后期上");
 //          requestBody.putOpt("verify_code", "验证码后期上");
       } catch (JSONException e) {
