@@ -78,8 +78,8 @@ public class ChatroomMsgHelper {
         message.setMessageStatusCallback(new CallBack() {
             @Override
             public void onSuccess() {
-                callBack.onSuccess(parseChatMessage(message));
                 CustomMsgHelper.getInstance().addSendText(parseChatMessage(message));
+                callBack.onSuccess(parseChatMessage(message));
             }
 
             @Override

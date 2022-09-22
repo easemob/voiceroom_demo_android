@@ -183,8 +183,6 @@ public class CustomMsgHelper implements MessageListener {
             }
         }
         AllGiftList.removeAll(data);
-        Log.e("getGiftData","AllGiftList "+AllGiftList.size());
-        Log.e("getGiftData"," data "+data.size());
         return data;
     }
 
@@ -195,6 +193,9 @@ public class CustomMsgHelper implements MessageListener {
                 data.add(chatMessageData);
             }
         }
+        AllNormalList.removeAll(data);
+        Log.e("getNormalData","AllNormalList "+AllNormalList.size());
+        Log.e("getNormalData"," data "+data.size());
         return data;
     }
 
@@ -204,6 +205,7 @@ public class CustomMsgHelper implements MessageListener {
     }
 
     public void addSendText(ChatMessageData data){
+        Log.e("getNormalData"," addSendText ");
         AllNormalList.add(data);
     }
 

@@ -171,14 +171,18 @@ public class ChatroomConfigManager {
     public interface ChatroomListener{
         void receiveTextMessage(String roomId,ChatMessageData message);
         void receiveGift(String roomId, ChatMessageData message);
-        void receiveApplySite(String roomId,ChatMessageData message);
-        void receiveInviteSite(String roomId,ChatMessageData message);
-        void receiveDeclineApply(String roomId,ChatMessageData message);
-        void userJoinedRoom(String roomId,String uid);
-        void announcementChanged(String roomId,String announcement);
-        void userBeKicked(String roomId,int reason);
-        void roomAttributesDidUpdated(String roomId,Map<String, String> attributeMap,String fromId);
-        void roomAttributesDidRemoved(String roomId,Map<String, String> attributeMap,String fromId);
+        default void receiveApplySite(String roomId,ChatMessageData message){}
+        default void receiveInviteSite(String roomId,ChatMessageData message){}
+        default void receiveDeclineApply(String roomId,ChatMessageData message){}
+        default void userJoinedRoom(String roomId,String uid){}
+        default void announcementChanged(String roomId,String announcement){}
+        default void userBeKicked(String roomId,int reason){}
+        default void roomAttributesDidUpdated(String roomId,Map<String, String> attributeMap,String fromId){}
+        default void roomAttributesDidRemoved(String roomId,Map<String, String> attributeMap,String fromId){}
+    }
+
+    public void setChatRoomListener(ChatroomListener listener){
+        this.ChatListener = listener;
     }
 
     public ChatRoomChangeListener chatroomListener = new ChatRoomChangeListener(){
