@@ -10,9 +10,8 @@ import io.agora.baseui.adapter.OnItemClickListener
 import io.agora.baseui.general.callback.OnResourceParseCallback
 import io.agora.baseui.general.net.Resource
 import io.agora.baseui.interfaces.IParserSource
-import io.agora.buddy.tool.ToastTools
 import io.agora.buddy.tool.logE
-import io.agora.chatroom.controller.RtcRoomController
+import io.agora.chatroom.bean.RoomKitBean
 import io.agora.chatroom.general.constructor.RoomInfoConstructor
 import io.agora.chatroom.general.repositories.ProfileManager
 import io.agora.chatroom.model.ChatroomViewModel
@@ -26,14 +25,14 @@ import io.agora.secnceui.ui.common.CommonFragmentAlertDialog
 import io.agora.secnceui.ui.common.CommonSheetAlertDialog
 import io.agora.secnceui.ui.mic.flat.IRoom2DMicView
 import io.agora.secnceui.ui.micmanger.RoomMicManagerSheetDialog
-import tools.DefaultValueCallBack
-import tools.bean.VRoomInfoBean
+import tools.bean.VRoomMicInfo
 
 /**
  * @author create by zhangwei03
  */
 class Room2DMicViewDelegate constructor(
     private val activity: FragmentActivity,
+    private val roomKitBean: RoomKitBean,
     private val room2dMicView: IRoom2DMicView
 ) : IParserSource {
 
@@ -47,12 +46,6 @@ class Room2DMicViewDelegate constructor(
 
     private val chatroomViewModel: ChatroomViewModel by lazy {
         ViewModelProvider(activity)[ChatroomViewModel::class.java]
-    }
-
-    private var vRoomBean: VRoomInfoBean? = null
-
-    private val roomId by lazy {
-        vRoomBean?.room?.room_id ?: ""
     }
 
     init {
@@ -69,9 +62,7 @@ class Room2DMicViewDelegate constructor(
                 }
 
                 override fun onError(code: Int, message: String?) {
-                    // TODO: test
-                    "close bot code:$code message:$message".logE(TAG)
-                    room2dMicView.activeBot(true)
+                    "open bot code:$code message:$message".logE(TAG)
                 }
             })
         }
@@ -85,44 +76,33 @@ class Room2DMicViewDelegate constructor(
                 }
 
                 override fun onError(code: Int, message: String?) {
-                    // TODO: test
                     "close bot code:$code message:$message".logE(TAG)
-                    room2dMicView.activeBot(false)
                 }
 
             })
         }
     }
 
-    private fun isOwner(): Boolean {
-        val currentUid = ProfileManager.getInstance().profile?.uid
-        val ownerUid = vRoomBean?.room?.owner?.uid
-        "currentUid：$currentUid ownerUid:$ownerUid".logE(TAG)
-        return !currentUid.isNullOrEmpty() && TextUtils.equals(currentUid, ownerUid)
-    }
-
-    private fun isMicInfo(micInfo: MicInfoBean): Boolean {
+    private fun isMineInfo(micInfo: MicInfoBean): Boolean {
         val currentUid = ProfileManager.getInstance().profile?.uid
         val micUid = micInfo.userInfo?.userId
         return !currentUid.isNullOrEmpty() && TextUtils.equals(currentUid, micUid)
     }
 
-    fun onRoomDetails(vRoomBean: VRoomInfoBean) {
-        this.vRoomBean = vRoomBean
-        val micInfoList = RoomInfoConstructor.convertMicUiBean(vRoomBean)
-        val isBotActive = RoomInfoConstructor.isBotActive(vRoomBean)
-        room2dMicView.updateAdapter(micInfoList, isBotActive)
+    fun onRoomDetails(vRoomMicInfoList: List<VRoomMicInfo>, isUseBot: Boolean) {
+        val micInfoList = RoomInfoConstructor.convertMicUiBean(vRoomMicInfoList)
+        room2dMicView.updateAdapter(micInfoList, isUseBot)
     }
 
     fun onUserMicClick(data: MicInfoBean, view: View, position: Int, viewType: Long) {
-        if (data.micStatus == MicStatus.Idle && !isOwner()) {
+        if (data.micStatus == MicStatus.Idle && !roomKitBean.isOwner) {
             CommonSheetAlertDialog()
                 .contentText(activity.getString(R.string.chatroom_request_speak))
                 .rightText(activity.getString(R.string.chatroom_confirm))
                 .leftText(activity.getString(R.string.chatroom_cancel))
                 .setOnClickListener(object : CommonSheetAlertDialog.OnClickBottomListener {
                     override fun onConfirmClick() {
-                        roomAudioViewModel.submitMic(activity, roomId, position)
+                        roomAudioViewModel.submitMic(activity, roomKitBean.roomId, position)
                     }
 
                     override fun onCancelClick() {
@@ -130,7 +110,7 @@ class Room2DMicViewDelegate constructor(
 
                 })
                 .show(activity.supportFragmentManager, "CommonSheetAlertDialog")
-        } else if (isOwner() || isMicInfo(data)) { // 房主或者自己
+        } else if (roomKitBean.isOwner || isMineInfo(data)) { // 房主或者自己
             RoomMicManagerSheetDialog(object : OnItemClickListener<MicManagerBean> {
                 override fun onItemClick(data: MicManagerBean, view: View, position: Int, viewType: Long) {
                     when (data.micClickAction) {
@@ -148,15 +128,15 @@ class Room2DMicViewDelegate constructor(
             }).apply {
                 arguments = Bundle().apply {
                     putSerializable(RoomMicManagerSheetDialog.KEY_MIC_INFO, data)
-                    putSerializable(RoomMicManagerSheetDialog.KEY_IS_OWNER, isOwner())
+                    putSerializable(RoomMicManagerSheetDialog.KEY_IS_OWNER, roomKitBean.isOwner)
                 }
                 theme
             }.show(activity.supportFragmentManager, "RoomMicManagerSheetDialog")
         }
     }
 
-    fun onBotMicClick(data: MicInfoBean, view: View, position: Int, viewType: Long) {
-        if (RtcRoomController.get().botActivated()) {
+    fun onBotMicClick(data: MicInfoBean, isUserBot: Boolean) {
+        if (isUserBot) {
             Toast.makeText(activity, "${data.userInfo?.username}", Toast.LENGTH_SHORT).show()
         } else {
             CommonFragmentAlertDialog()
@@ -166,25 +146,10 @@ class Room2DMicViewDelegate constructor(
                 .rightText(activity.getString(R.string.chatroom_confirm))
                 .setOnClickListener(object : CommonFragmentAlertDialog.OnClickBottomListener {
                     override fun onConfirmClick() {
-                        activeBot()
+                        chatroomViewModel.activeBot(activity, roomKitBean.roomId, true)
                     }
                 })
                 .show(activity.supportFragmentManager, "botActivatedDialog")
         }
-    }
-
-    private fun activeBot(active: Boolean = true) {
-        chatroomViewModel.activeBot(activity, roomId, active)
-        RtcRoomController.get()
-            .activeBot(roomAudioViewModel.getApplication(), active, object : DefaultValueCallBack<Boolean> {
-                override fun onSuccess(isSuccess: Boolean) {
-                    // TODO:
-                    if (isSuccess) {
-                        ToastTools.show(activity, "机器人激活成功")
-                    } else {
-                        ToastTools.show(activity, "机器人激活失败")
-                    }
-                }
-            })
     }
 }

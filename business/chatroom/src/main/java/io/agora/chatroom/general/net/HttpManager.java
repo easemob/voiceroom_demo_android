@@ -252,7 +252,7 @@ public class HttpManager {
             if (announcement != null) requestBody.putOpt("announcement", announcement);
             if (is_private != null) requestBody.putOpt("is_private", is_private);
             if (password != null) requestBody.putOpt("password", password);
-            if (use_robot != null) requestBody.putOpt("use_rebot", use_robot);
+            if (use_robot != null) requestBody.putOpt("use_robot", use_robot);
             if (allowed_free_join_mic != null) requestBody.putOpt("allowed_free_join_mic", allowed_free_join_mic);
         } catch (JSONException e) {
             e.printStackTrace();

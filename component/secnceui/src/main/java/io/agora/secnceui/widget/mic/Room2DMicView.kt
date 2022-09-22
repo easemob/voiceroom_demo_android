@@ -41,7 +41,7 @@ class Room2DMicView : ConstraintLayout {
 
     fun binding(micInfo: MicInfoBean) {
         mBinding.apply {
-            if (micInfo.isBot) { // 机器人
+            if (micInfo.micStatus == MicStatus.BotActivated || micInfo.micStatus == MicStatus.BotInactive) { // 机器人
                 ivMicInnerIcon.isVisible = false
                 ivMicInfo.setBackgroundResource(R.drawable.bg_oval_white)
                 ivMicInfo.setImageResource(
@@ -80,7 +80,7 @@ class Room2DMicView : ConstraintLayout {
                         ViewTools.getDrawableId(ivMicInfo.context, micInfo.userInfo?.userAvatar ?: "")
                     )
                     mtMicUsername.text = micInfo.userInfo?.username ?: ""
-                    if (micInfo.isOwner) {
+                    if (micInfo.ownerTag) {
                         mtMicUsername.setCompoundDrawablesWithIntrinsicBounds(
                             R.drawable.icon_chatroom_mic_owner_tag, 0, 0, 0
                         )

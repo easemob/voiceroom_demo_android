@@ -48,11 +48,11 @@ object RoomSoundSelectionConstructor {
                 )
             ),
             SoundSelectionBean(
-                soundSelection = SoundSelectionType.SoundCardHQ,
+                soundSelection = SoundSelectionType.ProfessionalBroadcaster,
                 index = 2,
                 soundName = context.getString(R.string.chatroom_professional_broadcaster),
                 soundIntroduce = context.getString(R.string.chatroom_professional_broadcaster_introduce),
-                isCurrentUsing = currentSelection == SoundSelectionType.SoundCardHQ,
+                isCurrentUsing = currentSelection == SoundSelectionType.ProfessionalBroadcaster,
                 customer = mutableListOf(
                     CustomerUsageBean("ya", R.drawable.icon_chatroom_ya_launcher),
                     CustomerUsageBean("soul", R.drawable.icon_chatroom_soul_launcher),

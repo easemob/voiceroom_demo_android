@@ -8,6 +8,7 @@ import androidx.core.view.isVisible
 import io.agora.buddy.tool.ViewTools
 import io.agora.secnceui.R
 import io.agora.secnceui.annotation.ChatroomTopType
+import io.agora.secnceui.annotation.SoundSelectionType
 import io.agora.secnceui.bean.RoomInfoBean
 import io.agora.secnceui.constants.ScenesConstant
 import io.agora.secnceui.databinding.ViewChatroomLiveTopBinding
@@ -51,6 +52,12 @@ class ChatroomLiveTopView : ConstraintLayout, View.OnClickListener, IChatroomLiv
             mtChatroomMembers.text = chatroomInfo.memberCount.toString()
             mtChatroomGifts.text = chatroomInfo.giftCount.toString()
             mtChatroomWatch.text = chatroomInfo.watchCount.toString()
+            mtChatroomAgoraSound.text = when (chatroomInfo.soundSelection) {
+                SoundSelectionType.Karaoke -> root.context.getString(R.string.chatroom_karaoke)
+                SoundSelectionType.GamingBuddy -> root.context.getString(R.string.chatroom_gaming_buddy)
+                SoundSelectionType.ProfessionalBroadcaster -> root.context.getString(R.string.chatroom_professional_broadcaster)
+                else -> root.context.getString(R.string.chatroom_social_chat)
+            }
             // 房主头像
             binding.ivChatroomOwner.setImageResource(
                 ViewTools.getDrawableId(

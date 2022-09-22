@@ -79,7 +79,7 @@ class RoomAINSSoundsViewHolder(binding: ItemChatroomAinsAuditionBinding) :
                 mBinding.mtChatroomAinsSubName.isVisible = false
             } else {
                 mBinding.mtChatroomAinsSubName.text = it.soundSubName
-                mBinding.mtChatroomAinsSubName.isVisible = false
+                mBinding.mtChatroomAinsSubName.isVisible = true
             }
             when (it.soundsType) {
                 AINSSoundType.AINS -> {

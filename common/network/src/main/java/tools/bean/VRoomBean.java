@@ -3,6 +3,8 @@ package tools.bean;
 import java.io.Serializable;
 import java.util.List;
 
+import io.agora.config.ConfigConstants;
+
 public class VRoomBean implements Serializable {
    /**
     * total : 14
@@ -60,6 +62,8 @@ public class VRoomBean implements Serializable {
       private boolean is_private;
       private long created_at;
       private int member_count;
+      private boolean use_robot;
+      private String sound_effect;
 
       public String getName() {
          return name;
@@ -132,6 +136,35 @@ public class VRoomBean implements Serializable {
       public void setMember_count(int member_count) {
          this.member_count = member_count;
       }
+
+      public boolean isUse_robot() {
+         return use_robot;
+      }
+
+      public void setUse_robot(boolean use_robot) {
+         this.use_robot = use_robot;
+      }
+
+       public String getSound_effect() {
+           return sound_effect;
+       }
+
+       public void setSound_effect(String sound_effect) {
+           this.sound_effect = sound_effect;
+       }
+
+       public int getSoundSelection() {
+           switch (sound_effect) {
+               case "Karaoke":
+                   return ConfigConstants.Karaoke;
+               case "Gaming Buddy":
+                   return ConfigConstants.Gaming_Buddy;
+               case "Professional bodcaster":
+                   return ConfigConstants.Professional_Broadcaster;
+               default:
+                   return ConfigConstants.Social_Chat;
+           }
+       }
 
       public static class OwnerBean implements Serializable {
          /**

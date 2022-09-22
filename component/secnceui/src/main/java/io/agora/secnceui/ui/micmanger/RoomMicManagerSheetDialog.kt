@@ -108,7 +108,7 @@ class RoomMicManagerSheetDialog constructor(private val onItemClickListener: OnI
                     ViewTools.getDrawableId(ivMicInfo.context, micInfo.userInfo?.userAvatar ?: "")
                 )
                 mtMicUsername.text = micInfo.userInfo?.username ?: ""
-                mtChatroomMicTag.isVisible = micInfo.isOwner
+                mtChatroomMicTag.isVisible = micInfo.ownerTag
                 when (micInfo.micStatus) {
                     MicStatus.Mute,
                     MicStatus.ForceMute -> {

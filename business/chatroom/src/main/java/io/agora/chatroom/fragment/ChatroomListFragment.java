@@ -15,9 +15,6 @@ import java.util.List;
 import io.agora.CallBack;
 import io.agora.ValueCallBack;
 import io.agora.baseui.general.callback.OnResourceParseCallback;
-import io.agora.baseui.general.enums.Status;
-import io.agora.baseui.general.net.Resource;
-import io.agora.baseui.interfaces.IParserSource;
 import io.agora.buddy.tool.ThreadManager;
 import io.agora.chat.ChatClient;
 import io.agora.chat.ChatRoom;
@@ -142,7 +139,6 @@ public class ChatroomListFragment extends BaseChatroomListFragment<VRoomBean.Roo
     private void goChatroomPage(VRoomBean.RoomsBean roomBean) {
         ARouter.getInstance()
                 .build(RouterPath.ChatroomPath)
-                .withInt(RouterParams.KEY_CHATROOM_TYPE, roomBean.getType())
                 .withSerializable(RouterParams.KEY_CHATROOM_INFO, roomBean)
                 .navigation();
     }

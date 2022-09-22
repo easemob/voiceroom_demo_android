@@ -22,9 +22,13 @@ import io.agora.baseui.BaseUiActivity
 import io.agora.baseui.adapter.OnItemClickListener
 import io.agora.baseui.general.callback.OnResourceParseCallback
 import io.agora.baseui.general.net.Resource
+import io.agora.buddy.tool.ToastTools
 import io.agora.buddy.tool.logE
+import io.agora.chatroom.bean.RoomKitBean
 import io.agora.chatroom.controller.RtcRoomController
 import io.agora.chatroom.databinding.ActivityChatroomBinding
+import io.agora.chatroom.general.constructor.RoomInfoConstructor.convertByRoomDetailInfo
+import io.agora.chatroom.general.constructor.RoomInfoConstructor.convertByRoomInfo
 import io.agora.chatroom.general.repositories.ProfileManager
 import io.agora.chatroom.model.ChatroomViewModel
 import io.agora.chatroom.ui.Room2DMicViewDelegate
@@ -62,15 +66,11 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
     private lateinit var audio2DViewDelegate: Room2DMicViewDelegate
     private lateinit var audio3DViewDelegate: Room3DMicViewDelegate
 
-    private val chatroomType by lazy {
-        intent.getIntExtra(RouterParams.KEY_CHATROOM_TYPE, ConfigConstants.Common_Chatroom)
-    }
-
-    private val roomBean: VRoomBean.RoomsBean? by lazy {
-        intent.getSerializableExtra(RouterParams.KEY_CHATROOM_INFO) as VRoomBean.RoomsBean?
-    }
-
+    /**创建房间or房间内请求详情数据*/
     private var roomInfoBean: VRoomInfoBean? = null
+
+    /**房间基础*/
+    private val roomKitBean = RoomKitBean()
 
     override fun getViewBinding(inflater: LayoutInflater): ActivityChatroomBinding {
         return ActivityChatroomBinding.inflate(inflater)
@@ -79,42 +79,55 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         roomViewModel = ViewModelProvider(this)[ChatroomViewModel::class.java]
-        roomTopViewDelegate = RoomTopViewDelegate(this, binding.cTopView)
         initListeners()
-        initView()
         initData()
+        initView()
         requestAudioPermission()
     }
 
     private fun initData() {
-        roomBean?.let {
-            roomViewModel.getDetails(this, it.room_id ?: "")
-            ChatroomMsgHelper.getInstance().init(it.chatroom_id)
+        val roomBean = intent.getSerializableExtra(RouterParams.KEY_CHATROOM_INFO) as VRoomBean.RoomsBean?
+        roomInfoBean = intent.getSerializableExtra(RouterParams.KEY_CHATROOM_DETAILS_INFO) as VRoomInfoBean?
+        if (roomBean == null && roomInfoBean == null) {
+            ToastTools.show(this, "roomInfo is null!")
+            finish()
+        } else if (roomInfoBean != null) {
+            // 详情进入数据全
+            roomInfoBean?.room?.let { roomDetail ->
+                roomKitBean.convertByRoomDetailInfo(roomDetail)
+            }
+        } else {
+            // 房间列表进入，需请求详情
+            roomBean?.let { roomInfo ->
+                roomKitBean.convertByRoomInfo(roomInfo)
+                roomViewModel.getDetails(this, roomKitBean.roomId)
+            }
         }
+        ChatroomMsgHelper.getInstance().init(roomKitBean.chatroomId)
         // 房间详情
         roomViewModel.roomDetailObservable.observe(this) { response: Resource<VRoomInfoBean> ->
             parseResource(response, object : OnResourceParseCallback<VRoomInfoBean>() {
 
                 override fun onSuccess(data: VRoomInfoBean?) {
-                    "roomDetailObservable onSuccess".logE()
                     data?.let { vRoomInfo ->
                         roomInfoBean = vRoomInfo
-                        roomTopViewDelegate.onRoomDetails(vRoomInfo)
-                        if (this@ChatroomLiveActivity::audio2DViewDelegate.isInitialized) {
-                            audio2DViewDelegate.onRoomDetails(vRoomInfo)
+                        vRoomInfo.room?.let {
+                            roomKitBean.convertByRoomDetailInfo(it)
+                            roomTopViewDelegate.onRoomDetails(it)
                         }
-                        if (this@ChatroomLiveActivity::audio3DViewDelegate.isInitialized) {
-                            audio3DViewDelegate.onRoomDetails(vRoomInfo)
+                        vRoomInfo.mic_info?.let { vRoomMIcInfoList ->
+                            if (this@ChatroomLiveActivity::audio2DViewDelegate.isInitialized) {
+                                audio2DViewDelegate.onRoomDetails(vRoomMIcInfoList, RtcRoomController.get().isUseBot)
+                            }
+                            if (this@ChatroomLiveActivity::audio3DViewDelegate.isInitialized) {
+                                audio3DViewDelegate.updateRoomKit(roomKitBean)
+                                audio3DViewDelegate.onRoomDetails(vRoomMIcInfoList)
+                            }
                         }
                     }
                 }
-
-                override fun onError(code: Int, message: String?) {
-                    "roomDetailObservable onError $code,message $message".logE()
-                }
             })
         }
-
     }
 
     private fun initListeners() {
@@ -127,23 +140,24 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
             reset()
             false
         })
-        binding.messageView.setMessageViewListener(object : ChatroomMessagesView.MessageViewListener{
-            override fun onItemClickListener(message: ChatMessageData?) {}
+        binding.messageView.setMessageViewListener(object : ChatroomMessagesView.MessageViewListener {
+            override fun onItemClickListener(message: ChatMessageData?) {
+            }
 
-            override fun onListClickListener() { reset() }
+            override fun onListClickListener() {
+                reset()
+            }
         })
     }
+
     private fun initView() {
-        binding.chatBottom.initMenu(chatroomType)
-        if (chatroomType == ConfigConstants.Common_Chatroom) {
-            binding.likeView.likeView.setOnClickListener(
-                View.OnClickListener { binding.likeView.addFavor() }
-            )
-            roomBean?.let {
-                binding.chatroomGiftView.init(it.chatroom_id ?: "")
-                binding.messageView.init(it.chatroom_id ?: "")
-            }
-            audio2DViewDelegate = Room2DMicViewDelegate(this, binding.rvChatroom2dMicLayout)
+        binding.chatBottom.initMenu(roomKitBean.roomType)
+        roomTopViewDelegate = RoomTopViewDelegate(this, roomKitBean, binding.cTopView)
+        if (roomKitBean.roomType == ConfigConstants.Common_Chatroom) { // 普通房间
+            binding.likeView.likeView.setOnClickListener { binding.likeView.addFavor() }
+            binding.chatroomGiftView.init(roomKitBean.chatroomId)
+            binding.messageView.init(roomKitBean.chatroomId)
+            audio2DViewDelegate = Room2DMicViewDelegate(this, roomKitBean, binding.rvChatroom2dMicLayout)
             binding.rvChatroom2dMicLayout.isVisible = true
             binding.rvChatroom3dMicLayout.isVisible = false
             binding.rvChatroom2dMicLayout.onItemClickListener(
@@ -154,16 +168,18 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
                 },
                 object : OnItemClickListener<MicInfoBean> {
                     override fun onItemClick(data: MicInfoBean, view: View, position: Int, viewType: Long) {
-                        audio2DViewDelegate.onBotMicClick(data, view, position, viewType)
+                        if (roomKitBean.isOwner) {
+                            audio2DViewDelegate.onBotMicClick(data, RtcRoomController.get().isUseBot)
+                        }
                     }
                 }
             ).setUpAdapter(
                 RoomMicConstructor.builderDefault2dMicList(),
-                RoomMicConstructor.builderDefault2dBotMicList(this)
+                RoomMicConstructor.builderDefault2dBotMicList(this, RtcRoomController.get().isUseBot)
             )
-        } else {
+        } else { // 空间音效房间
             binding.likeView.isVisible = false
-            audio3DViewDelegate = Room3DMicViewDelegate(this, binding.rvChatroom3dMicLayout)
+            audio3DViewDelegate = Room3DMicViewDelegate(this, roomKitBean, binding.rvChatroom3dMicLayout)
             binding.rvChatroom2dMicLayout.isVisible = false
             binding.rvChatroom3dMicLayout.isVisible = true
             binding.rvChatroom3dMicLayout.onItemClickListener(
@@ -178,6 +194,10 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
                     }
                 },
             ).setUpMicInfoMap(RoomMicConstructor.builderDefault3dMicMap(this))
+        }
+        // 头部
+        roomInfoBean?.room?.let {
+            roomTopViewDelegate.onRoomDetails(it)
         }
         binding.cTopView.setOnLiveTopClickListener(object : OnLiveTopClickListener {
             override fun onClickBack(view: View) {
@@ -210,7 +230,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
                     R.id.extend_item_eq -> {
                         roomTopViewDelegate.onAudioSettingsDialog(finishBack = {
                             finish()
-                        }, false)
+                        })
                     }
                     R.id.extend_item_mic -> {}
                     R.id.extend_item_hand_up -> {}
@@ -236,21 +256,21 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
 
             override fun onSendMessage(content: String?) {
                 ChatroomMsgHelper.getInstance().sendTxtMsg(content,
-                    ProfileManager.getInstance().profile.name,object : OnMsgCallBack(){
-                    override fun onSuccess(message: ChatMessageData?) {
-                        binding.messageView.refresh()
-                    }
+                    ProfileManager.getInstance().profile.name, object : OnMsgCallBack() {
+                        override fun onSuccess(message: ChatMessageData?) {
+                            binding.messageView.refresh()
+                        }
 
-                    override fun onError(messageId: String?, code: Int, error: String?) {
+                        override fun onError(messageId: String?, code: Int, error: String?) {
 
-                    }
-                })
+                        }
+                    })
             }
         })
         ChatroomConfigManager.getInstance().setChatRoomListener(this)
     }
 
-    private fun hideKeyboard(){
+    private fun hideKeyboard() {
         val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
         if (window.attributes.softInputMode != WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN) {
             if (currentFocus != null) {
@@ -271,9 +291,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
 
     override fun finish() {
         RtcRoomController.get().destroy()
-        roomBean?.room_id?.let {
-            roomViewModel.leaveRoom(this, it)
-        }
+        roomViewModel.leaveRoom(this, roomKitBean.roomId)
         super.finish()
     }
 
@@ -289,9 +307,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
     }
 
     private fun onPermissionGrant() {
-        roomBean?.let {
-            roomViewModel.initSdkJoin(it)
-        }
+        roomViewModel.initSdkJoin(roomKitBean)
     }
 
     override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>) {
@@ -314,7 +330,8 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
         "onRationaleDenied requestCode$requestCode ".logE()
     }
 
-    private fun reset(){
+
+    private fun reset() {
         binding.clMain.isFocusable = true
         binding.chatBottom.hideExpressionView()
         binding.chatBottom.showInput()
@@ -327,16 +344,16 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
 
     private fun showGiftDialog() {
         supportFragmentManager.findFragmentByTag("live_gift").apply {
-             if (dialog == null){
-                 dialog = GiftBottomDialog.getNewInstance()
-             }
+            if (dialog == null) {
+                dialog = GiftBottomDialog.getNewInstance()
+            }
             dialog!!.show(supportFragmentManager, "live_gift")
             dialog!!.setOnConfirmClickListener { view, bean ->
                 val giftBean: GiftBean = bean as GiftBean
 
                 ChatroomMsgHelper.getInstance().sendGiftMsg(
-                    ProfileManager.getInstance().profile.name,ProfileManager.getInstance().profile.portrait,
-                    giftBean.id, giftBean.num,giftBean.price,giftBean.name, object : OnMsgCallBack() {
+                    ProfileManager.getInstance().profile.name, ProfileManager.getInstance().profile.portrait,
+                    giftBean.id, giftBean.num, giftBean.price, giftBean.name, object : OnMsgCallBack() {
                         override fun onSuccess(message: ChatMessageData?) {
                             binding.chatroomGiftView.refresh()
                             if (view is TextView) {

@@ -1,6 +1,7 @@
 package io.agora.secnceui.annotation
 
 import androidx.annotation.IntDef
+import io.agora.config.ConfigConstants
 
 /**
  * 降噪开启/关闭
@@ -10,12 +11,12 @@ import androidx.annotation.IntDef
 annotation class AINSSoundType {
     companion object {
         // 有降噪试听
-        const val AINS = 0
+        const val AINS = ConfigConstants.ANIS_ON
 
         // 无降噪试听
-        const val None = 1
+        const val None = ConfigConstants.ANIS_None
 
         // 默认，没有试听
-        const val Unknown = -1
+        const val Unknown = ConfigConstants.ANIS_Unknown
     }
 }

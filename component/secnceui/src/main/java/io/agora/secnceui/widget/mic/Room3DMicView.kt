@@ -81,7 +81,7 @@ class Room3DMicView : ConstraintLayout {
                     ViewTools.getDrawableId(ivMicInfo.context, micInfo.userInfo?.userAvatar ?: "")
                 )
                 mtMicUsername.text = micInfo.userInfo?.username ?: ""
-                if (micInfo.isOwner) {
+                if (micInfo.ownerTag) {
                     mtMicUsername.setCompoundDrawablesWithIntrinsicBounds(
                         R.drawable.icon_chatroom_mic_owner_tag, 0, 0, 0
                     )

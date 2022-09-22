@@ -11,8 +11,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import io.agora.baseui.interfaces.IParserSource;
 
-public abstract class BaseInitFragment extends Fragment {
+
+public abstract class BaseInitFragment extends Fragment implements IParserSource {
 
     @Nullable
     @Override

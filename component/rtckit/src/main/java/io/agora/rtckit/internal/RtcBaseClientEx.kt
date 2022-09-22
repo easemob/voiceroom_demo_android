@@ -81,7 +81,6 @@ internal abstract class RtcBaseClientEx<T> {
         return engine as RtcBaseSpatialAudioEngine<T>?
     }
 
-
     open fun destroy() {
         this.rtcEngine = null
         engineMap.forEach {

@@ -3,7 +3,6 @@ package io.agora.secnceui.ui.ainoise
 import android.content.Context
 import io.agora.secnceui.R
 import io.agora.secnceui.annotation.AINSModeType
-import io.agora.secnceui.annotation.AINSUser
 import io.agora.secnceui.bean.AINSModeBean
 import io.agora.secnceui.bean.AINSSoundsBean
 
@@ -14,9 +13,9 @@ object RoomAINSConstructor {
      */
     fun builderDefaultAINSList(context: Context, @AINSModeType anisMode: Int): MutableList<AINSModeBean> {
         return mutableListOf(
-            AINSModeBean(context.getString(R.string.chatroom_your_ains), AINSUser.Yours, anisMode),
-            AINSModeBean(context.getString(R.string.chatroom_agora_blue_bot_ains), AINSUser.BlueBot),
-            AINSModeBean(context.getString(R.string.chatroom_agora_red_bot_ains), AINSUser.RedBot)
+            AINSModeBean(context.getString(R.string.chatroom_your_ains), anisMode),
+//            AINSModeBean(context.getString(R.string.chatroom_agora_blue_bot_ains), AINSUser.BlueBot),
+//            AINSModeBean(context.getString(R.string.chatroom_agora_red_bot_ains), AINSUser.RedBot)
         )
     }
 

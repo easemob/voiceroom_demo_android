@@ -23,6 +23,10 @@ open class RtcKitListenerImpl : IRtcKitListener {
     override fun onAudioStatus(audioChangeStatus: RtcAudioChangeStatus) {
     }
 
+    override fun onAudioEffectFinished(soundId: Int) {
+
+    }
+
     override fun onError(rtcErrorStatus: RtcErrorStatus) {
     }
 

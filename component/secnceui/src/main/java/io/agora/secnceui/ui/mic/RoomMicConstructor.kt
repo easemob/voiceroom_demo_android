@@ -20,11 +20,10 @@ object RoomMicConstructor {
         )
     }
 
-    fun builderDefault2dBotMicList(context: Context): MutableList<BotMicInfoBean> {
+    fun builderDefault2dBotMicList(context: Context, isUserBot: Boolean = false): MutableList<BotMicInfoBean> {
         val blueBot = MicInfoBean(
             index = 6,
-            micStatus = MicStatus.BotInactive,
-            isBot = true,
+            micStatus = if (isUserBot) MicStatus.BotActivated else MicStatus.BotInactive,
             audioVolume = AudioVolumeStatus.None,
             userInfo = RoomUserInfoBean().apply {
                 username = context.getString(R.string.chatroom_agora_blue)
@@ -33,8 +32,7 @@ object RoomMicConstructor {
         )
         val redBot = MicInfoBean(
             index = 7,
-            micStatus = MicStatus.BotInactive,
-            isBot = true,
+            micStatus = if (isUserBot) MicStatus.BotActivated else MicStatus.BotInactive,
             audioVolume = AudioVolumeStatus.None,
             userInfo = RoomUserInfoBean().apply {
                 username = context.getString(R.string.chatroom_agora_red)
@@ -44,15 +42,14 @@ object RoomMicConstructor {
         return mutableListOf(BotMicInfoBean(blueBot, redBot))
     }
 
-    fun builderDefault3dMicMap(context: Context): MutableMap<String, MicInfoBean> {
+    fun builderDefault3dMicMap(context: Context, isUserBot: Boolean = false): MutableMap<String, MicInfoBean> {
 
         return mutableMapOf(
             ScenesConstant.KeyMic0 to MicInfoBean(index = 0),
             ScenesConstant.KeyMic1 to MicInfoBean(index = 1),
             ScenesConstant.KeyMicBlue to MicInfoBean(
                 index = 2,
-                micStatus = MicStatus.BotInactive,
-                isBot = true,
+                micStatus = if (isUserBot) MicStatus.BotActivated else MicStatus.BotInactive,
                 audioVolume = AudioVolumeStatus.None,
                 userInfo = RoomUserInfoBean().apply {
                     username = context.getString(R.string.chatroom_agora_blue)
@@ -63,8 +60,7 @@ object RoomMicConstructor {
             ScenesConstant.KeyMic4 to MicInfoBean(index = 4),
             ScenesConstant.KeyMicRed to MicInfoBean(
                 index = 5,
-                micStatus = MicStatus.BotInactive,
-                isBot = true,
+                micStatus = if (isUserBot) MicStatus.BotActivated else MicStatus.BotInactive,
                 audioVolume = AudioVolumeStatus.None,
                 userInfo = RoomUserInfoBean().apply {
                     username = context.getString(R.string.chatroom_agora_red)

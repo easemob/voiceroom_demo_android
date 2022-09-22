@@ -47,6 +47,7 @@ dependencies {
     api dep["glide"]
 
     compileOnly project(':common:buddy')
+    compileOnly project(':common:config')
     compileOnly project(':common:baseui')
     compileOnly project(':component:imkit')
 }

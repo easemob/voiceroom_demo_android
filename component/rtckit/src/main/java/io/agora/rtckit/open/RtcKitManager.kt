@@ -45,6 +45,10 @@ class RtcKitManager {
                         rtcKitListener.onAudioStatus(audioChangeStatus)
                     }
 
+                    override fun onAudioEffectFinished(soundId: Int) {
+                        rtcKitListener.onAudioEffectFinished(soundId)
+                    }
+
                     override fun onError(rtcErrorStatus: RtcErrorStatus) {
                         rtcKitListener.onError(rtcErrorStatus)
                     }
@@ -64,6 +68,10 @@ class RtcKitManager {
 
     fun leaveChannel() {
         middleService?.leaveChannel()
+    }
+
+    fun getEffect(){
+
     }
 
     fun operateAudio(audioEvent: RtcAudioEvent) {
