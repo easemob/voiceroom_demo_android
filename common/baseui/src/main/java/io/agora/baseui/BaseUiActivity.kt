@@ -13,9 +13,10 @@ import androidx.viewbinding.ViewBinding
 import io.agora.baseui.general.callback.OnResourceParseCallback
 import io.agora.baseui.general.enums.Status
 import io.agora.baseui.general.net.Resource
+import io.agora.baseui.interfaces.IParserSource
 import io.agora.buddy.tool.logE
 
-abstract class BaseUiActivity<B : ViewBinding> : AppCompatActivity() {
+abstract class BaseUiActivity<B : ViewBinding> : AppCompatActivity(), IParserSource {
     lateinit var binding: B
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,29 +45,5 @@ abstract class BaseUiActivity<B : ViewBinding> : AppCompatActivity() {
         owner: ViewModelStoreOwner
     ): T {
         return ViewModelProvider(owner, factory)[viewModelClass]
-    }
-
-    /**
-     * Parse Resource<T>
-     * @param response
-     * @param callback
-     * @param <T>
-    </T></T> */
-    fun <T> parseResource(response: Resource<T>?, callback: OnResourceParseCallback<T>) {
-        if (response == null) {
-            return
-        }
-        if (response.status === Status.SUCCESS) {
-            callback.onHideLoading()
-            callback.onSuccess(response.data)
-        } else if (response.status === Status.ERROR) {
-            callback.onHideLoading()
-            if (!callback.hideErrorMsg) {
-                Log.e("parseResource ", response.message)
-            }
-            callback.onError(response.errorCode, response.message)
-        } else if (response.status === Status.LOADING) {
-            callback.onLoading(response.data)
-        }
     }
 }

@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import io.agora.baseui.adapter.OnItemClickListener
+import io.agora.buddy.tool.logE
 import io.agora.chatroom.general.repositories.ProfileManager
 import io.agora.chatroom.model.RoomMicViewModel
 import io.agora.secnceui.R
@@ -26,6 +27,10 @@ class Room3DMicViewDelegate constructor(
     private val room3dMicView: IRoom3DMicView
 ) {
 
+    companion object {
+        private const val TAG = "Room2DMicViewDelegate"
+    }
+
     private val roomAudioViewModel: RoomMicViewModel by lazy {
         ViewModelProvider(activity)[RoomMicViewModel::class.java]
     }
@@ -42,7 +47,9 @@ class Room3DMicViewDelegate constructor(
 
     private fun isOwner(): Boolean {
         val currentUid = ProfileManager.getInstance().profile?.uid
-        return !currentUid.isNullOrEmpty() && TextUtils.equals(currentUid, vRoomBean?.room?.owner?.uid)
+        val ownerUid = vRoomBean?.room?.owner?.uid
+        "currentUid：$currentUid ownerUid:$ownerUid".logE(TAG)
+        return !currentUid.isNullOrEmpty() && TextUtils.equals(currentUid, ownerUid)
     }
 
     fun onUserMicClick(data: MicInfoBean, view: View, position: Int, viewType: Long) {

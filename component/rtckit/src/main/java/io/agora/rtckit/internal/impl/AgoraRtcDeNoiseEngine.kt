@@ -9,29 +9,40 @@ import io.agora.rtckit.internal.base.RtcBaseDeNoiseEngine
  * AI 降噪管理
  */
 internal class AgoraRtcDeNoiseEngine : RtcBaseDeNoiseEngine<RtcEngineEx>() {
-    override fun startAudioMixing(
-        filePath: String,
-        loopBack: Boolean,
-        replace: Boolean,
-        loopCount: Int,
-        startPosition: Int
-    ): Boolean {
+
+    override fun closeDeNoise(): Boolean {
+        engine?.apply {
+            setParameters("{\"che.audio.anis_mode\":0}")
+            setParameters("{\"che.audio.nsng.lowerBound\":80}")
+            setParameters("{\"che.audio.nsng.lowerMask\":50}")
+            setParameters("{\"che.audio.nsng.statisticalbound\":5}")
+            setParameters("{\"che.audio.nsng.finallowermask\":30}")
+            setParameters("{\"che.audio.nsng.enhfactorstastical\":200}")
+        }
         return true
     }
 
-    override fun stopAudioMixing(): Boolean {
+    override fun openMediumDeNoise(): Boolean {
+        engine?.apply {
+            setParameters("{\"che.audio.anis_mode\":2}")
+            setParameters("{\"che.audio.nsng.lowerBound\":80}")
+            setParameters("{\"che.audio.nsng.lowerMask\":50}")
+            setParameters("{\"che.audio.nsng.statisticalbound\":5}")
+            setParameters("{\"che.audio.nsng.finallowermask\":30}")
+            setParameters("{\"che.audio.nsng.enhfactorstastical\":200}")
+        }
         return true
     }
 
-    override fun pauseAudioMixing(): Boolean {
-        return true
-    }
-
-    override fun resumeAudioMixing(): Boolean {
-        return true
-    }
-
-    override fun setAudioMixingPosition(position: Int): Boolean {
+    override fun openHeightDeNoise(): Boolean {
+        engine?.apply {
+            setParameters("{\"che.audio.anis_mode\":2}")
+            setParameters("{\"che.audio.nsng.lowerBound\":10}")
+            setParameters("{\"che.audio.nsng.lowerMask\":10}")
+            setParameters("{\"che.audio.nsng.statisticalbound\":0}")
+            setParameters("{\"che.audio.nsng.finallowermask\":8}")
+            setParameters("{\"che.audio.nsng.enhfactorstastical\":200}")
+        }
         return true
     }
 }

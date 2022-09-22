@@ -62,7 +62,6 @@ class Room2DMicLayout : ConstraintLayout, IRoom2DMicView {
                     override fun onItemChildClick(
                         data: BotMicInfoBean?, extData: Any?, view: View, position: Int, itemViewType: Long
                     ) {
-                        super.onItemChildClick(data, extData, view, position, itemViewType)
                         if (extData is MicInfoBean) {
                             onBotMicClickListener?.onItemClick(extData, view, position, itemViewType)
                         }
@@ -92,8 +91,12 @@ class Room2DMicLayout : ConstraintLayout, IRoom2DMicView {
         }
     }
 
-    override fun updateAdapter(micInfoList: List<MicInfoBean>, botMicList: List<BotMicInfoBean>) {
+    override fun updateAdapter(micInfoList: List<MicInfoBean>, isBotActive:Boolean) {
         room2DMicAdapter?.submitListAndPurge(micInfoList)
-        room2DMicBotAdapter?.submitListAndPurge(botMicList)
+        room2DMicBotAdapter?.activeBot(isBotActive)
+    }
+
+    override fun activeBot(active: Boolean) {
+        room2DMicBotAdapter?.activeBot(active)
     }
 }

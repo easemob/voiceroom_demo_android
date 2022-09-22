@@ -168,6 +168,11 @@ public class VRoomBean implements Serializable {
             this.portrait = portrait;
          }
       }
+
+      public String getOwnerUid(){
+         if (owner==null) return null;
+         return owner.getUid();
+      }
    }
 
 }

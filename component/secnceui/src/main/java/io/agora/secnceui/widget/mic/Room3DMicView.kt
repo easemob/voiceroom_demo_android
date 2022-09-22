@@ -9,7 +9,6 @@ import androidx.core.view.isVisible
 import io.agora.buddy.tool.ViewTools
 import io.agora.secnceui.R
 import io.agora.secnceui.annotation.MicStatus
-import io.agora.secnceui.annotation.UserRole
 import io.agora.secnceui.annotation.AudioVolumeStatus
 import io.agora.secnceui.bean.MicInfoBean
 import io.agora.secnceui.databinding.ViewChatroom3dMicBinding
@@ -57,72 +56,47 @@ class Room3DMicView : ConstraintLayout {
 
     fun binding(micInfo: MicInfoBean) {
         mBinding.apply {
-            when (micInfo.micStatus) {
-                MicStatus.ForceMute -> {
-                    ivMicInnerIcon.isVisible = true
-                    ivMicInnerIcon.setImageResource(R.drawable.icon_chatroom_mic_mute)
-                    ivMicTag.isVisible = false
-                    mtMicUsername.apply {
-                        text = micInfo.index.toString()
-                        setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
+            if (micInfo.userInfo == null) { // 没人
+                ivMicInnerIcon.isVisible = true
+                mtMicUsername.text = micInfo.index.toString()
+                mtMicUsername.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
+                when (micInfo.micStatus) {
+                    MicStatus.ForceMute -> {
+                        ivMicTag.isVisible = false
+                        ivMicInnerIcon.setImageResource(R.drawable.icon_chatroom_mic_mute)
+                    }
+                    MicStatus.CloseForceMute -> {
+                        ivMicInnerIcon.setImageResource(R.drawable.icon_chatroom_mic_close)
+                        ivMicTag.isVisible = true
+                        ivMicTag.setImageResource(R.drawable.icon_chatroom_mic_mute_tag)
+                    }
+                    else -> {
+                        ivMicTag.isVisible = false
+                        ivMicInnerIcon.setImageResource(R.drawable.icon_chatroom_mic_add)
                     }
                 }
-                MicStatus.Lock -> {
-                    ivMicInnerIcon.isVisible = true
-                    ivMicInnerIcon.setImageResource(R.drawable.icon_chatroom_mic_close)
-                    ivMicTag.isVisible = false
-                    mtMicUsername.apply {
-                        text = micInfo.index.toString()
-                        setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
-                    }
-                }
-                MicStatus.LockForceMute -> {
-                    ivMicInnerIcon.isVisible = true
-                    ivMicInnerIcon.setImageResource(R.drawable.icon_chatroom_mic_close)
-                    ivMicTag.isVisible = true
-                    ivMicTag.setImageResource(R.drawable.icon_chatroom_mic_mute_tag)
-                    mtMicUsername.apply {
-                        text = micInfo.index.toString()
-                        setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
-                    }
-                }
-                MicStatus.UserNormal -> {
-                    ivMicInnerIcon.isVisible = false
-                    mtMicUsername.text = micInfo.userInfo?.username ?: ""
-                    ivMicInfo.setImageResource(
-                        ViewTools.getDrawableId(ivMicInfo.context, micInfo.userInfo?.userAvatar ?: "")
+            } else { // 有人
+                ivMicInnerIcon.isVisible = false
+                ivMicInfo.setImageResource(
+                    ViewTools.getDrawableId(ivMicInfo.context, micInfo.userInfo?.userAvatar ?: "")
+                )
+                mtMicUsername.text = micInfo.userInfo?.username ?: ""
+                if (micInfo.isOwner) {
+                    mtMicUsername.setCompoundDrawablesWithIntrinsicBounds(
+                        R.drawable.icon_chatroom_mic_owner_tag, 0, 0, 0
                     )
-                    ivMicTag.isVisible = false
-                    if (micInfo.userInfo?.userRole == UserRole.Owner) {
-                        mtMicUsername.setCompoundDrawablesWithIntrinsicBounds(
-                            R.drawable.icon_chatroom_mic_owner_tag, 0, 0, 0
-                        )
-                    } else {
-                        mtMicUsername.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
-                    }
-
+                } else {
+                    mtMicUsername.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
                 }
-                MicStatus.UserForceMute -> {
-                    ivMicInnerIcon.isVisible = false
-                    mtMicUsername.text = micInfo.userInfo?.username ?: ""
-                    ivMicInfo.setImageResource(
-                        ViewTools.getDrawableId(ivMicInfo.context, micInfo.userInfo?.userAvatar ?: "")
-                    )
-                    ivMicTag.isVisible = true
-                    ivMicTag.setImageResource(R.drawable.icon_chatroom_mic_mute_tag)
-                    if (micInfo.userInfo?.userRole == UserRole.Owner) {
-                        mtMicUsername.setCompoundDrawablesWithIntrinsicBounds(
-                            R.drawable.icon_chatroom_mic_owner_tag, 0, 0, 0
-                        )
-                    } else {
-                        mtMicUsername.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
+                when (micInfo.micStatus) {
+                    MicStatus.Mute,
+                    MicStatus.ForceMute -> {
+                        ivMicTag.isVisible = true
+                        ivMicTag.setImageResource(R.drawable.icon_chatroom_mic_mute_tag)
                     }
-                }
-                else -> {
-                    ivMicInnerIcon.isVisible = true
-                    ivMicInnerIcon.setImageResource(R.drawable.icon_chatroom_mic_add)
-                    ivMicTag.isVisible = false
-                    mtMicUsername.text = micInfo.index.toString()
+                    else -> {
+                        ivMicTag.isVisible = false
+                    }
                 }
             }
             // 用户音量
@@ -152,7 +126,6 @@ class Room3DMicView : ConstraintLayout {
 
                 }
             }
-
 
         }
     }

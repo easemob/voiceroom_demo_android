@@ -45,9 +45,25 @@ class RtcMiddleServiceImpl constructor(
     }
 
     override fun onSoundEffectEvent(soundEffect: RtcSoundEffectEvent) {
+        rtcClient.getSoundEffectEngine()?.apply {
+            when (soundEffect) {
+                is RtcSoundEffectEvent.PlayEffectEvent -> playEffect(
+                    soundEffect.soundId, soundEffect.filePath, soundEffect.loopCount, soundEffect.publish
+                )
+                is RtcSoundEffectEvent.StopEffectEvent -> stopEffect(soundEffect.soundId)
+            }
+        }
     }
 
-    override fun onDeNoiseEvent(rtcDeNoiseEvent: RtcDeNoiseEvent) {
+    override fun onDeNoiseEvent(deNoiseEvent: RtcDeNoiseEvent, callback: IRtcValueCallback<Boolean>?) {
+        rtcClient.getDeNoiseEngine()?.apply {
+            val result = when (deNoiseEvent) {
+                is RtcDeNoiseEvent.CloseEvent -> closeDeNoise()
+                is RtcDeNoiseEvent.MediumEvent -> openMediumDeNoise()
+                is RtcDeNoiseEvent.HeightEvent -> openHeightDeNoise()
+            }
+            callback?.onSuccess(result)
+        }
     }
 
     override fun onSpatialAudioEvent(spatialAudioEvent: RtcSpatialAudioEvent) {

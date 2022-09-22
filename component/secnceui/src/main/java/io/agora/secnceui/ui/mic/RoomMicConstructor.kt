@@ -23,8 +23,8 @@ object RoomMicConstructor {
     fun builderDefault2dBotMicList(context: Context): MutableList<BotMicInfoBean> {
         val blueBot = MicInfoBean(
             index = 6,
-            micStatus = MicStatus.Inactive,
-            userRole = UserRole.Robot,
+            micStatus = MicStatus.BotInactive,
+            isBot = true,
             audioVolume = AudioVolumeStatus.None,
             userInfo = RoomUserInfoBean().apply {
                 username = context.getString(R.string.chatroom_agora_blue)
@@ -33,8 +33,8 @@ object RoomMicConstructor {
         )
         val redBot = MicInfoBean(
             index = 7,
-            micStatus = MicStatus.Inactive,
-            userRole = UserRole.Robot,
+            micStatus = MicStatus.BotInactive,
+            isBot = true,
             audioVolume = AudioVolumeStatus.None,
             userInfo = RoomUserInfoBean().apply {
                 username = context.getString(R.string.chatroom_agora_red)
@@ -51,8 +51,8 @@ object RoomMicConstructor {
             ScenesConstant.KeyMic1 to MicInfoBean(index = 1),
             ScenesConstant.KeyMicBlue to MicInfoBean(
                 index = 2,
-                micStatus = MicStatus.Inactive,
-                userRole = UserRole.Robot,
+                micStatus = MicStatus.BotInactive,
+                isBot = true,
                 audioVolume = AudioVolumeStatus.None,
                 userInfo = RoomUserInfoBean().apply {
                     username = context.getString(R.string.chatroom_agora_blue)
@@ -63,8 +63,8 @@ object RoomMicConstructor {
             ScenesConstant.KeyMic4 to MicInfoBean(index = 4),
             ScenesConstant.KeyMicRed to MicInfoBean(
                 index = 5,
-                micStatus = MicStatus.Inactive,
-                userRole = UserRole.Robot,
+                micStatus = MicStatus.BotInactive,
+                isBot = true,
                 audioVolume = AudioVolumeStatus.None,
                 userInfo = RoomUserInfoBean().apply {
                     username = context.getString(R.string.chatroom_agora_red)
@@ -78,7 +78,9 @@ object RoomMicConstructor {
     /**
      * 房主点击麦位管理
      */
-    fun builderOwnerMicMangerList(context: Context, micInfo: MicInfoBean): MutableList<MicManagerBean> {
+    fun builderOwnerMicMangerList(
+        context: Context, micInfo: MicInfoBean, isMyself: Boolean
+    ): MutableList<MicManagerBean> {
         return when (micInfo.micStatus) {
             // 空置-开放
             MicStatus.Idle -> {
@@ -88,16 +90,24 @@ object RoomMicConstructor {
                     MicManagerBean(context.getString(R.string.chatroom_block), true, MicClickAction.Block)
                 )
             }
-            // 空置-座位禁⻨
+            // 座位禁⻨:有人、没人
             MicStatus.ForceMute -> {
-                mutableListOf(
-                    MicManagerBean(context.getString(R.string.chatroom_invite), true, MicClickAction.Invite),
-                    MicManagerBean(context.getString(R.string.chatroom_unmute), true, MicClickAction.Mute),
-                    MicManagerBean(context.getString(R.string.chatroom_block), true, MicClickAction.Block)
-                )
+                if (micInfo.userInfo == null) {
+                    mutableListOf(
+                        MicManagerBean(context.getString(R.string.chatroom_invite), true, MicClickAction.Invite),
+                        MicManagerBean(context.getString(R.string.chatroom_unmute), true, MicClickAction.Mute),
+                        MicManagerBean(context.getString(R.string.chatroom_block), true, MicClickAction.Block)
+                    )
+                } else {
+                    mutableListOf(
+                        MicManagerBean(context.getString(R.string.chatroom_kickoff), true, MicClickAction.KickOff),
+                        MicManagerBean(context.getString(R.string.chatroom_unmute), true, MicClickAction.Mute),
+                        MicManagerBean(context.getString(R.string.chatroom_block), true, MicClickAction.Block)
+                    )
+                }
             }
             // 空置-座位关闭
-            MicStatus.Lock -> {
+            MicStatus.Close -> {
                 mutableListOf(
                     MicManagerBean(context.getString(R.string.chatroom_invite), false, MicClickAction.Invite),
                     MicManagerBean(context.getString(R.string.chatroom_mute), true, MicClickAction.Mute),
@@ -105,16 +115,16 @@ object RoomMicConstructor {
                 )
             }
             // 空置-座位禁⻨&座位关闭
-            MicStatus.LockForceMute -> {
+            MicStatus.CloseForceMute -> {
                 mutableListOf(
                     MicManagerBean(context.getString(R.string.chatroom_invite), false, MicClickAction.Invite),
                     MicManagerBean(context.getString(R.string.chatroom_unmute), true, MicClickAction.Mute),
                     MicManagerBean(context.getString(R.string.chatroom_unblock), true, MicClickAction.UnBlock)
                 )
             }
-            // 有⼈-正常
-            MicStatus.UserNormal -> {
-                if (micInfo.userRole == UserRole.Owner) {
+            // 正常
+            MicStatus.Normal -> {
+                if (isMyself) {
                     mutableListOf(
                         MicManagerBean(context.getString(R.string.chatroom_mute), true, MicClickAction.Mute)
                     )
@@ -126,11 +136,11 @@ object RoomMicConstructor {
                     )
                 }
             }
-            // 有⼈-禁麦
-            MicStatus.UserForceMute -> {
-                if (micInfo.userRole == UserRole.Owner) {
+            // 禁麦
+            MicStatus.Mute -> {
+                if (isMyself) {
                     mutableListOf(
-                        MicManagerBean(context.getString(R.string.chatroom_mute), true, MicClickAction.Mute)
+                        MicManagerBean(context.getString(R.string.chatroom_unmute), true, MicClickAction.UnMute)
                     )
                 } else {
                     mutableListOf(
@@ -151,21 +161,21 @@ object RoomMicConstructor {
     fun builderGuestMicMangerList(context: Context, micInfo: MicInfoBean): MutableList<MicManagerBean> {
         return when (micInfo.micStatus) {
             // 有⼈-正常
-            MicStatus.UserNormal -> {
+            MicStatus.Normal -> {
                 mutableListOf(
                     MicManagerBean(context.getString(R.string.chatroom_mute), true, MicClickAction.Mute),
                     MicManagerBean(context.getString(R.string.chatroom_off_stage), true, MicClickAction.OffStage)
                 )
             }
             // 有⼈-禁麦
-            MicStatus.UserForceMute -> {
+            MicStatus.ForceMute -> {
                 // 被房主强制静音
                 mutableListOf(
-                    MicManagerBean(context.getString(R.string.chatroom_unmute), true, MicClickAction.Mute),
+                    MicManagerBean(context.getString(R.string.chatroom_unmute), false, MicClickAction.Mute),
                     MicManagerBean(context.getString(R.string.chatroom_off_stage), true, MicClickAction.OffStage)
                 )
             }
-            else ->{
+            else -> {
                 mutableListOf(
                     MicManagerBean(context.getString(R.string.chatroom_unmute), true, MicClickAction.Mute),
                     MicManagerBean(context.getString(R.string.chatroom_off_stage), true, MicClickAction.OffStage)

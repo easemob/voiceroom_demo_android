@@ -22,9 +22,10 @@ import androidx.core.content.ContextCompat;
 import io.agora.baseui.general.callback.OnResourceParseCallback;
 import io.agora.baseui.general.enums.Status;
 import io.agora.baseui.general.net.Resource;
+import io.agora.baseui.interfaces.IParserSource;
 import io.agora.baseui.utils.StatusBarCompat;
 
-public class BaseActivity extends AppCompatActivity {
+public class BaseActivity extends AppCompatActivity implements IParserSource {
     public BaseActivity mContext;
 
     @Override
@@ -196,29 +197,29 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * Parse Resource<T>
-     * @param response
-     * @param callback
-     * @param <T>
-     */
-    public <T> void parseResource(Resource<T> response, @NonNull OnResourceParseCallback<T> callback) {
-        if(response == null) {
-            return;
-        }
-        if(response.status == Status.SUCCESS) {
-            callback.onHideLoading();
-            callback.onSuccess(response.data);
-        }else if(response.status == Status.ERROR) {
-            callback.onHideLoading();
-            if(!callback.hideErrorMsg) {
-                Log.e("parseResource ",response.getMessage());
-            }
-            callback.onError(response.errorCode, response.getMessage());
-        }else if(response.status == Status.LOADING) {
-            callback.onLoading(response.data);
-        }
-    }
+//    /**
+//     * Parse Resource<T>
+//     * @param response
+//     * @param callback
+//     * @param <T>
+//     */
+//    public <T> void parseResource(Resource<T> response, @NonNull OnResourceParseCallback<T> callback) {
+//        if(response == null) {
+//            return;
+//        }
+//        if(response.status == Status.SUCCESS) {
+//            callback.onHideLoading();
+//            callback.onSuccess(response.data);
+//        }else if(response.status == Status.ERROR) {
+//            callback.onHideLoading();
+//            if(!callback.hideErrorMsg) {
+//                Log.e("parseResource ",response.getMessage());
+//            }
+//            callback.onError(response.errorCode, response.getMessage());
+//        }else if(response.status == Status.LOADING) {
+//            callback.onLoading(response.data);
+//        }
+//    }
 
     /**
      * dip to px

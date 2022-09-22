@@ -2,12 +2,12 @@ package io.agora.chatroom.model;
 
 import android.app.Application;
 import android.content.Context;
+import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
-import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import io.agora.ValueCallBack;
@@ -16,7 +16,6 @@ import io.agora.buddy.tool.LogToolsKt;
 import io.agora.chat.ChatClient;
 import io.agora.chat.ChatRoom;
 import io.agora.chatroom.controller.RtcRoomController;
-import io.agora.chatroom.general.constructor.RoomInfoConstructor;
 import io.agora.chatroom.general.livedatas.SingleSourceLiveData;
 import io.agora.chatroom.general.repositories.ChatroomRepository;
 import io.agora.chatroom.general.repositories.ProfileManager;
@@ -34,6 +33,8 @@ public class ChatroomViewModel extends AndroidViewModel {
     private SingleSourceLiveData<Resource<VRoomInfoBean>> roomDetailsObservable;
     private SingleSourceLiveData<Resource<VRoomInfoBean>> createObservable;
     private SingleSourceLiveData<Resource<Boolean>> leaveObservable;
+    private SingleSourceLiveData<Resource<Boolean>> openBotObservable;
+    private SingleSourceLiveData<Resource<Boolean>> closeBotObservable;
     private final AtomicBoolean joinRtcChannel = new AtomicBoolean(false);
     private final AtomicBoolean joinImRoom = new AtomicBoolean(false);
 
@@ -45,6 +46,8 @@ public class ChatroomViewModel extends AndroidViewModel {
         roomDetailsObservable = new SingleSourceLiveData<>();
         createObservable = new SingleSourceLiveData<>();
         leaveObservable = new SingleSourceLiveData<>();
+        openBotObservable = new SingleSourceLiveData<>();
+        closeBotObservable = new SingleSourceLiveData<>();
     }
 
     public LiveData<Resource<VRoomBean>> getRoomObservable() {
@@ -67,8 +70,16 @@ public class ChatroomViewModel extends AndroidViewModel {
         return leaveObservable;
     }
 
-    public void getDataList(Context context, int pageSize, int type,String cursor) {
-        roomObservable.setSource(mRepository.getRoomList(context, pageSize, type,cursor));
+    public LiveData<Resource<Boolean>> getOpenBotObservable() {
+        return openBotObservable;
+    }
+
+    public LiveData<Resource<Boolean>> getCloseBotObservable() {
+        return closeBotObservable;
+    }
+
+    public void getDataList(Context context, int pageSize, int type, String cursor) {
+        roomObservable.setSource(mRepository.getRoomList(context, pageSize, type, cursor));
     }
 
     public void getDetails(Context context, String roomId) {
@@ -94,7 +105,7 @@ public class ChatroomViewModel extends AndroidViewModel {
         joinImRoom.set(false);
         RtcRoomController.get().joinChannel(getApplication(), roomBean.getChannel_id(),
                 ProfileManager.getInstance().getProfile().getRtc_uid(),
-                RoomInfoConstructor.isOwner(roomBean),
+                TextUtils.equals(roomBean.getOwnerUid(), ProfileManager.getInstance().getProfile().getUid()),
                 new DefaultValueCallBack<Boolean>() {
                     @Override
                     public void onSuccess(Boolean value) {
@@ -124,26 +135,36 @@ public class ChatroomViewModel extends AndroidViewModel {
         });
     }
 
-    public void createNormalRoom(Context context,String name,boolean is_private,String password,
-                           boolean allow_free_join_mic,String sound_effect){
-        createObservable.setSource(mRepository.createRoom(context,name,is_private,password,0,
-                allow_free_join_mic,sound_effect));
+    public void createNormalRoom(Context context, String name, boolean is_private, String password,
+                                 boolean allow_free_join_mic, String sound_effect) {
+        createObservable.setSource(mRepository.createRoom(context, name, is_private, password, 0,
+                allow_free_join_mic, sound_effect));
     }
 
-    public void createNormalRoom(Context context,String name,boolean is_private,
-                           boolean allow_free_join_mic,String sound_effect){
-        createObservable.setSource(mRepository.createRoom(context,name,is_private,"",0,
-                allow_free_join_mic,sound_effect));
+    public void createNormalRoom(Context context, String name, boolean is_private,
+                                 boolean allow_free_join_mic, String sound_effect) {
+        createObservable.setSource(mRepository.createRoom(context, name, is_private, "", 0,
+                allow_free_join_mic, sound_effect));
     }
 
-    public void createSpatial(Context context,String name,boolean is_private,String password){
-        createObservable.setSource(mRepository.createRoom(context,name,is_private,password,1,
-                false,""));
+    public void createSpatial(Context context, String name, boolean is_private, String password) {
+        createObservable.setSource(mRepository.createRoom(context, name, is_private, password, 1,
+                false, ""));
     }
 
-    public void createSpatial(Context context,String name,boolean is_private){
-        createObservable.setSource(mRepository.createRoom(context,name,is_private,"",1,
-                false,""));
+    public void createSpatial(Context context, String name, boolean is_private) {
+        createObservable.setSource(mRepository.createRoom(context, name, is_private, "", 1,
+                false, ""));
+    }
+
+    public void activeBot(Context context, String roomId, boolean active) {
+        if (active) {
+            openBotObservable.setSource(mRepository.updateRoomInfo(context, roomId, null, null, null,
+                    null, true, null));
+        } else {
+            closeBotObservable.setSource(mRepository.updateRoomInfo(context, roomId, null, null, null,
+                    null, false, null));
+        }
     }
 
     /**

@@ -91,7 +91,8 @@
     <string name="chatroom_audience_list">观众列表</string>
     <string name="chatroom_contribution_value">贡献值</string>
     <string name="chatroom_contribution_empty">没有数据</string>
-    <string name="chatroom_open_bot_prompt">添加机器人试听音效?</string>
+    <string name="chatroom_open_bot_to_sound_effect">添加机器人试听音效？</string>
+    <string name="chatroom_open_bot_prompt">添加机器人？</string>
 
     <string name="chatroom_input_chat_title">⼀起语聊吧</string>
     <string name="chatroom_system_msg_member_add">加入</string>

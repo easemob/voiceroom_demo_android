@@ -9,7 +9,13 @@ import io.agora.rtckit.open.RtcKitListenerImpl
 import io.agora.rtckit.open.RtcKitManager
 import io.agora.rtckit.open.config.RtcChannelConfig
 import io.agora.rtckit.open.config.RtcInitConfig
+import io.agora.rtckit.open.event.RtcDeNoiseEvent
+import io.agora.rtckit.open.event.RtcSoundEffectEvent
 import io.agora.rtckit.open.status.*
+import io.agora.secnceui.annotation.AINSModeType
+import io.agora.secnceui.annotation.AINSUser
+import io.agora.secnceui.bean.AINSModeBean
+import io.agora.secnceui.bean.AINSSoundsBean
 import tools.ValueCallBack
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicInteger
@@ -50,7 +56,16 @@ class RtcRoomController : IRtcKitListener {
     /**机器人是否激活*/
     private var botActivated = AtomicBoolean(false)
 
+    /**降噪*/
+    private var anisMode = AtomicInteger(AINSModeType.Medium)
+
     fun botActivated(): Boolean = botActivated.get()
+
+    fun anisMode(): Int = anisMode.get()
+
+    fun setAnisMode(@AINSModeType anisMode: Int) {
+        this.anisMode.set(anisMode)
+    }
 
     /**加入rtc频道*/
     fun joinChannel(
@@ -66,6 +81,13 @@ class RtcRoomController : IRtcKitListener {
         rtcChannelConfig.broadcaster = broadcaster
         rtcManger?.joinChannel(rtcChannelConfig, object : IRtcValueCallback<Boolean> {
             override fun onSuccess(value: Boolean) {
+                // 默认开启降噪
+                val event = when (anisMode.get()) {
+                    AINSModeType.Off -> RtcDeNoiseEvent.CloseEvent()
+                    AINSModeType.High -> RtcDeNoiseEvent.HeightEvent()
+                    else -> RtcDeNoiseEvent.MediumEvent()
+                }
+                rtcManger?.operateDeNoise(event)
                 joinCallback.onSuccess(value)
             }
         })
@@ -123,6 +145,32 @@ class RtcRoomController : IRtcKitListener {
         } else {
             "blue bot status:${blueJoinStatus.get()},red bot status:${redJoinStatus.get()}".logE(TAG)
         }
+    }
+
+    fun deNoise(anisModeBean: AINSModeBean) {
+        val event = when (anisModeBean.anisMode) {
+            AINSModeType.Off -> RtcDeNoiseEvent.CloseEvent()
+            AINSModeType.High -> RtcDeNoiseEvent.HeightEvent()
+            else -> RtcDeNoiseEvent.MediumEvent()
+        }
+        val manager: RtcKitManager? = when (anisModeBean.anisUser) {
+            AINSUser.BlueBot -> blueManger
+            AINSUser.RedBot -> redManger
+            else -> rtcManger
+        }
+        manager?.operateDeNoise(event)
+    }
+
+    fun playEffect(anisSoundsBean: AINSSoundsBean) {
+        // test
+        blueManger?.operateSoundEffect(
+            RtcSoundEffectEvent.PlayEffectEvent(
+                1,
+                "https://webdemo.agora.io/ding.mp3",
+                1,
+                true
+            )
+        )
     }
 
     fun destroy() {
