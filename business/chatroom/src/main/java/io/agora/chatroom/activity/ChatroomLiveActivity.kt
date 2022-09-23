@@ -20,8 +20,6 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import custormgift.OnMsgCallBack
 import io.agora.baseui.BaseUiActivity
 import io.agora.baseui.adapter.OnItemClickListener
-import io.agora.baseui.general.callback.OnResourceParseCallback
-import io.agora.baseui.general.net.Resource
 import io.agora.buddy.tool.ToastTools
 import io.agora.buddy.tool.logE
 import io.agora.chatroom.bean.RoomKitBean
@@ -31,10 +29,7 @@ import io.agora.chatroom.general.constructor.RoomInfoConstructor.convertByRoomDe
 import io.agora.chatroom.general.constructor.RoomInfoConstructor.convertByRoomInfo
 import io.agora.chatroom.general.repositories.ProfileManager
 import io.agora.chatroom.model.ChatroomViewModel
-import io.agora.chatroom.ui.Room2DMicViewDelegate
-import io.agora.chatroom.ui.Room3DMicViewDelegate
-import io.agora.chatroom.ui.RoomTopViewDelegate
-import io.agora.config.ConfigConstants
+import io.agora.chatroom.ui.RoomObservableViewDelegate
 import io.agora.config.RouterParams
 import io.agora.config.RouterPath
 import io.agora.secnceui.R
@@ -61,10 +56,13 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
         const val RC_PERMISSIONS = 101
     }
 
+    /**room viewModel*/
     private lateinit var roomViewModel: ChatroomViewModel
-    private lateinit var roomTopViewDelegate: RoomTopViewDelegate
-    private lateinit var audio2DViewDelegate: Room2DMicViewDelegate
-    private lateinit var audio3DViewDelegate: Room3DMicViewDelegate
+
+    /**
+     * 代理头部view以及麦位view
+     */
+    private lateinit var roomObservableDelegate: RoomObservableViewDelegate
 
     /**创建房间or房间内请求详情数据*/
     private var roomInfoBean: VRoomInfoBean? = null
@@ -104,30 +102,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
             }
         }
         ChatroomMsgHelper.getInstance().init(roomKitBean.chatroomId)
-        // 房间详情
-        roomViewModel.roomDetailObservable.observe(this) { response: Resource<VRoomInfoBean> ->
-            parseResource(response, object : OnResourceParseCallback<VRoomInfoBean>() {
 
-                override fun onSuccess(data: VRoomInfoBean?) {
-                    data?.let { vRoomInfo ->
-                        roomInfoBean = vRoomInfo
-                        vRoomInfo.room?.let {
-                            roomKitBean.convertByRoomDetailInfo(it)
-                            roomTopViewDelegate.onRoomDetails(it)
-                        }
-                        vRoomInfo.mic_info?.let { vRoomMIcInfoList ->
-                            if (this@ChatroomLiveActivity::audio2DViewDelegate.isInitialized) {
-                                audio2DViewDelegate.onRoomDetails(vRoomMIcInfoList, RtcRoomController.get().isUseBot)
-                            }
-                            if (this@ChatroomLiveActivity::audio3DViewDelegate.isInitialized) {
-                                audio3DViewDelegate.updateRoomKit(roomKitBean)
-                                audio3DViewDelegate.onRoomDetails(vRoomMIcInfoList)
-                            }
-                        }
-                    }
-                }
-            })
-        }
     }
 
     private fun initListeners() {
@@ -152,24 +127,24 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
 
     private fun initView() {
         binding.chatBottom.initMenu(roomKitBean.roomType)
-        roomTopViewDelegate = RoomTopViewDelegate(this, roomKitBean, binding.cTopView)
-        if (roomKitBean.roomType == ConfigConstants.Common_Chatroom) { // 普通房间
+        if (roomKitBean.isCommonRoom()) { // 普通房间
             binding.likeView.likeView.setOnClickListener { binding.likeView.addFavor() }
             binding.chatroomGiftView.init(roomKitBean.chatroomId)
             binding.messageView.init(roomKitBean.chatroomId)
-            audio2DViewDelegate = Room2DMicViewDelegate(this, roomKitBean, binding.rvChatroom2dMicLayout)
             binding.rvChatroom2dMicLayout.isVisible = true
             binding.rvChatroom3dMicLayout.isVisible = false
+            roomObservableDelegate =
+                RoomObservableViewDelegate(this, roomKitBean, binding.cTopView, binding.rvChatroom2dMicLayout)
             binding.rvChatroom2dMicLayout.onItemClickListener(
                 object : OnItemClickListener<MicInfoBean> {
                     override fun onItemClick(data: MicInfoBean, view: View, position: Int, viewType: Long) {
-                        audio2DViewDelegate.onUserMicClick(data, view, position, viewType)
+                        roomObservableDelegate.onUserMicClick(data)
                     }
                 },
                 object : OnItemClickListener<MicInfoBean> {
                     override fun onItemClick(data: MicInfoBean, view: View, position: Int, viewType: Long) {
                         if (roomKitBean.isOwner) {
-                            audio2DViewDelegate.onBotMicClick(data, RtcRoomController.get().isUseBot)
+                            roomObservableDelegate.onBotMicClick(data, RtcRoomController.get().isUseBot)
                         }
                     }
                 }
@@ -179,56 +154,51 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
             )
         } else { // 空间音效房间
             binding.likeView.isVisible = false
-            audio3DViewDelegate = Room3DMicViewDelegate(this, roomKitBean, binding.rvChatroom3dMicLayout)
             binding.rvChatroom2dMicLayout.isVisible = false
             binding.rvChatroom3dMicLayout.isVisible = true
+            roomObservableDelegate =
+                RoomObservableViewDelegate(this, roomKitBean, binding.cTopView, binding.rvChatroom3dMicLayout)
             binding.rvChatroom3dMicLayout.onItemClickListener(
                 object : OnItemClickListener<MicInfoBean> {
                     override fun onItemClick(data: MicInfoBean, view: View, position: Int, viewType: Long) {
-                        audio3DViewDelegate.onUserMicClick(data, view, position, viewType)
+                        roomObservableDelegate.onUserMicClick(data)
                     }
                 },
                 object : OnItemClickListener<MicInfoBean> {
                     override fun onItemClick(data: MicInfoBean, view: View, position: Int, viewType: Long) {
-                        audio3DViewDelegate.onBotMicClick(data, view, position, viewType)
+                        if (roomKitBean.isOwner) {
+                            roomObservableDelegate.onBotMicClick(data, RtcRoomController.get().isUseBot)
+                        }
                     }
                 },
             ).setUpMicInfoMap(RoomMicConstructor.builderDefault3dMicMap(this))
         }
-        // 头部
-        roomInfoBean?.room?.let {
-            roomTopViewDelegate.onRoomDetails(it)
-        }
+        // 头部 如果是创建房间进来有详情
+        roomObservableDelegate.onRoomDetails(roomInfoBean)
         binding.cTopView.setOnLiveTopClickListener(object : OnLiveTopClickListener {
             override fun onClickBack(view: View) {
-                roomTopViewDelegate.onClickBank(finishBack = {
+                roomObservableDelegate.onExitRoom(getString(R.string.chatroom_exit), finishBack = {
                     finish()
                 })
             }
 
             override fun onClickRank(view: View) {
-                roomInfoBean?.let {
-                    roomTopViewDelegate.onClickRank(it)
-                }
+                roomObservableDelegate.onClickRank(roomInfoBean)
             }
 
             override fun onClickNotice(view: View) {
-                roomInfoBean?.let {
-                    roomTopViewDelegate.onClickNotice(it)
-                }
+                roomObservableDelegate.onClickNotice(roomInfoBean)
             }
 
             override fun onClickSoundSocial(view: View) {
-                roomInfoBean?.let {
-                    roomTopViewDelegate.onClickSoundSocial(it)
-                }
+                roomObservableDelegate.onClickSoundSocial(roomInfoBean)
             }
         })
         binding.chatBottom.setMenuItemOnClickListener(object : MenuItemClickListener {
             override fun onChatExtendMenuItemClick(itemId: Int, view: View?) {
                 when (itemId) {
                     R.id.extend_item_eq -> {
-                        roomTopViewDelegate.onAudioSettingsDialog(finishBack = {
+                        roomObservableDelegate.onAudioSettingsDialog(finishBack = {
                             finish()
                         })
                     }

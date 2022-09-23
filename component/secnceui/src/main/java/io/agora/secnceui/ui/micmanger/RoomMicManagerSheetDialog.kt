@@ -26,7 +26,7 @@ class RoomMicManagerSheetDialog constructor(private val onItemClickListener: OnI
 
     companion object {
         const val KEY_MIC_INFO = "mic_info"
-        const val KEY_IS_OWNER = "is_owner"
+        const val KEY_IS_OWNER = "owner_id"
         const val KEY_IS_MYSELF = "is_myself"
     }
 
@@ -81,10 +81,10 @@ class RoomMicManagerSheetDialog constructor(private val onItemClickListener: OnI
     }
 
     private fun bindingMicInfo(micInfo: MicInfoBean) {
-        binding?.mtChatroomMicTag?.isVisible = isOwner
         binding?.apply {
             // 座位状态
             if (micInfo.userInfo == null) { // 没人
+                binding?.mtChatroomMicTag?.isVisible = false
                 ivMicInnerIcon.isVisible = true
                 mtMicUsername.text = micInfo.index.toString()
                 when (micInfo.micStatus) {
@@ -103,6 +103,7 @@ class RoomMicManagerSheetDialog constructor(private val onItemClickListener: OnI
                     }
                 }
             } else { // 有人
+                binding?.mtChatroomMicTag?.isVisible = micInfo.ownerTag
                 ivMicInnerIcon.isVisible = false
                 ivMicInfo.setImageResource(
                     ViewTools.getDrawableId(ivMicInfo.context, micInfo.userInfo?.userAvatar ?: "")

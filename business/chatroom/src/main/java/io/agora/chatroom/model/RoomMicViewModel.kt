@@ -125,7 +125,7 @@ class RoomMicViewModel constructor(application: Application) : AndroidViewModel(
     }
 
     //  邀请上麦
-    fun cancelLockMic(context: Context, roomId: String, userId: String) {
+    fun invitationMic(context: Context, roomId: String, userId: String) {
         _invitationMicObservable.setSource(mRepository.invitationMic(context, roomId, userId))
     }
 

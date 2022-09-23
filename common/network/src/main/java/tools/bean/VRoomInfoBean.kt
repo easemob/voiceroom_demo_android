@@ -13,9 +13,9 @@ data class VRoomInfoBean constructor(
 ) : Serializable
 
 data class VRoomMicInfo constructor(
-    val index: Int = 0,
+    val mic_index: Int = 0,
     val status: Int = -1,
-    val user: VRoomUser? = null
+    val member: VRoomUser? = null
 ) : Serializable
 
 data class VRoomDetail constructor(

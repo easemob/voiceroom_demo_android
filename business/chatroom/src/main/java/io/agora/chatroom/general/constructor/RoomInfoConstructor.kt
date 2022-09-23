@@ -17,7 +17,7 @@ object RoomInfoConstructor {
         channelId = roomInfo.channel_id ?: ""
         ownerId = roomInfo.owner?.uid ?: ""
         roomType = roomInfo.type
-        isOwner = isOwner(roomInfo.owner?.uid)
+        isOwner = curUserIsHost(roomInfo.owner?.uid)
     }
 
     fun RoomKitBean.convertByRoomDetailInfo(roomDetails: VRoomDetail) {
@@ -26,13 +26,12 @@ object RoomInfoConstructor {
         channelId = roomDetails.channel_id ?: ""
         ownerId = roomDetails.owner?.uid ?: ""
         roomType = roomDetails.type
-        isOwner = isOwner(roomDetails.owner?.uid)
+        isOwner = curUserIsHost(roomDetails.owner?.uid)
     }
 
-    fun isOwner(ownerId: String?): Boolean {
+    private fun curUserIsHost(ownerId: String?): Boolean {
         return TextUtils.equals(ownerId, ProfileManager.getInstance().profile.uid)
     }
-
 
     /**
      * 服务端roomInfo bean 转 ui bean
@@ -84,16 +83,16 @@ object RoomInfoConstructor {
     /**
      * 服务端roomInfo bean 转 麦位 ui bean
      */
-    fun convertMicUiBean(vRoomMicInfoList: List<VRoomMicInfo>): List<MicInfoBean> {
+    fun convertMicUiBean(vRoomMicInfoList: List<VRoomMicInfo>, ownerUid: String): List<MicInfoBean> {
         val micInfoList = mutableListOf<MicInfoBean>()
         for (i in vRoomMicInfoList.indices) {
             if (i > 5) break
             val serverMicInfo = vRoomMicInfoList[i]
             val micInfo = MicInfoBean().apply {
-                index = serverMicInfo.index
-                serverMicInfo.user?.let { roomUser ->
+                index = serverMicInfo.mic_index
+                serverMicInfo.member?.let { roomUser ->
                     userInfo = serverUser2UiUser(roomUser)
-
+                    ownerTag = !TextUtils.isEmpty(ownerUid) && TextUtils.equals(ownerUid, roomUser.uid)
                 }
             }
             micInfo.micStatus = serverMicInfo.status

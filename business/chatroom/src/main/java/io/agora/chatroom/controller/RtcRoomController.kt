@@ -8,6 +8,7 @@ import io.agora.rtckit.open.IRtcValueCallback
 import io.agora.rtckit.open.RtcKitManager
 import io.agora.rtckit.open.config.RtcChannelConfig
 import io.agora.rtckit.open.config.RtcInitConfig
+import io.agora.rtckit.open.event.RtcAudioEvent
 import io.agora.rtckit.open.event.RtcDeNoiseEvent
 import io.agora.rtckit.open.event.RtcSoundEffectEvent
 import io.agora.rtckit.open.status.*
@@ -77,6 +78,9 @@ class RtcRoomController : IRtcKitListener {
         })
     }
 
+    /**
+     * 降噪控制
+     */
     fun deNoise(anisModeBean: AINSModeBean) {
         val event = when (anisModeBean.anisMode) {
             AINSModeType.Off -> RtcDeNoiseEvent.CloseEvent()
@@ -86,6 +90,9 @@ class RtcRoomController : IRtcKitListener {
         rtcManger?.operateDeNoise(event)
     }
 
+    /**
+     * 音效
+     */
     fun playEffect(anisSoundsBean: AINSSoundsBean) {
         // test
         rtcManger?.operateSoundEffect(
@@ -96,6 +103,13 @@ class RtcRoomController : IRtcKitListener {
                 true
             )
         )
+    }
+
+    /**
+     * 本地mute/unmute
+     */
+    fun enableLocalAudio(mute: Boolean) {
+        rtcManger?.operateAudio(RtcAudioEvent.AudioMuteLocal(mute))
     }
 
     fun destroy() {

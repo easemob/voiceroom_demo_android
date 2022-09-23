@@ -242,7 +242,7 @@ public class HttpManager {
      */
     public void updateRoomInfo(String roomId, String name, String announcement, Boolean is_private,
                                String password, Boolean use_robot, Boolean allowed_free_join_mic,
-                               ValueCallBack<Boolean> callBack) {
+                               Integer robotVolume,ValueCallBack<Boolean> callBack) {
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
         headers.put("Authorization", "Bearer " + ProfileManager.getInstance().getProfile().getAuthorization());

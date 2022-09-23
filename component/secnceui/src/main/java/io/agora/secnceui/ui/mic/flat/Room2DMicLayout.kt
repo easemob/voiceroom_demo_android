@@ -15,8 +15,9 @@ import io.agora.buddy.tool.dp
 import io.agora.secnceui.R
 import io.agora.secnceui.bean.*
 import io.agora.secnceui.databinding.ViewChatroom2dMicLayoutBinding
+import io.agora.secnceui.ui.mic.IRoomMicView
 
-class Room2DMicLayout : ConstraintLayout, IRoom2DMicView {
+class Room2DMicLayout : ConstraintLayout, IRoomMicView {
 
     private lateinit var binding: ViewChatroom2dMicLayoutBinding
 

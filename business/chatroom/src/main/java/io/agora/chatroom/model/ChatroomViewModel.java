@@ -2,7 +2,6 @@ package io.agora.chatroom.model;
 
 import android.app.Application;
 import android.content.Context;
-import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -36,6 +35,7 @@ public class ChatroomViewModel extends AndroidViewModel {
     private SingleSourceLiveData<Resource<Boolean>> leaveObservable;
     private SingleSourceLiveData<Resource<Boolean>> openBotObservable;
     private SingleSourceLiveData<Resource<Boolean>> closeBotObservable;
+    private SingleSourceLiveData<Resource<Boolean>> robotVolumeObservable;
     private final AtomicBoolean joinRtcChannel = new AtomicBoolean(false);
     private final AtomicBoolean joinImRoom = new AtomicBoolean(false);
 
@@ -49,6 +49,7 @@ public class ChatroomViewModel extends AndroidViewModel {
         leaveObservable = new SingleSourceLiveData<>();
         openBotObservable = new SingleSourceLiveData<>();
         closeBotObservable = new SingleSourceLiveData<>();
+        robotVolumeObservable = new SingleSourceLiveData<>();
     }
 
     public LiveData<Resource<VRoomBean>> getRoomObservable() {
@@ -77,6 +78,10 @@ public class ChatroomViewModel extends AndroidViewModel {
 
     public LiveData<Resource<Boolean>> getCloseBotObservable() {
         return closeBotObservable;
+    }
+
+    public LiveData<Resource<Boolean>> getRobotVolumeObservable() {
+        return robotVolumeObservable;
     }
 
     public void getDataList(Context context, int pageSize, int type, String cursor) {
@@ -160,16 +165,15 @@ public class ChatroomViewModel extends AndroidViewModel {
 
     public void activeBot(Context context, String roomId, boolean active) {
         if (active) {
-            openBotObservable.setSource(mRepository.updateRoomInfo(context, roomId, null, null, null,
-                    null, true, null));
+            openBotObservable.setSource(mRepository.activeBot(context, roomId, true));
         } else {
-            closeBotObservable.setSource(mRepository.updateRoomInfo(context, roomId, null, null, null,
-                    null, false, null));
+            closeBotObservable.setSource(mRepository.activeBot(context, roomId, false));
         }
     }
 
-    public void updateBotVolume(Context context, String roomId, int volume) {
 
+    public void updateBotVolume(Context context, String roomId, int robotVolume) {
+        robotVolumeObservable.setSource(mRepository.changeRobotVolume(context, roomId, robotVolume));
     }
 
     /**

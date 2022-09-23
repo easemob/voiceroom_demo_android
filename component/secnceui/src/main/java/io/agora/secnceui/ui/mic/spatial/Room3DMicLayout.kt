@@ -18,11 +18,12 @@ import io.agora.secnceui.R
 import io.agora.secnceui.bean.MicInfoBean
 import io.agora.secnceui.constants.ScenesConstant
 import io.agora.secnceui.databinding.ViewChatroom3dMicLayoutBinding
+import io.agora.secnceui.ui.mic.IRoomMicView
 import kotlin.math.abs
 import kotlin.math.atan2
 import kotlin.math.hypot
 
-class Room3DMicLayout : ConstraintLayout, View.OnClickListener, IRoom3DMicView {
+class Room3DMicLayout : ConstraintLayout, View.OnClickListener, IRoomMicView {
 
     companion object {
         const val TAG = "Room3DMicLayout"
@@ -340,5 +341,13 @@ class Room3DMicLayout : ConstraintLayout, View.OnClickListener, IRoom3DMicView {
 
     private fun setChildView(childView: View, isClickable: Boolean) {
         childView.isClickable = isClickable
+    }
+
+    override fun updateAdapter(micInfoList: List<MicInfoBean>, isBotActive: Boolean) {
+
+    }
+
+    override fun activeBot(active: Boolean) {
+
     }
 }
