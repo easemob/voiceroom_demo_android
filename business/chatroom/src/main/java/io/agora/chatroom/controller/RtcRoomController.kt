@@ -1,6 +1,7 @@
 package io.agora.chatroom.controller
 
 import android.content.Context
+import io.agora.buddy.tool.ThreadManager
 import io.agora.chatroom.BuildConfig
 import io.agora.config.ConfigConstants
 import io.agora.rtckit.open.IRtcKitListener
@@ -14,7 +15,7 @@ import io.agora.rtckit.open.event.RtcSoundEffectEvent
 import io.agora.rtckit.open.status.*
 import io.agora.secnceui.annotation.AINSModeType
 import io.agora.secnceui.bean.AINSModeBean
-import io.agora.secnceui.bean.AINSSoundsBean
+import io.agora.secnceui.bean.SoundAudioBean
 import tools.ValueCallBack
 
 /**
@@ -40,17 +41,32 @@ class RtcRoomController : IRtcKitListener {
 
     private var rtcManger: RtcKitManager? = null
 
+    /**第一次启动机器，播放*/
+    var firstActiveBot = true
+
     /**降噪*/
     var anisMode = AINSModeType.Medium
 
     /**是否开启机器人*/
     var isUseBot: Boolean = false
+        set(value) {
+            field = value
+            if (!field) {
+                stopAllEffect()
+            }
+        }
 
     /**机器人音量*/
     var botVolume: Int = 50
 
     /**音效*/
     var soundEffect = ConfigConstants.Social_Chat
+
+    private var micVolumeListener: RtcMicVolumeListener? = null
+
+    fun setMicVolumeListener(micVolumeListener: RtcMicVolumeListener) {
+        this.micVolumeListener = micVolumeListener
+    }
 
     /**加入rtc频道*/
     fun joinChannel(
@@ -91,18 +107,51 @@ class RtcRoomController : IRtcKitListener {
     }
 
     /**
-     * 音效
+     * 音效队列
      */
-    fun playEffect(anisSoundsBean: AINSSoundsBean) {
+    private val soundAudioQueue: ArrayDeque<SoundAudioBean> = ArrayDeque()
+
+    /**
+     * 播放音效
+     */
+    fun playEffect(soundAudioList: List<SoundAudioBean>) {
+        // 暂停其他音效播放
+        rtcManger?.operateSoundEffect(
+            RtcSoundEffectEvent.StopAllEffectEvent()
+        )
+        // 加入音效队列
+        soundAudioQueue.clear()
+        soundAudioQueue.addAll(soundAudioList)
+        // 取队列第一个播放
+        soundAudioQueue.removeFirstOrNull()?.let {
+            rtcManger?.operateSoundEffect(
+                RtcSoundEffectEvent.PlayEffectEvent(it.soundId, it.audioUrl, 0, true, it.speakerType)
+            )
+        }
+    }
+
+    /**
+     * 播放音效
+     */
+    fun playEffect(soundAudioBean: SoundAudioBean) {
         // test
         rtcManger?.operateSoundEffect(
             RtcSoundEffectEvent.PlayEffectEvent(
-                1,
-                "https://webdemo.agora.io/ding.mp3",
-                1,
-                true
+                soundAudioBean.soundId,
+                soundAudioBean.audioUrl,
+                0,
+                true,
+                soundAudioBean.speakerType
             )
         )
+    }
+
+    /**
+     * 暂停所有音效播放
+     */
+    fun stopAllEffect() {
+        soundAudioQueue.clear()
+        rtcManger?.operateSoundEffect(RtcSoundEffectEvent.StopAllEffectEvent())
     }
 
     /**
@@ -113,6 +162,12 @@ class RtcRoomController : IRtcKitListener {
     }
 
     fun destroy() {
+        // 退出房间恢复默认值
+        firstActiveBot = true
+        anisMode = AINSModeType.Medium
+        isUseBot = false
+        botVolume = 50
+        soundEffect = ConfigConstants.Social_Chat
         rtcManger?.leaveChannel()
         rtcManger?.destroy()
     }
@@ -136,8 +191,23 @@ class RtcRoomController : IRtcKitListener {
 
     }
 
-    override fun onAudioEffectFinished(soundId: Int) {
-
+    override fun onAudioEffectFinished(soundId: Int, finished: Boolean, speakerType: Int) {
+        if (finished) {
+            // 结束播放回调--->>播放下一个，取队列第一个播放
+            ThreadManager.getInstance().runOnMainThread {
+                micVolumeListener?.onBotVolume(speakerType, true)
+            }
+            soundAudioQueue.removeFirstOrNull()?.let {
+                rtcManger?.operateSoundEffect(
+                    RtcSoundEffectEvent.PlayEffectEvent(it.soundId, it.audioUrl, 0, true, it.speakerType)
+                )
+            }
+        } else {
+            // 开始播放回调--->>
+            ThreadManager.getInstance().runOnMainThread {
+                micVolumeListener?.onBotVolume(speakerType, false)
+            }
+        }
     }
 
     override fun onError(rtcErrorStatus: RtcErrorStatus) {

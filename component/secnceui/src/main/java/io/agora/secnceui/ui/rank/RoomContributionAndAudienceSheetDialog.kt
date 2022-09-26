@@ -10,7 +10,7 @@ import androidx.fragment.app.FragmentActivity
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import io.agora.baseui.dialog.BaseFixedHeightSheetDialog
-import io.agora.buddy.tool.ViewTools
+import io.agora.buddy.tool.ResourcesTools
 import io.agora.secnceui.R
 import io.agora.secnceui.databinding.DialogChatroomContributionAndAudienceBinding
 import io.agora.secnceui.ui.rank.fragment.RoomRankFragmentAdapter
@@ -70,7 +70,7 @@ class RoomContributionAndAudienceSheetDialog constructor(private val fragmentAct
     private fun onTabLayoutSelected(tab: TabLayout.Tab?) {
         tab?.customView?.let {
             val tabText = it.findViewById<TextView>(R.id.mtTabText)
-            tabText.setTextColor(ViewTools.getColor(resources, R.color.dark_grey_color_040925))
+            tabText.setTextColor(ResourcesTools.getColor(resources, R.color.dark_grey_color_040925))
             tabText.typeface = Typeface.defaultFromStyle(Typeface.BOLD)
             val tabTip = it.findViewById<View>(R.id.vTabTip)
             tabTip.visibility = View.VISIBLE
@@ -80,7 +80,7 @@ class RoomContributionAndAudienceSheetDialog constructor(private val fragmentAct
     private fun onTabLayoutUnselected(tab: TabLayout.Tab?) {
         tab?.customView?.let {
             val tabText = it.findViewById<TextView>(R.id.mtTabText)
-            tabText.setTextColor(ViewTools.getColor(resources, R.color.dark_grey_color_6C7192))
+            tabText.setTextColor(ResourcesTools.getColor(resources, R.color.dark_grey_color_6C7192))
             tabText.typeface = Typeface.defaultFromStyle(Typeface.NORMAL)
             val tabTip = it.findViewById<View>(R.id.vTabTip)
             tabTip.visibility = View.GONE

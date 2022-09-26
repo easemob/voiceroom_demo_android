@@ -5,7 +5,7 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
-import io.agora.buddy.tool.ViewTools
+import io.agora.buddy.tool.ResourcesTools
 import io.agora.secnceui.R
 import io.agora.secnceui.annotation.ChatroomTopType
 import io.agora.secnceui.annotation.SoundSelectionType
@@ -60,7 +60,7 @@ class RoomLiveTopView : ConstraintLayout, View.OnClickListener, IRoomLiveTopView
             }
             // 房主头像
             binding.ivChatroomOwner.setImageResource(
-                ViewTools.getDrawableId(
+                ResourcesTools.getDrawableId(
                     binding.ivChatroomOwner.context,
                     chatroomInfo.owner?.userAvatar ?: ScenesConstant.DefaultAvatar
                 )
@@ -71,7 +71,7 @@ class RoomLiveTopView : ConstraintLayout, View.OnClickListener, IRoomLiveTopView
             } else {
                 llChatroomMemberRank.isVisible = true
                 topGifts.forEachIndexed { index, audienceBean ->
-                    val resId = ViewTools.getDrawableId(llChatroomMemberRank.context, audienceBean.userAvatar)
+                    val resId = ResourcesTools.getDrawableId(llChatroomMemberRank.context, audienceBean.userAvatar)
                     when (index) {
                         0 -> {
                             ivChatroomMember1.isVisible = true
@@ -96,7 +96,7 @@ class RoomLiveTopView : ConstraintLayout, View.OnClickListener, IRoomLiveTopView
 
     /**设置头像*/
     override fun onImageUpdate(@ChatroomTopType type: Int, avatar: String) {
-        val avatarRes = ViewTools.getDrawableId(binding.ivChatroomOwner.context, avatar)
+        val avatarRes = ResourcesTools.getDrawableId(binding.ivChatroomOwner.context, avatar)
         when (type) {
             ChatroomTopType.Owner -> {
                 // 房主头像

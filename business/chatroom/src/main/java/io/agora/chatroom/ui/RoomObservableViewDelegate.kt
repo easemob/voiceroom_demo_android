@@ -14,6 +14,7 @@ import io.agora.baseui.general.net.Resource
 import io.agora.baseui.interfaces.IParserSource
 import io.agora.buddy.tool.logE
 import io.agora.chatroom.bean.RoomKitBean
+import io.agora.chatroom.controller.RtcMicVolumeListener
 import io.agora.chatroom.controller.RtcRoomController
 import io.agora.chatroom.general.constructor.RoomInfoConstructor
 import io.agora.chatroom.general.repositories.ProfileManager
@@ -25,10 +26,7 @@ import io.agora.secnceui.annotation.AINSModeType
 import io.agora.secnceui.annotation.MicClickAction
 import io.agora.secnceui.annotation.MicStatus
 import io.agora.secnceui.annotation.SoundSelectionType
-import io.agora.secnceui.bean.MicInfoBean
-import io.agora.secnceui.bean.MicManagerBean
-import io.agora.secnceui.bean.RoomAudioSettingsBean
-import io.agora.secnceui.bean.SoundSelectionBean
+import io.agora.secnceui.bean.*
 import io.agora.secnceui.ui.ainoise.RoomAINSSheetDialog
 import io.agora.secnceui.ui.audiosettings.RoomAudioSettingsSheetDialog
 import io.agora.secnceui.ui.common.CommonFragmentAlertDialog
@@ -91,6 +89,19 @@ class RoomObservableViewDelegate constructor(
                     "open bot onSuccess：$data".logE(TAG)
                     if (data != true) return
                     iRoomMicView.activeBot(true)
+                    // 创建房间，第⼀次启动机器⼈后播放音效：
+                    if (RtcRoomController.get().firstActiveBot) {
+                        RtcRoomController.get().firstActiveBot = false
+                        if (roomKitBean.roomType == ConfigConstants.Common_Chatroom) {
+                            RoomSoundAudioConstructor.soundAudioMap[ConfigConstants.Audio_Create_Common_Room]?.let {
+                                RtcRoomController.get().playEffect(it)
+                            }
+                        } else {
+                            RoomSoundAudioConstructor.soundAudioMap[ConfigConstants.Audio_Create_Spatial_Room]?.let {
+                                RtcRoomController.get().playEffect(it)
+                            }
+                        }
+                    }
                 }
             })
         }
@@ -99,7 +110,9 @@ class RoomObservableViewDelegate constructor(
                 override fun onSuccess(data: Boolean?) {
                     "close bot onSuccess：$data".logE(TAG)
                     if (data != true) return
+                    // 关闭机器人，暂停所有音效播放
                     iRoomMicView.activeBot(false)
+                    RtcRoomController.get().stopAllEffect()
                 }
             })
         }
@@ -111,6 +124,17 @@ class RoomObservableViewDelegate constructor(
                 }
             })
         }
+        // 麦位音量监听
+        RtcRoomController.get().setMicVolumeListener(object : RtcMicVolumeListener() {
+            // 更新机器人音量
+            override fun onBotVolume(speaker: Int, finished: Boolean) {
+                if (finished) {
+                    iRoomMicView.updateBotVolume(speaker, ConfigConstants.Volume_None)
+                } else {
+                    iRoomMicView.updateBotVolume(speaker, ConfigConstants.Volume_Medium)
+                }
+            }
+        })
     }
 
     /**
@@ -249,7 +273,7 @@ class RoomObservableViewDelegate constructor(
                 RtcRoomController.get().deNoise(it)
             },
             anisSoundCallback = {
-                RtcRoomController.get().playEffect(it)
+//                RtcRoomController.get().playEffect(it)
             }
         ).apply {
             arguments = Bundle().apply {
@@ -365,7 +389,7 @@ class RoomObservableViewDelegate constructor(
      */
     fun onBotMicClick(data: MicInfoBean, isUserBot: Boolean) {
         if (isUserBot) {
-            Toast.makeText(activity, "${data.userInfo?.username}", Toast.LENGTH_SHORT).show()
+//            Toast.makeText(activity, "${data.userInfo?.username}", Toast.LENGTH_SHORT).show()
         } else {
             CommonFragmentAlertDialog()
                 .titleText(activity.getString(R.string.chatroom_prompt))

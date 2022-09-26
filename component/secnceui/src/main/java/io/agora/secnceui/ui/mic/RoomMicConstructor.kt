@@ -9,7 +9,6 @@ import io.agora.secnceui.constants.ScenesConstant
 object RoomMicConstructor {
 
     fun builderDefault2dMicList(): MutableList<MicInfoBean> {
-
         return mutableListOf(
             MicInfoBean(index = 0),
             MicInfoBean(index = 1),
@@ -24,7 +23,7 @@ object RoomMicConstructor {
         val blueBot = MicInfoBean(
             index = 6,
             micStatus = if (isUserBot) MicStatus.BotActivated else MicStatus.BotInactive,
-            audioVolume = AudioVolumeStatus.None,
+            audioVolume = AudioVolumeStatus.Unknown,
             userInfo = RoomUserInfoBean().apply {
                 username = context.getString(R.string.chatroom_agora_blue)
                 userAvatar = "icon_chatroom_blue_robot"
@@ -33,7 +32,7 @@ object RoomMicConstructor {
         val redBot = MicInfoBean(
             index = 7,
             micStatus = if (isUserBot) MicStatus.BotActivated else MicStatus.BotInactive,
-            audioVolume = AudioVolumeStatus.None,
+            audioVolume = AudioVolumeStatus.Unknown,
             userInfo = RoomUserInfoBean().apply {
                 username = context.getString(R.string.chatroom_agora_red)
                 userAvatar = "icon_chatroom_red_robot"
@@ -50,7 +49,7 @@ object RoomMicConstructor {
             ScenesConstant.KeyMicBlue to MicInfoBean(
                 index = 2,
                 micStatus = if (isUserBot) MicStatus.BotActivated else MicStatus.BotInactive,
-                audioVolume = AudioVolumeStatus.None,
+                audioVolume = AudioVolumeStatus.Unknown,
                 userInfo = RoomUserInfoBean().apply {
                     username = context.getString(R.string.chatroom_agora_blue)
                     userAvatar = "icon_chatroom_blue_robot"
@@ -61,7 +60,7 @@ object RoomMicConstructor {
             ScenesConstant.KeyMicRed to MicInfoBean(
                 index = 5,
                 micStatus = if (isUserBot) MicStatus.BotActivated else MicStatus.BotInactive,
-                audioVolume = AudioVolumeStatus.None,
+                audioVolume = AudioVolumeStatus.Unknown,
                 userInfo = RoomUserInfoBean().apply {
                     username = context.getString(R.string.chatroom_agora_red)
                     userAvatar = "icon_chatroom_red_robot"

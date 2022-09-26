@@ -4,7 +4,7 @@ import android.text.TextUtils
 import androidx.core.view.isVisible
 import com.google.android.material.textview.MaterialTextView
 import io.agora.baseui.adapter.BaseRecyclerViewAdapter
-import io.agora.buddy.tool.ViewTools
+import io.agora.buddy.tool.ResourcesTools
 import io.agora.secnceui.R
 import io.agora.secnceui.annotation.AINSModeType
 import io.agora.secnceui.annotation.AINSSoundType
@@ -54,12 +54,12 @@ class RoomAINSModeViewHolder(binding: ItemChatroomAgoraAinsBinding) :
 
     private fun resetViewDefault(textView: MaterialTextView) {
         textView.setBackgroundResource(R.drawable.bg_rect_radius4_grey)
-        textView.setTextColor(ViewTools.getColor(context.resources, R.color.dark_grey_color_979CBB))
+        textView.setTextColor(ResourcesTools.getColor(context.resources, R.color.dark_grey_color_979CBB))
     }
 
     private fun setViewHighlight(textView: MaterialTextView) {
         textView.setBackgroundResource(R.drawable.bg_rect_stoke4_blue)
-        textView.setTextColor(ViewTools.getColor(context.resources, R.color.main_color_156EF3))
+        textView.setTextColor(ResourcesTools.getColor(context.resources, R.color.main_color_156EF3))
     }
 }
 
@@ -100,12 +100,12 @@ class RoomAINSSoundsViewHolder(binding: ItemChatroomAinsAuditionBinding) :
 
     private fun resetViewDefault(textView: MaterialTextView) {
         textView.setBackgroundResource(R.drawable.bg_rect_radius4_grey)
-        textView.setTextColor(ViewTools.getColor(context.resources, R.color.dark_grey_color_979CBB))
+        textView.setTextColor(ResourcesTools.getColor(context.resources, R.color.dark_grey_color_979CBB))
     }
 
     private fun setViewHighlight(textView: MaterialTextView) {
         textView.setBackgroundResource(R.drawable.bg_rect_stoke4_blue)
-        textView.setTextColor(ViewTools.getColor(context.resources, R.color.main_color_156EF3))
+        textView.setTextColor(ResourcesTools.getColor(context.resources, R.color.main_color_156EF3))
     }
 }
 

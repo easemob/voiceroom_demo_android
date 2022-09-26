@@ -8,8 +8,14 @@ import android.view.View
 import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
 import androidx.core.content.res.ResourcesCompat
+import java.util.*
 
-object ViewTools {
+object ResourcesTools {
+
+    private var isZh = false
+
+    fun getIsZh(): Boolean = isZh
+
     fun getActivityFromView(view: View?): Activity? {
         if (null != view) {
             var context = view.context
@@ -30,5 +36,12 @@ object ViewTools {
 
     fun getDrawableId(context: Context, name: String): Int {
         return context.resources.getIdentifier(name, "drawable", context.packageName)
+    }
+
+    fun isZh(context: Context): Boolean {
+        val locale: Locale = context.resources.configuration.locale
+        val language: String = locale.language
+        isZh = language.endsWith("zh")
+        return isZh
     }
 }

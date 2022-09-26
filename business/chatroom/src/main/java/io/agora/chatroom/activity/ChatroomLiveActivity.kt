@@ -148,10 +148,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
                         }
                     }
                 }
-            ).setUpAdapter(
-                RoomMicConstructor.builderDefault2dMicList(),
-                RoomMicConstructor.builderDefault2dBotMicList(this, RtcRoomController.get().isUseBot)
-            )
+            ).setUpAdapter(RtcRoomController.get().isUseBot)
         } else { // 空间音效房间
             binding.likeView.isVisible = false
             binding.rvChatroom2dMicLayout.isVisible = false

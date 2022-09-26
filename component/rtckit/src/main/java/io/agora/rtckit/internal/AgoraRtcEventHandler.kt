@@ -85,6 +85,7 @@ internal class AgoraRtcEventHandler(var rtcListener: IRtcClientListener?) : IRtc
      */
     override fun onAudioEffectFinished(soundId: Int) {
         super.onAudioEffectFinished(soundId)
+        rtcListener?.onAudioEffectFinished(soundId)
         "onAudioEffectFinished soundId:$soundId".logD(TAG)
     }
 

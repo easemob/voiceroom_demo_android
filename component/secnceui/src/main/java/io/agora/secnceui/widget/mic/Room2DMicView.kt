@@ -6,7 +6,7 @@ import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
-import io.agora.buddy.tool.ViewTools
+import io.agora.buddy.tool.ResourcesTools
 import io.agora.secnceui.R
 import io.agora.secnceui.annotation.MicStatus
 import io.agora.secnceui.annotation.AudioVolumeStatus
@@ -45,7 +45,7 @@ class Room2DMicView : ConstraintLayout {
                 ivMicInnerIcon.isVisible = false
                 ivMicInfo.setBackgroundResource(R.drawable.bg_oval_white)
                 ivMicInfo.setImageResource(
-                    ViewTools.getDrawableId(ivMicInfo.context, micInfo.userInfo?.userAvatar ?: "")
+                    ResourcesTools.getDrawableId(ivMicInfo.context, micInfo.userInfo?.userAvatar ?: "")
                 )
                 mtMicUsername.text = micInfo.userInfo?.username ?: ""
                 mtMicUsername.setCompoundDrawablesWithIntrinsicBounds(
@@ -77,7 +77,7 @@ class Room2DMicView : ConstraintLayout {
                 } else { // 有人
                     ivMicInnerIcon.isVisible = false
                     ivMicInfo.setImageResource(
-                        ViewTools.getDrawableId(ivMicInfo.context, micInfo.userInfo?.userAvatar ?: "")
+                        ResourcesTools.getDrawableId(ivMicInfo.context, micInfo.userInfo?.userAvatar ?: "")
                     )
                     mtMicUsername.text = micInfo.userInfo?.username ?: ""
                     if (micInfo.ownerTag) {
@@ -101,12 +101,12 @@ class Room2DMicView : ConstraintLayout {
             }
             // 用户音量
             when (micInfo.audioVolume) {
-//                AudioVolumeStatus.None -> ivMicTag.isVisible = false
+                AudioVolumeStatus.None -> ivMicTag.isVisible = false
                 AudioVolumeStatus.Low -> {
                     ivMicTag.isVisible = true
                     ivMicTag.setImageResource(R.drawable.icon_chatroom_mic_open1)
                 }
-                AudioVolumeStatus.Middle -> {
+                AudioVolumeStatus.Medium -> {
                     ivMicTag.isVisible = true
                     ivMicTag.setImageResource(R.drawable.icon_chatroom_mic_open2)
                 }
@@ -117,10 +117,6 @@ class Room2DMicView : ConstraintLayout {
                 AudioVolumeStatus.Max -> {
                     ivMicTag.isVisible = true
                     ivMicTag.setImageResource(R.drawable.icon_chatroom_mic_open4)
-                }
-                AudioVolumeStatus.Mute -> {
-                    ivMicTag.isVisible = true
-                    ivMicTag.setImageResource(R.drawable.icon_chatroom_mic_mute_tag)
                 }
                 else -> {
 

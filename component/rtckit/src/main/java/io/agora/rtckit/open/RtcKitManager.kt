@@ -26,7 +26,6 @@ class RtcKitManager {
                 this.middleService = RtcMiddleServiceImpl(context, initConfig, object : IRtcClientListener {
 
                     override fun onConnectionStateChanged(state: Int, reason: Int) {
-                        TODO("Not yet implemented")
                     }
 
                     override fun onUserJoined(userId: Int, joined: Boolean) {
@@ -45,8 +44,8 @@ class RtcKitManager {
                         rtcKitListener.onAudioStatus(audioChangeStatus)
                     }
 
-                    override fun onAudioEffectFinished(soundId: Int) {
-                        rtcKitListener.onAudioEffectFinished(soundId)
+                    override fun onAudioEffectFinished(soundId: Int, finished: Boolean, speakerType: Int) {
+                        rtcKitListener.onAudioEffectFinished(soundId, finished, speakerType)
                     }
 
                     override fun onError(rtcErrorStatus: RtcErrorStatus) {
@@ -70,7 +69,7 @@ class RtcKitManager {
         middleService?.leaveChannel()
     }
 
-    fun getEffect(){
+    fun getEffect() {
 
     }
 

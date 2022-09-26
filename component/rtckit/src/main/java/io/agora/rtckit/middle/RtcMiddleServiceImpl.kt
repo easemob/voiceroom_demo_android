@@ -48,9 +48,16 @@ class RtcMiddleServiceImpl constructor(
         rtcClient.getSoundEffectEngine()?.apply {
             when (soundEffect) {
                 is RtcSoundEffectEvent.PlayEffectEvent -> playEffect(
-                    soundEffect.soundId, soundEffect.filePath, soundEffect.loopCount, soundEffect.publish
+                    soundEffect.soundId,
+                    soundEffect.filePath,
+                    soundEffect.loopCount,
+                    soundEffect.publish,
+                    soundEffect.soundSpeaker
                 )
                 is RtcSoundEffectEvent.StopEffectEvent -> stopEffect(soundEffect.soundId)
+                is RtcSoundEffectEvent.PauseEffectEvent -> pauseEffect(soundEffect.soundId)
+                is RtcSoundEffectEvent.ResumeEffectEvent -> resumeEffect(soundEffect.soundId)
+                is RtcSoundEffectEvent.StopAllEffectEvent -> stopAllEffect()
             }
         }
     }

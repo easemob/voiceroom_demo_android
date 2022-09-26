@@ -350,4 +350,12 @@ class Room3DMicLayout : ConstraintLayout, View.OnClickListener, IRoomMicView {
     override fun activeBot(active: Boolean) {
 
     }
+
+    override fun updateVolume(index: Int, volume: Int) {
+
+    }
+
+    override fun updateBotVolume(speakerType: Int, volume: Int) {
+
+    }
 }
