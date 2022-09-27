@@ -53,29 +53,24 @@ public class ChatroomListAdapter extends RoomBaseRecyclerViewAdapter<VRoomBean.R
         }
 
         @Override
-        public void setDataList(List<VRoomBean.RoomsBean> data, int position) {
-            Log.e("setData","position : " + position);
-            itemType( data.get(position).getType());
-            showPrivate(data.get(position).isIs_private(),data.get(position).getType());
-            roomName.setText(data.get(position).getName());
-            ownerName.setText(data.get(position).getOwner().getName());
-            roomCount.setText(mContext.getString(R.string.room_list_count,String.valueOf(data.get(position).getMember_count())));
-        }
-
-        @Override
         public void setData(VRoomBean.RoomsBean item, int position) {
-
+            Log.e("setData","getType" + item.getType());
+            itemType( item.getType());
+            showPrivate(item.isIs_private(),item.getType());
+            roomName.setText(item.getName());
+            ownerName.setText(item.getOwner().getName());
+            roomCount.setText(mContext.getString(R.string.room_list_count,String.valueOf(item.getMember_count())));
         }
 
         private void itemType(int type){
             switch (type){
-                case 1:
+                case 0:
                     item_layout.setBackgroundResource(R.drawable.bg_chatroom_list_type_nomal);
                     break;
-                case 2:
+                case 1:
                     item_layout.setBackgroundResource(R.drawable.bg_chatroom_list_type_3d);
                     break;
-                case 3:
+                case 2:
                     item_layout.setBackgroundResource(R.drawable.bg_chatroom_list_type_official);
                     break;
                 default:

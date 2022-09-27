@@ -27,6 +27,7 @@ import io.agora.chatroom.general.repositories.ProfileManager;
 import tools.ValueCallBack;
 import tools.bean.VRGiftBean;
 import tools.bean.VRMicBean;
+import tools.bean.VRMicListBean;
 import tools.bean.VRUserBean;
 import tools.bean.VRoomBean;
 import tools.bean.VRoomInfoBean;
@@ -69,7 +70,11 @@ public class HttpManager {
       Map<String, String> headers = new HashMap<>();
       headers.put("Content-Type", "application/json");
       JSONObject requestBody = new JSONObject();
-      String portrait = ProfileManager.getInstance().getProfile().getPortrait();
+      String portrait = "";
+      VRUserBean userBean = ProfileManager.getInstance().getProfile();
+      if (userBean != null){
+          portrait = userBean.getPortrait();
+      }
       String randomPortrait = "avatar"+ Math.round((Math.random()*18)+1);
       try {
           requestBody.putOpt("deviceId", device);
@@ -315,13 +320,12 @@ public class HttpManager {
      * @param roomId
      * @param limit
      */
-    public void getRoomMembers(String roomId, int limit, ValueCallBack<VRoomUserBean> callBack){
-        ArrayList<String> cursor = new ArrayList<>();
+    public void getRoomMembers(String roomId, int limit,String cursor, ValueCallBack<VRoomUserBean> callBack){
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
         headers.put("Authorization", "Bearer " + ProfileManager.getInstance().getProfile().getAuthorization());
         new VRHttpClientManager.Builder(mContext)
-                .setUrl(VRRequestApi.get().fetchRoomMembers(roomId,cursor.size() == 0 ? "": cursor.get(0), limit))
+                .setUrl(VRRequestApi.get().fetchRoomMembers(roomId,!TextUtils.isEmpty(cursor)? cursor: "", limit))
                 .setHeaders(headers)
                 .setRequestMethod(Method_GET)
                 .asyncExecute(new VRHttpCallback() {
@@ -329,9 +333,6 @@ public class HttpManager {
                     public void onSuccess(String result) {
                         LogToolsKt.logE("getRoomMembers success: " + result, TAG);
                         VRoomUserBean bean = GsonTools.toBean(result,VRoomUserBean.class);
-                        if (!TextUtils.isEmpty(bean.getCursor())){
-                            cursor.add(0,bean.getCursor());
-                        }
                         callBack.onSuccess(bean);
                     }
 
@@ -447,23 +448,19 @@ public class HttpManager {
      * @param roomId
      * @param limit
      */
-    public void getApplyMicList(String roomId,int limit,ValueCallBack<VRMicBean> callBack){
-        ArrayList<String> cursor = new ArrayList<>();
+    public void getApplyMicList(String roomId,int limit,String cursor,ValueCallBack<VRMicListBean> callBack){
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
         headers.put("Authorization", "Bearer " + ProfileManager.getInstance().getProfile().getAuthorization());
         new VRHttpClientManager.Builder(mContext)
-                .setUrl(VRRequestApi.get().fetchApplyMembers(roomId,cursor.size() == 0 ? "": cursor.get(0), limit))
+                .setUrl(VRRequestApi.get().fetchApplyMembers(roomId,!TextUtils.isEmpty(cursor)? cursor: "", limit))
                 .setHeaders(headers)
                 .setRequestMethod(Method_GET)
                 .asyncExecute(new VRHttpCallback() {
                     @Override
                     public void onSuccess(String result) {
                         LogToolsKt.logE("getApplyMicList success: " + result, TAG);
-                        VRMicBean bean = GsonTools.toBean(result, VRMicBean.class);
-                        if (!TextUtils.isEmpty(bean.getCursor())){
-                            cursor.add(0,bean.getCursor());
-                        }
+                        VRMicListBean bean = GsonTools.toBean(result, VRMicListBean.class);
                         callBack.onSuccess(bean);
                     }
 

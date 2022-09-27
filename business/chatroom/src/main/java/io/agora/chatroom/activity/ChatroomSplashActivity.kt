@@ -41,6 +41,7 @@ class ChatroomSplashActivity : BaseUiActivity<ActivityChatroomSplashBinding>() {
                 override fun onSuccess(data: VRUserBean?) {
                     Log.e("loginViewModel", "onSuccess")
                     ProfileManager.getInstance().profile = data
+                    ChatroomConfigManager.getInstance().login(data!!.chat_uid,data.im_token)
                     initSplashPage()
                 }
             })

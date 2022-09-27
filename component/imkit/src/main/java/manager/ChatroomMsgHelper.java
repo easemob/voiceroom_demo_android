@@ -1,6 +1,7 @@
 package manager;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -225,6 +226,7 @@ public class ChatroomMsgHelper {
                 userName = (String) ext.get("userName");
             }
         }
+        Log.e("Helper","getUserName: " + userName);
         return userName;
     }
 

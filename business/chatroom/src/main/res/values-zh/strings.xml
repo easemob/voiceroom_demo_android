@@ -40,4 +40,11 @@
     <string name="gift_default_name_8">Crown</string>
     <string name="gift_default_name_9">Rocket</string>
 
+    <string name="chatroom_raised_hands_title">Raised Hands</string>
+    <string name="chatroom_invite_hands_title">Invite On-Stage</string>
+    <string name="chatroom_request_speak">请求上麦？</string>
+    <string name="chatroom_confirm">确认</string>
+    <string name="chatroom_cancel">取消</string>
+    <string name="chatroom_mic_apply_success">申请上麦成功</string>
+    <string name="chatroom_mic_apply_fail">申请上麦失败</string>
 </resources>

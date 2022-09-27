@@ -1,14 +1,17 @@
 package io.agora.secnceui.widget.gift;
 
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.view.View;
 
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.RecyclerView;
 
 import io.agora.baseui.BaseInitFragment;
 import io.agora.baseui.interfaces.OnItemClickListener;
 import io.agora.secnceui.R;
 import io.agora.secnceui.bean.GiftBean;
+import io.agora.secnceui.utils.DeviceUtils;
 import io.agora.secnceui.widget.recyclerview.HorizontalPageLayoutManager;
 import io.agora.secnceui.widget.recyclerview.PagingScrollHelper;
 
@@ -40,6 +43,14 @@ public class LiveGiftListFragment extends BaseInitFragment implements OnItemClic
         HorizontalPageLayoutManager manager = new HorizontalPageLayoutManager(1, 4);
         rvList.setHasFixedSize(true);
         rvList.setLayoutManager(manager);
+
+        //设置item 间距
+        DividerItemDecoration itemDecoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
+        GradientDrawable drawable = new GradientDrawable();
+        drawable.setSize((int) DeviceUtils.dp2px(getContext(), 3),0 );
+        itemDecoration.setDrawable(drawable);
+        rvList.addItemDecoration(itemDecoration);
+
         adapter = new GiftListAdapter();
         rvList.setAdapter(adapter);
 

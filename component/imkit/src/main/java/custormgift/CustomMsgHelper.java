@@ -194,8 +194,6 @@ public class CustomMsgHelper implements MessageListener {
             }
         }
         AllNormalList.removeAll(data);
-        Log.e("getNormalData","AllNormalList "+AllNormalList.size());
-        Log.e("getNormalData"," data "+data.size());
         return data;
     }
 
@@ -205,7 +203,6 @@ public class CustomMsgHelper implements MessageListener {
     }
 
     public void addSendText(ChatMessageData data){
-        Log.e("getNormalData"," addSendText ");
         AllNormalList.add(data);
     }
 

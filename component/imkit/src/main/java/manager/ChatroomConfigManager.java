@@ -153,6 +153,20 @@ public class ChatroomConfigManager {
         });
     }
 
+    public void login(String uid,String token){
+        ChatClient.getInstance().loginWithAgoraToken(uid, token, new CallBack() {
+            @Override
+            public void onSuccess() {
+                Log.d("ChatroomConfigManager","Login success");
+            }
+
+            @Override
+            public void onError(int code, String msg) {
+                Log.e("ChatroomConfigManager", "Login onError code:" + code + " desc: " + msg);
+            }
+        });
+    }
+
     public void joinRoom(String roomId,ValueCallBack<ChatRoom> callBack){
         ChatClient.getInstance().chatroomManager().joinChatRoom(roomId, new ValueCallBack<ChatRoom>() {
             @Override

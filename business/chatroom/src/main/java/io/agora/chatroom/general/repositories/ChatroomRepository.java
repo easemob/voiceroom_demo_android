@@ -2,11 +2,8 @@ package io.agora.chatroom.general.repositories;
 
 
 import android.content.Context;
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
-import java.util.List;
 import io.agora.baseui.general.callback.ResultCallBack;
 import io.agora.baseui.general.net.Resource;
 import io.agora.chatroom.general.net.HttpManager;
