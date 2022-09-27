@@ -2,11 +2,7 @@ package io.agora.chatroom.ui;
 
 import android.os.Bundle;
 import android.widget.Toast;
-
 import androidx.fragment.app.FragmentActivity;
-
-import java.util.Objects;
-
 import io.agora.buddy.tool.ToastTools;
 import io.agora.chatroom.R;
 import io.agora.chatroom.fragment.ChatroomHandsDialog;
@@ -14,9 +10,7 @@ import io.agora.chatroom.general.net.HttpManager;
 import io.agora.chatroom.general.repositories.ProfileManager;
 import io.agora.secnceui.ui.common.CommonSheetAlertDialog;
 import io.agora.secnceui.widget.primary.ChatPrimaryMenuView;
-import manager.ChatroomMsgHelper;
 import tools.ValueCallBack;
-import tools.bean.VRoomInfoBean;
 
 public class RoomHandsViewDelegate {
     private static RoomHandsViewDelegate instance;
@@ -42,9 +36,9 @@ public class RoomHandsViewDelegate {
         return instance;
     }
 
-    public void onRoomDetails(VRoomInfoBean bean){
-        roomId = Objects.requireNonNull(bean.getRoom()).getRoom_id();
-        owner = Objects.requireNonNull(bean.getRoom().getOwner()).getName();
+    public void onRoomDetails(String roomId,String owner){
+        this.roomId = roomId;
+        this.owner = owner;
     }
 
     public void showOwnerHandsDialog() {
@@ -68,7 +62,7 @@ public class RoomHandsViewDelegate {
                .setOnClickListener(new CommonSheetAlertDialog.OnClickBottomListener() {
                    @Override
                    public void onConfirmClick() {
-                       HttpManager.getInstance(activity).submitMic(ChatroomMsgHelper.getInstance().getCurrentRoomId(), -1, new ValueCallBack<Boolean>() {
+                       HttpManager.getInstance(activity).submitMic(roomId, -1, new ValueCallBack<Boolean>() {
                            @Override
                            public void onSuccess(Boolean var1) {
                                ToastTools.show(activity,activity.getString(R.string.chatroom_mic_apply_success), Toast.LENGTH_SHORT);

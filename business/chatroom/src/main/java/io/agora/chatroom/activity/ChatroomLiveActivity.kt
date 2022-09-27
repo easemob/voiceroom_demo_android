@@ -94,12 +94,12 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
             // 详情进入数据全
             roomInfoBean?.room?.let { roomDetail ->
                 roomKitBean.convertByRoomDetailInfo(roomDetail)
-                handsDelegate.onRoomDetails(roomInfoBean)
             }
         } else {
             // 房间列表进入，需请求详情
             roomBean?.let { roomInfo ->
                 roomKitBean.convertByRoomInfo(roomInfo)
+                handsDelegate.onRoomDetails(roomBean.room_id,roomBean.ownerUid)
                 roomViewModel.getDetails(this, roomKitBean.roomId)
             }
         }
