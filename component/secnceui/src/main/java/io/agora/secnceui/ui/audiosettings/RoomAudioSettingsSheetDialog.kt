@@ -9,10 +9,8 @@ import android.widget.SeekBar
 import androidx.core.view.isVisible
 import io.agora.baseui.dialog.BaseFixedHeightSheetDialog
 import io.agora.buddy.tool.doOnProgressChanged
+import io.agora.config.ConfigConstants
 import io.agora.secnceui.R
-import io.agora.secnceui.annotation.AINSModeType
-import io.agora.secnceui.annotation.RoomType
-import io.agora.secnceui.annotation.SoundSelectionType
 import io.agora.secnceui.bean.RoomAudioSettingsBean
 import io.agora.secnceui.constants.ScenesConstant.DISABLE_ALPHA
 import io.agora.secnceui.constants.ScenesConstant.ENABLE_ALPHA
@@ -38,7 +36,7 @@ class RoomAudioSettingsSheetDialog constructor(private val audioSettingsListener
 
         binding?.apply {
             setOnApplyWindowInsets(clContent)
-            if (audioSettingsInfo.roomType == RoomType.CommonRoom) {
+            if (audioSettingsInfo.roomType == ConfigConstants.RoomType.Common_Chatroom) {
                 mtSpatialAudio.isVisible = false
                 mtSpatialAudioArrow.isVisible = false
             }
@@ -89,10 +87,10 @@ class RoomAudioSettingsSheetDialog constructor(private val audioSettingsListener
         fun onBotVolumeChange(seekBar: SeekBar?, progress: Int, fromUser: Boolean)
 
         /**最佳音效*/
-        fun onSoundEffect(@SoundSelectionType soundSelection: Int, isEnable: Boolean)
+        fun onSoundEffect(soundSelectionType: Int, isEnable: Boolean)
 
         /**AI降噪*/
-        fun onNoiseSuppression(@AINSModeType ainsModeType: Int, isEnable: Boolean)
+        fun onNoiseSuppression(ainsMode: Int, isEnable: Boolean)
 
         /**空间音频*/
         fun onSpatialAudio(isOpen: Boolean, isEnable: Boolean)

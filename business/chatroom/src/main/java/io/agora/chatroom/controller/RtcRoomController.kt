@@ -13,7 +13,6 @@ import io.agora.rtckit.open.event.RtcAudioEvent
 import io.agora.rtckit.open.event.RtcDeNoiseEvent
 import io.agora.rtckit.open.event.RtcSoundEffectEvent
 import io.agora.rtckit.open.status.*
-import io.agora.secnceui.annotation.AINSModeType
 import io.agora.secnceui.bean.AINSModeBean
 import io.agora.secnceui.bean.SoundAudioBean
 import tools.ValueCallBack
@@ -48,7 +47,7 @@ class RtcRoomController : IRtcKitListener {
     var firstSwitchAnis = true
 
     /**降噪*/
-    var anisMode = AINSModeType.Medium
+    var anisMode = ConfigConstants.AINSMode.AINS_Medium
 
     /**是否开启机器人*/
     var isUseBot: Boolean = false
@@ -63,7 +62,7 @@ class RtcRoomController : IRtcKitListener {
     var botVolume: Int = 50
 
     /**音效*/
-    var soundEffect = ConfigConstants.Social_Chat
+    var soundEffect = ConfigConstants.SoundSelection.Social_Chat
 
     private var micVolumeListener: RtcMicVolumeListener? = null
 
@@ -87,8 +86,8 @@ class RtcRoomController : IRtcKitListener {
             override fun onSuccess(value: Boolean) {
                 // 默认开启降噪
                 val event = when (anisMode) {
-                    AINSModeType.Off -> RtcDeNoiseEvent.CloseEvent()
-                    AINSModeType.High -> RtcDeNoiseEvent.HeightEvent()
+                    ConfigConstants.AINSMode.AINS_Off -> RtcDeNoiseEvent.CloseEvent()
+                    ConfigConstants.AINSMode.AINS_High -> RtcDeNoiseEvent.HeightEvent()
                     else -> RtcDeNoiseEvent.MediumEvent()
                 }
                 rtcManger?.operateDeNoise(event)
@@ -102,8 +101,8 @@ class RtcRoomController : IRtcKitListener {
      */
     fun deNoise(anisModeBean: AINSModeBean) {
         val event = when (anisModeBean.anisMode) {
-            AINSModeType.Off -> RtcDeNoiseEvent.CloseEvent()
-            AINSModeType.High -> RtcDeNoiseEvent.HeightEvent()
+            ConfigConstants.AINSMode.AINS_Off -> RtcDeNoiseEvent.CloseEvent()
+            ConfigConstants.AINSMode.AINS_High -> RtcDeNoiseEvent.HeightEvent()
             else -> RtcDeNoiseEvent.MediumEvent()
         }
         rtcManger?.operateDeNoise(event)
@@ -136,17 +135,13 @@ class RtcRoomController : IRtcKitListener {
     /**
      * 播放音效
      */
-    fun playEffect(soundAudioBean: SoundAudioBean) {
-        // test
-        rtcManger?.operateSoundEffect(
-            RtcSoundEffectEvent.PlayEffectEvent(
-                soundAudioBean.soundId,
-                soundAudioBean.audioUrl,
-                0,
-                true,
-                soundAudioBean.speakerType
-            )
-        )
+    fun playEffect(soundId: Int, audioUrl: String, speakerType: Int) {
+        rtcManger?.let {
+            // 暂停其他音效播放
+            it.operateSoundEffect(RtcSoundEffectEvent.StopAllEffectEvent())
+            it.operateSoundEffect(RtcSoundEffectEvent.PlayEffectEvent(soundId, audioUrl, 0, true, speakerType))
+        }
+
     }
 
     /**
@@ -168,10 +163,10 @@ class RtcRoomController : IRtcKitListener {
         // 退出房间恢复默认值
         firstActiveBot = true
         firstSwitchAnis = true
-        anisMode = AINSModeType.Medium
+        anisMode = ConfigConstants.AINSMode.AINS_Medium
         isUseBot = false
         botVolume = 50
-        soundEffect = ConfigConstants.Social_Chat
+        soundEffect = ConfigConstants.SoundSelection.Social_Chat
         rtcManger?.leaveChannel()
         rtcManger?.destroy()
     }

@@ -21,7 +21,7 @@ internal abstract class RtcBaseSoundEffectEngine<T> : RtcBaseEngine<T>() {
         filePath: String,
         loopCount: Int,
         publish: Boolean,
-        soundSpeakerType: Int = ConfigConstants.Speaker_Bot_Blue,
+        soundSpeakerType: Int = ConfigConstants.BotSpeaker.BotBlue,
     ): Boolean
 
     abstract fun stopEffect(soundId: Int): Boolean

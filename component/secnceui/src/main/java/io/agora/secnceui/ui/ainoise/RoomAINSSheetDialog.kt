@@ -13,9 +13,8 @@ import io.agora.baseui.adapter.OnItemChildClickListener
 import io.agora.baseui.dialog.BaseFixedHeightSheetDialog
 import io.agora.buddy.tool.ToastTools
 import io.agora.buddy.tool.ResourcesTools
+import io.agora.config.ConfigConstants
 import io.agora.secnceui.R
-import io.agora.secnceui.annotation.AINSModeType
-import io.agora.secnceui.annotation.AINSSoundType
 import io.agora.secnceui.bean.AINSModeBean
 import io.agora.secnceui.bean.AINSSoundsBean
 import io.agora.secnceui.databinding.DialogChatroomAinsBinding
@@ -42,7 +41,7 @@ class RoomAINSSheetDialog constructor(
     private val anisSoundsList = mutableListOf<AINSSoundsBean>()
 
     private val anisMode by lazy {
-        arguments?.getInt(KEY_AINS_MODE, AINSModeType.Medium) ?: AINSModeType.Medium
+        arguments?.getInt(KEY_AINS_MODE, ConfigConstants.AINSMode.AINS_Medium) ?: ConfigConstants.AINSMode.AINS_Medium
     }
 
     override fun getViewBinding(
@@ -78,19 +77,14 @@ class RoomAINSSheetDialog constructor(
                 data: AINSModeBean?, extData: Any?, view: View, position: Int, itemViewType: Long
             ) {
                 data?.let { anisMode ->
-                    if (isEnable) {
-                        if (extData is Int) {
-                            if (anisMode.anisMode == extData) {
-                                return
-                            } else {
-                                anisMode.anisMode = extData
-                                anisModeAdapter?.notifyItemChanged(position)
-                                anisModeCallback.invoke(anisMode)
-                            }
-                            ToastTools.show(view.context, "AINS Mode $extData")
+                    if (extData is Int) {
+                        if (anisMode.anisMode == extData) {
+                            return
+                        } else {
+                            anisMode.anisMode = extData
+                            anisModeAdapter?.notifyItemChanged(position)
+                            anisModeCallback.invoke(anisMode)
                         }
-                    } else {
-                        ToastTools.show(view.context, getString(R.string.chatroom_only_host_can_change_anis))
                     }
                 }
             }
@@ -115,25 +109,25 @@ class RoomAINSSheetDialog constructor(
                     data: AINSSoundsBean?, extData: Any?, view: View, position: Int, itemViewType: Long
                 ) {
                     data?.let { anisSound ->
-                        if (extData is Int) {
-                            if (anisSound.soundsType == extData) {
-                                return
-                            } else {
-                                val selectedIndex = anisSoundsAdapter?.selectedIndex ?: -1
-                                if (selectedIndex >= 0) {
-                                    anisSoundsAdapter?.dataList?.get(selectedIndex)?.soundsType = AINSSoundType.Unknown
-                                    anisSoundsAdapter?.notifyItemChanged(selectedIndex)
-                                }
-                                anisSoundsAdapter?.selectedIndex = position
-                                anisSound.soundsType = extData
-                                anisSoundsAdapter?.notifyItemChanged(position)
-                                if (anisSound.soundsType == AINSSoundType.AINS) {
-                                    ToastTools.show(view.context, "试听降噪")
+                        if (isEnable) {
+                            if (extData is Int) {
+                                if (anisSound.soundMode == extData) {
+                                    return
                                 } else {
-                                    ToastTools.show(view.context, "试听无降噪")
+                                    val selectedIndex = anisSoundsAdapter?.selectedIndex ?: -1
+                                    if (selectedIndex >= 0) {
+                                        anisSoundsAdapter?.dataList?.get(selectedIndex)?.soundMode =
+                                            ConfigConstants.AINSMode.AINS_Unknown
+                                        anisSoundsAdapter?.notifyItemChanged(selectedIndex)
+                                    }
+                                    anisSoundsAdapter?.selectedIndex = position
+                                    anisSound.soundMode = extData
+                                    anisSoundsAdapter?.notifyItemChanged(position)
+                                    anisSoundCallback.invoke(anisSound)
                                 }
-                                anisSoundCallback.invoke(anisSound)
                             }
+                        } else {
+                            ToastTools.show(view.context, getString(R.string.chatroom_only_host_can_change_anis))
                         }
                     }
                 }

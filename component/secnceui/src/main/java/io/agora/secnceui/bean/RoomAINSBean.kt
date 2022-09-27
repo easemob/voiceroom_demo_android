@@ -1,15 +1,15 @@
 package io.agora.secnceui.bean
 
-import io.agora.secnceui.annotation.AINSModeType
-import io.agora.secnceui.annotation.AINSSoundType
+import io.agora.config.ConfigConstants
 
 data class AINSModeBean constructor(
     val anisName: String = "",
-    @AINSModeType var anisMode: Int = AINSModeType.Medium // 默认
+    var anisMode: Int = ConfigConstants.AINSMode.AINS_Medium // 默认
 ) : BaseRoomBean
 
 data class AINSSoundsBean constructor(
+    val soundType: Int = ConfigConstants.AINSSoundType.AINS_TVSound,
     val soundName: String = "",
     val soundSubName: String = "",
-    @AINSSoundType var soundsType: Int = AINSSoundType.Unknown
+    var soundMode: Int = ConfigConstants.AINSMode.AINS_Unknown
 ) : BaseRoomBean

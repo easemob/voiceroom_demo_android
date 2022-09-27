@@ -1,10 +1,10 @@
 package io.agora.secnceui.bean
 
 import androidx.annotation.DrawableRes
-import io.agora.secnceui.annotation.SoundSelectionType
+import io.agora.config.ConfigConstants
 
 data class SoundSelectionBean constructor(
-    @SoundSelectionType val soundSelection: Int = SoundSelectionType.SocialChat,
+    val soundSelectionType: Int = ConfigConstants.SoundSelection.Social_Chat,
     val index: Int = 0,
     val soundName: String = "",
     val soundIntroduce: String = "",

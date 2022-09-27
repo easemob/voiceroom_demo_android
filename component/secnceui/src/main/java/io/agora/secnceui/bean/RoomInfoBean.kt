@@ -1,6 +1,6 @@
 package io.agora.secnceui.bean
 
-import io.agora.secnceui.annotation.SoundSelectionType
+import io.agora.config.ConfigConstants
 
 data class RoomInfoBean constructor(
     var roomId: String = "",
@@ -11,6 +11,6 @@ data class RoomInfoBean constructor(
     var memberCount: Int = 0,
     var giftCount: Int = 0,
     var watchCount: Int = 0,
-    @SoundSelectionType var soundSelection: Int = SoundSelectionType.SocialChat,
+    var soundSelection: Int = ConfigConstants.SoundSelection.Social_Chat,
     var topRankUsers: List<RoomRankUserBean> = emptyList(), // 前三名
 ) : BaseRoomBean

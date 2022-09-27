@@ -7,9 +7,9 @@ import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import io.agora.buddy.tool.ResourcesTools
+import io.agora.config.ConfigConstants
 import io.agora.secnceui.R
 import io.agora.secnceui.annotation.MicStatus
-import io.agora.secnceui.annotation.AudioVolumeStatus
 import io.agora.secnceui.bean.MicInfoBean
 import io.agora.secnceui.databinding.ViewChatroom3dMicBinding
 
@@ -100,21 +100,21 @@ class Room3DMicView : ConstraintLayout {
                 }
             }
             // 用户音量
-            when (micInfo.audioVolume) {
-                AudioVolumeStatus.None -> ivMicTag.isVisible = false
-                AudioVolumeStatus.Low -> {
+            when (micInfo.audioVolumeType) {
+                ConfigConstants.VolumeType.Volume_None -> ivMicTag.isVisible = false
+                ConfigConstants.VolumeType.Volume_Low -> {
                     ivMicTag.isVisible = true
                     ivMicTag.setImageResource(R.drawable.icon_chatroom_mic_open1)
                 }
-                AudioVolumeStatus.Medium -> {
+                ConfigConstants.VolumeType.Volume_Medium -> {
                     ivMicTag.isVisible = true
                     ivMicTag.setImageResource(R.drawable.icon_chatroom_mic_open2)
                 }
-                AudioVolumeStatus.High -> {
+                ConfigConstants.VolumeType.Volume_High -> {
                     ivMicTag.isVisible = true
                     ivMicTag.setImageResource(R.drawable.icon_chatroom_mic_open3)
                 }
-                AudioVolumeStatus.Max -> {
+                ConfigConstants.VolumeType.Volume_Max -> {
                     ivMicTag.isVisible = true
                     ivMicTag.setImageResource(R.drawable.icon_chatroom_mic_open4)
                 }

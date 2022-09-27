@@ -1,6 +1,7 @@
 package io.agora.secnceui.ui.mic
 
 import android.content.Context
+import io.agora.config.ConfigConstants
 import io.agora.secnceui.R
 import io.agora.secnceui.annotation.*
 import io.agora.secnceui.bean.*
@@ -23,7 +24,7 @@ object RoomMicConstructor {
         val blueBot = MicInfoBean(
             index = 6,
             micStatus = if (isUserBot) MicStatus.BotActivated else MicStatus.BotInactive,
-            audioVolume = AudioVolumeStatus.Unknown,
+            audioVolumeType = ConfigConstants.VolumeType.Volume_Unknown,
             userInfo = RoomUserInfoBean().apply {
                 username = context.getString(R.string.chatroom_agora_blue)
                 userAvatar = "icon_chatroom_blue_robot"
@@ -32,7 +33,7 @@ object RoomMicConstructor {
         val redBot = MicInfoBean(
             index = 7,
             micStatus = if (isUserBot) MicStatus.BotActivated else MicStatus.BotInactive,
-            audioVolume = AudioVolumeStatus.Unknown,
+            audioVolumeType = ConfigConstants.VolumeType.Volume_Unknown,
             userInfo = RoomUserInfoBean().apply {
                 username = context.getString(R.string.chatroom_agora_red)
                 userAvatar = "icon_chatroom_red_robot"
@@ -49,7 +50,7 @@ object RoomMicConstructor {
             ScenesConstant.KeyMicBlue to MicInfoBean(
                 index = 2,
                 micStatus = if (isUserBot) MicStatus.BotActivated else MicStatus.BotInactive,
-                audioVolume = AudioVolumeStatus.Unknown,
+                audioVolumeType = ConfigConstants.VolumeType.Volume_Unknown,
                 userInfo = RoomUserInfoBean().apply {
                     username = context.getString(R.string.chatroom_agora_blue)
                     userAvatar = "icon_chatroom_blue_robot"
@@ -60,7 +61,7 @@ object RoomMicConstructor {
             ScenesConstant.KeyMicRed to MicInfoBean(
                 index = 5,
                 micStatus = if (isUserBot) MicStatus.BotActivated else MicStatus.BotInactive,
-                audioVolume = AudioVolumeStatus.Unknown,
+                audioVolumeType = ConfigConstants.VolumeType.Volume_Unknown,
                 userInfo = RoomUserInfoBean().apply {
                     username = context.getString(R.string.chatroom_agora_red)
                     userAvatar = "icon_chatroom_red_robot"

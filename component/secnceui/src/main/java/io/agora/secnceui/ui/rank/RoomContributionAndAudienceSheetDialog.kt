@@ -15,7 +15,7 @@ import io.agora.secnceui.R
 import io.agora.secnceui.databinding.DialogChatroomContributionAndAudienceBinding
 import io.agora.secnceui.ui.rank.fragment.RoomRankFragmentAdapter
 
-class RoomContributionAndAudienceSheetDialog constructor(private val fragmentActivity: FragmentActivity) :
+class RoomContributionAndAudienceSheetDialog constructor(val fragmentActivity: FragmentActivity, val isOwner: Boolean) :
     BaseFixedHeightSheetDialog<DialogChatroomContributionAndAudienceBinding>() {
 
     override fun getViewBinding(

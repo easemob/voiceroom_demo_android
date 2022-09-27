@@ -5,9 +5,8 @@ import androidx.core.view.isVisible
 import com.google.android.material.textview.MaterialTextView
 import io.agora.baseui.adapter.BaseRecyclerViewAdapter
 import io.agora.buddy.tool.ResourcesTools
+import io.agora.config.ConfigConstants
 import io.agora.secnceui.R
-import io.agora.secnceui.annotation.AINSModeType
-import io.agora.secnceui.annotation.AINSSoundType
 import io.agora.secnceui.bean.AINSModeBean
 import io.agora.secnceui.bean.AINSSoundsBean
 import io.agora.secnceui.databinding.ItemChatroomAgoraAinsBinding
@@ -21,29 +20,29 @@ class RoomAINSModeViewHolder(binding: ItemChatroomAgoraAinsBinding) :
         data?.let {
             mBinding.mtNoiseSuppressionName.text = it.anisName
             mBinding.mtChatroomHigh.setOnClickListener { view ->
-                onItemChildClick(AINSModeType.High, view)
+                onItemChildClick(ConfigConstants.AINSMode.AINS_High, view)
             }
             mBinding.mtChatroomMedium.setOnClickListener { view ->
-                onItemChildClick(AINSModeType.Medium, view)
+                onItemChildClick(ConfigConstants.AINSMode.AINS_Medium, view)
             }
             mBinding.mtChatroomOff.setOnClickListener { view ->
-                onItemChildClick(AINSModeType.Off, view)
+                onItemChildClick(ConfigConstants.AINSMode.AINS_Off, view)
             }
 //            mBinding.mtChatroomHigh.tag = AINSModeType.High
 //            mBinding.mtChatroomMedium.tag = AINSModeType.Medium
 //            mBinding.mtChatroomOff.tag = AINSModeType.Off
             when (it.anisMode) {
-                AINSModeType.High -> {
+                ConfigConstants.AINSMode.AINS_High -> {
                     setViewHighlight(mBinding.mtChatroomHigh)
                     resetViewDefault(mBinding.mtChatroomMedium)
                     resetViewDefault(mBinding.mtChatroomOff)
                 }
-                AINSModeType.Medium -> {
+                ConfigConstants.AINSMode.AINS_Medium -> {
                     setViewHighlight(mBinding.mtChatroomMedium)
                     resetViewDefault(mBinding.mtChatroomHigh)
                     resetViewDefault(mBinding.mtChatroomOff)
                 }
-                AINSModeType.Off -> {
+                ConfigConstants.AINSMode.AINS_Off -> {
                     setViewHighlight(mBinding.mtChatroomOff)
                     resetViewDefault(mBinding.mtChatroomHigh)
                     resetViewDefault(mBinding.mtChatroomMedium)
@@ -69,10 +68,10 @@ class RoomAINSSoundsViewHolder(binding: ItemChatroomAinsAuditionBinding) :
         data?.let {
             mBinding.mtChatroomAinsName.text = it.soundName
             mBinding.mtChatroomAins.setOnClickListener { view ->
-                onItemChildClick(AINSSoundType.AINS, view)
+                onItemChildClick(ConfigConstants.AINSMode.AINS_High, view)
             }
             mBinding.mtChatroomAinsNone.setOnClickListener { view ->
-                onItemChildClick(AINSSoundType.None, view)
+                onItemChildClick(ConfigConstants.AINSMode.AINS_Off, view)
             }
             if (TextUtils.isEmpty(it.soundSubName)) {
                 mBinding.mtChatroomAinsSubName.text = ""
@@ -81,12 +80,12 @@ class RoomAINSSoundsViewHolder(binding: ItemChatroomAinsAuditionBinding) :
                 mBinding.mtChatroomAinsSubName.text = it.soundSubName
                 mBinding.mtChatroomAinsSubName.isVisible = true
             }
-            when (it.soundsType) {
-                AINSSoundType.AINS -> {
+            when (it.soundMode) {
+                ConfigConstants.AINSMode.AINS_High -> {
                     setViewHighlight(mBinding.mtChatroomAins)
                     resetViewDefault(mBinding.mtChatroomAinsNone)
                 }
-                AINSSoundType.None -> {
+                ConfigConstants.AINSMode.AINS_Off -> {
                     setViewHighlight(mBinding.mtChatroomAinsNone)
                     resetViewDefault(mBinding.mtChatroomAins)
                 }

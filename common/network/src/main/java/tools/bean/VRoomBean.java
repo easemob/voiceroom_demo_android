@@ -153,16 +153,16 @@ public class VRoomBean implements Serializable {
            this.sound_effect = sound_effect;
        }
 
-       public int getSoundSelection() {
+       public int getSoundSelectionType() {
            switch (sound_effect) {
                case "Karaoke":
-                   return ConfigConstants.Karaoke;
+                   return ConfigConstants.SoundSelection.Karaoke;
                case "Gaming Buddy":
-                   return ConfigConstants.Gaming_Buddy;
+                   return ConfigConstants.SoundSelection.Gaming_Buddy;
                case "Professional bodcaster":
-                   return ConfigConstants.Professional_Broadcaster;
+                   return ConfigConstants.SoundSelection.Professional_Broadcaster;
                default:
-                   return ConfigConstants.Social_Chat;
+                   return ConfigConstants.SoundSelection.Social_Chat;
            }
        }
 

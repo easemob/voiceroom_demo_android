@@ -17,8 +17,8 @@ import io.agora.secnceui.databinding.DialogChatroomSoundSelectionBinding
 import io.agora.secnceui.databinding.ItemChatroomSoundSelectionBinding
 
 class RoomSoundSelectionSheetDialog constructor(
-    private val soundSelectionListener: OnClickSoundSelectionListener,
-    private val isEnable: Boolean = true
+    private val isEnable: Boolean = true,
+    private val soundSelectionListener: OnClickSoundSelectionListener
 ) :
     BaseFixedHeightSheetDialog<DialogChatroomSoundSelectionBinding>() {
 

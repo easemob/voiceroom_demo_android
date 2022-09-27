@@ -6,9 +6,9 @@ import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import io.agora.buddy.tool.ResourcesTools
+import io.agora.config.ConfigConstants
 import io.agora.secnceui.R
 import io.agora.secnceui.annotation.ChatroomTopType
-import io.agora.secnceui.annotation.SoundSelectionType
 import io.agora.secnceui.bean.RoomInfoBean
 import io.agora.secnceui.constants.ScenesConstant
 import io.agora.secnceui.databinding.ViewChatroomLiveTopBinding
@@ -53,9 +53,9 @@ class RoomLiveTopView : ConstraintLayout, View.OnClickListener, IRoomLiveTopView
             mtChatroomGifts.text = chatroomInfo.giftCount.toString()
             mtChatroomWatch.text = chatroomInfo.watchCount.toString()
             mtChatroomAgoraSound.text = when (chatroomInfo.soundSelection) {
-                SoundSelectionType.Karaoke -> root.context.getString(R.string.chatroom_karaoke)
-                SoundSelectionType.GamingBuddy -> root.context.getString(R.string.chatroom_gaming_buddy)
-                SoundSelectionType.ProfessionalBroadcaster -> root.context.getString(R.string.chatroom_professional_broadcaster)
+                ConfigConstants.SoundSelection.Karaoke -> root.context.getString(R.string.chatroom_karaoke)
+                ConfigConstants.SoundSelection.Gaming_Buddy -> root.context.getString(R.string.chatroom_gaming_buddy)
+                ConfigConstants.SoundSelection.Professional_Broadcaster -> root.context.getString(R.string.chatroom_professional_broadcaster)
                 else -> root.context.getString(R.string.chatroom_social_chat)
             }
             // 房主头像

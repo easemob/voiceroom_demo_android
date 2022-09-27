@@ -13,7 +13,7 @@ sealed class RtcSoundEffectEvent {
         val filePath: String,
         val loopCount: Int,
         val publish: Boolean,
-        val soundSpeaker: Int = ConfigConstants.Speaker_Bot_Blue
+        val soundSpeaker: Int = ConfigConstants.BotSpeaker.BotBlue
     ) :
         RtcSoundEffectEvent()
 

@@ -32,9 +32,13 @@ class Room2DBotMicAdapter constructor(
         if (active) {
             dataList[0].blueBot.micStatus = MicStatus.BotActivated
             dataList[0].redBot.micStatus = MicStatus.BotActivated
+            dataList[0].blueBot.audioVolumeType = ConfigConstants.VolumeType.Volume_None
+            dataList[0].redBot.audioVolumeType = ConfigConstants.VolumeType.Volume_None
         } else {
             dataList[0].blueBot.micStatus = MicStatus.BotInactive
             dataList[0].redBot.micStatus = MicStatus.BotInactive
+            dataList[0].blueBot.audioVolumeType = ConfigConstants.VolumeType.Volume_None
+            dataList[0].redBot.audioVolumeType = ConfigConstants.VolumeType.Volume_None
         }
         notifyItemChanged(0)
     }
@@ -42,15 +46,15 @@ class Room2DBotMicAdapter constructor(
     /**更新音量*/
     fun updateVolume(speaker: Int, volume: Int) {
         when (speaker) {
-            ConfigConstants.Speaker_Bot_Blue -> {
-                dataList[0].blueBot.audioVolume = volume
+            ConfigConstants.BotSpeaker.BotBlue -> {
+                dataList[0].blueBot.audioVolumeType = volume
             }
-            ConfigConstants.Speaker_Bot_Red -> {
-                dataList[0].redBot.audioVolume = volume
+            ConfigConstants.BotSpeaker.BotRed -> {
+                dataList[0].redBot.audioVolumeType = volume
             }
             else -> {
-                dataList[0].blueBot.audioVolume = volume
-                dataList[0].redBot.audioVolume = volume
+                dataList[0].blueBot.audioVolumeType = volume
+                dataList[0].redBot.audioVolumeType = volume
             }
         }
         notifyItemChanged(0)

@@ -39,11 +39,11 @@ data class VRoomDetail constructor(
 ) : Serializable {
     fun getSoundSelection(): Int {
         return when (sound_effect) {
-            "Social Chat" -> ConfigConstants.Social_Chat
-            "Karaoke" -> ConfigConstants.Karaoke
-            "Gaming Buddy" -> ConfigConstants.Gaming_Buddy
-            "Professional bodcaster" -> ConfigConstants.Professional_Broadcaster
-            else -> ConfigConstants.Social_Chat
+            "Social Chat" -> ConfigConstants.SoundSelection.Social_Chat
+            "Karaoke" -> ConfigConstants.SoundSelection.Karaoke
+            "Gaming Buddy" -> ConfigConstants.SoundSelection.Gaming_Buddy
+            "Professional bodcaster" -> ConfigConstants.SoundSelection.Professional_Broadcaster
+            else -> ConfigConstants.SoundSelection.Social_Chat
         }
     }
 }

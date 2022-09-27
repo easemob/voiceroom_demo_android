@@ -28,6 +28,7 @@ import io.agora.chatroom.general.repositories.ProfileManager
 import io.agora.chatroom.model.ChatroomViewModel
 import io.agora.chatroom.ui.*
 import io.agora.chatroom.ui.RoomObservableViewDelegate
+import io.agora.config.ConfigConstants
 import io.agora.config.RouterParams
 import io.agora.config.RouterPath
 import io.agora.secnceui.R
@@ -129,7 +130,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
 
     private fun initView() {
         binding.chatBottom.initMenu(roomKitBean.roomType)
-        if (roomKitBean.isCommonRoom()) { // 普通房间
+        if (roomKitBean.roomType == ConfigConstants.RoomType.Common_Chatroom) { // 普通房间
             binding.likeView.likeView.setOnClickListener { binding.likeView.addFavor() }
             binding.chatroomGiftView.init(roomKitBean.chatroomId)
             binding.messageView.init(roomKitBean.chatroomId)
@@ -146,7 +147,10 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
                 object : OnItemClickListener<MicInfoBean> {
                     override fun onItemClick(data: MicInfoBean, view: View, position: Int, viewType: Long) {
                         if (roomKitBean.isOwner) {
-                            roomObservableDelegate.onBotMicClick(RtcRoomController.get().isUseBot)
+                            roomObservableDelegate.onBotMicClick(
+                                RtcRoomController.get().isUseBot,
+                                getString(R.string.chatroom_open_bot_prompt)
+                            )
                         }
                     }
                 }
@@ -166,7 +170,10 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
                 object : OnItemClickListener<MicInfoBean> {
                     override fun onItemClick(data: MicInfoBean, view: View, position: Int, viewType: Long) {
                         if (roomKitBean.isOwner) {
-                            roomObservableDelegate.onBotMicClick(RtcRoomController.get().isUseBot)
+                            roomObservableDelegate.onBotMicClick(
+                                RtcRoomController.get().isUseBot,
+                                getString(R.string.chatroom_open_bot_prompt)
+                            )
                         }
                     }
                 },
