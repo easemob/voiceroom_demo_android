@@ -44,6 +44,9 @@ class RtcRoomController : IRtcKitListener {
     /**第一次启动机器，播放*/
     var firstActiveBot = true
 
+    /**第一次切换ai 降噪*/
+    var firstSwitchAnis = true
+
     /**降噪*/
     var anisMode = AINSModeType.Medium
 
@@ -164,6 +167,7 @@ class RtcRoomController : IRtcKitListener {
     fun destroy() {
         // 退出房间恢复默认值
         firstActiveBot = true
+        firstSwitchAnis = true
         anisMode = AINSModeType.Medium
         isUseBot = false
         botVolume = 50

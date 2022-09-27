@@ -5,7 +5,6 @@ import android.text.TextUtils
 import android.view.View
 import android.widget.CompoundButton
 import android.widget.SeekBar
-import android.widget.Toast
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import io.agora.baseui.adapter.OnItemClickListener
@@ -93,11 +92,11 @@ class RoomObservableViewDelegate constructor(
                     if (RtcRoomController.get().firstActiveBot) {
                         RtcRoomController.get().firstActiveBot = false
                         if (roomKitBean.roomType == ConfigConstants.Common_Chatroom) {
-                            RoomSoundAudioConstructor.soundAudioMap[ConfigConstants.Audio_Create_Common_Room]?.let {
+                            RoomSoundAudioConstructor.createRoomSoundAudioMap[ConfigConstants.Audio_Create_Common_Room]?.let {
                                 RtcRoomController.get().playEffect(it)
                             }
                         } else {
-                            RoomSoundAudioConstructor.soundAudioMap[ConfigConstants.Audio_Create_Spatial_Room]?.let {
+                            RoomSoundAudioConstructor.createRoomSoundAudioMap[ConfigConstants.Audio_Create_Spatial_Room]?.let {
                                 RtcRoomController.get().playEffect(it)
                             }
                         }
@@ -247,12 +246,32 @@ class RoomObservableViewDelegate constructor(
         }.show(activity.supportFragmentManager, "mtAudioSettings")
     }
 
+    /**
+     * 最佳音效选择
+     */
     fun onSoundSelectionDialog(@SoundSelectionType soundSelection: Int, finishBack: () -> Unit) {
         RoomSoundSelectionSheetDialog(object :
             RoomSoundSelectionSheetDialog.OnClickSoundSelectionListener {
 
-            override fun onSoundEffect(soundSelection: SoundSelectionBean) {
-                onExitRoom(activity.getString(R.string.chatroom_exit_and_create_one), finishBack)
+            override fun onSoundEffect(soundSelection: SoundSelectionBean, isCurrentUsing: Boolean) {
+                if (isCurrentUsing) {
+                    // 试听音效需要开启机器人
+                    if (RtcRoomController.get().isUseBot) {
+                        val audioType = when (soundSelection.soundSelection) {
+                            SoundSelectionType.Karaoke -> ConfigConstants.Audio_Sound_Karaoke
+                            SoundSelectionType.GamingBuddy -> ConfigConstants.Audio_Sound_Gaming_Buddy
+                            SoundSelectionType.ProfessionalBroadcaster -> ConfigConstants.Audio_Sound_Professional_Broadcaster
+                            else -> ConfigConstants.Audio_Sound_Social_Chat
+                        }
+                        RoomSoundAudioConstructor.soundSelectionAudioMap[audioType]?.let {
+                            RtcRoomController.get().playEffect(it)
+                        }
+                    } else {
+                        onBotMicClick(false)
+                    }
+                } else {
+                    onExitRoom(activity.getString(R.string.chatroom_exit_and_create_one), finishBack)
+                }
             }
 
         }, roomKitBean.isOwner).apply {
@@ -271,9 +290,15 @@ class RoomObservableViewDelegate constructor(
             anisModeCallback = {
                 RtcRoomController.get().anisMode = it.anisMode
                 RtcRoomController.get().deNoise(it)
+                "onAINSDialog anisModeCallback：$it".logE(TAG)
+                if (RtcRoomController.get().isUseBot && RtcRoomController.get().firstSwitchAnis) {
+                    RtcRoomController.get().firstSwitchAnis = false
+                    RtcRoomController.get().playEffect(RoomSoundAudioConstructor.anisIntroduceAudioList)
+                }
             },
             anisSoundCallback = {
 //                RtcRoomController.get().playEffect(it)
+                "onAINSDialog anisSoundCallback：$it".logE(TAG)
             }
         ).apply {
             arguments = Bundle().apply {
@@ -387,7 +412,7 @@ class RoomObservableViewDelegate constructor(
     /**
      * 点击机器人
      */
-    fun onBotMicClick(data: MicInfoBean, isUserBot: Boolean) {
+    fun onBotMicClick(isUserBot: Boolean) {
         if (isUserBot) {
 //            Toast.makeText(activity, "${data.userInfo?.username}", Toast.LENGTH_SHORT).show()
         } else {

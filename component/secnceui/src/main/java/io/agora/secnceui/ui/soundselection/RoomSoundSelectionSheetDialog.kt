@@ -67,12 +67,8 @@ class RoomSoundSelectionSheetDialog constructor(
                 ) {
                     if (isEnable) {
                         if (extData is Boolean) {
-                            if (!extData) {
-                                data?.let {
-                                    soundSelectionListener.onSoundEffect(it)
-                                }
-                            } else {
-                                Toast.makeText(context, "$data", Toast.LENGTH_SHORT).show()
+                            data?.let {
+                                soundSelectionListener.onSoundEffect(it, extData)
                             }
                         }
                     } else {
@@ -93,6 +89,6 @@ class RoomSoundSelectionSheetDialog constructor(
     }
 
     interface OnClickSoundSelectionListener {
-        fun onSoundEffect(soundSelection: SoundSelectionBean)
+        fun onSoundEffect(soundSelection: SoundSelectionBean, isCurrentUsing: Boolean)
     }
 }

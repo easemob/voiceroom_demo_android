@@ -144,7 +144,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
                 object : OnItemClickListener<MicInfoBean> {
                     override fun onItemClick(data: MicInfoBean, view: View, position: Int, viewType: Long) {
                         if (roomKitBean.isOwner) {
-                            roomObservableDelegate.onBotMicClick(data, RtcRoomController.get().isUseBot)
+                            roomObservableDelegate.onBotMicClick(RtcRoomController.get().isUseBot)
                         }
                     }
                 }
@@ -164,7 +164,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
                 object : OnItemClickListener<MicInfoBean> {
                     override fun onItemClick(data: MicInfoBean, view: View, position: Int, viewType: Long) {
                         if (roomKitBean.isOwner) {
-                            roomObservableDelegate.onBotMicClick(data, RtcRoomController.get().isUseBot)
+                            roomObservableDelegate.onBotMicClick(RtcRoomController.get().isUseBot)
                         }
                     }
                 },
