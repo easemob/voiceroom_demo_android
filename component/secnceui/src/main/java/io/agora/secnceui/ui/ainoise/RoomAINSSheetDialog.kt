@@ -12,7 +12,7 @@ import io.agora.baseui.adapter.BaseRecyclerViewAdapter
 import io.agora.baseui.adapter.OnItemChildClickListener
 import io.agora.baseui.dialog.BaseFixedHeightSheetDialog
 import io.agora.buddy.tool.ToastTools
-import io.agora.buddy.tool.ViewTools
+import io.agora.buddy.tool.ResourcesTools
 import io.agora.secnceui.R
 import io.agora.secnceui.annotation.AINSModeType
 import io.agora.secnceui.annotation.AINSSoundType
@@ -151,7 +151,7 @@ class RoomAINSSheetDialog constructor(
         context?.let {
             recyclerView.addItemDecoration(
                 MaterialDividerItemDecoration(it, MaterialDividerItemDecoration.HORIZONTAL).apply {
-                    dividerColor = ViewTools.getColor(it.resources, R.color.divider_color_F6F6F6)
+                    dividerColor = ResourcesTools.getColor(it.resources, R.color.divider_color_F6F6F6)
                 }
             )
         }

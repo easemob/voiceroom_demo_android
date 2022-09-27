@@ -80,6 +80,15 @@ internal class AgoraRtcEventHandler(var rtcListener: IRtcClientListener?) : IRtc
         "onUserMuteAudio uid:$uid,muted:$muted".logD(TAG)
     }
 
+    /**
+     * 当音效文件播放结束后触发该回调
+     */
+    override fun onAudioEffectFinished(soundId: Int) {
+        super.onAudioEffectFinished(soundId)
+        rtcListener?.onAudioEffectFinished(soundId)
+        "onAudioEffectFinished soundId:$soundId".logD(TAG)
+    }
+
     override fun onError(err: Int) {
         super.onError(err)
         rtcListener?.onError(RtcErrorStatus(err, "An error occurred during SDK runtime."))

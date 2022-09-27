@@ -1,13 +1,27 @@
 package io.agora.rtckit.open.event
 
+import io.agora.config.ConfigConstants
+
 /**
  * @author create by zhangwei03
  *
  * 音效操作事件
  */
 sealed class RtcSoundEffectEvent {
-    class PlayEffectEvent(val soundId: Int, val filePath: String, val loopCount: Int, val publish: Boolean) :
+    class PlayEffectEvent constructor(
+        val soundId: Int,
+        val filePath: String,
+        val loopCount: Int,
+        val publish: Boolean,
+        val soundSpeaker: Int = ConfigConstants.Speaker_Bot_Blue
+    ) :
         RtcSoundEffectEvent()
 
-    class StopEffectEvent(val soundId: Int): RtcSoundEffectEvent()
+    class StopEffectEvent constructor(val soundId: Int) : RtcSoundEffectEvent()
+
+    class PauseEffectEvent constructor(val soundId: Int) : RtcSoundEffectEvent()
+
+    class ResumeEffectEvent constructor(val soundId: Int) : RtcSoundEffectEvent()
+
+    class StopAllEffectEvent constructor() : RtcSoundEffectEvent()
 }

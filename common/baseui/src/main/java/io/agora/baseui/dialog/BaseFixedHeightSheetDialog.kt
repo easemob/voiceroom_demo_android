@@ -11,7 +11,6 @@ import androidx.viewbinding.ViewBinding
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import io.agora.buddy.tool.ScreenTools
-import io.agora.buddy.tool.ViewTools
 
 /**
  * @author create by zhangwei03

@@ -42,4 +42,5 @@ dependencies {
     api dep["core-ktx"]
 
     compileOnly project(':common:buddy')
+    compileOnly project(':common:config')
 }

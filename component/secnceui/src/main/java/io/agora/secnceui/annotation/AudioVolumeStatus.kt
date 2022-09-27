@@ -1,34 +1,34 @@
 package io.agora.secnceui.annotation
 
 import androidx.annotation.IntDef
+import io.agora.config.ConfigConstants
 
 /**
  * 音量大小
  */
 @kotlin.annotation.Retention(AnnotationRetention.SOURCE)
 @IntDef(
+    AudioVolumeStatus.Unknown,
     AudioVolumeStatus.None,
     AudioVolumeStatus.Low,
-    AudioVolumeStatus.Middle,
+    AudioVolumeStatus.Medium,
     AudioVolumeStatus.High,
     AudioVolumeStatus.Max,
-    AudioVolumeStatus.Mute,
 )
 annotation class AudioVolumeStatus {
 
     companion object {
+        const val Unknown = ConfigConstants.Volume_Unknown
 
-        const val None = 0
+        const val None = ConfigConstants.Volume_None
 
-        const val Low = 1
+        const val Low = ConfigConstants.Volume_Low
 
-        const val Middle = 2
+        const val Medium = ConfigConstants.Volume_Medium
 
-        const val High = 3
+        const val High = ConfigConstants.Volume_High
 
-        const val Max = 4
-
-        const val Mute = 5
+        const val Max = ConfigConstants.Volume_Max
     }
 }
 

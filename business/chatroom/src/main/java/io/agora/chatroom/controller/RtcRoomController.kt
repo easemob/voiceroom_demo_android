@@ -1,24 +1,22 @@
 package io.agora.chatroom.controller
 
 import android.content.Context
-import io.agora.buddy.tool.logE
+import io.agora.buddy.tool.ThreadManager
 import io.agora.chatroom.BuildConfig
+import io.agora.config.ConfigConstants
 import io.agora.rtckit.open.IRtcKitListener
 import io.agora.rtckit.open.IRtcValueCallback
-import io.agora.rtckit.open.RtcKitListenerImpl
 import io.agora.rtckit.open.RtcKitManager
 import io.agora.rtckit.open.config.RtcChannelConfig
 import io.agora.rtckit.open.config.RtcInitConfig
+import io.agora.rtckit.open.event.RtcAudioEvent
 import io.agora.rtckit.open.event.RtcDeNoiseEvent
 import io.agora.rtckit.open.event.RtcSoundEffectEvent
 import io.agora.rtckit.open.status.*
 import io.agora.secnceui.annotation.AINSModeType
-import io.agora.secnceui.annotation.AINSUser
 import io.agora.secnceui.bean.AINSModeBean
-import io.agora.secnceui.bean.AINSSoundsBean
+import io.agora.secnceui.bean.SoundAudioBean
 import tools.ValueCallBack
-import java.util.concurrent.atomic.AtomicBoolean
-import java.util.concurrent.atomic.AtomicInteger
 
 /**
  * @author create by zhangwei03
@@ -31,10 +29,6 @@ class RtcRoomController : IRtcKitListener {
 
         @JvmStatic
         fun get() = InstanceHelper.sSingle
-
-        private const val joinStart = 1
-        private const val joinSuccess = 2
-        private const val joinError = 3
     }
 
     object InstanceHelper {
@@ -47,24 +41,34 @@ class RtcRoomController : IRtcKitListener {
 
     private var rtcManger: RtcKitManager? = null
 
-    /**机器人小蓝rtcManager*/
-    private var blueManger: RtcKitManager? = null
+    /**第一次启动机器，播放*/
+    var firstActiveBot = true
 
-    /**机器人小红rtcManager*/
-    private var redManger: RtcKitManager? = null
-
-    /**机器人是否激活*/
-    private var botActivated = AtomicBoolean(false)
+    /**第一次切换ai 降噪*/
+    var firstSwitchAnis = true
 
     /**降噪*/
-    private var anisMode = AtomicInteger(AINSModeType.Medium)
+    var anisMode = AINSModeType.Medium
 
-    fun botActivated(): Boolean = botActivated.get()
+    /**是否开启机器人*/
+    var isUseBot: Boolean = false
+        set(value) {
+            field = value
+            if (!field) {
+                stopAllEffect()
+            }
+        }
 
-    fun anisMode(): Int = anisMode.get()
+    /**机器人音量*/
+    var botVolume: Int = 50
 
-    fun setAnisMode(@AINSModeType anisMode: Int) {
-        this.anisMode.set(anisMode)
+    /**音效*/
+    var soundEffect = ConfigConstants.Social_Chat
+
+    private var micVolumeListener: RtcMicVolumeListener? = null
+
+    fun setMicVolumeListener(micVolumeListener: RtcMicVolumeListener) {
+        this.micVolumeListener = micVolumeListener
     }
 
     /**加入rtc频道*/
@@ -82,7 +86,7 @@ class RtcRoomController : IRtcKitListener {
         rtcManger?.joinChannel(rtcChannelConfig, object : IRtcValueCallback<Boolean> {
             override fun onSuccess(value: Boolean) {
                 // 默认开启降噪
-                val event = when (anisMode.get()) {
+                val event = when (anisMode) {
                     AINSModeType.Off -> RtcDeNoiseEvent.CloseEvent()
                     AINSModeType.High -> RtcDeNoiseEvent.HeightEvent()
                     else -> RtcDeNoiseEvent.MediumEvent()
@@ -93,87 +97,81 @@ class RtcRoomController : IRtcKitListener {
         })
     }
 
-    /**激活机器人，只有房主可以激活*/
-    fun activeBot(context: Context, active: Boolean, joinChannelCallback: ValueCallBack<Boolean>) {
-        blueManger?.destroy()
-        redManger?.destroy()
-        if (active) {
-            val blueJoinStatus = AtomicInteger(joinStart)
-            val redJoinStatus = AtomicInteger(joinStart)
-            blueManger = RtcKitManager.initRTC(context, RtcInitConfig(BuildConfig.agora_app_id), RtcKitListenerImpl())
-            redManger = RtcKitManager.initRTC(context, RtcInitConfig(BuildConfig.agora_app_id), RtcKitListenerImpl())
-
-            val channelConfigBlue = rtcChannelConfig.copy().apply {
-                userId = 101
-            }
-            blueManger?.joinChannel(channelConfigBlue, object : IRtcValueCallback<Boolean> {
-                override fun onSuccess(value: Boolean) {
-                    if (value) {
-                        blueJoinStatus.set(joinSuccess)
-                    } else {
-                        blueJoinStatus.set(joinError)
-                    }
-                    checkJoinResult(blueJoinStatus, redJoinStatus, joinChannelCallback)
-                }
-            })
-            val channelConfigRed = rtcChannelConfig.copy().apply {
-                userId = 102
-            }
-            redManger?.joinChannel(channelConfigRed, object : IRtcValueCallback<Boolean> {
-                override fun onSuccess(value: Boolean) {
-                    if (value) {
-                        redJoinStatus.set(joinSuccess)
-                    } else {
-                        redJoinStatus.set(joinError)
-                    }
-                    checkJoinResult(blueJoinStatus, redJoinStatus, joinChannelCallback)
-                }
-            })
-        } else {
-            blueManger?.leaveChannel()
-            redManger?.leaveChannel()
-        }
-    }
-
-    private fun checkJoinResult(
-        blueJoinStatus: AtomicInteger, redJoinStatus: AtomicInteger, joinChannelCallback: ValueCallBack<Boolean>
-    ) {
-        if (blueJoinStatus.get() == joinSuccess && redJoinStatus.get() == joinSuccess) {
-            joinChannelCallback.onSuccess(true)
-        } else if (blueJoinStatus.get() == joinError && redJoinStatus.get() == joinError) {
-            joinChannelCallback.onSuccess(false)
-        } else {
-            "blue bot status:${blueJoinStatus.get()},red bot status:${redJoinStatus.get()}".logE(TAG)
-        }
-    }
-
+    /**
+     * 降噪控制
+     */
     fun deNoise(anisModeBean: AINSModeBean) {
         val event = when (anisModeBean.anisMode) {
             AINSModeType.Off -> RtcDeNoiseEvent.CloseEvent()
             AINSModeType.High -> RtcDeNoiseEvent.HeightEvent()
             else -> RtcDeNoiseEvent.MediumEvent()
         }
-        val manager: RtcKitManager? = when (anisModeBean.anisUser) {
-            AINSUser.BlueBot -> blueManger
-            AINSUser.RedBot -> redManger
-            else -> rtcManger
-        }
-        manager?.operateDeNoise(event)
+        rtcManger?.operateDeNoise(event)
     }
 
-    fun playEffect(anisSoundsBean: AINSSoundsBean) {
+    /**
+     * 音效队列
+     */
+    private val soundAudioQueue: ArrayDeque<SoundAudioBean> = ArrayDeque()
+
+    /**
+     * 播放音效
+     */
+    fun playEffect(soundAudioList: List<SoundAudioBean>) {
+        // 暂停其他音效播放
+        rtcManger?.operateSoundEffect(
+            RtcSoundEffectEvent.StopAllEffectEvent()
+        )
+        // 加入音效队列
+        soundAudioQueue.clear()
+        soundAudioQueue.addAll(soundAudioList)
+        // 取队列第一个播放
+        soundAudioQueue.removeFirstOrNull()?.let {
+            rtcManger?.operateSoundEffect(
+                RtcSoundEffectEvent.PlayEffectEvent(it.soundId, it.audioUrl, 0, true, it.speakerType)
+            )
+        }
+    }
+
+    /**
+     * 播放音效
+     */
+    fun playEffect(soundAudioBean: SoundAudioBean) {
         // test
-        blueManger?.operateSoundEffect(
+        rtcManger?.operateSoundEffect(
             RtcSoundEffectEvent.PlayEffectEvent(
-                1,
-                "https://webdemo.agora.io/ding.mp3",
-                1,
-                true
+                soundAudioBean.soundId,
+                soundAudioBean.audioUrl,
+                0,
+                true,
+                soundAudioBean.speakerType
             )
         )
     }
 
+    /**
+     * 暂停所有音效播放
+     */
+    fun stopAllEffect() {
+        soundAudioQueue.clear()
+        rtcManger?.operateSoundEffect(RtcSoundEffectEvent.StopAllEffectEvent())
+    }
+
+    /**
+     * 本地mute/unmute
+     */
+    fun enableLocalAudio(mute: Boolean) {
+        rtcManger?.operateAudio(RtcAudioEvent.AudioMuteLocal(mute))
+    }
+
     fun destroy() {
+        // 退出房间恢复默认值
+        firstActiveBot = true
+        firstSwitchAnis = true
+        anisMode = AINSModeType.Medium
+        isUseBot = false
+        botVolume = 50
+        soundEffect = ConfigConstants.Social_Chat
         rtcManger?.leaveChannel()
         rtcManger?.destroy()
     }
@@ -195,6 +193,25 @@ class RtcRoomController : IRtcKitListener {
 
     override fun onLeaveChannel(userId: Int) {
 
+    }
+
+    override fun onAudioEffectFinished(soundId: Int, finished: Boolean, speakerType: Int) {
+        if (finished) {
+            // 结束播放回调--->>播放下一个，取队列第一个播放
+            ThreadManager.getInstance().runOnMainThread {
+                micVolumeListener?.onBotVolume(speakerType, true)
+            }
+            soundAudioQueue.removeFirstOrNull()?.let {
+                rtcManger?.operateSoundEffect(
+                    RtcSoundEffectEvent.PlayEffectEvent(it.soundId, it.audioUrl, 0, true, it.speakerType)
+                )
+            }
+        } else {
+            // 开始播放回调--->>
+            ThreadManager.getInstance().runOnMainThread {
+                micVolumeListener?.onBotVolume(speakerType, false)
+            }
+        }
     }
 
     override fun onError(rtcErrorStatus: RtcErrorStatus) {

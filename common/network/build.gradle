@@ -39,4 +39,5 @@ dependencies {
     compileOnly dep["gson"]
     compileOnly dep["okhttp"]
     compileOnly project(':common:buddy')
+    compileOnly project(':common:config')
 }

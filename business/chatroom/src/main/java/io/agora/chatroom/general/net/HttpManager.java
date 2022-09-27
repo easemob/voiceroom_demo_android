@@ -247,7 +247,7 @@ public class HttpManager {
      */
     public void updateRoomInfo(String roomId, String name, String announcement, Boolean is_private,
                                String password, Boolean use_robot, Boolean allowed_free_join_mic,
-                               ValueCallBack<Boolean> callBack) {
+                               Integer robotVolume,ValueCallBack<Boolean> callBack) {
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
         headers.put("Authorization", "Bearer " + ProfileManager.getInstance().getProfile().getAuthorization());
@@ -257,7 +257,7 @@ public class HttpManager {
             if (announcement != null) requestBody.putOpt("announcement", announcement);
             if (is_private != null) requestBody.putOpt("is_private", is_private);
             if (password != null) requestBody.putOpt("password", password);
-            if (use_robot != null) requestBody.putOpt("use_rebot", use_robot);
+            if (use_robot != null) requestBody.putOpt("use_robot", use_robot);
             if (allowed_free_join_mic != null) requestBody.putOpt("allowed_free_join_mic", allowed_free_join_mic);
         } catch (JSONException e) {
             e.printStackTrace();

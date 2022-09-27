@@ -1,8 +1,6 @@
 package io.agora.secnceui.ui.soundselection
 
-import android.os.Build
 import android.os.Bundle
-import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -69,12 +67,8 @@ class RoomSoundSelectionSheetDialog constructor(
                 ) {
                     if (isEnable) {
                         if (extData is Boolean) {
-                            if (!extData) {
-                                data?.let {
-                                    soundSelectionListener.onSoundEffect(it)
-                                }
-                            } else {
-                                Toast.makeText(context, "$data", Toast.LENGTH_SHORT).show()
+                            data?.let {
+                                soundSelectionListener.onSoundEffect(it, extData)
                             }
                         }
                     } else {
@@ -95,6 +89,6 @@ class RoomSoundSelectionSheetDialog constructor(
     }
 
     interface OnClickSoundSelectionListener {
-        fun onSoundEffect(soundSelection: SoundSelectionBean)
+        fun onSoundEffect(soundSelection: SoundSelectionBean, isCurrentUsing: Boolean)
     }
 }

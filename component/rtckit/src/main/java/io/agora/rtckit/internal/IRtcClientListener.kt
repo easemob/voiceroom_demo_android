@@ -1,5 +1,6 @@
 package io.agora.rtckit.internal
 
+import io.agora.config.ConfigConstants
 import io.agora.rtckit.open.status.RtcAudioChangeStatus
 import io.agora.rtckit.open.status.RtcAudioVolumeIndicationStatus
 import io.agora.rtckit.open.status.RtcErrorStatus
@@ -23,6 +24,9 @@ interface IRtcClientListener {
 
     /**音频状态：本地静音，远程静音等*/
     fun onAudioStatus(audioChangeStatus: RtcAudioChangeStatus)
+
+    /**当音效文件开始播放触发该回调*/
+    fun onAudioEffectFinished(soundId: Int, finished: Boolean = true, speakerType: Int = ConfigConstants.Speaker_Bot_Both)
 
     /**错误回调*/
     fun onError(rtcErrorStatus: RtcErrorStatus)

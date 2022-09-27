@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import io.agora.baseui.adapter.OnItemClickListener
 import io.agora.baseui.dialog.BaseSheetDialog
-import io.agora.buddy.tool.ViewTools
+import io.agora.buddy.tool.ResourcesTools
 import io.agora.buddy.tool.dp
 import io.agora.secnceui.R
 import io.agora.secnceui.annotation.MicStatus
@@ -26,7 +26,7 @@ class RoomMicManagerSheetDialog constructor(private val onItemClickListener: OnI
 
     companion object {
         const val KEY_MIC_INFO = "mic_info"
-        const val KEY_IS_OWNER = "is_owner"
+        const val KEY_IS_OWNER = "owner_id"
         const val KEY_IS_MYSELF = "is_myself"
     }
 
@@ -81,10 +81,10 @@ class RoomMicManagerSheetDialog constructor(private val onItemClickListener: OnI
     }
 
     private fun bindingMicInfo(micInfo: MicInfoBean) {
-        binding?.mtChatroomMicTag?.isVisible = isOwner
         binding?.apply {
             // 座位状态
             if (micInfo.userInfo == null) { // 没人
+                binding?.mtChatroomMicTag?.isVisible = false
                 ivMicInnerIcon.isVisible = true
                 mtMicUsername.text = micInfo.index.toString()
                 when (micInfo.micStatus) {
@@ -103,12 +103,13 @@ class RoomMicManagerSheetDialog constructor(private val onItemClickListener: OnI
                     }
                 }
             } else { // 有人
+                binding?.mtChatroomMicTag?.isVisible = micInfo.ownerTag
                 ivMicInnerIcon.isVisible = false
                 ivMicInfo.setImageResource(
-                    ViewTools.getDrawableId(ivMicInfo.context, micInfo.userInfo?.userAvatar ?: "")
+                    ResourcesTools.getDrawableId(ivMicInfo.context, micInfo.userInfo?.userAvatar ?: "")
                 )
                 mtMicUsername.text = micInfo.userInfo?.username ?: ""
-                mtChatroomMicTag.isVisible = micInfo.isOwner
+                mtChatroomMicTag.isVisible = micInfo.ownerTag
                 when (micInfo.micStatus) {
                     MicStatus.Mute,
                     MicStatus.ForceMute -> {
@@ -122,12 +123,12 @@ class RoomMicManagerSheetDialog constructor(private val onItemClickListener: OnI
             }
             // 用户音量
             when (micInfo.audioVolume) {
-//                AudioVolumeStatus.None -> ivMicTag.isVisible = false
+                AudioVolumeStatus.None -> ivMicTag.isVisible = false
                 AudioVolumeStatus.Low -> {
                     ivMicTag.isVisible = true
                     ivMicTag.setImageResource(R.drawable.icon_chatroom_mic_open1)
                 }
-                AudioVolumeStatus.Middle -> {
+                AudioVolumeStatus.Medium -> {
                     ivMicTag.isVisible = true
                     ivMicTag.setImageResource(R.drawable.icon_chatroom_mic_open2)
                 }
@@ -138,10 +139,6 @@ class RoomMicManagerSheetDialog constructor(private val onItemClickListener: OnI
                 AudioVolumeStatus.Max -> {
                     ivMicTag.isVisible = true
                     ivMicTag.setImageResource(R.drawable.icon_chatroom_mic_open4)
-                }
-                AudioVolumeStatus.Mute -> {
-                    ivMicTag.isVisible = true
-                    ivMicTag.setImageResource(R.drawable.icon_chatroom_mic_mute_tag)
                 }
                 else -> {
 

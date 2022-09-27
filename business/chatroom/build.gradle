@@ -93,6 +93,7 @@ dependencies {
         implementation dep["arouter-api"]
         kapt dep["arouter-compiler"]
         implementation dep["easypermissions"]
+        compileOnly project(':component:imkit')
     } else {
         compileOnly project(':common:buddy')
         compileOnly project(':common:baseui')

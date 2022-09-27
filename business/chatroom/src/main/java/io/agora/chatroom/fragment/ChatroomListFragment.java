@@ -140,7 +140,6 @@ public class ChatroomListFragment extends BaseChatroomListFragment<VRoomBean.Roo
     private void goChatroomPage(VRoomBean.RoomsBean roomBean) {
         ARouter.getInstance()
                 .build(RouterPath.ChatroomPath)
-                .withInt(RouterParams.KEY_CHATROOM_TYPE, roomBean.getType())
                 .withSerializable(RouterParams.KEY_CHATROOM_INFO, roomBean)
                 .navigation();
     }

@@ -18,6 +18,9 @@ interface IRtcKitListener {
     /**音频状态：本地静音，远程静音等*/
     fun onAudioStatus(audioChangeStatus: RtcAudioChangeStatus)
 
+    /**当音效文件播放开始/结束 后触发该回调*/
+    fun onAudioEffectFinished(soundId: Int, finished: Boolean, speakerType: Int)
+
     /**用户进入rtc 房间*/
     fun onUserJoin(userId: Int)
 

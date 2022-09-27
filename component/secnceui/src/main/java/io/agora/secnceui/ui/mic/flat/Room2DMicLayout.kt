@@ -10,13 +10,15 @@ import androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import io.agora.baseui.adapter.OnItemChildClickListener
 import io.agora.baseui.adapter.OnItemClickListener
-import io.agora.buddy.tool.ViewTools
+import io.agora.buddy.tool.ResourcesTools
 import io.agora.buddy.tool.dp
 import io.agora.secnceui.R
 import io.agora.secnceui.bean.*
 import io.agora.secnceui.databinding.ViewChatroom2dMicLayoutBinding
+import io.agora.secnceui.ui.mic.IRoomMicView
+import io.agora.secnceui.ui.mic.RoomMicConstructor
 
-class Room2DMicLayout : ConstraintLayout, IRoom2DMicView {
+class Room2DMicLayout : ConstraintLayout, IRoomMicView {
 
     private lateinit var binding: ViewChatroom2dMicLayoutBinding
 
@@ -51,12 +53,18 @@ class Room2DMicLayout : ConstraintLayout, IRoom2DMicView {
         binding = ViewChatroom2dMicLayoutBinding.bind(root)
     }
 
-    fun setUpAdapter(micInfoList: List<MicInfoBean>, botMicInfoList: List<BotMicInfoBean>) {
+    fun setUpAdapter(isUseBot: Boolean) {
         room2DMicAdapter =
-            Room2DMicAdapter(micInfoList, onMicClickListener, Room2DMicViewHolder::class.java)
+            Room2DMicAdapter(
+                RoomMicConstructor.builderDefault2dMicList(),
+                onMicClickListener,
+                Room2DMicViewHolder::class.java
+            )
         room2DMicBotAdapter =
             Room2DBotMicAdapter(
-                botMicInfoList, null, object : OnItemChildClickListener<BotMicInfoBean> {
+                RoomMicConstructor.builderDefault2dBotMicList(context, isUseBot),
+                null,
+                object : OnItemChildClickListener<BotMicInfoBean> {
 
                     // convert
                     override fun onItemChildClick(
@@ -66,7 +74,8 @@ class Room2DMicLayout : ConstraintLayout, IRoom2DMicView {
                             onBotMicClickListener?.onItemClick(extData, view, position, itemViewType)
                         }
                     }
-                }, Room2DBotMicViewHolder::class.java
+                },
+                Room2DBotMicViewHolder::class.java
             )
 
         val config = ConcatAdapter.Config.Builder().setIsolateViewTypes(true).build()
@@ -84,19 +93,27 @@ class Room2DMicLayout : ConstraintLayout, IRoom2DMicView {
             addItemDecoration(MaterialDividerItemDecoration(context, MaterialDividerItemDecoration.VERTICAL).apply {
                 dividerThickness = 32.dp.toInt()
 
-                dividerColor = ViewTools.getColor(context.resources, io.agora.baseui.R.color.transparent)
+                dividerColor = ResourcesTools.getColor(context.resources, io.agora.baseui.R.color.transparent)
             })
             layoutManager = gridLayoutManager
             adapter = concatAdapter
         }
     }
 
-    override fun updateAdapter(micInfoList: List<MicInfoBean>, isBotActive:Boolean) {
+    override fun updateAdapter(micInfoList: List<MicInfoBean>, isBotActive: Boolean) {
         room2DMicAdapter?.submitListAndPurge(micInfoList)
         room2DMicBotAdapter?.activeBot(isBotActive)
     }
 
     override fun activeBot(active: Boolean) {
         room2DMicBotAdapter?.activeBot(active)
+    }
+
+    override fun updateVolume(index: Int, volume: Int) {
+
+    }
+
+    override fun updateBotVolume(speakerType: Int, volume: Int) {
+        room2DMicBotAdapter?.updateVolume(speakerType, volume)
     }
 }

@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import io.agora.baseui.BaseUiFragment
 import io.agora.baseui.adapter.BaseRecyclerViewAdapter
-import io.agora.buddy.tool.ViewTools
+import io.agora.buddy.tool.ResourcesTools
 import io.agora.buddy.tool.dp
 import io.agora.secnceui.R
 import io.agora.secnceui.bean.ContributionBean
@@ -61,7 +61,7 @@ class RoomContributionRankingFragment : BaseUiFragment<FragmentChatroomContribut
                     dividerThickness = 1.dp.toInt()
                     dividerInsetStart = 15.dp.toInt()
                     dividerInsetEnd =  15.dp.toInt()
-                    dividerColor = ViewTools.getColor(it.resources, R.color.divider_color_F8F5FA)
+                    dividerColor = ResourcesTools.getColor(it.resources, R.color.divider_color_F8F5FA)
                 }
             )
         }

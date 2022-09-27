@@ -1,7 +1,7 @@
 package io.agora.secnceui.ui.micmanger
 
 import io.agora.baseui.adapter.BaseRecyclerViewAdapter
-import io.agora.buddy.tool.ViewTools
+import io.agora.buddy.tool.ResourcesTools
 import io.agora.secnceui.R
 import io.agora.secnceui.bean.MicManagerBean
 import io.agora.secnceui.databinding.ItemChatroomMicManagerBinding
@@ -14,11 +14,11 @@ class RoomMicManagerViewHolder(binding: ItemChatroomMicManagerBinding) :
             mBinding.mtMicManagerOperate.text = it.name
             if (it.enable) {
                 mBinding.mtMicManagerOperate.setTextColor(
-                    ViewTools.getColor(context.resources, R.color.main_color_156EF3)
+                    ResourcesTools.getColor(context.resources, R.color.main_color_156EF3)
                 )
             } else {
                 mBinding.mtMicManagerOperate.setTextColor(
-                    ViewTools.getColor(context.resources, R.color.dark_grey_color_979CBB)
+                    ResourcesTools.getColor(context.resources, R.color.dark_grey_color_979CBB)
                 )
             }
         }

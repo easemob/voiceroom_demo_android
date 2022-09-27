@@ -1,18 +1,13 @@
 package io.agora.baseui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
-import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.viewbinding.ViewBinding
-import io.agora.baseui.general.callback.OnResourceParseCallback
-import io.agora.baseui.general.enums.Status
-import io.agora.baseui.general.net.Resource
 import io.agora.baseui.interfaces.IParserSource
 import io.agora.buddy.tool.logE
 

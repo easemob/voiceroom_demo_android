@@ -1,6 +1,7 @@
 package io.agora.secnceui.annotation
 
 import androidx.annotation.IntDef
+import io.agora.config.ConfigConstants
 
 /**
  * 降噪等级
@@ -9,10 +10,10 @@ import androidx.annotation.IntDef
 @IntDef(AINSModeType.High, AINSModeType.Medium, AINSModeType.Off)
 annotation class AINSModeType {
     companion object {
-        const val High = 0
+        const val High = ConfigConstants.ANIS_High
 
-        const val Medium = 1
+        const val Medium = ConfigConstants.ANIS_Medium
 
-        const val Off = 2
+        const val Off = ConfigConstants.ANIS_Off
     }
 }

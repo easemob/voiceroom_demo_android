@@ -5,12 +5,13 @@ import io.agora.baseui.adapter.OnItemChildClickListener
 import io.agora.baseui.adapter.OnItemClickListener
 import io.agora.buddy.tool.dp
 import io.agora.buddy.tool.getDisplaySize
+import io.agora.config.ConfigConstants
 import io.agora.secnceui.annotation.MicStatus
 import io.agora.secnceui.bean.BotMicInfoBean
 import io.agora.secnceui.databinding.ItemChatroom2dBotMicBinding
 
 class Room2DBotMicAdapter constructor(
-    dataList: List<BotMicInfoBean>?,
+    dataList: List<BotMicInfoBean>,
     listener: OnItemClickListener<BotMicInfoBean>?,
     childListener: OnItemChildClickListener<BotMicInfoBean>?,
     viewHolderClass: Class<Room2DBotMicViewHolder>
@@ -28,15 +29,30 @@ class Room2DBotMicAdapter constructor(
     }
 
     fun activeBot(active: Boolean) {
-        dataList.forEach { botMicInfoBean ->
-            if (active){
-                botMicInfoBean.blueBot.micStatus = MicStatus.BotActivated
-                botMicInfoBean.redBot.micStatus = MicStatus.BotActivated
-            }else{
-                botMicInfoBean.blueBot.micStatus = MicStatus.BotInactive
-                botMicInfoBean.redBot.micStatus = MicStatus.BotInactive
+        if (active) {
+            dataList[0].blueBot.micStatus = MicStatus.BotActivated
+            dataList[0].redBot.micStatus = MicStatus.BotActivated
+        } else {
+            dataList[0].blueBot.micStatus = MicStatus.BotInactive
+            dataList[0].redBot.micStatus = MicStatus.BotInactive
+        }
+        notifyItemChanged(0)
+    }
+
+    /**更新音量*/
+    fun updateVolume(speaker: Int, volume: Int) {
+        when (speaker) {
+            ConfigConstants.Speaker_Bot_Blue -> {
+                dataList[0].blueBot.audioVolume = volume
+            }
+            ConfigConstants.Speaker_Bot_Red -> {
+                dataList[0].redBot.audioVolume = volume
+            }
+            else -> {
+                dataList[0].blueBot.audioVolume = volume
+                dataList[0].redBot.audioVolume = volume
             }
         }
-        notifyDataSetChanged()
+        notifyItemChanged(0)
     }
 }

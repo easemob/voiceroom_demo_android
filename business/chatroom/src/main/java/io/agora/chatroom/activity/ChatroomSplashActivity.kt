@@ -1,6 +1,5 @@
 package io.agora.chatroom.activity
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,14 +10,13 @@ import com.alibaba.android.arouter.launcher.ARouter
 import io.agora.baseui.BaseUiActivity
 import io.agora.baseui.BaseUiTool
 import io.agora.baseui.general.callback.OnResourceParseCallback
+import io.agora.buddy.tool.ResourcesTools
 import io.agora.chatroom.databinding.ActivityChatroomSplashBinding
 import io.agora.chatroom.general.repositories.ProfileManager
 import io.agora.chatroom.model.LoginViewModel
 import io.agora.config.RouterPath
 import manager.ChatroomConfigManager
 import tools.bean.VRUserBean
-import java.util.*
-
 
 class ChatroomSplashActivity : BaseUiActivity<ActivityChatroomSplashBinding>() {
 
@@ -29,7 +27,7 @@ class ChatroomSplashActivity : BaseUiActivity<ActivityChatroomSplashBinding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initListeners()
-        if (isZh(this)) {
+        if (ResourcesTools.isZh(this)) {
             binding.mtChatroom.letterSpacing = 0.42f
         } else {
             binding.mtChatroom.letterSpacing = -0.05f
@@ -64,11 +62,5 @@ class ChatroomSplashActivity : BaseUiActivity<ActivityChatroomSplashBinding>() {
             binding.clRoot.setPaddingRelative(0, inset.top, 0, inset.bottom)
             WindowInsetsCompat.CONSUMED
         }
-    }
-
-    private fun isZh(context: Context): Boolean {
-        val locale: Locale = context.resources.configuration.locale
-        val language: String = locale.language
-        return language.endsWith("zh")
     }
 }

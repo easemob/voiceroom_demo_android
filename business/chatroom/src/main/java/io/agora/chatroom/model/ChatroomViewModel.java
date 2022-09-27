@@ -2,7 +2,6 @@ package io.agora.chatroom.model;
 
 import android.app.Application;
 import android.content.Context;
-import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -15,6 +14,8 @@ import io.agora.baseui.general.net.Resource;
 import io.agora.buddy.tool.LogToolsKt;
 import io.agora.chat.ChatClient;
 import io.agora.chat.ChatRoom;
+import io.agora.chatroom.bean.RoomKitBean;
+import io.agora.chatroom.controller.RtcMicVolumeListener;
 import io.agora.chatroom.controller.RtcRoomController;
 import io.agora.chatroom.general.livedatas.SingleSourceLiveData;
 import io.agora.chatroom.general.repositories.ChatroomRepository;
@@ -35,6 +36,7 @@ public class ChatroomViewModel extends AndroidViewModel {
     private SingleSourceLiveData<Resource<Boolean>> leaveObservable;
     private SingleSourceLiveData<Resource<Boolean>> openBotObservable;
     private SingleSourceLiveData<Resource<Boolean>> closeBotObservable;
+    private SingleSourceLiveData<Resource<Boolean>> robotVolumeObservable;
     private final AtomicBoolean joinRtcChannel = new AtomicBoolean(false);
     private final AtomicBoolean joinImRoom = new AtomicBoolean(false);
 
@@ -48,6 +50,7 @@ public class ChatroomViewModel extends AndroidViewModel {
         leaveObservable = new SingleSourceLiveData<>();
         openBotObservable = new SingleSourceLiveData<>();
         closeBotObservable = new SingleSourceLiveData<>();
+        robotVolumeObservable = new SingleSourceLiveData<>();
     }
 
     public LiveData<Resource<VRoomBean>> getRoomObservable() {
@@ -78,6 +81,10 @@ public class ChatroomViewModel extends AndroidViewModel {
         return closeBotObservable;
     }
 
+    public LiveData<Resource<Boolean>> getRobotVolumeObservable() {
+        return robotVolumeObservable;
+    }
+
     public void getDataList(Context context, int pageSize, int type, String cursor) {
         roomObservable.setSource(mRepository.getRoomList(context, pageSize, type, cursor));
     }
@@ -100,18 +107,18 @@ public class ChatroomViewModel extends AndroidViewModel {
         joinObservable.setSource(mRepository.leaveRoom(context, roomId));
     }
 
-    public void initSdkJoin(VRoomBean.RoomsBean roomBean) {
+    public void initSdkJoin(RoomKitBean roomKitBean) {
         joinRtcChannel.set(false);
         joinImRoom.set(false);
-        RtcRoomController.get().joinChannel(getApplication(), roomBean.getChannel_id(),
+        RtcRoomController.get().joinChannel(getApplication(), roomKitBean.getChannelId(),
                 ProfileManager.getInstance().getProfile().getRtc_uid(),
-                TextUtils.equals(roomBean.getOwnerUid(), ProfileManager.getInstance().getProfile().getUid()),
+                roomKitBean.isOwner(),
                 new DefaultValueCallBack<Boolean>() {
                     @Override
                     public void onSuccess(Boolean value) {
                         LogToolsKt.logE("rtc  joinChannel onSuccess ", TAG);
                         joinRtcChannel.set(true);
-                        joinRoom(getApplication(), roomBean.getRoom_id());
+                        joinRoom(getApplication(), roomKitBean.getRoomId());
                     }
 
                     @Override
@@ -120,12 +127,12 @@ public class ChatroomViewModel extends AndroidViewModel {
                     }
                 }
         );
-        ChatClient.getInstance().chatroomManager().joinChatRoom(roomBean.getChatroom_id(), new ValueCallBack<ChatRoom>() {
+        ChatClient.getInstance().chatroomManager().joinChatRoom(roomKitBean.getChatroomId(), new ValueCallBack<ChatRoom>() {
             @Override
             public void onSuccess(ChatRoom value) {
                 LogToolsKt.logE("im  joinChatRoom onSuccess ", TAG);
                 joinImRoom.set(true);
-                joinRoom(getApplication(), roomBean.getRoom_id());
+                joinRoom(getApplication(), roomKitBean.getRoomId());
             }
 
             @Override
@@ -159,12 +166,15 @@ public class ChatroomViewModel extends AndroidViewModel {
 
     public void activeBot(Context context, String roomId, boolean active) {
         if (active) {
-            openBotObservable.setSource(mRepository.updateRoomInfo(context, roomId, null, null, null,
-                    null, true, null));
+            openBotObservable.setSource(mRepository.activeBot(context, roomId, true));
         } else {
-            closeBotObservable.setSource(mRepository.updateRoomInfo(context, roomId, null, null, null,
-                    null, false, null));
+            closeBotObservable.setSource(mRepository.activeBot(context, roomId, false));
         }
+    }
+
+
+    public void updateBotVolume(Context context, String roomId, int robotVolume) {
+        robotVolumeObservable.setSource(mRepository.changeRobotVolume(context, roomId, robotVolume));
     }
 
     /**

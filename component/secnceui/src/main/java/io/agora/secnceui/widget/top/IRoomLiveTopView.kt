@@ -3,7 +3,7 @@ package io.agora.secnceui.widget.top
 import io.agora.secnceui.annotation.ChatroomTopType
 import io.agora.secnceui.bean.RoomInfoBean
 
-interface IChatroomLiveTopView {
+interface IRoomLiveTopView {
     /**头部初始化*/
     fun onChatroomInfo(chatroomInfo: RoomInfoBean)
 

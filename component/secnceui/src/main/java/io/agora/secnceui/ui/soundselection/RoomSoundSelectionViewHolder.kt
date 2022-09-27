@@ -8,7 +8,7 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import io.agora.baseui.adapter.BaseRecyclerViewAdapter
-import io.agora.buddy.tool.ViewTools
+import io.agora.buddy.tool.ResourcesTools
 import io.agora.buddy.tool.dp
 import io.agora.secnceui.R
 import io.agora.secnceui.bean.SoundSelectionBean
@@ -24,7 +24,7 @@ class RoomSoundSelectionViewHolder(binding: ItemChatroomSoundSelectionBinding) :
                 mBinding.mtSoundSelectionCurrentName.text =
                     mBinding.root.context.getString(R.string.chatroom_current_sound_selection)
                 mBinding.mcvSoundSelectionContent.strokeColor =
-                    ViewTools.getColor(context.resources, R.color.main_color_009FFF)
+                    ResourcesTools.getColor(context.resources, R.color.main_color_009FFF)
                 mBinding.ivSoundSelectionToggle.setImageResource(R.drawable.icon_chatroom_sound_listen)
                 mBinding.ivSoundSelected.isVisible = true
                 mBinding.llSoundSelectionTips.isVisible = false
@@ -35,7 +35,7 @@ class RoomSoundSelectionViewHolder(binding: ItemChatroomSoundSelectionBinding) :
                 mBinding.mtSoundSelectionCurrentName.isVisible = bindingAdapterPosition == 1
                 mBinding.llSoundSelectionTips.isVisible = bindingAdapterPosition == 1
                 mBinding.mcvSoundSelectionContent.strokeColor =
-                    ViewTools.getColor(context.resources, R.color.divider_color_EFF4FF)
+                    ResourcesTools.getColor(context.resources, R.color.divider_color_EFF4FF)
                 mBinding.ivSoundSelectionToggle.setImageResource(R.drawable.icon_chatroom_sound_toggle)
                 mBinding.ivSoundSelected.isVisible = false
             }

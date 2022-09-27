@@ -59,11 +59,12 @@ public class ProfileManager {
       return null;
    }
 
-   public boolean isChatroomOwner(int rtcUid){
-      VRUserBean currentUser = getProfile();
-      if (currentUser!=null){
-         return currentUser.getRtc_uid() == rtcUid;
-      }
-      return false;
-   }
+    public boolean isMyself(String uid) {
+        VRUserBean currentUser = getProfile();
+        if (currentUser != null) {
+
+            return TextUtils.equals(currentUser.getUid(), uid);
+        }
+        return false;
+    }
 }

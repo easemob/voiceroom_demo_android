@@ -8,10 +8,10 @@ package io.agora.rtckit.open.event
 sealed class RtcDeNoiseEvent {
 
     // 关闭降噪
-    class CloseEvent: RtcDeNoiseEvent()
+    class CloseEvent constructor(): RtcDeNoiseEvent()
     // 中降噪
-    class MediumEvent: RtcDeNoiseEvent()
+    class MediumEvent constructor(): RtcDeNoiseEvent()
     // 高降噪
-    class HeightEvent: RtcDeNoiseEvent()
+    class HeightEvent constructor(): RtcDeNoiseEvent()
 
 }

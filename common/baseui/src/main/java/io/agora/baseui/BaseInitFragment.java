@@ -13,8 +13,10 @@ import io.agora.baseui.general.callback.OnResourceParseCallback;
 import io.agora.baseui.general.enums.Status;
 import io.agora.baseui.general.net.Resource;
 
+import io.agora.baseui.interfaces.IParserSource;
 
-public abstract class BaseInitFragment extends Fragment {
+
+public abstract class BaseInitFragment extends Fragment implements IParserSource {
 
     @Nullable
     @Override

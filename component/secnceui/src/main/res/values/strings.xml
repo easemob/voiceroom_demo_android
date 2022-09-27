@@ -14,7 +14,7 @@
     <string name="chatroom_agora_blue_bot">Agora Blue Bot</string>
     <string name="chatroom_agora_red_bot">Agora Red Bot</string>
     <string name="chatroom_attenuation_factor">Attenuation factor</string>
-    <string name="chatroom_air_absorb">Air absorb</string>
+    <string name="chatroom_air_absorb">Airborne Simulation</string>
     <string name="chatroom_voice_blur">Voice blur</string>
     <string name="chatroom_sound_selection">Sound Selection</string>
     <string name="chatroom_only_host_can_change_best_sound">Only host can change Best Agora Sound</string>

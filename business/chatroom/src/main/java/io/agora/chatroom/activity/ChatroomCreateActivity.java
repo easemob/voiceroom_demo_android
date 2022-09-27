@@ -41,7 +41,6 @@ import io.agora.chatroom.general.repositories.ProfileManager;
 import io.agora.chatroom.model.ChatroomViewModel;
 import io.agora.config.RouterParams;
 import io.agora.config.RouterPath;
-import io.agora.secnceui.ui.soundselection.RoomSocialChatSheetDialog;
 import io.agora.secnceui.widget.encryption.ChatroomEncryptionInputView;
 import io.agora.secnceui.widget.titlebar.ChatroomTitleBar;
 import manager.ChatroomConfigManager;
@@ -153,7 +152,7 @@ public class ChatroomCreateActivity extends BaseActivity implements RadioGroup.O
                  public void onSuccess(@Nullable VRoomInfoBean data) {
                     if (null != data && null != data.getRoom()){
                        if (ChatClient.getInstance().isLoggedIn()){
-                           joinRoom(data.getRoom().getChatroom_id());
+                           joinRoom(data);
                        }else {
                           VRUserBean userinfo = ProfileManager.getInstance().getProfile();
                           Log.d("ChatroomCreateActivity","chat_uid: " + userinfo.getChat_uid());
@@ -161,12 +160,12 @@ public class ChatroomCreateActivity extends BaseActivity implements RadioGroup.O
                           ChatroomConfigManager.getInstance().login(userinfo.getChat_uid(), userinfo.getIm_token(), new CallBack() {
                              @Override
                              public void onSuccess() {
-                                joinRoom(data.getRoom().getChatroom_id());
-                                ARouter.getInstance()
-                                        .build(RouterPath.ChatroomPath)
-                                        .withInt(RouterParams.KEY_CHATROOM_TYPE, data.component2().getType())
+                                joinRoom(data);
+//                                ARouter.getInstance()
+//                                        .build(RouterPath.ChatroomPath)
+//                                        .withInt(RouterParams.KEY_CHATROOM_TYPE, data.component2().getType())
 //                                        .withSerializable(RouterParams.KEY_CHATROOM_INFO, )
-                                        .navigation();
+//                                        .navigation();
                              }
 
                              @Override
@@ -262,15 +261,14 @@ public class ChatroomCreateActivity extends BaseActivity implements RadioGroup.O
       mediator.attach();
    }
 
-   public void joinRoom(String roomId){
-      ChatClient.getInstance().chatroomManager().joinChatRoom(roomId, new ValueCallBack<ChatRoom>() {
+   public void joinRoom(VRoomInfoBean data){
+      ChatClient.getInstance().chatroomManager().joinChatRoom(data.getRoom().getChatroom_id(), new ValueCallBack<ChatRoom>() {
          @Override
          public void onSuccess(ChatRoom value) {
             Log.e("ChatroomCreateActivity","joinChatRoom onSuccess");
             ARouter.getInstance()
                     .build(RouterPath.ChatroomPath)
-                    .withInt(RouterParams.KEY_CHATROOM_TYPE, roomType)
-//                  .withSerializable(RouterParams.KEY_CHATROOM_INFO, data)
+                    .withSerializable(RouterParams.KEY_CHATROOM_DETAILS_INFO, data)
                     .navigation();
          }
 

@@ -6,7 +6,7 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
-import io.agora.buddy.tool.ViewTools
+import io.agora.buddy.tool.ResourcesTools
 import io.agora.secnceui.R
 import io.agora.secnceui.annotation.MicStatus
 import io.agora.secnceui.annotation.AudioVolumeStatus
@@ -78,10 +78,10 @@ class Room3DMicView : ConstraintLayout {
             } else { // 有人
                 ivMicInnerIcon.isVisible = false
                 ivMicInfo.setImageResource(
-                    ViewTools.getDrawableId(ivMicInfo.context, micInfo.userInfo?.userAvatar ?: "")
+                    ResourcesTools.getDrawableId(ivMicInfo.context, micInfo.userInfo?.userAvatar ?: "")
                 )
                 mtMicUsername.text = micInfo.userInfo?.username ?: ""
-                if (micInfo.isOwner) {
+                if (micInfo.ownerTag) {
                     mtMicUsername.setCompoundDrawablesWithIntrinsicBounds(
                         R.drawable.icon_chatroom_mic_owner_tag, 0, 0, 0
                     )
@@ -101,12 +101,12 @@ class Room3DMicView : ConstraintLayout {
             }
             // 用户音量
             when (micInfo.audioVolume) {
-//                AudioVolumeStatus.None -> ivMicTag.isVisible = false
+                AudioVolumeStatus.None -> ivMicTag.isVisible = false
                 AudioVolumeStatus.Low -> {
                     ivMicTag.isVisible = true
                     ivMicTag.setImageResource(R.drawable.icon_chatroom_mic_open1)
                 }
-                AudioVolumeStatus.Middle -> {
+                AudioVolumeStatus.Medium -> {
                     ivMicTag.isVisible = true
                     ivMicTag.setImageResource(R.drawable.icon_chatroom_mic_open2)
                 }
@@ -117,10 +117,6 @@ class Room3DMicView : ConstraintLayout {
                 AudioVolumeStatus.Max -> {
                     ivMicTag.isVisible = true
                     ivMicTag.setImageResource(R.drawable.icon_chatroom_mic_open4)
-                }
-                AudioVolumeStatus.Mute -> {
-                    ivMicTag.isVisible = true
-                    ivMicTag.setImageResource(R.drawable.icon_chatroom_mic_mute_tag)
                 }
                 else -> {
 
