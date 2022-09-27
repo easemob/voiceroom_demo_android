@@ -8,6 +8,7 @@ import io.agora.baseui.general.net.Resource
 import io.agora.chatroom.general.livedatas.SingleSourceLiveData
 import io.agora.chatroom.general.repositories.RoomMicRepository
 import tools.bean.VRMicBean
+import tools.bean.VRMicListBean
 import tools.bean.VRoomBean
 import tools.bean.VRoomUserBean
 
@@ -18,7 +19,7 @@ class RoomMicViewModel constructor(application: Application) : AndroidViewModel(
 
     private val mRepository by lazy { RoomMicRepository() }
 
-    private val _applyMicListObservable: SingleSourceLiveData<Resource<VRMicBean>> = SingleSourceLiveData()
+    private val _applyMicListObservable: SingleSourceLiveData<Resource<VRMicListBean>> = SingleSourceLiveData()
     private val _submitMicObservable: SingleSourceLiveData<Resource<Boolean>> = SingleSourceLiveData()
     private val _cancelSubmitMicObservable: SingleSourceLiveData<Resource<Boolean>> = SingleSourceLiveData()
     private val _micInfoObservable: SingleSourceLiveData<Resource<VRoomUserBean>> = SingleSourceLiveData()
@@ -36,7 +37,7 @@ class RoomMicViewModel constructor(application: Application) : AndroidViewModel(
     private val _applySubmitMicObservable: SingleSourceLiveData<Resource<Boolean>> = SingleSourceLiveData()
     private val _rejectSubmitMicObservable: SingleSourceLiveData<Resource<Boolean>> = SingleSourceLiveData()
 
-    fun applyMicListObservable(): LiveData<Resource<VRMicBean>> = _applyMicListObservable
+    fun applyMicListObservable(): LiveData<Resource<VRMicListBean>> = _applyMicListObservable
     fun submitMicObservable(): LiveData<Resource<Boolean>> = _submitMicObservable
     fun cancelSubmitMicObservable(): LiveData<Resource<Boolean>> = _cancelSubmitMicObservable
     fun micInfoObservable(): LiveData<Resource<VRoomUserBean>> = _micInfoObservable
@@ -55,8 +56,8 @@ class RoomMicViewModel constructor(application: Application) : AndroidViewModel(
     fun rejectSubmitMicObservable(): LiveData<Resource<Boolean>> = _rejectSubmitMicObservable
 
     // 获取上麦申请列表
-    fun getApplyMicList(context: Context, roomId: String, micIndex: Int) {
-        _applyMicListObservable.setSource(mRepository.getApplyMicList(context, roomId, micIndex))
+    fun getApplyMicList(context: Context, roomId: String,cursor: String, micIndex: Int) {
+        _applyMicListObservable.setSource(mRepository.getApplyMicList(context, roomId,cursor, micIndex))
     }
 
     // 提交上麦申请

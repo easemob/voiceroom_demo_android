@@ -10,7 +10,7 @@
         android:visibility="gone"
         android:background="@color/transparent"
         android:layout_width="match_parent"
-        android:layout_height="50dp">
+        android:layout_height="55dp">
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/input_layout"
@@ -57,7 +57,7 @@
         android:visibility="gone"
         android:background="@color/white"
         android:layout_width="match_parent"
-        android:layout_height="50dp">
+        android:layout_height="55dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/input_bg"
@@ -83,7 +83,7 @@
                 android:textSize="@dimen/text_size_16sp"
                 android:textColor="@color/color_B6B8C9"
                 android:layout_width="0dp"
-                android:layout_height="20dp"/>
+                android:layout_height="22dp"/>
 
             <ImageView
                 android:id="@+id/icon_emoji"
@@ -117,8 +117,8 @@
     <io.agora.secnceui.widget.expression.ExpressionView
         android:layout_below="@+id/normal_layout"
         android:id="@+id/expression_view"
-        android:visibility="gone"
+        android:visibility="invisible"
         android:layout_width="match_parent"
-        android:layout_height="200dp"/>
+        android:layout_height="wrap_content"/>
 
 </RelativeLayout>

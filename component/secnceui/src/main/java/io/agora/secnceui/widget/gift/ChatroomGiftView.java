@@ -116,8 +116,8 @@ public class ChatroomGiftView extends LinearLayout {
 
       //设置item动画
       DefaultItemAnimator defaultItemAnimator = new DefaultItemAnimator();
-      defaultItemAnimator.setAddDuration(800);
-      defaultItemAnimator.setRemoveDuration(1000);
+      defaultItemAnimator.setAddDuration(500);
+      defaultItemAnimator.setRemoveDuration(500);
       recyclerView.setItemAnimator(defaultItemAnimator);
 
    }
@@ -181,9 +181,8 @@ public class ChatroomGiftView extends LinearLayout {
          }
          StringBuilder builder = new StringBuilder();
          if (null != giftBean){
-            builder.append(!TextUtils.isEmpty(userName)? userName:message.getFrom()).append(":").append("\n").append("sent ").append(giftBean.getName());
+            builder.append(!TextUtils.isEmpty(userName) ? userName : message.getFrom()).append(":").append("\n").append("sent ").append(giftBean.getName());
             icon.setImageResource(giftBean.getResource());
-            icon.setTag(System.currentTimeMillis());
          }
          SpannableString span = new SpannableString(builder.toString());
          name.setText(span);

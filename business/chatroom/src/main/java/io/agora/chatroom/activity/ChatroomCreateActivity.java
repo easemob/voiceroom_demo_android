@@ -161,6 +161,11 @@ public class ChatroomCreateActivity extends BaseActivity implements RadioGroup.O
                              @Override
                              public void onSuccess() {
                                 joinRoom(data);
+//                                ARouter.getInstance()
+//                                        .build(RouterPath.ChatroomPath)
+//                                        .withInt(RouterParams.KEY_CHATROOM_TYPE, data.component2().getType())
+//                                        .withSerializable(RouterParams.KEY_CHATROOM_INFO, )
+//                                        .navigation();
                              }
 
                              @Override
@@ -296,7 +301,7 @@ public class ChatroomCreateActivity extends BaseActivity implements RadioGroup.O
             roomName = mEdRoomName.getText().toString().trim();
             if(roomType == 0){
                // TODO: 2022/9/20  跳转音效设置
-               createNormalRoom(false,"Social Chat");
+               createNormalRoom(false,"Sound Selection");
             }else if (roomType ==1){
                createSpatialRoom();
             }

@@ -5,11 +5,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import io.agora.baseui.general.callback.OnResourceParseCallback;
+import io.agora.baseui.general.enums.Status;
+import io.agora.baseui.general.net.Resource;
 
 import io.agora.baseui.interfaces.IParserSource;
 
@@ -100,5 +102,29 @@ public abstract class BaseInitFragment extends Fragment implements IParserSource
      */
     protected <T extends View> T findViewById(@IdRes int id) {
         return getView().findViewById(id);
+    }
+
+    /**
+     //     * Parse Resource<T>
+     //     * @param response
+     //     * @param callback
+     //     * @param <T>
+     //     */
+    public <T> void parseResource(Resource<T> response, @NonNull OnResourceParseCallback<T> callback) {
+        if(response == null) {
+            return;
+        }
+        if(response.status == Status.SUCCESS) {
+            callback.onHideLoading();
+            callback.onSuccess(response.data);
+        }else if(response.status == Status.ERROR) {
+            callback.onHideLoading();
+            if(!callback.hideErrorMsg) {
+                Log.e("parseResource ",response.getMessage());
+            }
+            callback.onError(response.errorCode, response.getMessage());
+        }else if(response.status == Status.LOADING) {
+            callback.onLoading(response.data);
+        }
     }
 }

@@ -72,7 +72,7 @@ public class VRRequestApi {
         if (!TextUtils.isEmpty(cursor)){
             api = api + "&cursor=" + cursor;
         }
-
+        Log.e("getRoomList","api: " + api);
         return api;
     }
 

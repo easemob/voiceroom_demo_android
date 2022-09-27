@@ -2,15 +2,12 @@ package io.agora.chatroom.activity
 
 import android.Manifest
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnTouchListener
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
-import android.widget.TextView
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
@@ -29,15 +26,14 @@ import io.agora.chatroom.general.constructor.RoomInfoConstructor.convertByRoomDe
 import io.agora.chatroom.general.constructor.RoomInfoConstructor.convertByRoomInfo
 import io.agora.chatroom.general.repositories.ProfileManager
 import io.agora.chatroom.model.ChatroomViewModel
+import io.agora.chatroom.ui.*
 import io.agora.chatroom.ui.RoomObservableViewDelegate
 import io.agora.config.RouterParams
 import io.agora.config.RouterPath
 import io.agora.secnceui.R
-import io.agora.secnceui.bean.GiftBean
 import io.agora.secnceui.bean.MicInfoBean
 import io.agora.secnceui.ui.mic.RoomMicConstructor
 import io.agora.secnceui.widget.barrage.ChatroomMessagesView
-import io.agora.secnceui.widget.gift.GiftBottomDialog
 import io.agora.secnceui.widget.primary.MenuItemClickListener
 import io.agora.secnceui.widget.top.OnLiveTopClickListener
 import manager.ChatroomConfigManager
@@ -58,6 +54,8 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
 
     /**room viewModel*/
     private lateinit var roomViewModel: ChatroomViewModel
+    private lateinit var giftViewDelegate: RoomGiftViewDelegate
+    private lateinit var handsDelegate: RoomHandsViewDelegate
 
     /**
      * 代理头部view以及麦位view
@@ -73,10 +71,13 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
     override fun getViewBinding(inflater: LayoutInflater): ActivityChatroomBinding {
         return ActivityChatroomBinding.inflate(inflater)
     }
+    private var isOwner = false;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         roomViewModel = ViewModelProvider(this)[ChatroomViewModel::class.java]
+        giftViewDelegate = RoomGiftViewDelegate.getInstance(this,binding.chatroomGiftView)
+        handsDelegate = RoomHandsViewDelegate.getInstance(this,binding.chatBottom)
         initListeners()
         initData()
         initView()
@@ -98,6 +99,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
             // 房间列表进入，需请求详情
             roomBean?.let { roomInfo ->
                 roomKitBean.convertByRoomInfo(roomInfo)
+                handsDelegate.onRoomDetails(roomBean.room_id,roomBean.ownerUid)
                 roomViewModel.getDetails(this, roomKitBean.roomId)
             }
         }
@@ -120,7 +122,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
             }
 
             override fun onListClickListener() {
-                reset()
+              reset()
             }
         })
     }
@@ -200,9 +202,19 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
                         })
                     }
                     R.id.extend_item_mic -> {}
-                    R.id.extend_item_hand_up -> {}
+                    R.id.extend_item_hand_up -> {
+                        if (isOwner){
+                            if (this@ChatroomLiveActivity::handsDelegate.isInitialized) {
+                                handsDelegate.showOwnerHandsDialog()
+                            }
+                        }else{
+                            if (this@ChatroomLiveActivity::handsDelegate.isInitialized) {
+                                handsDelegate.showMemberHandsDialog()
+                            }
+                        }
+                    }
                     R.id.extend_item_gift -> {
-                        showGiftDialog()
+                        giftViewDelegate.showGiftDialog()
                     }
                 }
             }
@@ -215,6 +227,11 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
                     binding.bottomLayout.isVisible = true
                     binding.likeView.isVisible = true
                 }
+            }
+
+            override fun onInputLayoutClick() {
+                binding.bottomLayout.isVisible = false
+                binding.likeView.isVisible = false
             }
 
             override fun onEmojiClick(isShow: Boolean) {
@@ -302,70 +319,11 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
         binding.clMain.isFocusable = true
         binding.chatBottom.hideExpressionView()
         binding.chatBottom.showInput()
-        binding.chatBottom.checkShowExpression(false)
+        binding.chatBottom.hindViewChangeIcon()
         binding.likeView.isVisible = true
+        binding.bottomLayout.isVisible = true
+        binding.clMain.isFocusable = true
         hideKeyboard()
-    }
-
-    private var dialog: GiftBottomDialog? = null
-
-    private fun showGiftDialog() {
-        supportFragmentManager.findFragmentByTag("live_gift").apply {
-            if (dialog == null) {
-                dialog = GiftBottomDialog.getNewInstance()
-            }
-            dialog!!.show(supportFragmentManager, "live_gift")
-            dialog!!.setOnConfirmClickListener { view, bean ->
-                val giftBean: GiftBean = bean as GiftBean
-
-                ChatroomMsgHelper.getInstance().sendGiftMsg(
-                    ProfileManager.getInstance().profile.name, ProfileManager.getInstance().profile.portrait,
-                    giftBean.id, giftBean.num, giftBean.price, giftBean.name, object : OnMsgCallBack() {
-                        override fun onSuccess(message: ChatMessageData?) {
-                            binding.chatroomGiftView.refresh()
-                            if (view is TextView) {
-                                send = view
-                                send!!.text = time.toString() + "s"
-                                send!!.isEnabled = false
-                                startTask()
-                            }
-                        }
-                    })
-            }
-        }
-    }
-
-    private var time = 2
-    private val handler = Handler(Looper.getMainLooper())
-    private var task: Runnable? = null
-    private var send: TextView? = null
-
-    // 开启倒计时任务
-    private fun startTask() {
-        handler.postDelayed(object : Runnable {
-            override fun run() {
-                // 在这里执行具体的任务
-                time--
-                send!!.text = (time.toString() + "s")
-                // 任务执行完后再次调用postDelayed开启下一次任务
-                if (time == 0) {
-                    stopTask()
-                    send!!.isEnabled = true
-                    send!!.text = "Send"
-                } else {
-                    handler.postDelayed(this, 1000)
-                }
-            }
-        }.also { task = it }, 1000)
-    }
-
-    // 停止计时任务
-    private fun stopTask() {
-        if (task != null) {
-            handler.removeCallbacks(task!!)
-            task = null
-            time = 2
-        }
     }
 
     override fun receiveTextMessage(roomId: String?, message: ChatMessageData?) {
@@ -374,5 +332,9 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
 
     override fun receiveGift(roomId: String?, message: ChatMessageData?) {
         binding.chatroomGiftView.refresh()
+    }
+
+    override fun receiveApplySite(roomId: String?, message: ChatMessageData?) {
+         binding.chatBottom.setHandStatus(true,true)
     }
 }

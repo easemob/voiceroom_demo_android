@@ -9,7 +9,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 import com.alibaba.android.arouter.launcher.ARouter;
-
 import java.util.ArrayList;
 import java.util.List;
 import io.agora.CallBack;
@@ -66,21 +65,21 @@ public class ChatroomListFragment extends BaseChatroomListFragment<VRoomBean.Roo
         super.initViewModel();
         chatroomViewModel = new ViewModelProvider(this).get(ChatroomViewModel.class);
         chatroomViewModel.getRoomObservable().observe(this, response ->{
-            parseResource(response, new OnResourceParseCallback<VRoomBean>() {
+            parseResource(response, new OnResourceParseCallback<>() {
                 @Override
                 public void onSuccess(@Nullable VRoomBean data) {
                     Log.e("chatroomViewModel"," onSuccess " + data.getRooms().size());
                     Cursor = data.getCursor();
                     dataList.addAll(data.getRooms());
-                    if (dataList.size() > 0){
-                        index = dataList.size()-1;
-                    }
                     Log.e("chatroomViewModel"," index " + index);
                     Log.e("chatroomViewModel"," dataList " + dataList.size());
                     listAdapter.setData(dataList);
+                    if (dataList.size() > 0){
+                        index = dataList.size()-1;
+                    }
                     chatroomViewModel.clearRegisterInfo();
                     if (null != listener)
-                    listener.getItemCount(data.getTotal());
+                        listener.getItemCount(data.getTotal());
                     finishRefresh();
                 }
             });
@@ -93,9 +92,11 @@ public class ChatroomListFragment extends BaseChatroomListFragment<VRoomBean.Roo
                 dataList.clear();
                 listAdapter.clearData();
                 index = 0;
+                Log.e("pageViewModel","clearData ");
             }
             chatroomViewModel.getDataList(getActivity(),pageSize,page,Cursor);
             mCurrentPage = page;
+            Log.e("pageViewModel","mCurrentPage " + mCurrentPage);
         });
 
     }

@@ -11,9 +11,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -47,6 +49,10 @@ public class ChatPrimaryMenuView extends RelativeLayout implements ExpressionVie
     private RelativeLayout normalLayout;
     private ExpressionView expressionView;
     private ViewGroup rootView;
+    private View view;
+    private int softKeyHeight = 0;
+    private int mWindowHeight,mExpressionHeight = 0;
+    private boolean isSoftShowing;
 
 
     public ChatPrimaryMenuView(Context context) {
@@ -59,7 +65,7 @@ public class ChatPrimaryMenuView extends RelativeLayout implements ExpressionVie
 
     public ChatPrimaryMenuView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        LayoutInflater.from(context).inflate(R.layout.widget_primary_menu_layout, this);
+        view = LayoutInflater.from(context).inflate(R.layout.widget_primary_menu_layout, this);
         activity = (Activity) context;
         inputManager = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
         initViews();
@@ -86,6 +92,7 @@ public class ChatPrimaryMenuView extends RelativeLayout implements ExpressionVie
                     Log.d("focus", "focused");
                     if (null != clickListener)
                         clickListener.onInputViewFocusChange(true);
+                        checkShowExpression(false);
                 } else {
                     Log.d("focus", "focus lost");
                     if (null != clickListener)
@@ -99,12 +106,15 @@ public class ChatPrimaryMenuView extends RelativeLayout implements ExpressionVie
             public void onClick(View v) {
                 inputView.setVisibility(View.VISIBLE);
                 edContent.requestFocus();
+                inputLayout.setVisibility(GONE);
+                inputLayout.setEnabled(false);
             }
         });
         icon.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 isShowEmoji = !isShowEmoji;
+                SoftShowing();
                 checkShowExpression(isShowEmoji);
                 if (null != clickListener)
                     clickListener.onEmojiClick(isShowEmoji);
@@ -122,14 +132,92 @@ public class ChatPrimaryMenuView extends RelativeLayout implements ExpressionVie
         rootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
+//                Rect r = new Rect();
+//                activity.getWindow().getDecorView().getWindowVisibleDisplayFrame(r);
+//                int rootHeight = r.height();
+//                int rootWidth = r.width();
+//                // 2029
+//                int displayHeight = r.bottom - r.top;
+//                //软键盘高度
+//                softKeyHeight = rootHeight - displayHeight;
+//                Log.e("onGlobalLayout","rootHeight: "+rootHeight + " displayHeight: "+displayHeight);
+//                //如果除去软键盘的高度 大于 可见区域 2/3的高度 说明软键盘已经弹起
+//                if (rootHeight - softKeyHeight > rootHeight * 2/3 ){
+//                    mWindowHeight = softKeyHeight;
+//                }else {
+//                    mWindowHeight = 0;
+//                }
+//                if (mWindowHeight == softKeyHeight) return;
+
                 Rect r = new Rect();
+                //获取当前窗口实际的可见区域
                 rootView.getWindowVisibleDisplayFrame(r);
-                int displayHeight = r.bottom - r.top;
-                int rootHeight = rootView.getHeight();
-                int softKeyHeight = rootHeight - displayHeight;
-                Log.e("onGlobalLayout","softKeyHeight" + softKeyHeight +" rootHeight:" + rootHeight +" displayHeight:" + displayHeight);
+                int height = r.height();
+                int rootWidth = r.width();
+                if (mWindowHeight == 0) {
+                    //一般情况下，这是原始的窗口高度
+                    mWindowHeight = height;
+                    setViewLayoutParams(expressionView,rootWidth,0);
+                    System.out.println("SoftKeyboard height0 = " + 0);
+                } else {
+                    if (softKeyHeight == 0){
+                        softKeyHeight = 765;
+                    }
+                    Log.e("onGlobalLayout","softKeyHeight: " + softKeyHeight);
+                    if (mWindowHeight != height) {
+                        //两次窗口高度相减，就是软键盘高度
+                        softKeyHeight = mWindowHeight - height;
+                        isSoftShowing = true;
+                        System.out.println("SoftKeyboard height1 = " + softKeyHeight);
+                        setViewLayoutParams(expressionView,rootWidth,softKeyHeight);
+                    }
+                    else {
+                        isSoftShowing = false;
+                        if (!isShowEmoji){
+                            setViewLayoutParams(expressionView,rootWidth,0);
+                        }else {
+                            setViewLayoutParams(expressionView,rootWidth,softKeyHeight);
+                        }
+                        System.out.println("SoftKeyboard height2 = " + 0);
+                    }
+                }
+//                if (mWindowHeight == 0){
+//                    //首次打开页面时 初始值为0 expressionView高度为0
+//                    setViewLayoutParams(expressionView,rootWidth,0);
+//                }else{
+//                    setViewLayoutParams(expressionView,rootWidth,softKeyHeight);
+//                }
+
+
+//                int displayHeight = r.bottom - r.top;
+//                int rootHeight = rootView.getHeight();
+//                softKeyHeight = rootHeight - displayHeight;
+//
+//
+//                if (preHeight == softKeyHeight) return;
+//                preHeight = softKeyHeight;
+
+
             }
         });
+    }
+
+    public static void setViewLayoutParams(View view,int width,int height){
+        ViewGroup.LayoutParams lp = view.getLayoutParams();
+        Log.e("setViewLayoutParams","\n lp.height: " + lp.height +  "\n height: "+ height + "\n lp.width" +lp.width + "\n width:" +width );
+        if (lp.height != height || lp.width != width){
+            lp.width = width;
+            lp.height = height;
+            view.setLayoutParams(lp);
+        }
+    }
+
+    public void SoftShowing(){
+        if (isShowEmoji){
+            setViewLayoutParams(expressionView, ViewGroup.LayoutParams.MATCH_PARENT,softKeyHeight);
+        }else {
+            setViewLayoutParams(expressionView, ViewGroup.LayoutParams.MATCH_PARENT,0);
+        }
     }
 
     public void addMenu( int drawableRes, int itemId){
@@ -154,6 +242,7 @@ public class ChatPrimaryMenuView extends RelativeLayout implements ExpressionVie
     }
 
     public void initMenu(int roomType) {
+        Log.e("initMenu","roomType: " + roomType);
         if (roomType == 0){
             normalLayout.setVisibility(VISIBLE);
             registerMenuItem(R.drawable.icon_close_mic,R.id.extend_item_mic);
@@ -226,10 +315,10 @@ public class ChatPrimaryMenuView extends RelativeLayout implements ExpressionVie
         }
     }
 
-    public void setHandStatus(boolean isShow,int role){
+    public void setHandStatus(boolean isShow,boolean role){
         ImageView hand = menuLayout.findViewById(R.id.extend_item_hand_up);
         ImageView dot = menuLayout.findViewById(R.id.extend_item_hand_up_status);
-        if (role == 0){ // 0为房主
+        if (role){
             hand.setImageResource(R.drawable.icon_handuphard);
             if (isShow){
                 dot.setVisibility(VISIBLE);
@@ -285,10 +374,31 @@ public class ChatPrimaryMenuView extends RelativeLayout implements ExpressionVie
         if (isShowEmoji){
             icon.setImageResource(R.drawable.icon_key);
             expressionView.setVisibility(VISIBLE);
+            hideKeyboard();
         }else {
             icon.setImageResource(R.drawable.icon_face);
-            expressionView.setVisibility(GONE);
+            expressionView.setVisibility(INVISIBLE);
+            showInputMethod(edContent);
         }
+    }
+
+    public void hindViewChangeIcon(){
+        icon.setImageResource(R.drawable.icon_face);
+    }
+
+    public void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager)activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm!=null && activity.getWindow().getAttributes().softInputMode != WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN) {
+            if (activity.getCurrentFocus() != null){
+                imm.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+            }
+        }
+    }
+
+    public void showInputMethod(EditText editText){
+        editText.requestFocus();
+        InputMethodManager imm = (InputMethodManager)activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(editText,InputMethodManager.SHOW_IMPLICIT);
     }
 
     @Override
@@ -312,6 +422,8 @@ public class ChatPrimaryMenuView extends RelativeLayout implements ExpressionVie
 
     public void showInput(){
         inputView.setVisibility(View.GONE);
+        inputLayout.setVisibility(VISIBLE);
+        inputLayout.setEnabled(true);
     }
 
     public static class MenuItemModel{

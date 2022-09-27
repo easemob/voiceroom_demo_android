@@ -7,6 +7,7 @@ import io.agora.baseui.general.net.Resource
 import io.agora.chatroom.general.net.HttpManager
 import tools.ValueCallBack
 import tools.bean.VRMicBean
+import tools.bean.VRMicListBean
 import tools.bean.VRoomBean
 import tools.bean.VRoomBean.RoomsBean
 import tools.bean.VRoomUserBean
@@ -17,11 +18,11 @@ import tools.bean.VRoomUserBean
 class RoomMicRepository : BaseRepository() {
 
     // 获取上麦申请列表
-    fun getApplyMicList(context: Context, roomId: String, limit: Int): LiveData<Resource<VRMicBean>> {
-        val resource = object : NetworkOnlyResource<VRMicBean>() {
-            override fun createCall(callBack: ResultCallBack<LiveData<VRMicBean>>) {
-                HttpManager.getInstance(context).getApplyMicList(roomId, limit, object : ValueCallBack<VRMicBean> {
-                    override fun onSuccess(data: VRMicBean) {
+    fun getApplyMicList(context: Context, roomId: String,cursor: String, limit: Int): LiveData<Resource<VRMicListBean>> {
+        val resource = object : NetworkOnlyResource<VRMicListBean>() {
+            override fun createCall(callBack: ResultCallBack<LiveData<VRMicListBean>>) {
+                HttpManager.getInstance(context).getApplyMicList(roomId, limit, cursor,object : ValueCallBack<VRMicListBean> {
+                    override fun onSuccess(data: VRMicListBean) {
                         callBack.onSuccess(createLiveData(data))
                     }
 
