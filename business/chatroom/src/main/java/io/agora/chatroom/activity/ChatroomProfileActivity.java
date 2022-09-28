@@ -2,6 +2,7 @@ package io.agora.chatroom.activity;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -24,6 +25,7 @@ import org.json.JSONException;
 
 import io.agora.baseui.BaseActivity;
 import io.agora.baseui.popupwindow.CommonPopupWindow;
+import io.agora.buddy.tool.ThreadManager;
 import io.agora.buddy.tool.ToastTools;
 import io.agora.chat.ChatClient;
 import io.agora.chatroom.R;
@@ -91,6 +93,21 @@ public class ChatroomProfileActivity extends BaseActivity implements View.OnClic
    @Override
    protected void initData() {
       super.initData();
+      VRUserBean bean = ProfileManager.getInstance().getProfile();
+      if (bean != null){
+         String ProfileName =  ProfileManager.getInstance().getProfile().getPortrait();
+         String name = ProfileManager.getInstance().getProfile().getName();
+         String ID = ProfileManager.getInstance().getProfile().getUid();
+         if (!TextUtils.isEmpty(ProfileName)){
+            int resId = getResources().getIdentifier(ProfileName, "drawable", getPackageName());
+            if (resId != 0){
+               avatar.setImageResource(resId);
+            }
+         }
+         nickName.setText(name);
+         number.setText("ID: " + ID);
+      }
+
    }
 
    @Override
@@ -170,9 +187,7 @@ public class ChatroomProfileActivity extends BaseActivity implements View.OnClic
                                         ChatClient.getInstance().getDeviceInfo().getString("deviceid"), bean.getAvatarName(), new ValueCallBack<VRUserBean>() {
                                            @Override
                                            public void onSuccess(VRUserBean var1) {
-                                              if (popupWindow.isShowing()){
-                                                 popupWindow.dismiss();
-                                              }
+                                              ProfileManager.getInstance().setProfile(var1);
                                            }
 
                                            @Override

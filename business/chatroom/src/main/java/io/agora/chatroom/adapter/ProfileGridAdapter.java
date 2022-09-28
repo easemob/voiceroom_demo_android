@@ -64,6 +64,7 @@ public class ProfileGridAdapter extends BaseAdapter {
       ShapeableImageView imageView = view.findViewById(R.id.avatar);
       ConstraintLayout item = view.findViewById(R.id.item_layout);
       ImageView check = view.findViewById(R.id.icon_check);
+      ShapeableImageView imageBg = view.findViewById(R.id.avatar_bg);
       item.setOnClickListener(new View.OnClickListener() {
          @Override
          public void onClick(View v) {
@@ -76,9 +77,11 @@ public class ProfileGridAdapter extends BaseAdapter {
       if(selectedPosition == position) {
          check.setEnabled(false);
          item.setEnabled(false);
+         imageBg.setVisibility(View.VISIBLE);
       }else {
          check.setEnabled(true);
          item.setEnabled(true);
+         imageBg.setVisibility(View.GONE);
          data.get(position).setChecked(false);
       }
       return view;
