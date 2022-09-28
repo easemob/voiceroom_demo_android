@@ -68,11 +68,11 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
 
     /**房间基础*/
     private val roomKitBean = RoomKitBean()
+    private var password : String? = "";
 
     override fun getViewBinding(inflater: LayoutInflater): ActivityChatroomBinding {
         return ActivityChatroomBinding.inflate(inflater)
     }
-    private var isOwner = false;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -88,6 +88,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
     private fun initData() {
         val roomBean = intent.getSerializableExtra(RouterParams.KEY_CHATROOM_INFO) as VRoomBean.RoomsBean?
         roomInfoBean = intent.getSerializableExtra(RouterParams.KEY_CHATROOM_DETAILS_INFO) as VRoomInfoBean?
+        password = intent.getStringExtra(RouterParams.KEY_CHATROOM_JOIN_PASSWORD).toString()
         if (roomBean == null && roomInfoBean == null) {
             ToastTools.show(this, "roomInfo is null!")
             finish()
@@ -210,7 +211,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
                     }
                     R.id.extend_item_mic -> {}
                     R.id.extend_item_hand_up -> {
-                        if (isOwner){
+                        if (roomKitBean.isOwner){
                             if (this@ChatroomLiveActivity::handsDelegate.isInitialized) {
                                 handsDelegate.showOwnerHandsDialog()
                             }
@@ -298,7 +299,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
     }
 
     private fun onPermissionGrant() {
-        roomViewModel.initSdkJoin(roomKitBean)
+        roomViewModel.initSdkJoin(roomKitBean,password)
     }
 
     override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>) {

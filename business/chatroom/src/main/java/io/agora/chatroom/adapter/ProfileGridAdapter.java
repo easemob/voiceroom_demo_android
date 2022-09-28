@@ -37,6 +37,7 @@ public class ProfileGridAdapter extends BaseAdapter {
          String name = "avatar"+i;
          int resId = context.getResources().getIdentifier(name, "drawable", context.getPackageName());
          bean.setAvatarResource(resId);
+         bean.setAvatarName(name);
          data.add(bean);
       }
       return data;

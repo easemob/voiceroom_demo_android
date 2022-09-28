@@ -13,11 +13,11 @@ import tools.bean.VRUserBean;
 
 public class LoginRepository extends BaseRepository {
 
-    public LiveData<Resource<VRUserBean>> login(Context context,String deviceId) {
+    public LiveData<Resource<VRUserBean>> login(Context context,String deviceId,String avatar) {
         return new NetworkOnlyResource<VRUserBean>() {
             @Override
             protected void createCall(@NonNull ResultCallBack<LiveData<VRUserBean>> callBack) {
-                HttpManager.getInstance(context).loginWithToken(deviceId,new ValueCallBack<VRUserBean>() {
+                HttpManager.getInstance(context).loginWithToken(deviceId,avatar,new ValueCallBack<VRUserBean>() {
                     @Override
                     public void onSuccess(VRUserBean value) {
                         callBack.onSuccess(createLiveData(value));
