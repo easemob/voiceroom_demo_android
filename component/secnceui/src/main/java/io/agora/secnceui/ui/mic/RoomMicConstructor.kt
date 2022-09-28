@@ -91,13 +91,13 @@ object RoomMicConstructor {
                 if (micInfo.userInfo == null) {
                     mutableListOf(
                         MicManagerBean(context.getString(R.string.chatroom_invite), true, MicClickAction.Invite),
-                        MicManagerBean(context.getString(R.string.chatroom_unmute), true, MicClickAction.Mute),
+                        MicManagerBean(context.getString(R.string.chatroom_unmute), true, MicClickAction.UnMute),
                         MicManagerBean(context.getString(R.string.chatroom_block), true, MicClickAction.Block)
                     )
                 } else {
                     mutableListOf(
                         MicManagerBean(context.getString(R.string.chatroom_kickoff), true, MicClickAction.KickOff),
-                        MicManagerBean(context.getString(R.string.chatroom_unmute), true, MicClickAction.Mute),
+                        MicManagerBean(context.getString(R.string.chatroom_unmute), true, MicClickAction.UnMute),
                         MicManagerBean(context.getString(R.string.chatroom_block), true, MicClickAction.Block)
                     )
                 }
@@ -114,7 +114,7 @@ object RoomMicConstructor {
             MicStatus.CloseForceMute -> {
                 mutableListOf(
                     MicManagerBean(context.getString(R.string.chatroom_invite), false, MicClickAction.Invite),
-                    MicManagerBean(context.getString(R.string.chatroom_unmute), true, MicClickAction.Mute),
+                    MicManagerBean(context.getString(R.string.chatroom_unmute), true, MicClickAction.UnMute),
                     MicManagerBean(context.getString(R.string.chatroom_unblock), true, MicClickAction.UnBlock)
                 )
             }
@@ -141,7 +141,7 @@ object RoomMicConstructor {
                 } else {
                     mutableListOf(
                         MicManagerBean(context.getString(R.string.chatroom_kickoff), true, MicClickAction.KickOff),
-                        MicManagerBean(context.getString(R.string.chatroom_unmute), true, MicClickAction.Mute),
+                        MicManagerBean(context.getString(R.string.chatroom_unmute), true, MicClickAction.UnMute),
                         MicManagerBean(context.getString(R.string.chatroom_block), true, MicClickAction.Block)
                     )
                 }
@@ -167,13 +167,13 @@ object RoomMicConstructor {
             MicStatus.ForceMute -> {
                 // 被房主强制静音
                 mutableListOf(
-                    MicManagerBean(context.getString(R.string.chatroom_unmute), false, MicClickAction.Mute),
+                    MicManagerBean(context.getString(R.string.chatroom_unmute), false, MicClickAction.UnMute),
                     MicManagerBean(context.getString(R.string.chatroom_off_stage), true, MicClickAction.OffStage)
                 )
             }
             else -> {
                 mutableListOf(
-                    MicManagerBean(context.getString(R.string.chatroom_unmute), true, MicClickAction.Mute),
+                    MicManagerBean(context.getString(R.string.chatroom_unmute), true, MicClickAction.UnMute),
                     MicManagerBean(context.getString(R.string.chatroom_off_stage), true, MicClickAction.OffStage)
                 )
             }

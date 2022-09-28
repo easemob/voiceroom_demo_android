@@ -71,15 +71,15 @@ public class ChatroomInviteHandsFragment extends BaseListFragment<VRoomUserBean.
                     if (data != null){
                         count = dataList.size();
                         cursor = data.getCursor();
-                        total = data.getTotal();
-                        for (VRoomUserBean.UsersBean user : data.getUsers()) {
+                        int total = data.getTotal();
+                        for (VRoomUserBean.UsersBean user : data.getMembers()) {
                             if (null != dataList && !dataList.contains(user)){
-                                dataList.addAll(data.getUsers());
+                                dataList.addAll(data.getMembers());
                                 adapter.addData(count,dataList);
                             }
                         }
                         if (null != listener)
-                            listener.getItemCount(Integer.getInteger(total));
+                            listener.getItemCount(total);
                     }
                 }
             });

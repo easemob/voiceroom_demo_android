@@ -26,11 +26,11 @@ class RoomMicViewModel constructor(application: Application) : AndroidViewModel(
     private val _closeMicObservable: SingleSourceLiveData<Resource<Boolean>> = SingleSourceLiveData()
     private val _cancelCloseMicObservable: SingleSourceLiveData<Resource<Boolean>> = SingleSourceLiveData()
     private val _leaveMicObservable: SingleSourceLiveData<Resource<Boolean>> = SingleSourceLiveData()
-    private val _muteMicObservable: SingleSourceLiveData<Resource<String>> = SingleSourceLiveData()
-    private val _cancelMuteMicObservable: SingleSourceLiveData<Resource<String>> = SingleSourceLiveData()
+    private val _muteMicObservable: SingleSourceLiveData<Resource<Boolean>> = SingleSourceLiveData()
+    private val _cancelMuteMicObservable: SingleSourceLiveData<Resource<Boolean>> = SingleSourceLiveData()
     private val _exChangeMicObservable: SingleSourceLiveData<Resource<Boolean>> = SingleSourceLiveData()
     private val _kickMicObservable: SingleSourceLiveData<Resource<Boolean>> = SingleSourceLiveData()
-    private val _rejectMicInvitationObservable: SingleSourceLiveData<Resource<VRoomBean>> = SingleSourceLiveData()
+    private val _rejectMicInvitationObservable: SingleSourceLiveData<Resource<Boolean>> = SingleSourceLiveData()
     private val _lockMicObservable: SingleSourceLiveData<Resource<Boolean>> = SingleSourceLiveData()
     private val _cancelLockMicObservable: SingleSourceLiveData<Resource<Boolean>> = SingleSourceLiveData()
     private val _invitationMicObservable: SingleSourceLiveData<Resource<Boolean>> = SingleSourceLiveData()
@@ -43,12 +43,12 @@ class RoomMicViewModel constructor(application: Application) : AndroidViewModel(
     fun micInfoObservable(): LiveData<Resource<VRoomUserBean>> = _micInfoObservable
     fun closeMicObservable(): LiveData<Resource<Boolean>> = _closeMicObservable
     fun cancelCloseMicObservable(): LiveData<Resource<Boolean>> = _cancelCloseMicObservable
-    fun leaveMicMicObservable(): LiveData<Resource<Boolean>> = _leaveMicObservable
-    fun muteMicObservable(): LiveData<Resource<String>> = _muteMicObservable
-    fun cancelMuteMicObservable(): LiveData<Resource<String>> = _cancelMuteMicObservable
+    fun leaveMicObservable(): LiveData<Resource<Boolean>> = _leaveMicObservable
+    fun muteMicObservable(): LiveData<Resource<Boolean>> = _muteMicObservable
+    fun cancelMuteMicObservable(): LiveData<Resource<Boolean>> = _cancelMuteMicObservable
     fun exChangeMicObservable(): LiveData<Resource<Boolean>> = _exChangeMicObservable
     fun kickMicObservable(): LiveData<Resource<Boolean>> = _kickMicObservable
-    fun rejectMicInvitationObservable(): LiveData<Resource<VRoomBean>> = _rejectMicInvitationObservable
+    fun rejectMicInvitationObservable(): LiveData<Resource<Boolean>> = _rejectMicInvitationObservable
     fun lockMicObservable(): LiveData<Resource<Boolean>> = _lockMicObservable
     fun cancelLockMicObservable(): LiveData<Resource<Boolean>> = _cancelLockMicObservable
     fun invitationMicObservable(): LiveData<Resource<Boolean>> = _invitationMicObservable
@@ -56,8 +56,8 @@ class RoomMicViewModel constructor(application: Application) : AndroidViewModel(
     fun rejectSubmitMicObservable(): LiveData<Resource<Boolean>> = _rejectSubmitMicObservable
 
     // 获取上麦申请列表
-    fun getApplyMicList(context: Context, roomId: String,cursor: String, micIndex: Int) {
-        _applyMicListObservable.setSource(mRepository.getApplyMicList(context, roomId,cursor, micIndex))
+    fun getApplyMicList(context: Context, roomId: String, cursor: String, micIndex: Int) {
+        _applyMicListObservable.setSource(mRepository.getApplyMicList(context, roomId, cursor, micIndex))
     }
 
     // 提交上麦申请
@@ -86,8 +86,8 @@ class RoomMicViewModel constructor(application: Application) : AndroidViewModel(
     }
 
     // 下麦
-    fun leaveMicMic(context: Context, roomId: String) {
-        _leaveMicObservable.setSource(mRepository.leaveMicMic(context, roomId))
+    fun leaveMicMic(context: Context, roomId: String, micIndex: Int) {
+        _leaveMicObservable.setSource(mRepository.leaveMicMic(context, roomId, micIndex))
     }
 
     // 禁言指定麦位
@@ -121,8 +121,8 @@ class RoomMicViewModel constructor(application: Application) : AndroidViewModel(
     }
 
     // 取消锁麦
-    fun cancelLockMic(context: Context, roomId: String) {
-        _cancelLockMicObservable.setSource(mRepository.cancelLockMic(context, roomId))
+    fun cancelLockMic(context: Context, roomId: String, micIndex: Int) {
+        _cancelLockMicObservable.setSource(mRepository.cancelLockMic(context, roomId, micIndex))
     }
 
     //  邀请上麦
@@ -137,6 +137,6 @@ class RoomMicViewModel constructor(application: Application) : AndroidViewModel(
 
     // 拒绝上麦申请
     fun rejectSubmitMic(context: Context, roomId: String, userId: String) {
-        _applySubmitMicObservable.setSource(mRepository.rejectSubmitMic(context, roomId, userId))
+        _rejectSubmitMicObservable.setSource(mRepository.rejectSubmitMic(context, roomId, userId))
     }
 }

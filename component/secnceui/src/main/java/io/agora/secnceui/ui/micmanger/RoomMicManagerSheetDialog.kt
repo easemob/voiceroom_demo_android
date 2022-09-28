@@ -64,6 +64,7 @@ class RoomMicManagerSheetDialog constructor(private val onItemClickListener: OnI
             override fun onItemClick(data: MicManagerBean, view: View, position: Int, viewType: Long) {
                 Toast.makeText(context, data.name, Toast.LENGTH_SHORT).show()
                 onItemClickListener.onItemClick(data, view, position, viewType)
+                dismiss()
             }
         }, RoomMicManagerViewHolder::class.java)
         binding?.apply {

@@ -126,20 +126,20 @@ public class VRRequestApi {
         return BASE_URL + String.format(BASE_MIC,roomId) + MIC_CLOSE;
     }
 
-    public String cancelCloseMic(String roomId){
-        return BASE_URL + String.format(BASE_MIC,roomId) + MIC_CLOSE;
+    public String cancelCloseMic(String roomId, int micIndex) {
+        return BASE_URL + String.format(BASE_MIC, roomId) + MIC_CLOSE + "?mic_index=" + micIndex;
     }
 
-    public String leaveMic(String roomId){
-        return BASE_URL + String.format(BASE_MIC,roomId) + MIC_LEAVE;
+    public String leaveMic(String roomId, int micIndex) {
+        return BASE_URL + String.format(BASE_MIC, roomId) + MIC_LEAVE + "?mic_index=" + micIndex;
     }
 
     public String muteMic(String roomId){
         return BASE_URL + String.format(BASE_MIC,roomId) + MIC_MUTE;
     }
 
-    public String unMuteMic(String roomId,int mic_index){
-        return BASE_URL + String.format(BASE_MIC,roomId) + MIC_MUTE + "&mic_index=" + mic_index;
+    public String unMuteMic(String roomId,int micIndex){
+        return BASE_URL + String.format(BASE_MIC,roomId) + MIC_MUTE + "?mic_index=" + micIndex;
     }
 
     public String exchangeMic(String roomId){
@@ -158,8 +158,8 @@ public class VRRequestApi {
         return BASE_URL + String.format(BASE_MIC,roomId) + MIC_LOCK;
     }
 
-    public String unlockMic(String roomId){
-        return BASE_URL + String.format(BASE_MIC,roomId) + MIC_LOCK;
+    public String unlockMic(String roomId, int micIndex) {
+        return BASE_URL + String.format(BASE_MIC, roomId) + MIC_LOCK + "?mic_index=" + micIndex;
     }
 
     public String inviteUserToMic(String roomId){
@@ -182,8 +182,4 @@ public class VRRequestApi {
     public String giftTo(String roomId){
         return BASE_URL + String.format(BASE_GIFT,roomId) + GIFT_ADD;
     }
-
-
-
-
 }

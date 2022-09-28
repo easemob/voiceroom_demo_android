@@ -11,15 +11,15 @@ public class VRoomUserBean implements Serializable {
     * users : [{"uid":"string","chat_uid":"string","name":"string","portrait":"string"}]
     */
 
-   private String total;
+   private int total;
    private String cursor;
-   private List<UsersBean> users;
+   private List<UsersBean> members;
 
-   public String getTotal() {
+   public int getTotal() {
       return total;
    }
 
-   public void setTotal(String total) {
+   public void setTotal(int total) {
       this.total = total;
    }
 
@@ -31,12 +31,12 @@ public class VRoomUserBean implements Serializable {
       this.cursor = cursor;
    }
 
-   public List<UsersBean> getUsers() {
-      return users;
+   public List<UsersBean> getMembers() {
+      return members;
    }
 
-   public void setUsers(List<UsersBean> users) {
-      this.users = users;
+   public void setMembers(List<UsersBean> members) {
+      this.members = members;
    }
 
    public static class UsersBean implements Serializable {
