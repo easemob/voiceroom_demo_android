@@ -68,6 +68,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
 
     /**房间基础*/
     private val roomKitBean = RoomKitBean()
+    private var password : String? = "";
 
     override fun getViewBinding(inflater: LayoutInflater): ActivityChatroomBinding {
         return ActivityChatroomBinding.inflate(inflater)
@@ -87,6 +88,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
     private fun initData() {
         val roomBean = intent.getSerializableExtra(RouterParams.KEY_CHATROOM_INFO) as VRoomBean.RoomsBean?
         roomInfoBean = intent.getSerializableExtra(RouterParams.KEY_CHATROOM_DETAILS_INFO) as VRoomInfoBean?
+        password = intent.getStringExtra(RouterParams.KEY_CHATROOM_JOIN_PASSWORD).toString()
         if (roomBean == null && roomInfoBean == null) {
             ToastTools.show(this, "roomInfo is null!")
             finish()
@@ -297,7 +299,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
     }
 
     private fun onPermissionGrant() {
-        roomViewModel.initSdkJoin(roomKitBean)
+        roomViewModel.initSdkJoin(roomKitBean,password)
     }
 
     override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>) {

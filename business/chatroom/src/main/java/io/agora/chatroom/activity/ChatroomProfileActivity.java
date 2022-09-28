@@ -13,20 +13,31 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.google.android.material.imageview.ShapeableImageView;
 
+import org.json.JSONException;
+
 import io.agora.baseui.BaseActivity;
 import io.agora.baseui.popupwindow.CommonPopupWindow;
+import io.agora.buddy.tool.ToastTools;
+import io.agora.chat.ChatClient;
 import io.agora.chatroom.R;
 import io.agora.chatroom.adapter.ProfileGridAdapter;
 import io.agora.chatroom.bean.ProfileBean;
 import io.agora.chatroom.databinding.ChatroomProfileAvatarBinding;
+import io.agora.chatroom.general.net.HttpManager;
+import io.agora.chatroom.general.repositories.ProfileManager;
 import io.agora.config.RouterPath;
 import io.agora.secnceui.utils.DeviceUtils;
 import io.agora.secnceui.widget.titlebar.ChatroomTitleBar;
+import manager.ChatroomConfigManager;
+import tools.ValueCallBack;
+import tools.bean.VRUserBean;
 
 @Route(path = RouterPath.ChatroomProfilePath)
 public class ChatroomProfileActivity extends BaseActivity implements View.OnClickListener, ChatroomTitleBar.OnBackPressListener, TextView.OnEditorActionListener {
@@ -150,6 +161,28 @@ public class ChatroomProfileActivity extends BaseActivity implements View.OnClic
                              adapter.setSelectedPosition(position);
                           }else {
                              adapter.setSelectedPosition(-1);
+                          }
+                          int resId = bean.getAvatarResource();
+                          if (resId != 0){
+                             avatar.setImageResource(resId);
+                             try {
+                                HttpManager.getInstance(ChatroomProfileActivity.this).loginWithToken(
+                                        ChatClient.getInstance().getDeviceInfo().getString("deviceid"), bean.getAvatarName(), new ValueCallBack<VRUserBean>() {
+                                           @Override
+                                           public void onSuccess(VRUserBean var1) {
+                                              if (popupWindow.isShowing()){
+                                                 popupWindow.dismiss();
+                                              }
+                                           }
+
+                                           @Override
+                                           public void onError(int var1, String var2) {
+                                              ToastTools.show(ChatroomProfileActivity.this, var2, Toast.LENGTH_LONG);
+                                           }
+                                        });
+                             } catch (JSONException e) {
+                                e.printStackTrace();
+                             }
                           }
                        }
                     });

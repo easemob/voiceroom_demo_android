@@ -5,6 +5,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
@@ -15,6 +17,7 @@ import io.agora.CallBack;
 import io.agora.ValueCallBack;
 import io.agora.baseui.general.callback.OnResourceParseCallback;
 import io.agora.buddy.tool.ThreadManager;
+import io.agora.buddy.tool.ToastTools;
 import io.agora.chat.ChatClient;
 import io.agora.chat.ChatRoom;
 import io.agora.chatroom.R;
@@ -24,9 +27,11 @@ import io.agora.chatroom.model.PageViewModel;
 import io.agora.chatroom.model.ChatroomViewModel;
 import io.agora.config.RouterParams;
 import io.agora.config.RouterPath;
+import io.agora.secnceui.widget.encryption.ChatroomEncryptionInputDialog;
 import manager.ChatroomConfigManager;
 import tools.bean.VRUserBean;
 import tools.bean.VRoomBean;
+import tools.bean.VRoomInfoBean;
 
 public class ChatroomListFragment extends BaseChatroomListFragment<VRoomBean.RoomsBean> {
     private ChatroomListAdapter listAdapter;
@@ -39,6 +44,7 @@ public class ChatroomListFragment extends BaseChatroomListFragment<VRoomBean.Roo
     private String Cursor = "";
     private int index = 0;
     private List<VRoomBean.RoomsBean> dataList = new ArrayList<>();
+    private String mPassWord;
 
     public ChatroomListFragment(){}
 
@@ -99,6 +105,21 @@ public class ChatroomListFragment extends BaseChatroomListFragment<VRoomBean.Roo
             Log.e("pageViewModel","mCurrentPage " + mCurrentPage);
         });
 
+        chatroomViewModel.getCheckPasswordObservable().observe(this,response -> {
+            parseResource(response, new OnResourceParseCallback<VRoomInfoBean>() {
+                @Override
+                public void onSuccess(@Nullable VRoomInfoBean data) {
+                    goChatroomPage(roomBean,mPassWord,data);
+                }
+
+                @Override
+                public void onError(int code, String message) {
+                    super.onError(code, message);
+                    ToastTools.show(getActivity(),"check password failed", Toast.LENGTH_SHORT);
+                }
+            });
+        });
+
     }
 
     @Override
@@ -145,29 +166,55 @@ public class ChatroomListFragment extends BaseChatroomListFragment<VRoomBean.Roo
                 .navigation();
     }
 
+    private void goChatroomPage(VRoomBean.RoomsBean roomBean,String password,VRoomInfoBean bean) {
+        ARouter.getInstance()
+                .build(RouterPath.ChatroomPath)
+                .withSerializable(RouterParams.KEY_CHATROOM_INFO, roomBean)
+                .withSerializable(RouterParams.KEY_CHATROOM_DETAILS_INFO,bean)
+                .withString(RouterParams.KEY_CHATROOM_JOIN_PASSWORD,password)
+                .navigation();
+    }
+
     private void checkPrivate(){
         ThreadManager.getInstance().runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 if (roomBean.isIs_private()){
-                    // TODO: 2022/9/15  //弹窗 输入密码
-                    goChatroomPage(roomBean);
+                    showDialog();
                 }else {
-                    ChatroomConfigManager.getInstance().joinRoom(roomBean.getChatroom_id(), new ValueCallBack<ChatRoom>() {
-                        @Override
-                        public void onSuccess(ChatRoom chatRoom) {
-                            goChatroomPage(roomBean);
-                        }
-
-                        @Override
-                        public void onError(int code, String desc) {
-                            goChatroomPage(roomBean);
-                        }
-                    });
+                    goChatroomPage(roomBean);
+//                    ChatroomConfigManager.getInstance().joinRoom(roomBean.getChatroom_id(), new ValueCallBack<ChatRoom>() {
+//                        @Override
+//                        public void onSuccess(ChatRoom chatRoom) {
+//
+//                        }
+//
+//                        @Override
+//                        public void onError(int code, String desc) {
+//                            goChatroomPage(roomBean);
+//                        }
+//                    });
                 }
             }
         });
 
+    }
+
+    public void showDialog(){
+        new ChatroomEncryptionInputDialog()
+                .leftText(getActivity().getString(R.string.chatroom_cancel))
+                .rightText(getActivity().getString(R.string.chatroom_confirm))
+                .setOnClickListener(new ChatroomEncryptionInputDialog.OnClickBottomListener() {
+                    @Override
+                    public void onCancelClick() {}
+
+                    @Override
+                    public void onConfirmClick(@NonNull String password) {
+                        mPassWord = password;
+                        chatroomViewModel.checkPassword(getActivity(), roomBean.getRoom_id(), password);
+                    }
+                })
+                .show(getActivity().getSupportFragmentManager(), "encryptionInputDialog");
     }
 
     @Override

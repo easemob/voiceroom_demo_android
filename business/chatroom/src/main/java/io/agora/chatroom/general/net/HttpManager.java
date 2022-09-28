@@ -6,27 +6,21 @@ import static http.VRHttpClientManager.Method_POST;
 import static http.VRHttpClientManager.Method_PUT;
 
 import android.content.Context;
-import android.service.autofill.FieldClassification;
 import android.text.TextUtils;
 import android.util.Log;
 import androidx.annotation.NonNull;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import http.VRHttpCallback;
 import http.VRHttpClientManager;
 import http.VRRequestApi;
-import io.agora.baseui.general.net.ErrorCode;
 import io.agora.buddy.tool.GsonTools;
 import io.agora.buddy.tool.LogToolsKt;
 import io.agora.chatroom.general.repositories.ProfileManager;
 import tools.ValueCallBack;
 import tools.bean.VRGiftBean;
-import tools.bean.VRMicBean;
 import tools.bean.VRMicListBean;
 import tools.bean.VRUserBean;
 import tools.bean.VRoomBean;
@@ -66,20 +60,17 @@ public class HttpManager {
     }
 
    //登录
-   public void loginWithToken(String device, ValueCallBack<VRUserBean> callBack){
+   public void loginWithToken(String device,String portrait, ValueCallBack<VRUserBean> callBack){
       Map<String, String> headers = new HashMap<>();
       headers.put("Content-Type", "application/json");
       JSONObject requestBody = new JSONObject();
-      String portrait = "";
-      VRUserBean userBean = ProfileManager.getInstance().getProfile();
-      if (userBean != null){
-          portrait = userBean.getPortrait();
+      if (TextUtils.isEmpty(portrait)){
+          portrait = "avatar"+ Math.round((Math.random()*18)+1);
       }
-      String randomPortrait = "avatar"+ Math.round((Math.random()*18)+1);
       try {
           requestBody.putOpt("deviceId", device);
           requestBody.putOpt("name", "apex");
-          requestBody.putOpt("portrait",!TextUtils.isEmpty(portrait)? portrait:randomPortrait);
+          requestBody.putOpt("portrait",portrait);
 //          requestBody.putOpt("phone", "手机号后期上");
 //          requestBody.putOpt("verify_code", "验证码后期上");
       } catch (JSONException e) {
@@ -355,15 +346,59 @@ public class HttpManager {
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
         headers.put("Authorization", "Bearer " + ProfileManager.getInstance().getProfile().getAuthorization());
+        JSONObject requestBody = new JSONObject();
+        if (!TextUtils.isEmpty(password)){
+            try {
+                requestBody.putOpt("password", password);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
         new VRHttpClientManager.Builder(mContext)
                 .setUrl(VRRequestApi.get().joinRoom(roomId))
                 .setHeaders(headers)
+                .setParams(requestBody.toString())
                 .setRequestMethod(Method_POST)
                 .asyncExecute(new VRHttpCallback() {
                     @Override
                     public void onSuccess(String result) {
                         LogToolsKt.logE("joinRoom success: " + result, TAG);
                         callBack.onSuccess(true);
+                    }
+
+                    @Override
+                    public void onError(int code, String msg) {
+                        LogToolsKt.logE("joinRoom onError " + msg, TAG);
+                        callBack.onError(code,msg);
+                    }
+                });
+    }
+
+    public void checkPassword(String roomId,String password,ValueCallBack<VRoomInfoBean> callBack){
+        Log.e("joinRoom","roomId:"+roomId);
+        Log.e("joinRoom","Authorization:"+ ProfileManager.getInstance().getProfile().getAuthorization());
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Content-Type", "application/json");
+        headers.put("Authorization", "Bearer " + ProfileManager.getInstance().getProfile().getAuthorization());
+        JSONObject requestBody = new JSONObject();
+        if (!TextUtils.isEmpty(password)){
+            try {
+                requestBody.putOpt("password", password);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        new VRHttpClientManager.Builder(mContext)
+                .setUrl(VRRequestApi.get().checkPassword(roomId))
+                .setHeaders(headers)
+                .setParams(requestBody.toString())
+                .setRequestMethod(Method_POST)
+                .asyncExecute(new VRHttpCallback() {
+                    @Override
+                    public void onSuccess(String result) {
+                        LogToolsKt.logE("joinRoom success: " + result, TAG);
+                        VRoomInfoBean bean = GsonTools.toBean(result,VRoomInfoBean.class);
+                        callBack.onSuccess(bean);
                     }
 
                     @Override
@@ -414,14 +449,8 @@ public class HttpManager {
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
         headers.put("Authorization", "Bearer " + ProfileManager.getInstance().getProfile().getAuthorization());
-        JSONObject requestBody = new JSONObject();
-        try {
-            requestBody.putOpt("uid", uid);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
         new VRHttpClientManager.Builder(mContext)
-                .setUrl(VRRequestApi.get().kickUser(roomId))
+                .setUrl(VRRequestApi.get().kickUser(roomId,uid))
                 .setHeaders(headers)
                 .setRequestMethod(Method_DELETE)
                 .asyncExecute(new VRHttpCallback() {
@@ -712,16 +741,9 @@ public class HttpManager {
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
         headers.put("Authorization", "Bearer " + ProfileManager.getInstance().getProfile().getAuthorization());
-        JSONObject requestBody = new JSONObject();
-        try {
-            requestBody.putOpt("mic_index", mic_index);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
         new VRHttpClientManager.Builder(mContext)
-                .setUrl(VRRequestApi.get().unMuteMic(roomId))
+                .setUrl(VRRequestApi.get().unMuteMic(roomId,mic_index))
                 .setHeaders(headers)
-                .setParams(requestBody.toString())
                 .setRequestMethod(Method_DELETE)
                 .asyncExecute(new VRHttpCallback() {
                     @Override

@@ -37,6 +37,7 @@ public class ChatroomViewModel extends AndroidViewModel {
     private SingleSourceLiveData<Resource<Boolean>> openBotObservable;
     private SingleSourceLiveData<Resource<Boolean>> closeBotObservable;
     private SingleSourceLiveData<Resource<Boolean>> robotVolumeObservable;
+    private SingleSourceLiveData<Resource<VRoomInfoBean>> checkObservable;
     private final AtomicBoolean joinRtcChannel = new AtomicBoolean(false);
     private final AtomicBoolean joinImRoom = new AtomicBoolean(false);
 
@@ -51,6 +52,7 @@ public class ChatroomViewModel extends AndroidViewModel {
         openBotObservable = new SingleSourceLiveData<>();
         closeBotObservable = new SingleSourceLiveData<>();
         robotVolumeObservable = new SingleSourceLiveData<>();
+        checkObservable = new SingleSourceLiveData<>();
     }
 
     public LiveData<Resource<VRoomBean>> getRoomObservable() {
@@ -85,6 +87,8 @@ public class ChatroomViewModel extends AndroidViewModel {
         return robotVolumeObservable;
     }
 
+    public LiveData<Resource<VRoomInfoBean>> getCheckPasswordObservable(){ return checkObservable;}
+
     public void getDataList(Context context, int pageSize, int type, String cursor) {
         roomObservable.setSource(mRepository.getRoomList(context, pageSize, type, cursor));
     }
@@ -100,14 +104,16 @@ public class ChatroomViewModel extends AndroidViewModel {
     }
 
     public void joinRoom(Context context, String roomId, String password) {
-        joinObservable.setSource(mRepository.joinRoom(context, roomId, password));
+        if (joinRtcChannel.get() && joinImRoom.get()) {
+            joinObservable.setSource(mRepository.joinRoom(context, roomId, password));
+        }
     }
 
     public void leaveRoom(Context context, String roomId) {
         joinObservable.setSource(mRepository.leaveRoom(context, roomId));
     }
 
-    public void initSdkJoin(RoomKitBean roomKitBean) {
+    public void initSdkJoin(RoomKitBean roomKitBean,String password) {
         joinRtcChannel.set(false);
         joinImRoom.set(false);
         RtcRoomController.get().joinChannel(getApplication(), roomKitBean.getChannelId(),
@@ -118,7 +124,7 @@ public class ChatroomViewModel extends AndroidViewModel {
                     public void onSuccess(Boolean value) {
                         LogToolsKt.logE("rtc  joinChannel onSuccess ", TAG);
                         joinRtcChannel.set(true);
-                        joinRoom(getApplication(), roomKitBean.getRoomId());
+                        joinRoom(getApplication(), roomKitBean.getRoomId(),password);
                     }
 
                     @Override
@@ -132,7 +138,7 @@ public class ChatroomViewModel extends AndroidViewModel {
             public void onSuccess(ChatRoom value) {
                 LogToolsKt.logE("im  joinChatRoom onSuccess ", TAG);
                 joinImRoom.set(true);
-                joinRoom(getApplication(), roomKitBean.getRoomId());
+                joinRoom(getApplication(), roomKitBean.getRoomId(),password);
             }
 
             @Override
@@ -170,6 +176,10 @@ public class ChatroomViewModel extends AndroidViewModel {
         } else {
             closeBotObservable.setSource(mRepository.activeBot(context, roomId, false));
         }
+    }
+
+    public void checkPassword(Context context,String roomId,String password){
+        checkObservable.setSource(mRepository.checkPassword(context,roomId,password));
     }
 
 

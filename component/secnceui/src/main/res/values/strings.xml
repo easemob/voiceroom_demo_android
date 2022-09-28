@@ -108,4 +108,6 @@
     <string name="gift_default_name_8">Crown</string>
     <string name="gift_default_name_9">Rocket</string>
 
+    <string name="room_create_tips">Enter 4 Digit PassWord</string>
+
 </resources>

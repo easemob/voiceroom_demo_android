@@ -16,6 +16,7 @@ public class VRRequestApi {
     private final String ROOM_DETAILS = "/voice/room/%1$s";
     private final String FETCH_ROOM_MEMBERS = "/voice/room/%1$s/members/list?limit=%2$s";
     private final String JOIN_ROOM = "/join";
+    private final String CHECK = "/validPassword";
     private final String LEAVE_ROOM = "/leave";
     private final String KICK_USER = "/kick";
     private final String BASE_GIFT = "/voice/room/%1$s/gift";
@@ -89,12 +90,16 @@ public class VRRequestApi {
         return BASE_URL + String.format(BASE_MEMBERS,roomId) + JOIN_ROOM;
     }
 
+    public String checkPassword(String roomId){
+        return BASE_URL + String.format(BASE_MEMBERS,roomId) +CHECK;
+    }
+
     public String leaveRoom(String roomId){
         return BASE_URL + String.format(BASE_MEMBERS,roomId) + LEAVE_ROOM;
     }
 
-    public String kickUser(String roomId){
-        return BASE_URL + String.format(BASE_MEMBERS,roomId) + KICK_USER;
+    public String kickUser(String roomId,String uid){
+        return BASE_URL + String.format(BASE_MEMBERS,roomId) + KICK_USER + "&uid="+uid;
     }
 
     public String fetchApplyMembers(String roomId,String cursor,int limit){
@@ -133,8 +138,8 @@ public class VRRequestApi {
         return BASE_URL + String.format(BASE_MIC,roomId) + MIC_MUTE;
     }
 
-    public String unMuteMic(String roomId){
-        return BASE_URL + String.format(BASE_MIC,roomId) + MIC_MUTE;
+    public String unMuteMic(String roomId,int mic_index){
+        return BASE_URL + String.format(BASE_MIC,roomId) + MIC_MUTE + "&mic_index=" + mic_index;
     }
 
     public String exchangeMic(String roomId){

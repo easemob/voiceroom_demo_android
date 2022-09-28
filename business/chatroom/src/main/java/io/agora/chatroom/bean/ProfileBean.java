@@ -3,6 +3,7 @@ package io.agora.chatroom.bean;
 public class ProfileBean {
    private boolean isChecked;
    private int avatarResource;
+   private String avatarName;
 
    public boolean isChecked() {
       return isChecked;
@@ -18,5 +19,13 @@ public class ProfileBean {
 
    public void setAvatarResource(int avatarResource) {
       this.avatarResource = avatarResource;
+   }
+
+   public String getAvatarName() {
+      return avatarName;
+   }
+
+   public void setAvatarName(String avatarName) {
+      this.avatarName = avatarName;
    }
 }

@@ -13,6 +13,7 @@ import io.agora.baseui.general.net.Resource;
 import io.agora.chat.ChatClient;
 import io.agora.chatroom.general.livedatas.SingleSourceLiveData;
 import io.agora.chatroom.general.repositories.LoginRepository;
+import io.agora.chatroom.general.repositories.ProfileManager;
 import tools.bean.VRUserBean;
 
 
@@ -34,8 +35,13 @@ public class LoginViewModel extends AndroidViewModel {
     public void LoginFromServer(Context context){
         try {
            String device = ChatClient.getInstance().getDeviceInfo().getString("deviceid");
+           String portrait = "";
            Log.e("LoginFromServer"," device: "+device);
-           loginObservable.setSource(mRepository.login(context,device));
+            VRUserBean userBean = ProfileManager.getInstance().getProfile();
+            if (userBean != null){
+                 portrait = userBean.getPortrait();
+            }
+           loginObservable.setSource(mRepository.login(context,device,portrait));
         } catch (JSONException e) {
             e.printStackTrace();
         }

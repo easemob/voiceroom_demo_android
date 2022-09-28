@@ -73,7 +73,7 @@ public class ChatroomRaisedHandsFragment extends BaseListFragment<VRMicListBean.
                         count = dataList.size();
                         cursor = data.getCursor();
                         total = data.getTotal();
-                        if (!dataList.containsAll(data.getApply_list())){
+                        if (null != dataList && !dataList.containsAll(data.getApply_list())){
                             dataList.addAll(data.getApply_list());
                             adapter.addData(count,dataList);
                         }
