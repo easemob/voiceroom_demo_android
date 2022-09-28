@@ -17,7 +17,6 @@ import io.agora.secnceui.widget.gift.GiftBottomDialog;
 import io.agora.secnceui.widget.gift.OnSendClickListener;
 
 public class RoomGiftViewDelegate {
-   private static RoomGiftViewDelegate instance;
    private FragmentActivity activity;
    private GiftBottomDialog dialog;
    private int time = 2;
@@ -30,14 +29,7 @@ public class RoomGiftViewDelegate {
    }
 
    public static RoomGiftViewDelegate getInstance(FragmentActivity activity, ChatroomGiftView giftView){
-      if(instance == null) {
-         synchronized (RoomGiftViewDelegate.class) {
-            if(instance == null) {
-               instance = new RoomGiftViewDelegate(activity,giftView);
-            }
-         }
-      }
-      return instance;
+      return new RoomGiftViewDelegate(activity,giftView);
    }
 
 

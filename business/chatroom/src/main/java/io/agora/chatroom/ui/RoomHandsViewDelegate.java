@@ -1,6 +1,7 @@
 package io.agora.chatroom.ui;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 import androidx.fragment.app.FragmentActivity;
 import io.agora.buddy.tool.ToastTools;
@@ -13,7 +14,6 @@ import io.agora.secnceui.widget.primary.ChatPrimaryMenuView;
 import tools.ValueCallBack;
 
 public class RoomHandsViewDelegate {
-    private static RoomHandsViewDelegate instance;
     private FragmentActivity activity;
     private ChatroomHandsDialog dialog;
     private String roomId;
@@ -26,14 +26,7 @@ public class RoomHandsViewDelegate {
     }
 
     public static RoomHandsViewDelegate getInstance(FragmentActivity activity, ChatPrimaryMenuView view){
-        if(instance == null) {
-            synchronized (RoomHandsViewDelegate.class) {
-                if(instance == null) {
-                    instance = new RoomHandsViewDelegate(activity,view);
-                }
-            }
-        }
-        return instance;
+        return new RoomHandsViewDelegate(activity,view);
     }
 
     public void onRoomDetails(String roomId,String owner){
@@ -51,7 +44,7 @@ public class RoomHandsViewDelegate {
         bundle.putString("roomId",roomId);
         dialog.setArguments(bundle);
         dialog.show(activity.getSupportFragmentManager(), "room_hands");
-        chatPrimaryMenuView.setHandStatus(false, ProfileManager.getInstance().getProfile().getChat_uid().equals(owner));
+        chatPrimaryMenuView.setHandStatus(false, ProfileManager.getInstance().getProfile().getUid().equals(owner));
     }
 
     public void showMemberHandsDialog(){

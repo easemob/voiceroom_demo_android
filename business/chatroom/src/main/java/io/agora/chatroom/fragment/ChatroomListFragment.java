@@ -114,6 +114,7 @@ public class ChatroomListFragment extends BaseChatroomListFragment<VRoomBean.Roo
     @Override
     public void onItemClick(View view, int position) {
         roomBean = listAdapter.getItem(position);
+        Log.e("onItemClick","getOwnerUid: " + roomBean.getOwnerUid());
         if (!ChatClient.getInstance().isLoggedIn()){
             VRUserBean data = ProfileManager.getInstance().getProfile();
             Log.d("ChatroomListFragment","chat_uid: " + data.getChat_uid());

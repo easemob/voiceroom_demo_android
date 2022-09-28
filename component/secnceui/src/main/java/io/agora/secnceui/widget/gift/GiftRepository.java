@@ -39,9 +39,9 @@ public class GiftRepository {
         int index = page * base;
         List<GiftBean> gifts = new ArrayList<>();
         List<GiftBean> data =  getDefaultGifts(context);
-        for (int i = 1; i <= data.size()-1; i++) {
-            if (index <= i && i<= base+(page*base)){
-                gifts.add(data.get(i));
+        for (int i = 1; i <= data.size(); i++) {
+            if (index < i && i <= base+(page*base)){
+                gifts.add(data.get(i-1));
             }
         }
         return gifts;
