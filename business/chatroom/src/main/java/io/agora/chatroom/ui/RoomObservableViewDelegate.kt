@@ -38,7 +38,6 @@ import io.agora.secnceui.ui.soundselection.RoomSoundSelectionConstructor
 import io.agora.secnceui.ui.soundselection.RoomSoundSelectionSheetDialog
 import io.agora.secnceui.ui.spatialaudio.RoomSpatialAudioSheetDialog
 import io.agora.secnceui.widget.top.IRoomLiveTopView
-import manager.ChatroomConfigManager
 import tools.bean.VRoomInfoBean
 
 /**
@@ -152,7 +151,7 @@ class RoomObservableViewDelegate constructor(
             })
         }
         // 关麦
-        micViewModel.closeMicObservable().observe(activity){ response: Resource<Boolean> ->
+        micViewModel.closeMicObservable().observe(activity) { response: Resource<Boolean> ->
             parseResource(response, object : OnResourceParseCallback<Boolean>() {
                 override fun onSuccess(data: Boolean?) {
                     "close mic：$data".logE()
@@ -162,67 +161,86 @@ class RoomObservableViewDelegate constructor(
             })
         }
         // 取消关麦
-        micViewModel.cancelCloseMicObservable().observe(activity){ response: Resource<Boolean> ->
-            parseResource(response, object : OnResourceParseCallback<Boolean>() {
-                override fun onSuccess(data: Boolean?) {
+        micViewModel.cancelCloseMicObservable().observe(activity) { response: Resource<Pair<Int, Boolean>> ->
+            parseResource(response, object : OnResourceParseCallback<Pair<Int, Boolean>>() {
+                override fun onSuccess(data: Pair<Int, Boolean>?) {
                     "cancel close mic：$data".logE()
-                    if (data != true) return
-                    ToastTools.show(activity, "cancel close mic:$data")
+                    data?.let {
+                        if (it.second) {
+                            ToastTools.show(activity, "cancel close mic:${it.first}")
+                        }
+                    }
+
                 }
             })
         }
         // 下麦
-        micViewModel.leaveMicObservable().observe(activity){ response: Resource<Boolean> ->
-            parseResource(response, object : OnResourceParseCallback<Boolean>() {
-                override fun onSuccess(data: Boolean?) {
+        micViewModel.leaveMicObservable().observe(activity) { response: Resource<Pair<Int, Boolean>> ->
+            parseResource(response, object : OnResourceParseCallback<Pair<Int, Boolean>>() {
+                override fun onSuccess(data: Pair<Int, Boolean>?) {
                     "leave mic：$data".logE()
-                    if (data != true) return
-                    ToastTools.show(activity, "leave mic:$data")
+                    data?.let {
+                        if (it.second) {
+                            ToastTools.show(activity, "leave mic:${it.first}")
+                        }
+                    }
                 }
             })
         }
         // 禁言指定麦位
-        micViewModel.muteMicObservable().observe(activity){ response: Resource<Boolean> ->
-            parseResource(response, object : OnResourceParseCallback<Boolean>() {
-                override fun onSuccess(data: Boolean?) {
+        micViewModel.muteMicObservable().observe(activity) { response: Resource<Pair<Int, Boolean>> ->
+            parseResource(response, object : OnResourceParseCallback<Pair<Int, Boolean>>() {
+                override fun onSuccess(data: Pair<Int, Boolean>?) {
                     "mute mic：$data".logE()
-                    if (data != true) return
-                    ToastTools.show(activity, "mute mic:$data")
+                    data?.let {
+                        if (it.second) {
+                            ToastTools.show(activity, "mute mic:${it.first}")
+                        }
+                    }
                 }
             })
         }
         // 取消禁言指定麦位
-        micViewModel.cancelMuteMicObservable().observe(activity){ response: Resource<Boolean> ->
-            parseResource(response, object : OnResourceParseCallback<Boolean>() {
-                override fun onSuccess(data: Boolean?) {
+        micViewModel.cancelMuteMicObservable().observe(activity) { response: Resource<Pair<Int, Boolean>> ->
+            parseResource(response, object : OnResourceParseCallback<Pair<Int, Boolean>>() {
+                override fun onSuccess(data: Pair<Int, Boolean>?) {
                     "cancel mute mic：$data".logE()
-                    if (data != true) return
-                    ToastTools.show(activity, "cancel mute mic:$data")
+                    data?.let {
+                        if (it.second) {
+                            ToastTools.show(activity, "cancel mute mic:${it.first}")
+                        }
+                    }
                 }
             })
         }
         // 交换麦位
-        micViewModel.exChangeMicObservable().observe(activity){ response: Resource<Boolean> ->
-            parseResource(response, object : OnResourceParseCallback<Boolean>() {
-                override fun onSuccess(data: Boolean?) {
+        micViewModel.exChangeMicObservable().observe(activity) { response: Resource<Triple<Int, Int, Boolean>> ->
+            parseResource(response, object : OnResourceParseCallback<Triple<Int, Int, Boolean>>() {
+                override fun onSuccess(data: Triple<Int, Int, Boolean>?) {
                     "exchange mic：$data".logE()
-                    if (data != true) return
-                    ToastTools.show(activity, "exchange mic:$data")
+                    data?.let {
+                        if (it.third) {
+                            ToastTools.show(activity, "exchange mic from:${it.first} to:${it.second}")
+                        }
+                    }
                 }
             })
         }
         // 踢用户下麦
-        micViewModel.kickMicObservable().observe(activity){ response: Resource<Boolean> ->
-            parseResource(response, object : OnResourceParseCallback<Boolean>() {
-                override fun onSuccess(data: Boolean?) {
+        micViewModel.kickMicObservable().observe(activity) { response: Resource<Pair<Int, Boolean>> ->
+            parseResource(response, object : OnResourceParseCallback<Pair<Int, Boolean>>() {
+                override fun onSuccess(data: Pair<Int, Boolean>?) {
                     "kick mic：$data".logE()
-                    if (data != true) return
-                    ToastTools.show(activity, "kick mic:$data")
+                    data?.let {
+                        if (it.second) {
+                            ToastTools.show(activity, "kick mic:${it.first}")
+                        }
+                    }
                 }
             })
         }
         // 用户拒绝申请上麦
-        micViewModel.rejectMicInvitationObservable().observe(activity){ response: Resource<Boolean> ->
+        micViewModel.rejectMicInvitationObservable().observe(activity) { response: Resource<Boolean> ->
             parseResource(response, object : OnResourceParseCallback<Boolean>() {
                 override fun onSuccess(data: Boolean?) {
                     "reject mic invitation：$data".logE()
@@ -232,27 +250,33 @@ class RoomObservableViewDelegate constructor(
             })
         }
         // 锁麦
-        micViewModel.lockMicObservable().observe(activity){ response: Resource<Boolean> ->
-            parseResource(response, object : OnResourceParseCallback<Boolean>() {
-                override fun onSuccess(data: Boolean?) {
+        micViewModel.lockMicObservable().observe(activity) { response: Resource<Pair<Int, Boolean>> ->
+            parseResource(response, object : OnResourceParseCallback<Pair<Int, Boolean>>() {
+                override fun onSuccess(data: Pair<Int, Boolean>?) {
                     "lock mic：$data".logE()
-                    if (data != true) return
-                    ToastTools.show(activity, "lock mic:$data")
+                    data?.let {
+                        if (it.second) {
+                            ToastTools.show(activity, "lock mic:${it.first}")
+                        }
+                    }
                 }
             })
         }
         // 取消锁麦
-        micViewModel.cancelLockMicObservable().observe(activity){ response: Resource<Boolean> ->
-            parseResource(response, object : OnResourceParseCallback<Boolean>() {
-                override fun onSuccess(data: Boolean?) {
+        micViewModel.cancelLockMicObservable().observe(activity) { response: Resource<Pair<Int, Boolean>> ->
+            parseResource(response, object : OnResourceParseCallback<Pair<Int, Boolean>>() {
+                override fun onSuccess(data: Pair<Int, Boolean>?) {
                     "cancel lock mic：$data".logE()
-                    if (data != true) return
-                    ToastTools.show(activity, "cancel lock mic:$data")
+                    data?.let {
+                        if (it.second) {
+                            ToastTools.show(activity, "cancel lock mic:${it.first}")
+                        }
+                    }
                 }
             })
         }
         // 邀请上麦
-        micViewModel.invitationMicObservable().observe(activity){ response: Resource<Boolean> ->
+        micViewModel.invitationMicObservable().observe(activity) { response: Resource<Boolean> ->
             parseResource(response, object : OnResourceParseCallback<Boolean>() {
                 override fun onSuccess(data: Boolean?) {
                     "invitation mic：$data".logE()
@@ -262,7 +286,7 @@ class RoomObservableViewDelegate constructor(
             })
         }
         // 同意上麦申请
-        micViewModel.applySubmitMicObservable().observe(activity){ response: Resource<Boolean> ->
+        micViewModel.applySubmitMicObservable().observe(activity) { response: Resource<Boolean> ->
             parseResource(response, object : OnResourceParseCallback<Boolean>() {
                 override fun onSuccess(data: Boolean?) {
                     "apply submit mic：$data".logE()
@@ -272,7 +296,7 @@ class RoomObservableViewDelegate constructor(
             })
         }
         // 拒绝上麦申请
-        micViewModel.rejectSubmitMicObservable().observe(activity){ response: Resource<Boolean> ->
+        micViewModel.rejectSubmitMicObservable().observe(activity) { response: Resource<Boolean> ->
             parseResource(response, object : OnResourceParseCallback<Boolean>() {
                 override fun onSuccess(data: Boolean?) {
                     "reject submit mic：$data".logE()
@@ -512,7 +536,7 @@ class RoomObservableViewDelegate constructor(
                 override fun onItemClick(data: MicManagerBean, view: View, position: Int, viewType: Long) {
                     when (data.micClickAction) {
                         MicClickAction.Invite -> {
-
+                            ToastTools.show(activity, "go to invite dialog")
                         }
                         MicClickAction.Mute -> {
                             if (ProfileManager.getInstance().isMyself(micInfo.userInfo?.userId)) { //自己静麦

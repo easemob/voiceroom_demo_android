@@ -65,6 +65,10 @@ class Room3DMicView : ConstraintLayout {
                         ivMicTag.isVisible = false
                         ivMicInnerIcon.setImageResource(R.drawable.icon_chatroom_mic_mute)
                     }
+                    MicStatus.Close -> {
+                        ivMicInnerIcon.setImageResource(R.drawable.icon_chatroom_mic_close)
+                        ivMicTag.isVisible = false
+                    }
                     MicStatus.CloseForceMute -> {
                         ivMicInnerIcon.setImageResource(R.drawable.icon_chatroom_mic_close)
                         ivMicTag.isVisible = true

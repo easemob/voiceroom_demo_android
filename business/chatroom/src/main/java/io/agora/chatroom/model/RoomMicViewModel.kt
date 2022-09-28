@@ -7,9 +7,7 @@ import androidx.lifecycle.LiveData
 import io.agora.baseui.general.net.Resource
 import io.agora.chatroom.general.livedatas.SingleSourceLiveData
 import io.agora.chatroom.general.repositories.RoomMicRepository
-import tools.bean.VRMicBean
 import tools.bean.VRMicListBean
-import tools.bean.VRoomBean
 import tools.bean.VRoomUserBean
 
 /**
@@ -24,15 +22,15 @@ class RoomMicViewModel constructor(application: Application) : AndroidViewModel(
     private val _cancelSubmitMicObservable: SingleSourceLiveData<Resource<Boolean>> = SingleSourceLiveData()
     private val _micInfoObservable: SingleSourceLiveData<Resource<VRoomUserBean>> = SingleSourceLiveData()
     private val _closeMicObservable: SingleSourceLiveData<Resource<Boolean>> = SingleSourceLiveData()
-    private val _cancelCloseMicObservable: SingleSourceLiveData<Resource<Boolean>> = SingleSourceLiveData()
-    private val _leaveMicObservable: SingleSourceLiveData<Resource<Boolean>> = SingleSourceLiveData()
-    private val _muteMicObservable: SingleSourceLiveData<Resource<Boolean>> = SingleSourceLiveData()
-    private val _cancelMuteMicObservable: SingleSourceLiveData<Resource<Boolean>> = SingleSourceLiveData()
-    private val _exChangeMicObservable: SingleSourceLiveData<Resource<Boolean>> = SingleSourceLiveData()
-    private val _kickMicObservable: SingleSourceLiveData<Resource<Boolean>> = SingleSourceLiveData()
+    private val _cancelCloseMicObservable: SingleSourceLiveData<Resource<Pair<Int, Boolean>>> = SingleSourceLiveData()
+    private val _leaveMicObservable: SingleSourceLiveData<Resource<Pair<Int, Boolean>>> = SingleSourceLiveData()
+    private val _muteMicObservable: SingleSourceLiveData<Resource<Pair<Int, Boolean>>> = SingleSourceLiveData()
+    private val _cancelMuteMicObservable: SingleSourceLiveData<Resource<Pair<Int, Boolean>>> = SingleSourceLiveData()
+    private val _exChangeMicObservable: SingleSourceLiveData<Resource<Triple<Int, Int, Boolean>>> = SingleSourceLiveData()
+    private val _kickMicObservable: SingleSourceLiveData<Resource<Pair<Int, Boolean>>> = SingleSourceLiveData()
     private val _rejectMicInvitationObservable: SingleSourceLiveData<Resource<Boolean>> = SingleSourceLiveData()
-    private val _lockMicObservable: SingleSourceLiveData<Resource<Boolean>> = SingleSourceLiveData()
-    private val _cancelLockMicObservable: SingleSourceLiveData<Resource<Boolean>> = SingleSourceLiveData()
+    private val _lockMicObservable: SingleSourceLiveData<Resource<Pair<Int, Boolean>>> = SingleSourceLiveData()
+    private val _cancelLockMicObservable: SingleSourceLiveData<Resource<Pair<Int, Boolean>>> = SingleSourceLiveData()
     private val _invitationMicObservable: SingleSourceLiveData<Resource<Boolean>> = SingleSourceLiveData()
     private val _applySubmitMicObservable: SingleSourceLiveData<Resource<Boolean>> = SingleSourceLiveData()
     private val _rejectSubmitMicObservable: SingleSourceLiveData<Resource<Boolean>> = SingleSourceLiveData()
@@ -42,15 +40,15 @@ class RoomMicViewModel constructor(application: Application) : AndroidViewModel(
     fun cancelSubmitMicObservable(): LiveData<Resource<Boolean>> = _cancelSubmitMicObservable
     fun micInfoObservable(): LiveData<Resource<VRoomUserBean>> = _micInfoObservable
     fun closeMicObservable(): LiveData<Resource<Boolean>> = _closeMicObservable
-    fun cancelCloseMicObservable(): LiveData<Resource<Boolean>> = _cancelCloseMicObservable
-    fun leaveMicObservable(): LiveData<Resource<Boolean>> = _leaveMicObservable
-    fun muteMicObservable(): LiveData<Resource<Boolean>> = _muteMicObservable
-    fun cancelMuteMicObservable(): LiveData<Resource<Boolean>> = _cancelMuteMicObservable
-    fun exChangeMicObservable(): LiveData<Resource<Boolean>> = _exChangeMicObservable
-    fun kickMicObservable(): LiveData<Resource<Boolean>> = _kickMicObservable
+    fun cancelCloseMicObservable(): LiveData<Resource<Pair<Int, Boolean>>> = _cancelCloseMicObservable
+    fun leaveMicObservable(): LiveData<Resource<Pair<Int, Boolean>>> = _leaveMicObservable
+    fun muteMicObservable(): LiveData<Resource<Pair<Int, Boolean>>> = _muteMicObservable
+    fun cancelMuteMicObservable(): LiveData<Resource<Pair<Int, Boolean>>> = _cancelMuteMicObservable
+    fun exChangeMicObservable(): LiveData<Resource<Triple<Int, Int, Boolean>>> = _exChangeMicObservable
+    fun kickMicObservable(): LiveData<Resource<Pair<Int, Boolean>>> = _kickMicObservable
     fun rejectMicInvitationObservable(): LiveData<Resource<Boolean>> = _rejectMicInvitationObservable
-    fun lockMicObservable(): LiveData<Resource<Boolean>> = _lockMicObservable
-    fun cancelLockMicObservable(): LiveData<Resource<Boolean>> = _cancelLockMicObservable
+    fun lockMicObservable(): LiveData<Resource<Pair<Int, Boolean>>> = _lockMicObservable
+    fun cancelLockMicObservable(): LiveData<Resource<Pair<Int, Boolean>>> = _cancelLockMicObservable
     fun invitationMicObservable(): LiveData<Resource<Boolean>> = _invitationMicObservable
     fun applySubmitMicObservable(): LiveData<Resource<Boolean>> = _applySubmitMicObservable
     fun rejectSubmitMicObservable(): LiveData<Resource<Boolean>> = _rejectSubmitMicObservable

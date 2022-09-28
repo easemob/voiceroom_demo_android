@@ -64,11 +64,16 @@ class Room2DMicView : ConstraintLayout {
                             ivMicTag.isVisible = false
                             ivMicInnerIcon.setImageResource(R.drawable.icon_chatroom_mic_mute)
                         }
+                        MicStatus.Close -> {
+                            ivMicInnerIcon.setImageResource(R.drawable.icon_chatroom_mic_close)
+                            ivMicTag.isVisible = false
+                        }
                         MicStatus.CloseForceMute -> {
                             ivMicInnerIcon.setImageResource(R.drawable.icon_chatroom_mic_close)
                             ivMicTag.isVisible = true
                             ivMicTag.setImageResource(R.drawable.icon_chatroom_mic_mute_tag)
                         }
+
                         else -> {
                             ivMicTag.isVisible = false
                             ivMicInnerIcon.setImageResource(R.drawable.icon_chatroom_mic_add)
