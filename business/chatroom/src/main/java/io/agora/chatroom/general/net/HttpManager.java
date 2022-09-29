@@ -250,6 +250,7 @@ public class HttpManager {
             if (is_private != null) requestBody.putOpt("is_private", is_private);
             if (password != null) requestBody.putOpt("password", password);
             if (use_robot != null) requestBody.putOpt("use_robot", use_robot);
+            if (robotVolume != null) requestBody.putOpt("robot_volume", robotVolume);
             if (allowed_free_join_mic != null) requestBody.putOpt("allowed_free_join_mic", allowed_free_join_mic);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -640,14 +641,14 @@ public class HttpManager {
      * @param roomId
      * @param mic_index
      */
-    public void cancelCloseMic(String roomId,int mic_index,ValueCallBack<Boolean> callBack){
+    public void cancelCloseMic(String roomId, int mic_index, ValueCallBack<Boolean> callBack) {
         Log.e("cancelCloseMic","roomId:"+roomId);
         Log.e("cancelCloseMic","Authorization:"+ ProfileManager.getInstance().getProfile().getAuthorization());
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
         headers.put("Authorization", "Bearer " + ProfileManager.getInstance().getProfile().getAuthorization());
         new VRHttpClientManager.Builder(mContext)
-                .setUrl(VRRequestApi.get().cancelCloseMic(roomId))
+                .setUrl(VRRequestApi.get().cancelCloseMic(roomId, mic_index))
                 .setHeaders(headers)
                 .setRequestMethod(Method_DELETE)
                 .asyncExecute(new VRHttpCallback() {
@@ -669,14 +670,14 @@ public class HttpManager {
      * 下麦
      * @param roomId
      */
-    public void leaveMic(String roomId,ValueCallBack<Boolean> callBack){
-        Log.e("leaveMic","roomId:"+roomId);
-        Log.e("leaveMic","Authorization:"+ ProfileManager.getInstance().getProfile().getAuthorization());
+    public void leaveMic(String roomId, int micIndex, ValueCallBack<Boolean> callBack) {
+        Log.e("leaveMic", "roomId:" + roomId);
+        Log.e("leaveMic", "Authorization:" + ProfileManager.getInstance().getProfile().getAuthorization());
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
         headers.put("Authorization", "Bearer " + ProfileManager.getInstance().getProfile().getAuthorization());
         new VRHttpClientManager.Builder(mContext)
-                .setUrl(VRRequestApi.get().leaveMic(roomId))
+                .setUrl(VRRequestApi.get().leaveMic(roomId, micIndex))
                 .setHeaders(headers)
                 .setRequestMethod(Method_DELETE)
                 .asyncExecute(new VRHttpCallback() {
@@ -699,7 +700,7 @@ public class HttpManager {
      * @param roomId
      * @param mic_index
      */
-    public void muteMic(String roomId,int mic_index,ValueCallBack<String> callBack){
+    public void muteMic(String roomId,int mic_index,ValueCallBack<Boolean> callBack){
         Log.e("muteMic","roomId:"+roomId);
         Log.e("muteMic","Authorization:"+ ProfileManager.getInstance().getProfile().getAuthorization());
         Map<String, String> headers = new HashMap<>();
@@ -720,7 +721,7 @@ public class HttpManager {
                     @Override
                     public void onSuccess(String result) {
                         LogToolsKt.logE("muteMic success: " + result, TAG);
-                        callBack.onSuccess(result);
+                        callBack.onSuccess(true);
                     }
 
                     @Override
@@ -736,21 +737,21 @@ public class HttpManager {
      * @param roomId
      * @param mic_index
      */
-    public void cancelMuteMic(String roomId,int mic_index,ValueCallBack<String> callBack){
+    public void cancelMuteMic(String roomId,int mic_index,ValueCallBack<Boolean> callBack){
         Log.e("cancelMuteMic","roomId:"+roomId);
         Log.e("cancelMuteMic","Authorization:"+ ProfileManager.getInstance().getProfile().getAuthorization());
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
         headers.put("Authorization", "Bearer " + ProfileManager.getInstance().getProfile().getAuthorization());
         new VRHttpClientManager.Builder(mContext)
-                .setUrl(VRRequestApi.get().unMuteMic(roomId,mic_index))
+                .setUrl(VRRequestApi.get().unMuteMic(roomId, mic_index))
                 .setHeaders(headers)
                 .setRequestMethod(Method_DELETE)
                 .asyncExecute(new VRHttpCallback() {
                     @Override
                     public void onSuccess(String result) {
                         LogToolsKt.logE("cancelMuteMic success: " + result, TAG);
-                        callBack.onSuccess(result);
+                        callBack.onSuccess(true);
                     }
 
                     @Override
@@ -843,7 +844,7 @@ public class HttpManager {
      * 用户拒绝上麦邀请
      * @param roomId
      */
-    public void rejectMicInvitation(String roomId,ValueCallBack<VRoomBean> callBack){
+    public void rejectMicInvitation(String roomId,ValueCallBack<Boolean> callBack){
         Log.e("rejectMicInvitation","roomId:"+roomId);
         Log.e("rejectMicInvitation","Authorization:"+ ProfileManager.getInstance().getProfile().getAuthorization());
         Map<String, String> headers = new HashMap<>();
@@ -857,8 +858,7 @@ public class HttpManager {
                     @Override
                     public void onSuccess(String result) {
                         LogToolsKt.logE("rejectMicInvitation success: " + result, TAG);
-                        VRoomBean bean = GsonTools.toBean(result,VRoomBean.class);
-                        callBack.onSuccess(bean);
+                        callBack.onSuccess(true);
                     }
 
                     @Override
@@ -910,14 +910,14 @@ public class HttpManager {
      * 取消锁麦
      * @param roomId
      */
-    public void cancelLockMic(String roomId,ValueCallBack<Boolean> callBack){
+    public void cancelLockMic(String roomId, int micIndex, ValueCallBack<Boolean> callBack){
         Log.e("cancelLockMic","roomId:"+roomId);
         Log.e("cancelLockMic","Authorization:"+ ProfileManager.getInstance().getProfile().getAuthorization());
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
         headers.put("Authorization", "Bearer " + ProfileManager.getInstance().getProfile().getAuthorization());
         new VRHttpClientManager.Builder(mContext)
-                .setUrl(VRRequestApi.get().unlockMic(roomId))
+                .setUrl(VRRequestApi.get().unlockMic(roomId, micIndex))
                 .setHeaders(headers)
                 .setRequestMethod(Method_DELETE)
                 .asyncExecute(new VRHttpCallback() {

@@ -62,8 +62,8 @@ class RoomMicManagerSheetDialog constructor(private val onItemClickListener: OnI
         }
         micManagerAdapter = RoomMicManagerAdapter(micManagerList, object : OnItemClickListener<MicManagerBean> {
             override fun onItemClick(data: MicManagerBean, view: View, position: Int, viewType: Long) {
-                Toast.makeText(context, data.name, Toast.LENGTH_SHORT).show()
                 onItemClickListener.onItemClick(data, view, position, viewType)
+                dismiss()
             }
         }, RoomMicManagerViewHolder::class.java)
         binding?.apply {
@@ -91,6 +91,10 @@ class RoomMicManagerSheetDialog constructor(private val onItemClickListener: OnI
                     MicStatus.ForceMute -> {
                         ivMicTag.isVisible = false
                         ivMicInnerIcon.setImageResource(R.drawable.icon_chatroom_mic_mute)
+                    }
+                    MicStatus.Close -> {
+                        ivMicInnerIcon.setImageResource(R.drawable.icon_chatroom_mic_close)
+                        ivMicTag.isVisible = false
                     }
                     MicStatus.CloseForceMute -> {
                         ivMicInnerIcon.setImageResource(R.drawable.icon_chatroom_mic_close)
