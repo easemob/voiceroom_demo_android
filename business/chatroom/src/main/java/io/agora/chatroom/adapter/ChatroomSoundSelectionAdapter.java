@@ -1,6 +1,7 @@
 package io.agora.chatroom.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageView;
+import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import com.google.android.material.textview.MaterialTextView;
 import java.util.Objects;
@@ -37,7 +39,7 @@ public class ChatroomSoundSelectionAdapter extends RoomBaseRecyclerViewAdapter<S
 
     @Override
     public ViewHolder<SoundSelectionBean> getViewHolder(ViewGroup parent, int viewType) {
-        return new soundViewHold(inflater.inflate(R.layout.chatroom_sound_selection_item, null));
+        return  new soundViewHold(LayoutInflater.from (parent.getContext()).inflate (R.layout.chatroom_sound_selection_item, parent, false));
     }
 
     @Override
@@ -70,6 +72,7 @@ public class ChatroomSoundSelectionAdapter extends RoomBaseRecyclerViewAdapter<S
 
         @Override
         public void setData(SoundSelectionBean bean, int position) {
+            Log.e("soundViewHold","setData" + bean.getSoundName());
             item.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -82,15 +85,13 @@ public class ChatroomSoundSelectionAdapter extends RoomBaseRecyclerViewAdapter<S
             sound_desc.setText(bean.getSoundIntroduce());
             for (CustomerUsageBean customerUsageBean : Objects.requireNonNull(bean.getCustomer())) {
                 ImageView imageView = new ImageView(context);
+                LinearLayoutCompat.LayoutParams marginLayoutParams = new LinearLayoutCompat.LayoutParams(DeviceUtils.dp2px(context,20), DeviceUtils.dp2px(context,20));
+                marginLayoutParams.rightMargin = DeviceUtils.dp2px(context,10);
                 imageView.setImageResource(customerUsageBean.getAvatar());
-                ViewGroup.MarginLayoutParams marginLayoutParams = new ViewGroup.MarginLayoutParams(context,null);
-                marginLayoutParams.setMargins(0,0,DeviceUtils.dp2px(context,10),0);
                 imageView.setLayoutParams(marginLayoutParams);
-                ViewGroup.LayoutParams params = imageView.getLayoutParams();
-                params.width = DeviceUtils.dp2px(context,20);
-                params.height = DeviceUtils.dp2px(context,20);
-                imageView.setLayoutParams(params);
-                layout.addView(imageView);
+                if (layout.getChildCount() < bean.getCustomer().size()){
+                    layout.addView(imageView);
+                }
             }
             if(selectedPosition == position) {
                 icon.setVisibility(View.VISIBLE);

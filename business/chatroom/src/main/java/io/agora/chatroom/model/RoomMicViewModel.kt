@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData
 import io.agora.baseui.general.net.Resource
 import io.agora.chatroom.general.livedatas.SingleSourceLiveData
 import io.agora.chatroom.general.repositories.RoomMicRepository
+import tools.bean.VRMicBean
 import tools.bean.VRMicListBean
 import tools.bean.VRoomUserBean
 
