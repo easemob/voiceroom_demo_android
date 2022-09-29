@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -92,11 +91,11 @@ class RoomMicManagerSheetDialog constructor(private val onItemClickListener: OnI
                         ivMicTag.isVisible = false
                         ivMicInnerIcon.setImageResource(R.drawable.icon_chatroom_mic_mute)
                     }
-                    MicStatus.Close -> {
+                    MicStatus.Lock -> {
                         ivMicInnerIcon.setImageResource(R.drawable.icon_chatroom_mic_close)
                         ivMicTag.isVisible = false
                     }
-                    MicStatus.CloseForceMute -> {
+                    MicStatus.LockForceMute -> {
                         ivMicInnerIcon.setImageResource(R.drawable.icon_chatroom_mic_close)
                         ivMicTag.isVisible = true
                         ivMicTag.setImageResource(R.drawable.icon_chatroom_mic_mute_tag)

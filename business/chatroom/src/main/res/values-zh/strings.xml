@@ -43,8 +43,20 @@
     <string name="chatroom_raised_hands_title">Raised Hands</string>
     <string name="chatroom_invite_hands_title">Invite On-Stage</string>
     <string name="chatroom_request_speak">请求上麦？</string>
+    <string name="chatroom_prompt">提示</string>
     <string name="chatroom_confirm">确认</string>
     <string name="chatroom_cancel">取消</string>
     <string name="chatroom_mic_apply_success">申请上麦成功</string>
-    <string name="chatroom_mic_apply_fail">申请上麦失败</string>
+    <string name="chatroom_mic_apply_fail">申请上麦失败：%1$s</string>
+
+    <!-- mic -->
+    <string name="chatroom_mic_submit_sent">你的请求已提交,等待房主确认</string>
+    <string name="chatroom_open_bot_to_sound_effect">添加机器人试听音效？</string>
+    <string name="chatroom_exit">离开语聊房？</string>
+    <string name="chatroom_exit_and_create_one">离开并重新创建⼀个新的语聊房？</string>
+    <string name="chatroom_open_bot_prompt">添加机器人？</string>
+    <string name="chatroom_exchange_mic">更换麦位？</string>
+    <string name="chatroom_exchange_mic_success">更换麦位成功</string>
+    <string name="chatroom_exchange_mic_fail">更换麦位失败:%1$s</string>
+    <string name="chatroom_mic_close_by_host">当前座位已被房主关闭</string>
 </resources>

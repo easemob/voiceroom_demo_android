@@ -67,4 +67,12 @@ public class ProfileManager {
         }
         return false;
     }
+
+    public String myUid() {
+        VRUserBean currentUser = getProfile();
+        if (currentUser != null) {
+            return currentUser.getUid();
+        }
+        return null;
+    }
 }

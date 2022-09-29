@@ -14,8 +14,8 @@ import androidx.annotation.IntDef
     MicStatus.Normal,
     MicStatus.Mute,
     MicStatus.ForceMute,
-    MicStatus.Close,
-    MicStatus.CloseForceMute,
+    MicStatus.Lock,
+    MicStatus.LockForceMute,
     MicStatus.BotInactive,
     MicStatus.BotActivated,
 )
@@ -25,8 +25,8 @@ annotation class MicStatus {
         const val Normal = 0
         const val Mute = 1
         const val ForceMute = 2
-        const val Close = 3
-        const val CloseForceMute = 4
+        const val Lock = 3
+        const val LockForceMute = 4
 
         // 机器人激活状态
         const val BotActivated = 5

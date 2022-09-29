@@ -83,16 +83,10 @@
     <string name="chatroom_3d_spatial_audio_tips">3D Spatial Audio Seat Tutorial</string>
     <string name="chatroom_3d_spatial_audio_part1">Put on headset</string>
     <string name="chatroom_3d_spatial_audio_part2">Move avatar around to hear different spatial audio effects</string>
-    <string name="chatroom_request_speak">Request to Speak?</string>
-    <string name="chatroom_prompt">Prompt</string>
-    <string name="chatroom_exit">Exit the chatroom?</string>
-    <string name="chatroom_exit_and_create_one">Exit the chatroom and recreate a new one?</string>
     <string name="chatroom_contribution_ranking">Contribution Ranking</string>
     <string name="chatroom_audience_list">Audience List</string>
     <string name="chatroom_contribution_value">Contribution Value</string>
     <string name="chatroom_contribution_empty">No data</string>
-    <string name="chatroom_open_bot_to_sound_effect">Add bot to listen to sound effect?</string>
-    <string name="chatroom_open_bot_prompt">Add bot?</string>
 
     <string name="chatroom_input_chat_title">Let\'s Chat</string>
     <string name="chatroom_system_msg_member_add">Joined</string>

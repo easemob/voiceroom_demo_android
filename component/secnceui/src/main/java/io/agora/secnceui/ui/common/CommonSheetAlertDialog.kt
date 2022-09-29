@@ -82,6 +82,6 @@ class CommonSheetAlertDialog constructor(): BaseSheetDialog<DialogBottomSheetAle
         /**
          * 点击取消按钮事件
          */
-        fun onCancelClick()
+        fun onCancelClick(){}
     }
 }

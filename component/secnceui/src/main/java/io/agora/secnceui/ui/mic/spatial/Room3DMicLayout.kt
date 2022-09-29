@@ -15,6 +15,7 @@ import androidx.constraintlayout.widget.ConstraintSet
 import io.agora.baseui.adapter.OnItemClickListener
 import io.agora.buddy.tool.logE
 import io.agora.secnceui.R
+import io.agora.secnceui.annotation.MicClickAction
 import io.agora.secnceui.bean.MicInfoBean
 import io.agora.secnceui.constants.ScenesConstant
 import io.agora.secnceui.databinding.ViewChatroom3dMicLayoutBinding
@@ -357,5 +358,17 @@ class Room3DMicLayout : ConstraintLayout, View.OnClickListener, IRoomMicView {
 
     override fun updateBotVolume(speakerType: Int, volume: Int) {
 
+    }
+
+    override fun updateMicStatusByAction(index: Int, @MicClickAction action: Int) {
+
+    }
+
+    override fun exchangeMic(from: Int, to: Int) {
+
+    }
+
+    override fun findMicByUid(uid: String): Int {
+        return -1
     }
 }

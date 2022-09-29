@@ -1,6 +1,7 @@
 package io.agora.secnceui.ui.mic.flat
 
 import android.content.Context
+import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -13,6 +14,7 @@ import io.agora.baseui.adapter.OnItemClickListener
 import io.agora.buddy.tool.ResourcesTools
 import io.agora.buddy.tool.dp
 import io.agora.secnceui.R
+import io.agora.secnceui.annotation.MicClickAction
 import io.agora.secnceui.bean.*
 import io.agora.secnceui.databinding.ViewChatroom2dMicLayoutBinding
 import io.agora.secnceui.ui.mic.IRoomMicView
@@ -115,5 +117,22 @@ class Room2DMicLayout : ConstraintLayout, IRoomMicView {
 
     override fun updateBotVolume(speakerType: Int, volume: Int) {
         room2DMicBotAdapter?.updateVolume(speakerType, volume)
+    }
+
+    override fun updateMicStatusByAction(index: Int, @MicClickAction action: Int) {
+        room2DMicAdapter?.updateMicStatusByAction(index, action)
+    }
+
+    override fun exchangeMic(from: Int, to: Int) {
+
+    }
+
+    override fun findMicByUid(uid: String): Int {
+        room2DMicAdapter?.dataList?.forEachIndexed { index, micInfoBean ->
+            if (TextUtils.equals(micInfoBean.userInfo?.userId, uid)) {
+                return index
+            }
+        }
+        return -1
     }
 }

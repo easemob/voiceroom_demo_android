@@ -19,6 +19,7 @@ import io.agora.baseui.BaseUiActivity
 import io.agora.baseui.adapter.OnItemClickListener
 import io.agora.buddy.tool.ToastTools
 import io.agora.buddy.tool.logE
+import io.agora.chatroom.R
 import io.agora.chatroom.bean.RoomKitBean
 import io.agora.chatroom.controller.RtcRoomController
 import io.agora.chatroom.databinding.ActivityChatroomBinding
@@ -31,7 +32,6 @@ import io.agora.chatroom.ui.RoomObservableViewDelegate
 import io.agora.config.ConfigConstants
 import io.agora.config.RouterParams
 import io.agora.config.RouterPath
-import io.agora.secnceui.R
 import io.agora.secnceui.bean.MicInfoBean
 import io.agora.secnceui.ui.mic.RoomMicConstructor
 import io.agora.secnceui.widget.barrage.ChatroomMessagesView
@@ -182,6 +182,13 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
         }
         // 头部 如果是创建房间进来有详情
         roomObservableDelegate.onRoomDetails(roomInfoBean)
+        roomObservableDelegate.onRoomViewDelegateListener = object :
+            RoomObservableViewDelegate.OnRoomViewDelegateListener{
+            override fun onInvite(micIndex: Int) {
+                // TODO:
+               handsDelegate.showOwnerHandsDialog()
+            }
+        }
         binding.cTopView.setOnLiveTopClickListener(object : OnLiveTopClickListener {
             override fun onClickBack(view: View) {
                 roomObservableDelegate.onExitRoom(getString(R.string.chatroom_exit), finishBack = {
@@ -204,13 +211,13 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
         binding.chatBottom.setMenuItemOnClickListener(object : MenuItemClickListener {
             override fun onChatExtendMenuItemClick(itemId: Int, view: View?) {
                 when (itemId) {
-                    R.id.extend_item_eq -> {
+                    io.agora.secnceui.R.id.extend_item_eq -> {
                         roomObservableDelegate.onAudioSettingsDialog(finishBack = {
                             finish()
                         })
                     }
-                    R.id.extend_item_mic -> {}
-                    R.id.extend_item_hand_up -> {
+                    io.agora.secnceui.R.id.extend_item_mic -> {}
+                    io.agora.secnceui.R.id.extend_item_hand_up -> {
                         if (roomKitBean.isOwner){
                             if (this@ChatroomLiveActivity::handsDelegate.isInitialized) {
                                 handsDelegate.showOwnerHandsDialog()
@@ -221,7 +228,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
                             }
                         }
                     }
-                    R.id.extend_item_gift -> {
+                    io.agora.secnceui.R.id.extend_item_gift -> {
                         giftViewDelegate.showGiftDialog()
                     }
                 }

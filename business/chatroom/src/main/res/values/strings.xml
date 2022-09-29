@@ -45,8 +45,20 @@
     <string name="chatroom_raised_hands_title">Raised Hands</string>
     <string name="chatroom_invite_hands_title">Invite On-Stage</string>
     <string name="chatroom_request_speak">Request to Speak?</string>
+    <string name="chatroom_prompt">Prompt</string>
     <string name="chatroom_confirm">Confirm</string>
     <string name="chatroom_cancel">Cancel</string>
     <string name="chatroom_mic_apply_success">Successful apply for Mic</string>
-    <string name="chatroom_mic_apply_fail">Fail apply for Mic</string>
+    <string name="chatroom_mic_apply_fail">Fail apply for Mic:%1$s</string>
+
+    <!-- mic -->
+    <string name="chatroom_mic_submit_sent">Your request has been sent,%n please wait for reply</string>
+    <string name="chatroom_open_bot_to_sound_effect">Add bot to listen to sound effect?</string>
+    <string name="chatroom_exit">Exit the chatroom?</string>
+    <string name="chatroom_exit_and_create_one">Exit the chatroom and recreate a new one?</string>
+    <string name="chatroom_open_bot_prompt">Add bot?</string>
+    <string name="chatroom_exchange_mic">Exchange seat?</string>
+    <string name="chatroom_exchange_mic_success">Exchange seat success</string>
+    <string name="chatroom_exchange_mic_fail">Exchange seat error:%1$s</string>
+    <string name="chatroom_mic_close_by_host">Mic close by host</string>
 </resources>

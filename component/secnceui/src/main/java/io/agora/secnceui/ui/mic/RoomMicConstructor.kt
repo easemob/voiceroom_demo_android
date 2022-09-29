@@ -78,61 +78,19 @@ object RoomMicConstructor {
         context: Context, micInfo: MicInfoBean, isMyself: Boolean
     ): MutableList<MicManagerBean> {
         return when (micInfo.micStatus) {
-            // 空置-开放
-            MicStatus.Idle -> {
-                mutableListOf(
-                    MicManagerBean(context.getString(R.string.chatroom_invite), true, MicClickAction.Invite),
-                    MicManagerBean(context.getString(R.string.chatroom_mute), true, MicClickAction.Mute),
-                    MicManagerBean(context.getString(R.string.chatroom_block), true, MicClickAction.Block)
-                )
-            }
-            // 座位禁⻨:有人、没人
-            MicStatus.ForceMute -> {
-                if (micInfo.userInfo == null) {
-                    mutableListOf(
-                        MicManagerBean(context.getString(R.string.chatroom_invite), true, MicClickAction.Invite),
-                        MicManagerBean(context.getString(R.string.chatroom_unmute), true, MicClickAction.UnMute),
-                        MicManagerBean(context.getString(R.string.chatroom_block), true, MicClickAction.Block)
-                    )
-                } else {
-                    mutableListOf(
-                        MicManagerBean(context.getString(R.string.chatroom_kickoff), true, MicClickAction.KickOff),
-                        MicManagerBean(context.getString(R.string.chatroom_unmute), true, MicClickAction.UnMute),
-                        MicManagerBean(context.getString(R.string.chatroom_block), true, MicClickAction.Block)
-                    )
-                }
-            }
-            // 空置-座位关闭
-            MicStatus.Close -> {
-                mutableListOf(
-                    MicManagerBean(context.getString(R.string.chatroom_invite), false, MicClickAction.Invite),
-                    MicManagerBean(context.getString(R.string.chatroom_mute), true, MicClickAction.Mute),
-                    MicManagerBean(context.getString(R.string.chatroom_unblock), true, MicClickAction.UnBlock)
-                )
-            }
-            // 空置-座位禁⻨&座位关闭
-            MicStatus.CloseForceMute -> {
-                mutableListOf(
-                    MicManagerBean(context.getString(R.string.chatroom_invite), false, MicClickAction.Invite),
-                    MicManagerBean(context.getString(R.string.chatroom_unmute), true, MicClickAction.UnMute),
-                    MicManagerBean(context.getString(R.string.chatroom_unblock), true, MicClickAction.UnBlock)
-                )
-            }
             // 正常
             MicStatus.Normal -> {
                 if (isMyself) {
-                    mutableListOf(
-                        MicManagerBean(context.getString(R.string.chatroom_mute), true, MicClickAction.Mute)
-                    )
+                    mutableListOf(MicManagerBean(context.getString(R.string.chatroom_mute), true, MicClickAction.Mute))
                 } else {
                     mutableListOf(
                         MicManagerBean(context.getString(R.string.chatroom_kickoff), true, MicClickAction.KickOff),
-                        MicManagerBean(context.getString(R.string.chatroom_mute), true, MicClickAction.Mute),
-                        MicManagerBean(context.getString(R.string.chatroom_block), true, MicClickAction.Block)
+                        MicManagerBean(context.getString(R.string.chatroom_mute), true, MicClickAction.ForceMute),
+                        MicManagerBean(context.getString(R.string.chatroom_block), true, MicClickAction.Lock)
                     )
                 }
             }
-            // 禁麦
+            // 闭麦
             MicStatus.Mute -> {
                 if (isMyself) {
                     mutableListOf(
@@ -141,13 +99,52 @@ object RoomMicConstructor {
                 } else {
                     mutableListOf(
                         MicManagerBean(context.getString(R.string.chatroom_kickoff), true, MicClickAction.KickOff),
-                        MicManagerBean(context.getString(R.string.chatroom_unmute), true, MicClickAction.UnMute),
-                        MicManagerBean(context.getString(R.string.chatroom_block), true, MicClickAction.Block)
+                        MicManagerBean(context.getString(R.string.chatroom_unmute), true, MicClickAction.ForceUnMute),
+                        MicManagerBean(context.getString(R.string.chatroom_block), true, MicClickAction.Lock)
                     )
                 }
             }
+            // 禁言 :有人、没人
+            MicStatus.ForceMute -> {
+                if (micInfo.userInfo == null) {
+                    mutableListOf(
+                        MicManagerBean(context.getString(R.string.chatroom_invite), true, MicClickAction.Invite),
+                        MicManagerBean(context.getString(R.string.chatroom_unmute), true, MicClickAction.ForceUnMute),
+                        MicManagerBean(context.getString(R.string.chatroom_block), true, MicClickAction.Lock)
+                    )
+                } else {
+                    mutableListOf(
+                        MicManagerBean(context.getString(R.string.chatroom_kickoff), true, MicClickAction.KickOff),
+                        MicManagerBean(context.getString(R.string.chatroom_unmute), true, MicClickAction.ForceUnMute),
+                        MicManagerBean(context.getString(R.string.chatroom_block), true, MicClickAction.Lock)
+                    )
+                }
+            }
+            // 锁麦
+            MicStatus.Lock -> {
+                mutableListOf(
+                    MicManagerBean(context.getString(R.string.chatroom_invite), false, MicClickAction.Invite),
+                    MicManagerBean(context.getString(R.string.chatroom_mute), true, MicClickAction.ForceMute),
+                    MicManagerBean(context.getString(R.string.chatroom_unblock), true, MicClickAction.UnLock)
+                )
+            }
+            // 锁麦和禁言
+            MicStatus.LockForceMute -> {
+                mutableListOf(
+                    MicManagerBean(context.getString(R.string.chatroom_invite), false, MicClickAction.Invite),
+                    MicManagerBean(context.getString(R.string.chatroom_unmute), true, MicClickAction.ForceUnMute),
+                    MicManagerBean(context.getString(R.string.chatroom_unblock), true, MicClickAction.UnLock)
+                )
+            }
+            // 空闲
+            MicStatus.Idle -> {
+                mutableListOf(
+                    MicManagerBean(context.getString(R.string.chatroom_invite), true, MicClickAction.Invite),
+                    MicManagerBean(context.getString(R.string.chatroom_mute), true, MicClickAction.ForceMute),
+                    MicManagerBean(context.getString(R.string.chatroom_block), true, MicClickAction.Lock)
+                )
+            }
             else -> mutableListOf()
-
         }
     }
 
@@ -163,19 +160,23 @@ object RoomMicConstructor {
                     MicManagerBean(context.getString(R.string.chatroom_off_stage), true, MicClickAction.OffStage)
                 )
             }
-            // 有⼈-禁麦
-            MicStatus.ForceMute -> {
-                // 被房主强制静音
-                mutableListOf(
-                    MicManagerBean(context.getString(R.string.chatroom_unmute), false, MicClickAction.UnMute),
-                    MicManagerBean(context.getString(R.string.chatroom_off_stage), true, MicClickAction.OffStage)
-                )
-            }
-            else -> {
+            // 有⼈-关麦
+            MicStatus.Mute -> {
                 mutableListOf(
                     MicManagerBean(context.getString(R.string.chatroom_unmute), true, MicClickAction.UnMute),
                     MicManagerBean(context.getString(R.string.chatroom_off_stage), true, MicClickAction.OffStage)
                 )
+            }
+            // 有⼈-禁麦（被房主强制静音）
+            MicStatus.ForceMute -> {
+                mutableListOf(
+                    MicManagerBean(context.getString(R.string.chatroom_unmute), false, MicClickAction.ForceUnMute),
+                    MicManagerBean(context.getString(R.string.chatroom_off_stage), true, MicClickAction.OffStage)
+                )
+            }
+            // 其他情况 nothing
+            else -> {
+                mutableListOf()
             }
 
         }
