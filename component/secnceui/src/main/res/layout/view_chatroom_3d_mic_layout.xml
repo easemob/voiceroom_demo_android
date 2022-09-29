@@ -6,15 +6,7 @@
     android:layout_height="match_parent">
 
     <io.agora.secnceui.widget.mic.Room2DMicView
-        android:id="@+id/micView0"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <io.agora.secnceui.widget.mic.Room2DMicView
-        android:id="@+id/micView1"
+        android:id="@+id/micV0"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="28dp"
@@ -23,7 +15,24 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <io.agora.secnceui.widget.mic.Room2DMicView
-        android:id="@+id/micRotBlue"
+        android:id="@+id/micV1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <io.agora.secnceui.widget.mic.Room2DMicView
+        android:id="@+id/micV2Red"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="53dp"
+        android:layout_marginEnd="28dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <io.agora.secnceui.widget.mic.Room2DMicView
+        android:id="@+id/micV3Blue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="28dp"
@@ -32,7 +41,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <io.agora.secnceui.widget.mic.Room2DMicView
-        android:id="@+id/micView3"
+        android:id="@+id/micV4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -40,22 +49,13 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <io.agora.secnceui.widget.mic.Room2DMicView
-        android:id="@+id/micView4"
+        android:id="@+id/micV5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="28dp"
         android:layout_marginBottom="53dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
-
-    <io.agora.secnceui.widget.mic.Room2DMicView
-        android:id="@+id/micBotRed"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="53dp"
-        android:layout_marginEnd="28dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <!-- 可移动座位-->
     <io.agora.secnceui.widget.mic.Room3DMicView

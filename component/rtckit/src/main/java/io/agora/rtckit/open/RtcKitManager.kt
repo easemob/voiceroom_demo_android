@@ -24,6 +24,13 @@ class RtcKitManager {
             val rtcKitManager = RtcKitManager().apply {
                 this.initConfig = initConfig
                 this.middleService = RtcMiddleServiceImpl(context, initConfig, object : IRtcClientListener {
+                    override fun onJoinChannelSuccess(channel: String, uid: Int, elapsed: Int) {
+                        rtcKitListener.onJoinChannelSuccess(channel, uid, elapsed)
+                    }
+
+                    override fun onLeaveChannel() {
+                        rtcKitListener.onLeaveChannel()
+                    }
 
                     override fun onConnectionStateChanged(state: Int, reason: Int) {
                     }
@@ -61,16 +68,12 @@ class RtcKitManager {
         }
     }
 
-    fun joinChannel(channelConfig: RtcChannelConfig, joinCallback: IRtcValueCallback<Boolean>) {
-        middleService?.joinChannel(channelConfig, joinCallback)
+    fun joinChannel(channelConfig: RtcChannelConfig) {
+        middleService?.joinChannel(channelConfig)
     }
 
     fun leaveChannel() {
         middleService?.leaveChannel()
-    }
-
-    fun getEffect() {
-
     }
 
     fun operateAudio(audioEvent: RtcAudioEvent) {

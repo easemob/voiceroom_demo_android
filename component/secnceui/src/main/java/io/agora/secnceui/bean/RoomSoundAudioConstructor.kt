@@ -8,9 +8,8 @@ import io.agora.config.ConfigConstants
  */
 object RoomSoundAudioConstructor {
 
-    // https://accktvpic.oss-cn-beijing.aliyuncs.com/pic/meta/demo/fulldemochat/01CreateRoomCommonChatroom/CN/01-01-B-CN.wav
-
-    private const val BASE_URL = "https://accktvpic.oss-cn-beijing.aliyuncs.com/pic/meta/demo/fulldemochat"
+    // https://accktvpic.oss-cn-beijing.aliyuncs.com/pic/meta/demo/fulldemochat/aisound/01CreateRoomCommonChatroom/CN/01-01-B-CN.wav
+    private const val BASE_URL = "https://accktvpic.oss-cn-beijing.aliyuncs.com/pic/meta/demo/fulldemochat/aisound"
 
     private const val CN = "CN"
     private const val EN = "EN"
@@ -21,7 +20,8 @@ object RoomSoundAudioConstructor {
     private const val GamingBuddy = "/05SoundSelectionGamingBuddy%1\$s"
     private const val ProfessionalBroadcaster = "/06SoundProfessionalBroadcaster%1\$s"
     private const val AINSIntroduce = "/07AINSIntroduce%1\$s"
-    private const val AINSSound = "%1\$s%2\$s-%3\$s-%4\$s" //AI噪⾳
+    //AI噪⾳ 08AINSTVSound/CN/High/08-01-B-CN-High.wav  1./08AINSTVSound/CN/High 2./08-01-B 3.CN 4.High.wav
+    private const val AINSSound = "%1\$s%2\$s-%3\$s-%4\$s"
     private const val AINS_TVSound = "/08AINSTVSound" // 电视噪⾳
     private const val AINS_KitchenSound = "/09AINSKitchenSound" //厨房噪⾳
     private const val AINS_StreetSound = "/10AINStreetSound" //街道噪⾳
@@ -586,81 +586,236 @@ object RoomSoundAudioConstructor {
     /**
      * AI 降噪开关讲解语料
      */
-    val anisIntroduceAudioList: List<SoundAudioBean> by lazy(LazyThreadSafetyMode.SYNCHRONIZED) {
-        if (ResourcesTools.getIsZh()) mutableListOf(
-            SoundAudioBean(
-                ConfigConstants.BotSpeaker.BotRed,
-                AINSIntroduceSoundId + 1,
-                getANISIntroduceUrl("/07-01-R-CN.wav")
-            ),
-            SoundAudioBean(
-                ConfigConstants.BotSpeaker.BotBlue,
-                AINSIntroduceSoundId + 2,
-                getANISIntroduceUrl("/07-02-B-CN-None.wav")
-            ),
-            SoundAudioBean(
-                ConfigConstants.BotSpeaker.BotRed,
-                AINSIntroduceSoundId + 3,
-                getANISIntroduceUrl("/07-03-R-CN-None.wav")
-            ),
-            SoundAudioBean(
-                ConfigConstants.BotSpeaker.BotBlue,
-                AINSIntroduceSoundId + 4,
-                getANISIntroduceUrl("/07-04-B-CN.wav")
-            ),
-            SoundAudioBean(
-                ConfigConstants.BotSpeaker.BotRed,
-                AINSIntroduceSoundId + 5,
-                getANISIntroduceUrl("/07-05-R-CN.wav")
-            ),
-            SoundAudioBean(
-                ConfigConstants.BotSpeaker.BotBlue,
-                AINSIntroduceSoundId + 6,
-                getANISIntroduceUrl("/07-06-B-CN.wav")
-            ),
-            SoundAudioBean(
-                ConfigConstants.BotSpeaker.BotRed,
-                AINSIntroduceSoundId + 7,
-                getANISIntroduceUrl("/07-07-R-CN.wav")
-            )
+    val anisIntroduceAudioMap: Map<Int, List<SoundAudioBean>> by lazy(LazyThreadSafetyMode.SYNCHRONIZED) {
+        mutableMapOf(
+            ConfigConstants.AINSMode.AINS_High to
+                    if (ResourcesTools.getIsZh()) mutableListOf(
+                        SoundAudioBean(
+                            ConfigConstants.BotSpeaker.BotRed,
+                            AINSIntroduceSoundId + 1,
+                            getANISIntroduceUrl("/CN/Share/07-01-R-CN.wav")
+                        ),
+                        SoundAudioBean(
+                            ConfigConstants.BotSpeaker.BotBlue,
+                            AINSIntroduceSoundId + 2,
+                            getANISIntroduceUrl("/CN/High/07-02-B-CN-High.wav")
+                        ),
+                        SoundAudioBean(
+                            ConfigConstants.BotSpeaker.BotRed,
+                            AINSIntroduceSoundId + 3,
+                            getANISIntroduceUrl("/CN/High/07-03-R-CN-High.wav")
+                        ),
+                        SoundAudioBean(
+                            ConfigConstants.BotSpeaker.BotBlue,
+                            AINSIntroduceSoundId + 4,
+                            getANISIntroduceUrl("/CN/Share/07-04-B-CN.wav")
+                        ),
+                        SoundAudioBean(
+                            ConfigConstants.BotSpeaker.BotRed,
+                            AINSIntroduceSoundId + 5,
+                            getANISIntroduceUrl("/CN/Share/07-05-R-CN.wav")
+                        ),
+                        SoundAudioBean(
+                            ConfigConstants.BotSpeaker.BotBlue,
+                            AINSIntroduceSoundId + 6,
+                            getANISIntroduceUrl("/CN/Share/07-06-B-CN.wav")
+                        ),
+                        SoundAudioBean(
+                            ConfigConstants.BotSpeaker.BotRed,
+                            AINSIntroduceSoundId + 7,
+                            getANISIntroduceUrl("/CN/Share/07-07-R-CN.wav")
+                        )
+                    )
+                    else mutableListOf(
+                        SoundAudioBean(
+                            ConfigConstants.BotSpeaker.BotRed,
+                            AINSIntroduceSoundId + 1,
+                            getANISIntroduceUrl("/EN/Share/07-01-R-EN.wav")
+                        ),
+                        SoundAudioBean(
+                            ConfigConstants.BotSpeaker.BotBlue,
+                            AINSIntroduceSoundId + 2,
+                            getANISIntroduceUrl("/EN/High/07-02-B-EN-High.wav")
+                        ),
+                        SoundAudioBean(
+                            ConfigConstants.BotSpeaker.BotRed,
+                            AINSIntroduceSoundId + 3,
+                            getANISIntroduceUrl("/EN/High/07-03-R-EN-High.wav")
+                        ),
+                        SoundAudioBean(
+                            ConfigConstants.BotSpeaker.BotBlue,
+                            AINSIntroduceSoundId + 4,
+                            getANISIntroduceUrl("/EN/Share/07-04-B-EN.wav")
+                        ),
+                        SoundAudioBean(
+                            ConfigConstants.BotSpeaker.BotRed,
+                            AINSIntroduceSoundId + 5,
+                            getANISIntroduceUrl("/EN/Share/07-05-R-EN.wav")
+                        ),
+                        SoundAudioBean(
+                            ConfigConstants.BotSpeaker.BotBlue,
+                            AINSIntroduceSoundId + 6,
+                            getANISIntroduceUrl("/EN/Share/07-06-B-EN.wav")
+                        ),
+                        SoundAudioBean(
+                            ConfigConstants.BotSpeaker.BotRed,
+                            AINSIntroduceSoundId + 7,
+                            getANISIntroduceUrl("/EN/Share/07-07-R-EN.wav")
+                        )
+                    ),
+            ConfigConstants.AINSMode.AINS_Medium to
+                    if (ResourcesTools.getIsZh()) mutableListOf(
+                        SoundAudioBean(
+                            ConfigConstants.BotSpeaker.BotRed,
+                            AINSIntroduceSoundId + 1,
+                            getANISIntroduceUrl("/CN/Share/07-01-R-CN.wav")
+                        ),
+                        SoundAudioBean(
+                            ConfigConstants.BotSpeaker.BotBlue,
+                            AINSIntroduceSoundId + 2,
+                            getANISIntroduceUrl("/CN/Medium/07-02-B-CN-Medium.wav")
+                        ),
+                        SoundAudioBean(
+                            ConfigConstants.BotSpeaker.BotRed,
+                            AINSIntroduceSoundId + 3,
+                            getANISIntroduceUrl("/CN/Medium/07-03-R-CN-Medium.wav")
+                        ),
+                        SoundAudioBean(
+                            ConfigConstants.BotSpeaker.BotBlue,
+                            AINSIntroduceSoundId + 4,
+                            getANISIntroduceUrl("/CN/Share/07-04-B-CN.wav")
+                        ),
+                        SoundAudioBean(
+                            ConfigConstants.BotSpeaker.BotRed,
+                            AINSIntroduceSoundId + 5,
+                            getANISIntroduceUrl("/CN/Share/07-05-R-CN.wav")
+                        ),
+                        SoundAudioBean(
+                            ConfigConstants.BotSpeaker.BotBlue,
+                            AINSIntroduceSoundId + 6,
+                            getANISIntroduceUrl("/CN/Share/07-06-B-CN.wav")
+                        ),
+                        SoundAudioBean(
+                            ConfigConstants.BotSpeaker.BotRed,
+                            AINSIntroduceSoundId + 7,
+                            getANISIntroduceUrl("/CN/Share/07-07-R-CN.wav")
+                        )
+                    )
+                    else mutableListOf(
+                        SoundAudioBean(
+                            ConfigConstants.BotSpeaker.BotRed,
+                            AINSIntroduceSoundId + 1,
+                            getANISIntroduceUrl("/EN/Share/07-01-R-EN.wav")
+                        ),
+                        SoundAudioBean(
+                            ConfigConstants.BotSpeaker.BotBlue,
+                            AINSIntroduceSoundId + 2,
+                            getANISIntroduceUrl("/EN/Medium/07-02-B-EN-Medium.wav")
+                        ),
+                        SoundAudioBean(
+                            ConfigConstants.BotSpeaker.BotRed,
+                            AINSIntroduceSoundId + 3,
+                            getANISIntroduceUrl("/EN/Medium/07-03-R-EN-Medium.wav")
+                        ),
+                        SoundAudioBean(
+                            ConfigConstants.BotSpeaker.BotBlue,
+                            AINSIntroduceSoundId + 4,
+                            getANISIntroduceUrl("/EN/Share/07-04-B-EN.wav")
+                        ),
+                        SoundAudioBean(
+                            ConfigConstants.BotSpeaker.BotRed,
+                            AINSIntroduceSoundId + 5,
+                            getANISIntroduceUrl("/EN/Share/07-05-R-EN.wav")
+                        ),
+                        SoundAudioBean(
+                            ConfigConstants.BotSpeaker.BotBlue,
+                            AINSIntroduceSoundId + 6,
+                            getANISIntroduceUrl("/EN/Share/07-06-B-EN.wav")
+                        ),
+                        SoundAudioBean(
+                            ConfigConstants.BotSpeaker.BotRed,
+                            AINSIntroduceSoundId + 7,
+                            getANISIntroduceUrl("/EN/Share/07-07-R-EN.wav")
+                        )
+                    ),
+            ConfigConstants.AINSMode.AINS_Off to
+                    if (ResourcesTools.getIsZh()) mutableListOf(
+                        SoundAudioBean(
+                            ConfigConstants.BotSpeaker.BotRed,
+                            AINSIntroduceSoundId + 1,
+                            getANISIntroduceUrl("/CN/Share/07-01-R-CN.wav")
+                        ),
+                        SoundAudioBean(
+                            ConfigConstants.BotSpeaker.BotBlue,
+                            AINSIntroduceSoundId + 2,
+                            getANISIntroduceUrl("/CN/None/07-02-B-CN-None.wav")
+                        ),
+                        SoundAudioBean(
+                            ConfigConstants.BotSpeaker.BotRed,
+                            AINSIntroduceSoundId + 3,
+                            getANISIntroduceUrl("/CN/None/07-03-R-CN-None.wav")
+                        ),
+                        SoundAudioBean(
+                            ConfigConstants.BotSpeaker.BotBlue,
+                            AINSIntroduceSoundId + 4,
+                            getANISIntroduceUrl("/CN/Share/07-04-B-CN.wav")
+                        ),
+                        SoundAudioBean(
+                            ConfigConstants.BotSpeaker.BotRed,
+                            AINSIntroduceSoundId + 5,
+                            getANISIntroduceUrl("/CN/Share/07-05-R-CN.wav")
+                        ),
+                        SoundAudioBean(
+                            ConfigConstants.BotSpeaker.BotBlue,
+                            AINSIntroduceSoundId + 6,
+                            getANISIntroduceUrl("/CN/Share/07-06-B-CN.wav")
+                        ),
+                        SoundAudioBean(
+                            ConfigConstants.BotSpeaker.BotRed,
+                            AINSIntroduceSoundId + 7,
+                            getANISIntroduceUrl("/CN/Share/07-07-R-CN.wav")
+                        )
+                    )
+                    else mutableListOf(
+                        SoundAudioBean(
+                            ConfigConstants.BotSpeaker.BotRed,
+                            AINSIntroduceSoundId + 1,
+                            getANISIntroduceUrl("/EN/Share/07-01-R-EN.wav")
+                        ),
+                        SoundAudioBean(
+                            ConfigConstants.BotSpeaker.BotBlue,
+                            AINSIntroduceSoundId + 2,
+                            getANISIntroduceUrl("/EN/07-02-B-EN-None.wav")
+                        ),
+                        SoundAudioBean(
+                            ConfigConstants.BotSpeaker.BotRed,
+                            AINSIntroduceSoundId + 3,
+                            getANISIntroduceUrl("/EN/07-03-R-EN-None.wav")
+                        ),
+                        SoundAudioBean(
+                            ConfigConstants.BotSpeaker.BotBlue,
+                            AINSIntroduceSoundId + 4,
+                            getANISIntroduceUrl("/EN/Share/07-04-B-EN.wav")
+                        ),
+                        SoundAudioBean(
+                            ConfigConstants.BotSpeaker.BotRed,
+                            AINSIntroduceSoundId + 5,
+                            getANISIntroduceUrl("/EN/Share/07-05-R-EN.wav")
+                        ),
+                        SoundAudioBean(
+                            ConfigConstants.BotSpeaker.BotBlue,
+                            AINSIntroduceSoundId + 6,
+                            getANISIntroduceUrl("/EN/Share/07-06-B-EN.wav")
+                        ),
+                        SoundAudioBean(
+                            ConfigConstants.BotSpeaker.BotRed,
+                            AINSIntroduceSoundId + 7,
+                            getANISIntroduceUrl("/EN/Share/07-07-R-EN.wav")
+                        )
+                    )
         )
-        else mutableListOf(
-            SoundAudioBean(
-                ConfigConstants.BotSpeaker.BotRed,
-                AINSIntroduceSoundId + 1,
-                getANISIntroduceUrl("/07-01-R-EN.wav")
-            ),
-            SoundAudioBean(
-                ConfigConstants.BotSpeaker.BotBlue,
-                AINSIntroduceSoundId + 2,
-                getANISIntroduceUrl("/07-02-B-EN-None.wav")
-            ),
-            SoundAudioBean(
-                ConfigConstants.BotSpeaker.BotRed,
-                AINSIntroduceSoundId + 3,
-                getANISIntroduceUrl("/07-03-R-EN-None.wav")
-            ),
-            SoundAudioBean(
-                ConfigConstants.BotSpeaker.BotBlue,
-                AINSIntroduceSoundId + 4,
-                getANISIntroduceUrl("/07-04-B-EN.wav")
-            ),
-            SoundAudioBean(
-                ConfigConstants.BotSpeaker.BotRed,
-                AINSIntroduceSoundId + 5,
-                getANISIntroduceUrl("/07-05-R-EN.wav")
-            ),
-            SoundAudioBean(
-                ConfigConstants.BotSpeaker.BotBlue,
-                AINSIntroduceSoundId + 6,
-                getANISIntroduceUrl("/07-06-B-EN.wav")
-            ),
-            SoundAudioBean(
-                ConfigConstants.BotSpeaker.BotRed,
-                AINSIntroduceSoundId + 7,
-                getANISIntroduceUrl("/07-07-R-EN.wav")
-            )
-        )
+
+
     }
 
     /**
@@ -748,9 +903,9 @@ object RoomSoundAudioConstructor {
             ConfigConstants.AINSSoundType.AINS_AudioFeedback to SoundAudioBean(
                 ConfigConstants.BotSpeaker.BotBlue,
                 AINSSoundId + 12,
-                getAINSPureSoundUrl(AINS_AudioFeedback, "/19-01-B", ConfigConstants.AINSMode.AINS_Off),
-                getAINSPureSoundUrl(AINS_AudioFeedback, "/19-01-B", ConfigConstants.AINSMode.AINS_High),
-                getAINSPureSoundUrl(AINS_AudioFeedback, "/19-01-B", ConfigConstants.AINSMode.AINS_Medium)
+                getAINSSoundUrl(AINS_AudioFeedback, "/19-01-B", ConfigConstants.AINSMode.AINS_Off),
+                getAINSSoundUrl(AINS_AudioFeedback, "/19-01-B", ConfigConstants.AINSMode.AINS_High),
+                getAINSSoundUrl(AINS_AudioFeedback, "/19-01-B", ConfigConstants.AINSMode.AINS_Medium)
             ),
             ConfigConstants.AINSSoundType.AINS_MicrophoneFingerRub to SoundAudioBean(
                 ConfigConstants.BotSpeaker.BotBlue,
@@ -770,6 +925,7 @@ object RoomSoundAudioConstructor {
     }
 
     private fun getCreateCommonRoomUrl(audioPath: String): String {
+        val localPath = if (ResourcesTools.getIsZh()) CN else EN
         return BASE_URL + String.format(CreateCommonRoom, audioPath)
     }
 
@@ -798,22 +954,19 @@ object RoomSoundAudioConstructor {
     }
 
     private fun getAINSSoundUrl(audioPathPrefix: String, audioPath: String, ainsMode: Int): String {
-        val localPath = if (ResourcesTools.getIsZh()) CN else EN
+        val local = if (ResourcesTools.getIsZh()) CN else EN
+
+        val audioPathP = when (ainsMode) {
+            ConfigConstants.AINSMode.AINS_High -> "$audioPathPrefix/$local/High"
+            ConfigConstants.AINSMode.AINS_Medium -> "$audioPathPrefix/$local/Medium"
+            else -> "$audioPathPrefix/$local/None"
+        }
         val ainsPath = when (ainsMode) {
             ConfigConstants.AINSMode.AINS_High -> "High.wav"
             ConfigConstants.AINSMode.AINS_Medium -> "Medium.wav"
             else -> "None.wav"
         }
-        return BASE_URL + String.format(AINSSound, audioPathPrefix, audioPath, localPath, ainsPath)
-    }
-
-    private fun getAINSPureSoundUrl(audioPathPrefix: String, audioPath: String, ainsMode: Int): String {
-        val localPath = if (ResourcesTools.getIsZh()) CN else EN
-        val ainsPath = when (ainsMode) {
-            ConfigConstants.AINSMode.AINS_High -> "Pure-version-High.wav"
-            ConfigConstants.AINSMode.AINS_Medium -> "Pure-version-Medium.wav"
-            else -> "Pure-version-None.wav"
-        }
-        return BASE_URL + String.format(AINSSound, audioPathPrefix, audioPath, localPath, ainsPath)
+        //AI噪⾳ 08AINSTVSound/CN/High/08-01-B-CN-High.wav  1./08AINSTVSound 2.CN 3.high 4.08-01-B 5.CN 6.High
+        return BASE_URL + String.format(AINSSound,audioPathP, audioPath, local, ainsPath)
     }
 }

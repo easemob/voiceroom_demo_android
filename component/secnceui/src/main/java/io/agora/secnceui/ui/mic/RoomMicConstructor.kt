@@ -47,7 +47,7 @@ object RoomMicConstructor {
         return mutableMapOf(
             ScenesConstant.KeyMic0 to MicInfoBean(index = 0),
             ScenesConstant.KeyMic1 to MicInfoBean(index = 1),
-            ScenesConstant.KeyMicBlue to MicInfoBean(
+            ScenesConstant.KeyMic2 to MicInfoBean(
                 index = 2,
                 micStatus = if (isUserBot) MicStatus.BotActivated else MicStatus.BotInactive,
                 audioVolumeType = ConfigConstants.VolumeType.Volume_Unknown,
@@ -56,9 +56,7 @@ object RoomMicConstructor {
                     userAvatar = "icon_chatroom_blue_robot"
                 }
             ),
-            ScenesConstant.KeyMic3 to MicInfoBean(index = 3),
-            ScenesConstant.KeyMic4 to MicInfoBean(index = 4),
-            ScenesConstant.KeyMicRed to MicInfoBean(
+            ScenesConstant.KeyMic3 to MicInfoBean(
                 index = 5,
                 micStatus = if (isUserBot) MicStatus.BotActivated else MicStatus.BotInactive,
                 audioVolumeType = ConfigConstants.VolumeType.Volume_Unknown,
@@ -67,7 +65,9 @@ object RoomMicConstructor {
                     userAvatar = "icon_chatroom_red_robot"
                 }
             ),
-            ScenesConstant.KeyMicCenter to MicInfoBean(index = 6),
+            ScenesConstant.KeyMic4 to MicInfoBean(index = 3),
+            ScenesConstant.KeyMic5 to MicInfoBean(index = 4),
+            ScenesConstant.KeyMic6 to MicInfoBean(index = 6),
         )
     }
 

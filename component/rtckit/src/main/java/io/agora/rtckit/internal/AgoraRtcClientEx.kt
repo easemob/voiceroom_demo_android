@@ -13,7 +13,6 @@ import io.agora.rtckit.internal.impl.AgoraAudioEngine
 import io.agora.rtckit.internal.impl.AgoraRtcDeNoiseEngine
 import io.agora.rtckit.internal.impl.AgoraRtcSoundEffectEngine
 import io.agora.rtckit.internal.impl.AgoraRtcSpatialAudioEngine
-import io.agora.rtckit.open.IRtcValueCallback
 import io.agora.rtckit.open.config.RtcChannelConfig
 import io.agora.rtckit.open.config.RtcInitConfig
 import io.agora.rtckit.open.status.RtcErrorStatus
@@ -80,11 +79,11 @@ internal class AgoraRtcClientEx : RtcBaseClientEx<RtcEngineEx>() {
         }
     }
 
-    override fun joinChannel(config: RtcChannelConfig, joinCallback: IRtcValueCallback<Boolean>) {
-        checkJoinChannel(config, joinCallback)
+    override fun joinChannel(config: RtcChannelConfig) {
+        checkJoinChannel(config)
     }
 
-    private fun checkJoinChannel(config: RtcChannelConfig, joinCallback: IRtcValueCallback<Boolean>): Boolean {
+    private fun checkJoinChannel(config: RtcChannelConfig): Boolean {
         if (config.roomId.isEmpty() || config.userId < 0) {
             val errMsg = "join channel error roomId or rtcUid illegal!(roomId:${config.roomId},rtcUid:${config.userId})"
             errMsg.logE(TAG)
@@ -110,20 +109,11 @@ internal class AgoraRtcClientEx : RtcBaseClientEx<RtcEngineEx>() {
         }
         val rtcConnection = RtcConnection(config.roomId, config.userId)
         val status =
-            rtcEngine?.joinChannelEx(config.appToken, rtcConnection, options, object : IRtcEngineEventHandler() {
-                override fun onJoinChannelSuccess(channel: String?, uid: Int, elapsed: Int) {
-                    joinCallback.onSuccess(true)
-                    "onJoinChannelSuccess joinChannelEx channel:$channel,uid:$uid,elapsed:$elapsed".logE(TAG)
-                }
-
-                override fun onLeaveChannel(stats: RtcStats?) {
-                    "onLeaveChannel joinChannelEx stats:$stats".logE(TAG)
-                }
-            })
+            rtcEngine?.joinChannelEx(config.appToken, rtcConnection, options, eventHandler)
         if (status != IRtcEngineEventHandler.ErrorCode.ERR_OK) {
             val errorMsg = "join channel error status not ERR_OK!"
             errorMsg.logE(TAG)
-            joinCallback.onError(status ?: IRtcEngineEventHandler.ErrorCode.ERR_FAILED, errorMsg)
+            rtcListener?.onError(RtcErrorStatus(status ?: IRtcEngineEventHandler.ErrorCode.ERR_FAILED, errorMsg))
             return false
         }
         return true

@@ -14,7 +14,6 @@ import io.agora.rtckit.open.status.RtcErrorStatus
 /**
  * @author create by zhangwei03
  *
- *
  */
 internal class AgoraRtcEventHandler(var rtcListener: IRtcClientListener?) : IRtcEngineEventHandler() {
 
@@ -27,11 +26,13 @@ internal class AgoraRtcEventHandler(var rtcListener: IRtcClientListener?) : IRtc
     override fun onJoinChannelSuccess(channel: String, uid: Int, elapsed: Int) {
         super.onJoinChannelSuccess(channel, uid, elapsed)
         "onJoinChannelSuccess channel:$channel,uid:$uid,elapsed:$elapsed".logD(TAG)
+        rtcListener?.onJoinChannelSuccess(channel, uid, elapsed)
     }
 
     override fun onLeaveChannel(stats: RtcStats?) {
         super.onLeaveChannel(stats)
-        "onLeaveChannel stats:$stats".logE(RtcBaseClientEx.TAG)
+        "onLeaveChannel stats:${stats?.totalDuration}".logE(RtcBaseClientEx.TAG)
+        rtcListener?.onLeaveChannel()
     }
 
     override fun onClientRoleChanged(oldRole: Int, newRole: Int) {
@@ -89,6 +90,16 @@ internal class AgoraRtcEventHandler(var rtcListener: IRtcClientListener?) : IRtc
         "onAudioEffectFinished soundId:$soundId".logD(TAG)
     }
 
+    override fun onLocalAudioStateChanged(state: Int, error: Int) {
+        super.onLocalAudioStateChanged(state, error)
+        "onLocalAudioStateChanged state:$state,error:$error".logD(TAG)
+    }
+
+    override fun onRemoteAudioStateChanged(uid: Int, state: Int, reason: Int, elapsed: Int) {
+        super.onRemoteAudioStateChanged(uid, state, reason, elapsed)
+        "onRemoteAudioStateChanged uid:$uid,state:$state,reason:$reason,elapsed:$elapsed".logD(TAG)
+    }
+
     override fun onError(err: Int) {
         super.onError(err)
         rtcListener?.onError(RtcErrorStatus(err, "An error occurred during SDK runtime."))
@@ -127,10 +138,7 @@ internal class AgoraRtcEventHandler(var rtcListener: IRtcClientListener?) : IRtc
      */
     override fun onConnectionStateChanged(state: Int, reason: Int) {
         super.onConnectionStateChanged(state, reason)
-//        rtcListener?.onConnectionStateChanged(state, reason)
-        "onConnectionStateChanged state:$state,reason:$reason,see:\n https://docs.agora.io/cn/voice-call-4.x/API%20Reference/java_ng/API/class_irtcengineeventhandler.html?platform=Android#callback_onconnectionstatechanged".logD(
-            TAG
-        )
+        "onConnectionStateChanged state:$state,reason:$reason".logD(TAG)
     }
 
     /**

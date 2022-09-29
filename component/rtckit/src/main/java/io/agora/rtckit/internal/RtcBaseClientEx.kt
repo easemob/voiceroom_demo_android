@@ -4,7 +4,6 @@ import android.content.Context
 import io.agora.rtckit.open.config.RtcInitConfig
 import io.agora.rtckit.constants.RtcKitConstant
 import io.agora.rtckit.internal.base.*
-import io.agora.rtckit.open.IRtcValueCallback
 import io.agora.rtckit.open.config.RtcChannelConfig
 
 internal abstract class RtcBaseClientEx<T> {
@@ -21,7 +20,7 @@ internal abstract class RtcBaseClientEx<T> {
     /**创建rtc*/
     abstract fun createClient(context: Context, config: RtcInitConfig, rtcClientListener: IRtcClientListener): T?
 
-    abstract fun joinChannel(config: RtcChannelConfig, joinCallback: IRtcValueCallback<Boolean>)
+    abstract fun joinChannel(config: RtcChannelConfig)
 
     abstract fun leaveChannel()
 

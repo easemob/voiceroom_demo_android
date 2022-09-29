@@ -116,35 +116,35 @@ class Room3DMicLayout : ConstraintLayout, View.OnClickListener, IRoomMicView {
     fun setUpMicInfoMap(micInfoList: MutableMap<String, MicInfoBean>) {
         this.micInfoMap.putAll(micInfoList)
         micInfoMap[ScenesConstant.KeyMic0]?.let {
-            binding.micView0.binding(it)
+            binding.micV0.binding(it)
         }
         micInfoMap[ScenesConstant.KeyMic1]?.let {
-            binding.micView1.binding(it)
+            binding.micV1.binding(it)
+        }
+        micInfoMap[ScenesConstant.KeyMic2]?.let {
+            binding.micV2Red.binding(it)
         }
         micInfoMap[ScenesConstant.KeyMic3]?.let {
-            binding.micView3.binding(it)
+            binding.micV3Blue.binding(it)
         }
         micInfoMap[ScenesConstant.KeyMic4]?.let {
-            binding.micView4.binding(it)
+            binding.micV4.binding(it)
         }
-        micInfoMap[ScenesConstant.KeyMicBlue]?.let {
-            binding.micRotBlue.binding(it)
+        micInfoMap[ScenesConstant.KeyMic5]?.let {
+            binding.micV5.binding(it)
         }
-        micInfoMap[ScenesConstant.KeyMicRed]?.let {
-            binding.micBotRed.binding(it)
-        }
-        micInfoMap[ScenesConstant.KeyMicCenter]?.let {
+        micInfoMap[ScenesConstant.KeyMic6]?.let {
             binding.micViewCenter.binding(it)
         }
     }
 
     private fun initListeners() {
-        binding.micView0.setOnClickListener(this)
-        binding.micView1.setOnClickListener(this)
-        binding.micView3.setOnClickListener(this)
-        binding.micView4.setOnClickListener(this)
-        binding.micRotBlue.setOnClickListener(this)
-        binding.micBotRed.setOnClickListener(this)
+        binding.micV0.setOnClickListener(this)
+        binding.micV1.setOnClickListener(this)
+        binding.micV2Red.setOnClickListener(this)
+        binding.micV3Blue.setOnClickListener(this)
+        binding.micV4.setOnClickListener(this)
+        binding.micV5.setOnClickListener(this)
         binding.micViewCenter.setOnClickListener(this)
     }
 
@@ -159,38 +159,40 @@ class Room3DMicLayout : ConstraintLayout, View.OnClickListener, IRoomMicView {
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.micView0 -> {
+            R.id.micV1 -> {
                 micInfoMap[ScenesConstant.KeyMic0]?.let {
                     onItemClickListener?.onItemClick(it, v, 0, -1)
                 }
             }
-            R.id.micView1 -> {
+            R.id.micV0 -> {
                 micInfoMap[ScenesConstant.KeyMic1]?.let {
                     onItemClickListener?.onItemClick(it, v, 1, -1)
                 }
             }
-            R.id.micView3 -> {
-                micInfoMap[ScenesConstant.KeyMic3]?.let {
-                    onItemClickListener?.onItemClick(it, v, 3, -1)
-                }
-            }
-            R.id.micView4 -> {
-                micInfoMap[ScenesConstant.KeyMic4]?.let {
-                    onItemClickListener?.onItemClick(it, v, 4, -1)
-                }
-            }
-            R.id.micRotBlue -> {
-                micInfoMap[ScenesConstant.KeyMicBlue]?.let {
-                    onBotClickListener?.onItemClick(it, v, 2, -1)
-                }
-            }
-            R.id.micBotRed -> {
-                micInfoMap[ScenesConstant.KeyMicRed]?.let {
+            R.id.micV2Red -> {
+                micInfoMap[ScenesConstant.KeyMic2]?.let {
                     onBotClickListener?.onItemClick(it, v, 5, -1)
                 }
             }
+            R.id.micV3Blue -> {
+                micInfoMap[ScenesConstant.KeyMic3]?.let {
+                    onBotClickListener?.onItemClick(it, v, 2, -1)
+                }
+            }
+
+            R.id.micV4 -> {
+                micInfoMap[ScenesConstant.KeyMic4]?.let {
+                    onItemClickListener?.onItemClick(it, v, 3, -1)
+                }
+            }
+            R.id.micV5 -> {
+                micInfoMap[ScenesConstant.KeyMic5]?.let {
+                    onItemClickListener?.onItemClick(it, v, 4, -1)
+                }
+            }
+
             R.id.micViewCenter -> {
-                micInfoMap[ScenesConstant.KeyMicCenter]?.let {
+                micInfoMap[ScenesConstant.KeyMic6]?.let {
                     onItemClickListener?.onItemClick(it, v, 6, -1)
                 }
             }
@@ -370,5 +372,9 @@ class Room3DMicLayout : ConstraintLayout, View.OnClickListener, IRoomMicView {
 
     override fun findMicByUid(uid: String): Int {
         return -1
+    }
+
+    override fun receiverAttributeMap(attributeMap: Map<String, String>) {
+
     }
 }

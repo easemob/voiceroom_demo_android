@@ -2,6 +2,7 @@ package io.agora.chatroom.activity
 
 import android.Manifest
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -357,6 +358,15 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
     override fun roomAttributesDidUpdated(roomId: String?, attributeMap: MutableMap<String, String>?, fromId: String?) {
         super.roomAttributesDidUpdated(roomId, attributeMap, fromId)
         "roomAttributesDidUpdated roomId:$roomId  fromId:$fromId attributeMap:$attributeMap".logE("roomAttributesDid")
+        if (isFinishing) return
+        if (!TextUtils.equals(roomKitBean.chatroomId, roomId)) return
+        attributeMap?.let {
+            if (roomKitBean.roomType == ConfigConstants.RoomType.Common_Chatroom) { // 普通房间
+                binding.rvChatroom2dMicLayout.receiverAttributeMap(it)
+            }else{
+                binding.rvChatroom3dMicLayout.receiverAttributeMap(it)
+            }
+        }
     }
 
     override fun roomAttributesDidRemoved(roomId: String?, keyList: List<String>?, fromId: String?) {

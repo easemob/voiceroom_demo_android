@@ -8,6 +8,7 @@ import android.widget.CompoundButton
 import android.widget.SeekBar
 import androidx.core.view.isVisible
 import io.agora.baseui.dialog.BaseFixedHeightSheetDialog
+import io.agora.baseui.dialog.BaseSheetDialog
 import io.agora.buddy.tool.doOnProgressChanged
 import io.agora.config.ConfigConstants
 import io.agora.secnceui.R
@@ -17,7 +18,7 @@ import io.agora.secnceui.constants.ScenesConstant.ENABLE_ALPHA
 import io.agora.secnceui.databinding.DialogChatroomAudioSettingBinding
 
 class RoomAudioSettingsSheetDialog constructor(private val audioSettingsListener: OnClickAudioSettingsListener) :
-    BaseFixedHeightSheetDialog<DialogChatroomAudioSettingBinding>() {
+    BaseSheetDialog<DialogChatroomAudioSettingBinding>() {
 
     companion object {
         const val KEY_AUDIO_SETTINGS_INFO = "audio_settings"
@@ -35,7 +36,7 @@ class RoomAudioSettingsSheetDialog constructor(private val audioSettingsListener
         super.onViewCreated(view, savedInstanceState)
 
         binding?.apply {
-            setOnApplyWindowInsets(clContent)
+            setOnApplyWindowInsets(root)
             if (audioSettingsInfo.roomType == ConfigConstants.RoomType.Common_Chatroom) {
                 mtSpatialAudio.isVisible = false
                 mtSpatialAudioArrow.isVisible = false

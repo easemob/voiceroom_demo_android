@@ -5,7 +5,6 @@ import io.agora.buddy.tool.ThreadManager
 import io.agora.chatroom.BuildConfig
 import io.agora.config.ConfigConstants
 import io.agora.rtckit.open.IRtcKitListener
-import io.agora.rtckit.open.IRtcValueCallback
 import io.agora.rtckit.open.RtcKitManager
 import io.agora.rtckit.open.config.RtcChannelConfig
 import io.agora.rtckit.open.config.RtcInitConfig
@@ -70,6 +69,9 @@ class RtcRoomController : IRtcKitListener {
         this.micVolumeListener = micVolumeListener
     }
 
+
+    private var joinCallback:ValueCallBack<Boolean>?=null
+
     /**加入rtc频道*/
     fun joinChannel(
         context: Context,
@@ -82,18 +84,8 @@ class RtcRoomController : IRtcKitListener {
         rtcChannelConfig.roomId = roomId
         rtcChannelConfig.userId = userId
         rtcChannelConfig.broadcaster = broadcaster
-        rtcManger?.joinChannel(rtcChannelConfig, object : IRtcValueCallback<Boolean> {
-            override fun onSuccess(value: Boolean) {
-                // 默认开启降噪
-                val event = when (anisMode) {
-                    ConfigConstants.AINSMode.AINS_Off -> RtcDeNoiseEvent.CloseEvent()
-                    ConfigConstants.AINSMode.AINS_High -> RtcDeNoiseEvent.HeightEvent()
-                    else -> RtcDeNoiseEvent.MediumEvent()
-                }
-                rtcManger?.operateDeNoise(event)
-                joinCallback.onSuccess(value)
-            }
-        })
+        this.joinCallback =  joinCallback
+        rtcManger?.joinChannel(rtcChannelConfig)
     }
 
     /**
@@ -169,6 +161,21 @@ class RtcRoomController : IRtcKitListener {
         soundEffect = ConfigConstants.SoundSelection.Social_Chat
         rtcManger?.leaveChannel()
         rtcManger?.destroy()
+    }
+
+    override fun onJoinChannelSuccess(channel: String, uid: Int, elapsed: Int) {
+        // 默认开启降噪
+        val event = when (anisMode) {
+            ConfigConstants.AINSMode.AINS_Off -> RtcDeNoiseEvent.CloseEvent()
+            ConfigConstants.AINSMode.AINS_High -> RtcDeNoiseEvent.HeightEvent()
+            else -> RtcDeNoiseEvent.MediumEvent()
+        }
+        rtcManger?.operateDeNoise(event)
+        joinCallback?.onSuccess(true)
+    }
+
+    override fun onLeaveChannel() {
+
     }
 
     override fun onConnectionStateChanged(state: Int, reason: Int) {

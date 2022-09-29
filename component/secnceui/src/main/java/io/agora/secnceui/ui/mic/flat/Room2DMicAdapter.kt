@@ -2,11 +2,15 @@ package io.agora.secnceui.ui.mic.flat
 
 import io.agora.baseui.adapter.BaseRecyclerViewAdapter
 import io.agora.baseui.adapter.OnItemClickListener
+import io.agora.buddy.tool.GsonTools
+import io.agora.buddy.tool.ThreadManager
 import io.agora.buddy.tool.dp
 import io.agora.buddy.tool.getDisplaySize
 import io.agora.secnceui.annotation.MicClickAction
 import io.agora.secnceui.annotation.MicStatus
+import io.agora.secnceui.bean.ImAttrBean
 import io.agora.secnceui.bean.MicInfoBean
+import io.agora.secnceui.constants.ScenesConstant
 import io.agora.secnceui.databinding.ItemChatroom2dMicBinding
 
 class Room2DMicAdapter constructor(
@@ -98,8 +102,28 @@ class Room2DMicAdapter constructor(
                     micInfo.micStatus = MicStatus.Idle
                 }
             }
+            MicClickAction.Invite -> {
+                // TODO()
+            }
         }
         notifyItemChanged(micIndex)
+    }
 
+    fun receiverAttributeMap(attributeMap: Map<String, String>) {
+        var needUpdate = false
+        attributeMap.entries.forEach { entry ->
+            val index = ScenesConstant.micMap[entry.key] ?: -1
+            if (index >= 0 && index < dataList.size) {
+                GsonTools.toBean(entry.value, ImAttrBean::class.java)?.let { attrBean ->
+                    dataList[index].micStatus = attrBean.status
+                    needUpdate = true
+                }
+            }
+        }
+        if (needUpdate) {
+            ThreadManager.getInstance().runOnMainThread {
+                notifyDataSetChanged()
+            }
+        }
     }
 }
