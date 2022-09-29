@@ -9,7 +9,6 @@ import tools.ValueCallBack
 import tools.bean.VRMicBean
 import tools.bean.VRMicListBean
 import tools.bean.VRoomBean
-import tools.bean.VRoomBean.RoomsBean
 import tools.bean.VRoomUserBean
 
 /**
@@ -72,11 +71,11 @@ class RoomMicRepository : BaseRepository() {
     }
 
     // 获取麦位信息
-    fun getMicInfo(context: Context, roomId: String): LiveData<Resource<VRoomUserBean>> {
-        val resource = object : NetworkOnlyResource<VRoomUserBean>() {
-            override fun createCall(callBack: ResultCallBack<LiveData<VRoomUserBean>>) {
-                HttpManager.getInstance(context).getMicInfo(roomId, object : ValueCallBack<VRoomUserBean> {
-                    override fun onSuccess(data: VRoomUserBean) {
+    fun getMicInfo(context: Context, roomId: String): LiveData<Resource<VRMicBean>> {
+        val resource = object : NetworkOnlyResource<VRMicBean>() {
+            override fun createCall(callBack: ResultCallBack<LiveData<VRMicBean>>) {
+                HttpManager.getInstance(context).getMicInfo(roomId, object : ValueCallBack<VRMicBean> {
+                    override fun onSuccess(data: VRMicBean) {
                         callBack.onSuccess(createLiveData(data))
                     }
 

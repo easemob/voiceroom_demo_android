@@ -6,6 +6,8 @@
         <activity
             android:name=".activity.ChatroomLiveActivity"
             android:exported="false" />
+        <activity android:name=".activity.ChatroomSoundSelectionActivity"
+            android:exported="false"/>
     </application>
 
 </manifest>

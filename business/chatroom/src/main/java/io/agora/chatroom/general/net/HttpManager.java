@@ -21,6 +21,7 @@ import io.agora.buddy.tool.LogToolsKt;
 import io.agora.chatroom.general.repositories.ProfileManager;
 import tools.ValueCallBack;
 import tools.bean.VRGiftBean;
+import tools.bean.VRMicBean;
 import tools.bean.VRMicListBean;
 import tools.bean.VRUserBean;
 import tools.bean.VRoomBean;
@@ -571,7 +572,7 @@ public class HttpManager {
      * 获取麦位信息
      * @param roomId
      */
-    public void getMicInfo(String roomId,ValueCallBack<VRoomUserBean> callBack){
+    public void getMicInfo(String roomId,ValueCallBack<VRMicBean> callBack){
         Log.e("getMicInfo","roomId:"+roomId);
         Log.e("getMicInfo","Authorization:"+ ProfileManager.getInstance().getProfile().getAuthorization());
         Map<String, String> headers = new HashMap<>();
@@ -585,7 +586,7 @@ public class HttpManager {
                     @Override
                     public void onSuccess(String result) {
                         LogToolsKt.logE("getMicInfo success: " + result, TAG);
-                        VRoomUserBean bean = GsonTools.toBean(result,VRoomUserBean.class);
+                        VRMicBean bean = GsonTools.toBean(result,VRMicBean.class);
                         callBack.onSuccess(bean);
                     }
 
