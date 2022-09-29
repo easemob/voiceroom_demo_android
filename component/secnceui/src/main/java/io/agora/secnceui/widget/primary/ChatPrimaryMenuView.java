@@ -252,7 +252,8 @@ public class ChatPrimaryMenuView extends RelativeLayout implements ExpressionVie
             addView();
         }else if (roomType == 1){
             normalLayout.setVisibility(VISIBLE);
-            inputLayout.setVisibility(GONE);
+            inputLayout.setVisibility(INVISIBLE);
+            menuLayout.setVisibility(VISIBLE);
             registerMenuItem(R.drawable.icon_close_mic,R.id.extend_item_mic);
             registerMenuItem(R.drawable.icon_handuphard,R.id.extend_item_hand_up);
             registerMenuItem(R.drawable.icon_eq,R.id.extend_item_eq);

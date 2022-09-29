@@ -134,6 +134,11 @@ public class ChatroomCreateActivity extends BaseActivity implements RadioGroup.O
          @Override
          public void onPageSelected(int position) {
             roomType = data.get(position).getRoom_type();
+            if (roomType == 0){
+               mNext.setText(getString(R.string.room_create_next));
+            }else {
+               mNext.setText(getString(R.string.room_create_go_live));
+            }
          }
       });
 
@@ -301,13 +306,7 @@ public class ChatroomCreateActivity extends BaseActivity implements RadioGroup.O
       if (v.getId() == R.id.bottom_next){
             encryption =  mEditText.getText().toString().trim();
             roomName = mEdRoomName.getText().toString().trim();
-            if(roomType == 0){
-               // TODO: 2022/9/20  跳转音效设置
-               showSoundSocialDialog();
-//               createNormalRoom(false,"Sound Selection");
-            }else if (roomType ==1){
-               createSpatialRoom();
-            }
+            check();
       }else if (v.getId() == R.id.ed_room_name){
 
          getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
@@ -325,15 +324,31 @@ public class ChatroomCreateActivity extends BaseActivity implements RadioGroup.O
       }
    }
 
-   public void createNormalRoom(boolean allow_free_join_mic,String sound_effect){
-      if (isPublic){
-         chatroomViewModel.createNormalRoom(this,roomName,false,allow_free_join_mic,sound_effect);
-      }else {
-         if (!TextUtils.isEmpty(encryption) && encryption.length() == 4){
-            chatroomViewModel.createNormalRoom(this,roomName,true,encryption,allow_free_join_mic,sound_effect);
-         }else {
-            ToastTools.show(this,"4 Digit Password Required", Toast.LENGTH_LONG);
+   private void check(){
+      if (TextUtils.isEmpty(roomName)){
+         ToastTools.show(this,"roomName can be not empty",Toast.LENGTH_LONG);
+         return;
+      }
+      if (!isPublic && TextUtils.isEmpty(encryption)){
+         ToastTools.show(this,"private room PassWord can be not empty",Toast.LENGTH_LONG);
+         return;
+      }
+
+      if (!isPublic && encryption.length() != 4){
+         ToastTools.show(this,"4 Digit Password Required",Toast.LENGTH_LONG);
+         return;
+      }
+      if(roomType == 0){
+         Intent intent = new Intent(ChatroomCreateActivity.this,ChatroomSoundSelectionActivity.class);
+         intent.putExtra(RouterParams.KEY_CHATROOM_CREATE_NAME,roomName);
+         intent.putExtra(RouterParams.KEY_CHATROOM_CREATE_IS_PUBLIC,isPublic);
+         if (!isPublic){
+            intent.putExtra(RouterParams.KEY_CHATROOM_CREATE_ENCRYPTION,encryption);
          }
+         intent.putExtra(RouterParams.KEY_CHATROOM_CREATE_ROOM_TYPE,roomType);
+         startActivity(intent);
+      }else if (roomType ==1){
+         createSpatialRoom();
       }
    }
 
@@ -341,26 +356,8 @@ public class ChatroomCreateActivity extends BaseActivity implements RadioGroup.O
       if (isPublic){
          chatroomViewModel.createSpatial(this,roomName,false);
       }else {
-         if (!TextUtils.isEmpty(encryption) && encryption.length() == 4){
-            chatroomViewModel.createSpatial(this,roomName,true,encryption);
-         }else {
-            ToastTools.show(this,"4 Digit Password Required", Toast.LENGTH_LONG);
-         }
+         chatroomViewModel.createSpatial(this,roomName,true,encryption);
       }
-   }
-
-   public void showSoundSocialDialog(){
-//      Bundle bundle = new Bundle();
-//      bundle.putInt("current_selection", ConfigConstants.SoundSelection.Social_Chat);
-//      RoomSoundSelectionSheetDialog dialog = new RoomSoundSelectionSheetDialog(true, new RoomSoundSelectionSheetDialog.OnClickSoundSelectionListener() {
-//         @Override
-//         public void onSoundEffect(@NonNull SoundSelectionBean soundSelection, boolean isCurrentUsing) {
-//            Log.e("showSoundSocialDialog","getSoundName" + soundSelection.getSoundName());
-//         }
-//      });
-//      dialog.setArguments(bundle);
-//      dialog.show(getSupportFragmentManager(),"mtSoundSelection");
-      startActivity(new Intent(ChatroomCreateActivity.this,ChatroomSoundSelectionActivity.class));
    }
 
    public static class ViewHolder extends RecyclerView.ViewHolder {

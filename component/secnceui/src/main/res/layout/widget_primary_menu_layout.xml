@@ -7,7 +7,7 @@
 
     <RelativeLayout
         android:id="@+id/normal_layout"
-        android:visibility="gone"
+        android:visibility="visible"
         android:background="@color/transparent"
         android:layout_width="match_parent"
         android:layout_height="55dp">
@@ -45,10 +45,9 @@
             android:layout_height="match_parent"
             android:layout_alignParentEnd="true"
             android:layout_marginStart="30dp"
+            android:layout_marginEnd="15dp"
             android:layout_toEndOf="@+id/input_layout"
-            android:gravity="center_vertical|right"
-            android:layout_marginRight="15dp"
-            />
+            android:gravity="center_vertical|right" />
 
     </RelativeLayout>
 

@@ -162,12 +162,12 @@ public class ChatroomViewModel extends AndroidViewModel {
 
     public void createSpatial(Context context, String name, boolean is_private, String password) {
         createObservable.setSource(mRepository.createRoom(context, name, is_private, password, 1,
-                false, ""));
+                false, "Social Chat"));
     }
 
     public void createSpatial(Context context, String name, boolean is_private) {
         createObservable.setSource(mRepository.createRoom(context, name, is_private, "", 1,
-                false, ""));
+                false, "Social Chat"));
     }
 
     public void activeBot(Context context, String roomId, boolean active) {

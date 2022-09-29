@@ -324,14 +324,15 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
 
 
     private fun reset() {
-        binding.clMain.isFocusable = true
-        binding.chatBottom.hideExpressionView()
-        binding.chatBottom.showInput()
-        binding.chatBottom.hindViewChangeIcon()
-        binding.likeView.isVisible = true
-        binding.bottomLayout.isVisible = true
-        binding.clMain.isFocusable = true
-        hideKeyboard()
+        if (roomKitBean.roomType == ConfigConstants.RoomType.Common_Chatroom){
+            binding.chatBottom.hideExpressionView()
+            binding.chatBottom.showInput()
+            binding.likeView.isVisible = true
+            binding.bottomLayout.isVisible = true
+            binding.chatBottom.hindViewChangeIcon()
+            hideKeyboard()
+            binding.clMain.isFocusable = true
+        }
     }
 
     override fun receiveTextMessage(roomId: String?, message: ChatMessageData?) {

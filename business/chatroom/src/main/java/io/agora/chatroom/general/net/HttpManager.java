@@ -144,10 +144,8 @@ public class HttpManager {
                 requestBody.putOpt("password", password);
             }
             requestBody.putOpt("type", type);
-            if (type == 0){
-                requestBody.putOpt("allow_free_join_mic", allow_free_join_mic);
-                requestBody.putOpt("sound_effect", sound_effect);
-            }
+            requestBody.putOpt("allow_free_join_mic", allow_free_join_mic);
+            requestBody.putOpt("sound_effect", sound_effect);
 
         } catch (JSONException e) {
             e.printStackTrace();
