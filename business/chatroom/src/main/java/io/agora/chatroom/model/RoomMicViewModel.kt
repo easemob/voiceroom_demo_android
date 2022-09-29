@@ -20,7 +20,7 @@ class RoomMicViewModel constructor(application: Application) : AndroidViewModel(
     private val _applyMicListObservable: SingleSourceLiveData<Resource<VRMicListBean>> = SingleSourceLiveData()
     private val _submitMicObservable: SingleSourceLiveData<Resource<Boolean>> = SingleSourceLiveData()
     private val _cancelSubmitMicObservable: SingleSourceLiveData<Resource<Boolean>> = SingleSourceLiveData()
-    private val _micInfoObservable: SingleSourceLiveData<Resource<VRoomUserBean>> = SingleSourceLiveData()
+    private val _micInfoObservable: SingleSourceLiveData<Resource<VRMicBean>> = SingleSourceLiveData()
     private val _closeMicObservable: SingleSourceLiveData<Resource<Boolean>> = SingleSourceLiveData()
     private val _cancelCloseMicObservable: SingleSourceLiveData<Resource<Pair<Int, Boolean>>> = SingleSourceLiveData()
     private val _leaveMicObservable: SingleSourceLiveData<Resource<Pair<Int, Boolean>>> = SingleSourceLiveData()
@@ -38,7 +38,7 @@ class RoomMicViewModel constructor(application: Application) : AndroidViewModel(
     fun applyMicListObservable(): LiveData<Resource<VRMicListBean>> = _applyMicListObservable
     fun submitMicObservable(): LiveData<Resource<Boolean>> = _submitMicObservable
     fun cancelSubmitMicObservable(): LiveData<Resource<Boolean>> = _cancelSubmitMicObservable
-    fun micInfoObservable(): LiveData<Resource<VRoomUserBean>> = _micInfoObservable
+    fun micInfoObservable(): LiveData<Resource<VRMicBean>> = _micInfoObservable
     fun closeMicObservable(): LiveData<Resource<Boolean>> = _closeMicObservable
     fun cancelCloseMicObservable(): LiveData<Resource<Pair<Int, Boolean>>> = _cancelCloseMicObservable
     fun leaveMicObservable(): LiveData<Resource<Pair<Int, Boolean>>> = _leaveMicObservable

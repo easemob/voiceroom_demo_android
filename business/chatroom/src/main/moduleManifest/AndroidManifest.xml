@@ -45,5 +45,8 @@
         <activity android:name=".activity.ChatroomProfileActivity"
             android:exported="false"/>
 
+        <activity android:name=".activity.ChatroomSoundSelectionActivity"
+            android:exported="false"/>
+
     </application>
 </manifest>

@@ -192,7 +192,7 @@ public class ChatroomConfigManager {
         default void announcementChanged(String roomId,String announcement){}
         default void userBeKicked(String roomId,int reason){}
         default void roomAttributesDidUpdated(String roomId,Map<String, String> attributeMap,String fromId){}
-        default void roomAttributesDidRemoved(String roomId,Map<String, String> attributeMap,String fromId){}
+        default void roomAttributesDidRemoved(String roomId,List<String> keyList,String fromId){}
     }
 
     public void setChatRoomListener(ChatroomListener listener){
@@ -276,9 +276,9 @@ public class ChatroomConfigManager {
         }
 
         @Override
-        public void onAttributesRemoved(String chatRoomId, Map<String, String> attributeMap, String from) {
+        public void onAttributesRemoved(String chatRoomId, List<String> keyList, String from) {
             if (ChatListener != null)
-            ChatListener.roomAttributesDidRemoved(chatRoomId,attributeMap,from);
+            ChatListener.roomAttributesDidRemoved(chatRoomId,keyList,from);
         }
     };
 

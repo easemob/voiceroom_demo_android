@@ -351,8 +351,8 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
         "roomAttributesDidUpdated roomId:$roomId  fromId:$fromId attributeMap:$attributeMap".logE("roomAttributesDid")
     }
 
-    override fun roomAttributesDidRemoved(roomId: String?, attributeMap: MutableMap<String, String>?, fromId: String?) {
-        super.roomAttributesDidRemoved(roomId, attributeMap, fromId)
-        "roomAttributesDidRemoved roomId:$roomId  fromId:$fromId attributeMap:$attributeMap".logE("roomAttributesDid")
+    override fun roomAttributesDidRemoved(roomId: String?, keyList: List<String>?, fromId: String?) {
+        super.roomAttributesDidRemoved(roomId, keyList, fromId)
+        "roomAttributesDidRemoved roomId:$roomId  fromId:$fromId keyList:$keyList".logE("roomAttributesDid")
     }
 }

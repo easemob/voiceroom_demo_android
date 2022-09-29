@@ -1,5 +1,6 @@
 package io.agora.chatroom.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -13,6 +14,8 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -32,6 +35,7 @@ import io.agora.CallBack;
 import io.agora.ValueCallBack;
 import io.agora.baseui.BaseActivity;
 import io.agora.baseui.general.callback.OnResourceParseCallback;
+import io.agora.buddy.tool.ToastTools;
 import io.agora.chat.ChatClient;
 import io.agora.chat.ChatRoom;
 import io.agora.chatroom.general.repositories.PageRepository;
@@ -39,8 +43,11 @@ import io.agora.chatroom.R;
 import io.agora.chatroom.bean.PageBean;
 import io.agora.chatroom.general.repositories.ProfileManager;
 import io.agora.chatroom.model.ChatroomViewModel;
+import io.agora.config.ConfigConstants;
 import io.agora.config.RouterParams;
 import io.agora.config.RouterPath;
+import io.agora.secnceui.bean.SoundSelectionBean;
+import io.agora.secnceui.ui.soundselection.RoomSoundSelectionSheetDialog;
 import io.agora.secnceui.widget.encryption.ChatroomEncryptionInputView;
 import io.agora.secnceui.widget.titlebar.ChatroomTitleBar;
 import manager.ChatroomConfigManager;
@@ -161,11 +168,6 @@ public class ChatroomCreateActivity extends BaseActivity implements RadioGroup.O
                              @Override
                              public void onSuccess() {
                                 joinRoom(data);
-//                                ARouter.getInstance()
-//                                        .build(RouterPath.ChatroomPath)
-//                                        .withInt(RouterParams.KEY_CHATROOM_TYPE, data.component2().getType())
-//                                        .withSerializable(RouterParams.KEY_CHATROOM_INFO, )
-//                                        .navigation();
                              }
 
                              @Override
@@ -301,7 +303,8 @@ public class ChatroomCreateActivity extends BaseActivity implements RadioGroup.O
             roomName = mEdRoomName.getText().toString().trim();
             if(roomType == 0){
                // TODO: 2022/9/20  跳转音效设置
-               createNormalRoom(false,"Sound Selection");
+               showSoundSocialDialog();
+//               createNormalRoom(false,"Sound Selection");
             }else if (roomType ==1){
                createSpatialRoom();
             }
@@ -329,7 +332,7 @@ public class ChatroomCreateActivity extends BaseActivity implements RadioGroup.O
          if (!TextUtils.isEmpty(encryption) && encryption.length() == 4){
             chatroomViewModel.createNormalRoom(this,roomName,true,encryption,allow_free_join_mic,sound_effect);
          }else {
-            // TODO: 2022/8/30  show Toast  4 Digit Password Required
+            ToastTools.show(this,"4 Digit Password Required", Toast.LENGTH_LONG);
          }
       }
    }
@@ -341,9 +344,23 @@ public class ChatroomCreateActivity extends BaseActivity implements RadioGroup.O
          if (!TextUtils.isEmpty(encryption) && encryption.length() == 4){
             chatroomViewModel.createSpatial(this,roomName,true,encryption);
          }else {
-            // TODO: 2022/8/30  show Toast  4 Digit Password Required
+            ToastTools.show(this,"4 Digit Password Required", Toast.LENGTH_LONG);
          }
       }
+   }
+
+   public void showSoundSocialDialog(){
+//      Bundle bundle = new Bundle();
+//      bundle.putInt("current_selection", ConfigConstants.SoundSelection.Social_Chat);
+//      RoomSoundSelectionSheetDialog dialog = new RoomSoundSelectionSheetDialog(true, new RoomSoundSelectionSheetDialog.OnClickSoundSelectionListener() {
+//         @Override
+//         public void onSoundEffect(@NonNull SoundSelectionBean soundSelection, boolean isCurrentUsing) {
+//            Log.e("showSoundSocialDialog","getSoundName" + soundSelection.getSoundName());
+//         }
+//      });
+//      dialog.setArguments(bundle);
+//      dialog.show(getSupportFragmentManager(),"mtSoundSelection");
+      startActivity(new Intent(ChatroomCreateActivity.this,ChatroomSoundSelectionActivity.class));
    }
 
    public static class ViewHolder extends RecyclerView.ViewHolder {
