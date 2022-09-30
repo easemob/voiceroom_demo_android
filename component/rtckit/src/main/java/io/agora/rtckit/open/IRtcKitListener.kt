@@ -9,6 +9,12 @@ import io.agora.rtckit.open.status.*
  */
 interface IRtcKitListener {
 
+    /**加入房间*/
+    fun onJoinChannelSuccess(channel: String, uid: Int, elapsed: Int)
+
+    /**离开房间*/
+    fun onLeaveChannel()
+
     /**网络情况*/
     fun onConnectionStateChanged(state: Int, reason: Int)
 

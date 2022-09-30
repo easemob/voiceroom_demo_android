@@ -447,7 +447,10 @@ class RoomObservableViewDelegate constructor(
                 "onAINSDialog anisModeCallback：$it".logE(TAG)
                 if (roomKitBean.isOwner && RtcRoomController.get().isUseBot && RtcRoomController.get().firstSwitchAnis) {
                     RtcRoomController.get().firstSwitchAnis = false
-                    RtcRoomController.get().playEffect(RoomSoundAudioConstructor.anisIntroduceAudioList)
+
+                    RoomSoundAudioConstructor.anisIntroduceAudioMap[it.anisMode]?.let { soundAudioList ->
+                        RtcRoomController.get().playEffect(soundAudioList)
+                    }
                 }
             },
             anisSoundCallback = { ainsSoundBean ->

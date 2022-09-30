@@ -11,7 +11,7 @@ import io.agora.rtckit.open.event.*
  */
 interface IRtcMiddleService {
 
-    fun joinChannel(config: RtcChannelConfig, joinCallback: IRtcValueCallback<Boolean>)
+    fun joinChannel(config: RtcChannelConfig)
 
     fun leaveChannel()
 

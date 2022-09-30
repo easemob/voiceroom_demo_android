@@ -19,6 +19,8 @@ interface IRoomMicView {
     /**机器人音量指示*/
     fun updateBotVolume(speakerType: Int, volume: Int)
 
+    fun receiverAttributeMap(attributeMap: Map<String, String>)
+
     /**麦位状态*/
     fun updateMicStatusByAction(index: Int, @MicClickAction action: Int)
 

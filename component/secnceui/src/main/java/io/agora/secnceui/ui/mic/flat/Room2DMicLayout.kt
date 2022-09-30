@@ -135,4 +135,9 @@ class Room2DMicLayout : ConstraintLayout, IRoomMicView {
         }
         return -1
     }
+
+    override fun receiverAttributeMap(attributeMap: Map<String, String>) {
+        room2DMicAdapter?.receiverAttributeMap(attributeMap)
+        room2DMicBotAdapter?.receiverAttributeMap(attributeMap)
+    }
 }

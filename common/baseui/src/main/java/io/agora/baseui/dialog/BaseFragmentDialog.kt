@@ -44,9 +44,9 @@ abstract class BaseFragmentDialog<B : ViewBinding> : DialogFragment() {
 
     protected fun setOnApplyWindowInsets(root: View) {
         dialog?.window?.let {
-            ViewCompat.setOnApplyWindowInsetsListener(it.decorView) { v: View?, insets: WindowInsetsCompat ->
+            ViewCompat.setOnApplyWindowInsetsListener(root) { v: View?, insets: WindowInsetsCompat ->
                 val inset = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-                root.setPadding(inset.left, 0, inset.right, inset.bottom)
+                root.setPadding(inset.left, 0, inset.right, inset.bottom + root.paddingBottom)
                 WindowInsetsCompat.CONSUMED
             }
         }

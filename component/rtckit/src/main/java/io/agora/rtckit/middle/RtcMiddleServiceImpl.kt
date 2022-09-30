@@ -25,8 +25,8 @@ class RtcMiddleServiceImpl constructor(
         rtcClient.createClient(context, config, rtcClientListener)
     }
 
-    override fun joinChannel(config: RtcChannelConfig, joinCallback: IRtcValueCallback<Boolean>) {
-        rtcClient.joinChannel(config, joinCallback)
+    override fun joinChannel(config: RtcChannelConfig) {
+        rtcClient.joinChannel(config)
     }
 
     override fun leaveChannel() {

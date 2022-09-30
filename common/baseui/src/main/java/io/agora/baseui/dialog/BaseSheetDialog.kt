@@ -40,10 +40,10 @@ abstract class BaseSheetDialog<B : ViewBinding?> : BottomSheetDialogFragment() {
 
     protected fun setOnApplyWindowInsets(view: View) {
         dialog?.window?.let {
-            ViewCompat.setOnApplyWindowInsetsListener(it.decorView) { v: View?, insets: WindowInsetsCompat ->
+            ViewCompat.setOnApplyWindowInsetsListener(view) { v: View?, insets: WindowInsetsCompat ->
                 val inset = insets.getInsets(WindowInsetsCompat.Type.systemBars())
                 Log.d("setOnApplyWindowInsets", inset.toString())
-                view.setPadding(0, 0, 0, inset.bottom)
+                view.setPadding(0, 0, 0, inset.bottom + view.paddingBottom)
                 WindowInsetsCompat.CONSUMED
             }
         }
