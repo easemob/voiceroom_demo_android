@@ -204,6 +204,9 @@ public class ChatroomCreateActivity extends BaseActivity implements RadioGroup.O
    public void onCheckedChanged(RadioGroup group, int checkedId) {
       if (checkedId == R.id.radioButton_private) {
          isPublic = false;
+         baseLayout.setFocusable(true);
+         baseLayout.setFocusableInTouchMode(true);
+         baseLayout.requestFocus();
       } else if (checkedId == R.id.radioButton_public) {
          isPublic = true;
       }

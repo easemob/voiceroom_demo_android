@@ -132,23 +132,6 @@ public class ChatPrimaryMenuView extends RelativeLayout implements ExpressionVie
         rootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-//                Rect r = new Rect();
-//                activity.getWindow().getDecorView().getWindowVisibleDisplayFrame(r);
-//                int rootHeight = r.height();
-//                int rootWidth = r.width();
-//                // 2029
-//                int displayHeight = r.bottom - r.top;
-//                //软键盘高度
-//                softKeyHeight = rootHeight - displayHeight;
-//                Log.e("onGlobalLayout","rootHeight: "+rootHeight + " displayHeight: "+displayHeight);
-//                //如果除去软键盘的高度 大于 可见区域 2/3的高度 说明软键盘已经弹起
-//                if (rootHeight - softKeyHeight > rootHeight * 2/3 ){
-//                    mWindowHeight = softKeyHeight;
-//                }else {
-//                    mWindowHeight = 0;
-//                }
-//                if (mWindowHeight == softKeyHeight) return;
-
                 Rect r = new Rect();
                 //获取当前窗口实际的可见区域
                 rootView.getWindowVisibleDisplayFrame(r);
@@ -181,23 +164,6 @@ public class ChatPrimaryMenuView extends RelativeLayout implements ExpressionVie
                         System.out.println("SoftKeyboard height2 = " + 0);
                     }
                 }
-//                if (mWindowHeight == 0){
-//                    //首次打开页面时 初始值为0 expressionView高度为0
-//                    setViewLayoutParams(expressionView,rootWidth,0);
-//                }else{
-//                    setViewLayoutParams(expressionView,rootWidth,softKeyHeight);
-//                }
-
-
-//                int displayHeight = r.bottom - r.top;
-//                int rootHeight = rootView.getHeight();
-//                softKeyHeight = rootHeight - displayHeight;
-//
-//
-//                if (preHeight == softKeyHeight) return;
-//                preHeight = softKeyHeight;
-
-
             }
         });
     }
@@ -274,7 +240,7 @@ public class ChatPrimaryMenuView extends RelativeLayout implements ExpressionVie
             imageView.setId(itemModel.id);
 
             if (itemModel.id == R.id.extend_item_gift){
-                marginLayoutParams.setMarginEnd(dp2px(activity,15));
+                marginLayoutParams.setMarginEnd(dp2px(activity,5));
             }
             imageView.setLayoutParams(marginLayoutParams);
             imageView.setOnClickListener(new OnClickListener() {

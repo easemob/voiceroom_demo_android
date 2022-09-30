@@ -131,6 +131,9 @@ public class ChatroomListActivity extends BaseActivity implements ChatroomTitleB
             @Override
             public Fragment createFragment(int position) {
                 ChatroomListFragment fragment = new ChatroomListFragment();
+                Bundle bundle = new Bundle();
+                bundle.putInt("position",position);
+                fragment.setArguments(bundle);
                 fragment.SetItemCountChangeListener(new ChatroomListFragment.itemCountListener() {
                     @Override
                     public void getItemCount(int count) {
