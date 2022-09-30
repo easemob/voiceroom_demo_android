@@ -7,6 +7,7 @@ import io.agora.baseui.general.callback.ResultCallBack;
 import io.agora.baseui.general.net.Resource;
 import io.agora.chatroom.general.net.HttpManager;
 import tools.ValueCallBack;
+import tools.bean.VRGiftBean;
 import tools.bean.VRMicListBean;
 import tools.bean.VRoomUserBean;
 
@@ -38,6 +39,28 @@ public class ChatroomHandsRepository extends BaseRepository{
                 HttpManager.getInstance(context).getRoomMembers(roomId, pageSize, cursor, new ValueCallBack<VRoomUserBean>() {
                     @Override
                     public void onSuccess(VRoomUserBean var1) {
+                        callBack.onSuccess(createLiveData(var1));
+                    }
+
+                    @Override
+                    public void onError(int code, String desc) {
+                        callBack.onError(code,desc);
+                    }
+                });
+            }
+        }.asLiveData();
+    }
+
+    /**
+     * 礼物榜单
+     */
+    public LiveData<Resource<VRGiftBean>> getGifts(Context context, String roomId) {
+        return new NetworkOnlyResource<VRGiftBean>() {
+            @Override
+            protected void createCall(@NonNull ResultCallBack<LiveData<VRGiftBean>> callBack) {
+                HttpManager.getInstance(context).getGiftList(roomId, new ValueCallBack<VRGiftBean>() {
+                    @Override
+                    public void onSuccess(VRGiftBean var1) {
                         callBack.onSuccess(createLiveData(var1));
                     }
 

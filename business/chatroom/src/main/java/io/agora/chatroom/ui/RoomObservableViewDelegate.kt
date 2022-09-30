@@ -33,7 +33,7 @@ import io.agora.secnceui.ui.common.CommonSheetAlertDialog
 import io.agora.secnceui.ui.common.CommonSheetContentDialog
 import io.agora.secnceui.ui.mic.IRoomMicView
 import io.agora.secnceui.ui.micmanger.RoomMicManagerSheetDialog
-import io.agora.secnceui.ui.rank.RoomContributionAndAudienceSheetDialog
+import io.agora.chatroom.fragment.RoomContributionAndAudienceSheetDialog
 import io.agora.secnceui.ui.soundselection.RoomSocialChatSheetDialog
 import io.agora.secnceui.ui.soundselection.RoomSoundSelectionConstructor
 import io.agora.secnceui.ui.soundselection.RoomSoundSelectionSheetDialog
@@ -300,11 +300,11 @@ class RoomObservableViewDelegate constructor(
      * 详情
      */
     fun onRoomDetails(vRoomInfoBean: VRoomInfoBean?) {
-        val isUseBot = vRoomInfoBean?.room?.use_robot ?: false
+        val isUseBot = vRoomInfoBean?.room?.isUse_robot ?: false
         RtcRoomController.get().isUseBot = isUseBot
         RtcRoomController.get().botVolume = vRoomInfoBean?.room?.robot_volume ?: 50
         RtcRoomController.get().soundEffect =
-            vRoomInfoBean?.room?.getSoundSelection() ?: ConfigConstants.SoundSelection.Social_Chat
+            vRoomInfoBean?.room?.soundSelection ?: ConfigConstants.SoundSelection.Social_Chat
 
         val ownerUid = vRoomInfoBean?.room?.owner?.uid ?: ""
         vRoomInfoBean?.let {
@@ -313,7 +313,7 @@ class RoomObservableViewDelegate constructor(
             }
             it.mic_info?.let { micList ->
                 iRoomMicView.updateAdapter(
-                    RoomInfoConstructor.convertMicUiBean(micList, ownerUid), vRoomInfoBean.room?.use_robot ?: false
+                    RoomInfoConstructor.convertMicUiBean(micList, ownerUid), vRoomInfoBean.room?.isUse_robot ?: false
                 )
             }
         }
@@ -323,8 +323,8 @@ class RoomObservableViewDelegate constructor(
     /**
      * 排行榜
      */
-    fun onClickRank(vRoomInfo: VRoomInfoBean?) {
-        RoomContributionAndAudienceSheetDialog(activity, roomKitBean.isOwner).show(
+    fun onClickRank(currentItem: Int = 0) {
+        RoomContributionAndAudienceSheetDialog(activity, roomKitBean, currentItem).show(
             activity.supportFragmentManager,
             "ContributionAndAudienceSheetDialog"
         )
@@ -521,10 +521,6 @@ class RoomObservableViewDelegate constructor(
                                     micInfo.index,
                                     object : ValueCallBack<Boolean?> {
                                         override fun onSuccess(var1: Boolean?) {
-                                            ToastTools.show(
-                                                activity,
-                                                activity.getString(R.string.chatroom_mic_submit_sent),
-                                            )
                                             iRoomMicView.exchangeMic(mineMicIndex, micInfo.index)
                                         }
 
@@ -544,9 +540,10 @@ class RoomObservableViewDelegate constructor(
                             HttpManager.getInstance(activity)
                                 .submitMic(roomKitBean.roomId, micInfo.index, object : ValueCallBack<Boolean?> {
                                     override fun onSuccess(var1: Boolean?) {
+                                        // 已经发出申请
+                                        onRoomViewDelegateListener?.onSubmitMicResponse()
                                         ToastTools.show(
-                                            activity,
-                                            activity.getString(R.string.chatroom_mic_submit_sent),
+                                            activity, activity.getString(R.string.chatroom_mic_submit_sent),
                                         )
                                     }
 
@@ -565,9 +562,9 @@ class RoomObservableViewDelegate constructor(
                     when (data.micClickAction) {
                         MicClickAction.Invite -> {
                             // 房主邀请他人
-                            if (data.enable){
-                                onRoomViewDelegateListener?.onInvite(micInfo.index)
-                            }else{
+                            if (data.enable) {
+                                onClickRank(currentItem = 1)
+                            } else {
                                 ToastTools.show(activity, activity.getString(R.string.chatroom_mic_close_by_host))
                             }
                         }
@@ -655,6 +652,7 @@ class RoomObservableViewDelegate constructor(
     var onRoomViewDelegateListener: OnRoomViewDelegateListener? = null
 
     interface OnRoomViewDelegateListener {
-        fun onInvite(micIndex: Int)
+        // 提交上麦请求成功回调
+        fun onSubmitMicResponse()
     }
 }

@@ -4,18 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/mtContributionValue"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="9dp"
-        android:layout_marginEnd="20dp"
-        android:text="@string/chatroom_contribution_value"
-        android:textColor="@color/dark_grey_color_979CBB"
-        android:textSize="@dimen/sp_9"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/glHorizontal20"
         android:layout_width="0dp"
@@ -44,11 +32,16 @@
         app:layout_constraintStart_toStartOf="@+id/ivContributionEmpty"
         app:layout_constraintTop_toBottomOf="@+id/ivContributionEmpty" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvContributionRanking"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/slContributionRanking"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="300dp"
-        android:paddingBottom="20dp"
-        app:layout_constraintTop_toBottomOf="@+id/mtContributionValue" />
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvContributionRanking"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

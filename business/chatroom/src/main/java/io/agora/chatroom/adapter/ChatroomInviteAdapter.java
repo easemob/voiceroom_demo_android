@@ -9,17 +9,17 @@ import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.textview.MaterialTextView;
 import io.agora.baseui.adapter.RoomBaseRecyclerViewAdapter;
 import io.agora.chatroom.R;
-import tools.bean.VRoomUserBean;
+import tools.bean.VMemberBean;
 
-public class ChatroomInviteAdapter extends RoomBaseRecyclerViewAdapter<VRoomUserBean.UsersBean> {
+public class ChatroomInviteAdapter extends RoomBaseRecyclerViewAdapter<VMemberBean> {
     private onActionListener listener;
 
     @Override
-    public RoomBaseRecyclerViewAdapter.ViewHolder<VRoomUserBean.UsersBean> getViewHolder(ViewGroup parent, int viewType) {
+    public RoomBaseRecyclerViewAdapter.ViewHolder<VMemberBean> getViewHolder(ViewGroup parent, int viewType) {
         return new inviteViewHolder(LayoutInflater.from (parent.getContext()).inflate (R.layout.chatroom_hands_item_raised, parent, false));
     }
 
-    public class inviteViewHolder extends ViewHolder<VRoomUserBean.UsersBean> {
+    public class inviteViewHolder extends ViewHolder<VMemberBean> {
         private ShapeableImageView avatar;
         private MaterialTextView name;
         private MaterialTextView action;
@@ -29,7 +29,7 @@ public class ChatroomInviteAdapter extends RoomBaseRecyclerViewAdapter<VRoomUser
         }
 
         @Override
-        public void setData(VRoomUserBean.UsersBean item, int position) {
+        public void setData(VMemberBean item, int position) {
             int resId = 0;
             try {
                 resId = mContext.getResources().getIdentifier(item.getPortrait(), "drawable", mContext.getPackageName());

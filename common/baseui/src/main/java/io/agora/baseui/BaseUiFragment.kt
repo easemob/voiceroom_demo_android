@@ -7,8 +7,9 @@ import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
+import io.agora.baseui.interfaces.IParserSource
 
-abstract class BaseUiFragment<B : ViewBinding> : Fragment() {
+abstract class BaseUiFragment<B : ViewBinding> : Fragment(), IParserSource {
 
     var binding: B? = null
 

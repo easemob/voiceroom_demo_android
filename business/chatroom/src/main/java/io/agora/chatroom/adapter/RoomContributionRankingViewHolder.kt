@@ -1,36 +1,39 @@
-package io.agora.secnceui.ui.rank
+package io.agora.chatroom.adapter
 
 import androidx.core.view.isVisible
 import io.agora.baseui.adapter.BaseRecyclerViewAdapter
+import io.agora.buddy.tool.ResourcesTools
 import io.agora.secnceui.R
-import io.agora.secnceui.bean.ContributionBean
-import io.agora.secnceui.databinding.ItemChatroomContributionRankingBinding
+import io.agora.chatroom.databinding.ItemChatroomContributionRankingBinding
+import tools.bean.VRankingMemberBean
 
 class RoomContributionRankingViewHolder(val binding: ItemChatroomContributionRankingBinding) :
-    BaseRecyclerViewAdapter.BaseViewHolder<ItemChatroomContributionRankingBinding, ContributionBean>(binding) {
+    BaseRecyclerViewAdapter.BaseViewHolder<ItemChatroomContributionRankingBinding, VRankingMemberBean>(binding) {
 
-    override fun binding(data: ContributionBean?, selectedIndex: Int) {
+    override fun binding(data: VRankingMemberBean?, selectedIndex: Int) {
         data?.let {
-            setRankNumber(it)
-            // TODO: avatar
+            setRankNumber()
+            binding.ivAudienceAvatar.setImageResource(
+                ResourcesTools.getDrawableId(binding.ivAudienceAvatar.context, it.portrait)
+            )
             binding.mtContributionUsername.text = it.name
-            binding.mtContributionValue.text = it.contributionValue.toString()
+            binding.mtContributionValue.text = it.amount.toString()
         }
     }
 
-    private fun setRankNumber(data: ContributionBean) {
-        when (data.number) {
-            1 -> {
+    private fun setRankNumber() {
+        when (bindingAdapterPosition) {
+            0 -> {
                 binding.ivContributionNumber.isVisible = true
                 binding.ivContributionNumber.setImageResource(R.drawable.icon_chatroom_bang1)
                 binding.mtContributionNumber.isVisible = false
             }
-            2 -> {
+            1 -> {
                 binding.ivContributionNumber.isVisible = true
                 binding.ivContributionNumber.setImageResource(R.drawable.icon_chatroom_bang2)
                 binding.mtContributionNumber.isVisible = false
             }
-            3 -> {
+            2 -> {
                 binding.ivContributionNumber.isVisible = true
                 binding.ivContributionNumber.setImageResource(R.drawable.icon_chatroom_bang3)
                 binding.mtContributionNumber.isVisible = false

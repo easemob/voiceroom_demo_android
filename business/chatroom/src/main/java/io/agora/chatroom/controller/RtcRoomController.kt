@@ -69,7 +69,6 @@ class RtcRoomController : IRtcKitListener {
         this.micVolumeListener = micVolumeListener
     }
 
-
     private var joinCallback:ValueCallBack<Boolean>?=null
 
     /**加入rtc频道*/

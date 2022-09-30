@@ -48,7 +48,8 @@ import tools.bean.VRoomInfoBean
 
 @Route(path = RouterPath.ChatroomPath)
 class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPermissions.PermissionCallbacks,
-    EasyPermissions.RationaleCallbacks, ChatroomConfigManager.ChatroomListener {
+    EasyPermissions.RationaleCallbacks, ChatroomConfigManager.ChatroomListener,
+    RoomObservableViewDelegate.OnRoomViewDelegateListener {
 
     companion object {
         const val RC_PERMISSIONS = 101
@@ -183,13 +184,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
         }
         // 头部 如果是创建房间进来有详情
         roomObservableDelegate.onRoomDetails(roomInfoBean)
-        roomObservableDelegate.onRoomViewDelegateListener = object :
-            RoomObservableViewDelegate.OnRoomViewDelegateListener{
-            override fun onInvite(micIndex: Int) {
-                // TODO:
-               handsDelegate.showOwnerHandsDialog()
-            }
-        }
+        roomObservableDelegate.onRoomViewDelegateListener = this
         binding.cTopView.setOnLiveTopClickListener(object : OnLiveTopClickListener {
             override fun onClickBack(view: View) {
                 roomObservableDelegate.onExitRoom(getString(R.string.chatroom_exit), finishBack = {
@@ -198,7 +193,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
             }
 
             override fun onClickRank(view: View) {
-                roomObservableDelegate.onClickRank(roomInfoBean)
+                roomObservableDelegate.onClickRank()
             }
 
             override fun onClickNotice(view: View) {
@@ -372,5 +367,10 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
     override fun roomAttributesDidRemoved(roomId: String?, keyList: List<String>?, fromId: String?) {
         super.roomAttributesDidRemoved(roomId, keyList, fromId)
         "roomAttributesDidRemoved roomId:$roomId  fromId:$fromId keyList:$keyList".logE("roomAttributesDid")
+    }
+
+    // 麦位管理请求上麦成功回调，更改小手状态
+    override fun onSubmitMicResponse() {
+
     }
 }

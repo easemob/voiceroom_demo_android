@@ -21,6 +21,13 @@ object ConfigConstants {
     }
     //--------音效类型 end--------
 
+    object SoundSelectionText {
+        const val Social_Chat = "Social Chat"
+        const val Karaoke = "Karaoke"
+        const val Gaming_Buddy = "Gaming Buddy"
+        const val Professional_Broadcaster = "Professional broadcaster"
+    }
+
     //--------AI 降噪模式 start--------
     object AINSMode {
         const val AINS_High = 0

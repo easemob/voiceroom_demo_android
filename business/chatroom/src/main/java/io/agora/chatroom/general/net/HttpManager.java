@@ -814,7 +814,7 @@ public class HttpManager {
         JSONObject requestBody = new JSONObject();
         try {
             requestBody.putOpt("uid", uid);
-            requestBody.putOpt("mic_index", mic_index);
+            if (mic_index >= 0) requestBody.putOpt("mic_index", mic_index);
         } catch (JSONException e) {
             e.printStackTrace();
         }

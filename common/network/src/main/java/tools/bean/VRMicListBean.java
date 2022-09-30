@@ -47,51 +47,15 @@ public class VRMicListBean implements Serializable {
          */
 
         private Object index;
-        private MemberBean member;
+        private VMemberBean member;
         private int created_at;
 
-        public MemberBean getMember() {
+        public VMemberBean getMember() {
             return member;
         }
 
-        public void setMember(MemberBean member) {
+        public void setMember(VMemberBean member) {
             this.member = member;
-        }
-
-        public static class MemberBean implements Serializable {
-            /**
-             * uid : string
-             * name : string
-             * portrait : string
-             */
-
-            private String uid;
-            private String name;
-            private String portrait;
-
-            public String getUid() {
-                return uid;
-            }
-
-            public void setUid(String uid) {
-                this.uid = uid;
-            }
-
-            public String getName() {
-                return name;
-            }
-
-            public void setName(String name) {
-                this.name = name;
-            }
-
-            public String getPortrait() {
-                return portrait;
-            }
-
-            public void setPortrait(String portrait) {
-                this.portrait = portrait;
-            }
         }
     }
 }
