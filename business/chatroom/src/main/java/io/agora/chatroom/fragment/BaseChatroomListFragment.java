@@ -27,11 +27,6 @@ public class BaseChatroomListFragment<T> extends BaseListFragment<T> implements 
    private SwipeRefreshLayout swipeRefreshLayout;
    private RecyclerView recyclerView;
 
-   @Nullable
-   @Override
-   public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-      return super.onCreateView(inflater, container, savedInstanceState);
-   }
 
    @Override
    protected int getLayoutId() {
