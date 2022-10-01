@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import bean.ChatMessageData;
+import bean.ChatroomConstants;
 import io.agora.CallBack;
 import io.agora.MessageListener;
 import io.agora.chat.ChatClient;
@@ -225,6 +226,22 @@ public class CustomMsgHelper implements MessageListener {
         params.put(MsgConstant.CUSTOM_GIFT_USERNAME,nickName);
         params.put(MsgConstant.CUSTOM_GIFT_PORTRAIT,portrait);
         sendGiftMsg(params, callBack);
+    }
+
+    public void sendSystemMsg(String nickName,String portrait, OnMsgCallBack callBack) {
+        Map<String, String> params = new HashMap<>();
+        params.put(ChatroomConstants.MSG_KEY_MEMBER_ADD, "member_add");
+        params.put(MsgConstant.CUSTOM_GIFT_USERNAME,nickName);
+        params.put(MsgConstant.CUSTOM_GIFT_PORTRAIT,portrait);
+        sendSystemMsg(params, callBack);
+    }
+
+
+    public void sendSystemMsg(Map<String, String> params, final OnMsgCallBack callBack){
+        if(params.size() <= 0) {
+            return;
+        }
+        sendCustomMsg(CustomMsgType.CHATROOM_GIFT.getName(), params, callBack);
     }
 
     /**

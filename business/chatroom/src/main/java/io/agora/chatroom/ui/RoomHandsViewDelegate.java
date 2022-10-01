@@ -34,6 +34,10 @@ public class RoomHandsViewDelegate {
         this.owner = owner;
     }
 
+    public boolean isOwner(){
+        return ProfileManager.getInstance().getProfile().getUid().equals(owner);
+    }
+
     public void showOwnerHandsDialog() {
         activity.getSupportFragmentManager();
         dialog = (ChatroomHandsDialog) activity.getSupportFragmentManager().findFragmentByTag("room_hands");
@@ -44,7 +48,7 @@ public class RoomHandsViewDelegate {
         bundle.putString("roomId",roomId);
         dialog.setArguments(bundle);
         dialog.show(activity.getSupportFragmentManager(), "room_hands");
-        chatPrimaryMenuView.setHandStatus(false, ProfileManager.getInstance().getProfile().getUid().equals(owner));
+        chatPrimaryMenuView.setShowHandStatus(false, false);
     }
 
     public void showMemberHandsDialog(){

@@ -63,6 +63,7 @@
     <string name="chatroom_sounds_microphone_screen_tap_sound">Screen Tap Sound</string>
     <string name="chatroom_only_host_can_change_anis">Only host can click to have bot play the sound</string>
     <string name="chatroom_invite">Invite</string>
+    <string name="chatroom_accept">Accept</string>
     <string name="chatroom_mute">Mute</string>
     <string name="chatroom_block">Block</string>
     <string name="chatroom_unblock">Unblock</string>
@@ -101,6 +102,7 @@
     <string name="gift_default_name_7">Diamond</string>
     <string name="gift_default_name_8">Crown</string>
     <string name="gift_default_name_9">Rocket</string>
+    <string name="dialog_gift_total_count">Contribution Total:%1$s</string>
 
     <string name="room_create_tips">Enter 4 Digit PassWord</string>
 

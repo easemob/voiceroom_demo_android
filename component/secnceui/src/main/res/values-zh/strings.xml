@@ -63,6 +63,7 @@
     <string name="chatroom_sounds_microphone_screen_tap_sound">玩⼿机时⼿指敲击屏幕</string>
     <string name="chatroom_only_host_can_change_anis">只有房主可以通过机器人试听AI降噪</string>
     <string name="chatroom_invite">邀请</string>
+    <string name="chatroom_accept">同意</string>
     <string name="chatroom_mute">静麦</string>
     <string name="chatroom_block">锁麦</string>
     <string name="chatroom_unblock">取消锁麦</string>
@@ -101,6 +102,7 @@
     <string name="gift_default_name_7">Diamond</string>
     <string name="gift_default_name_8">Crown</string>
     <string name="gift_default_name_9">Rocket</string>
+    <string name="dialog_gift_total_count">Contribution Total:%1$s</string>
 
     <string name="room_create_tips">Enter 4 Digit PassWord</string>
 </resources>

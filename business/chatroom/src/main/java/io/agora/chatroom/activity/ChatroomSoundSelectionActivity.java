@@ -23,6 +23,7 @@ import io.agora.CallBack;
 import io.agora.ValueCallBack;
 import io.agora.baseui.BaseActivity;
 import io.agora.baseui.general.callback.OnResourceParseCallback;
+import io.agora.buddy.tool.ThreadManager;
 import io.agora.buddy.tool.ToastTools;
 import io.agora.chat.ChatClient;
 import io.agora.chat.ChatRoom;
@@ -158,10 +159,19 @@ public class ChatroomSoundSelectionActivity extends BaseActivity implements Chat
               Objects.requireNonNull(data.getRoom()).getChatroom_id(), new ValueCallBack<ChatRoom>() {
          @Override
          public void onSuccess(ChatRoom chatRoom) {
+            EMLog.e("ChatroomSoundSelectionActivity", "joinRoom onSuccess: ");
             ARouter.getInstance()
                     .build(RouterPath.ChatroomPath)
                     .withSerializable(RouterParams.KEY_CHATROOM_DETAILS_INFO, data)
                     .navigation();
+
+            ThreadManager.getInstance().runOnMainThread(new Runnable() {
+               @Override
+               public void run() {
+
+               }
+            });
+
             finish();
          }
 

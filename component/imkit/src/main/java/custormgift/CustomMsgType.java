@@ -33,6 +33,10 @@ public enum CustomMsgType {
      */
     CHATROOM_INVITE_SITE("chatroom_inviteSiteNotify"),
 
+    /**
+     * 系统消息
+     */
+    CHATROOM_SYSTEM("chatroom_system"),
     ;
 
     private String name;

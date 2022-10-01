@@ -135,7 +135,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
         if (roomKitBean.roomType == ConfigConstants.RoomType.Common_Chatroom) { // 普通房间
             binding.likeView.likeView.setOnClickListener { binding.likeView.addFavor() }
             binding.chatroomGiftView.init(roomKitBean.chatroomId)
-            binding.messageView.init(roomKitBean.chatroomId)
+            binding.messageView.init(roomKitBean.chatroomId,roomKitBean.ownerId)
             binding.rvChatroom2dMicLayout.isVisible = true
             binding.rvChatroom3dMicLayout.isVisible = false
             roomObservableDelegate =
@@ -219,7 +219,8 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
                     }
                     io.agora.secnceui.R.id.extend_item_mic -> {}
                     io.agora.secnceui.R.id.extend_item_hand_up -> {
-                        if (roomKitBean.isOwner){
+                        "extend_item_hand_up isOwner:${handsDelegate.isOwner}".logE("onChatExtendMenuItemClick")
+                        if (handsDelegate.isOwner){
                             if (this@ChatroomLiveActivity::handsDelegate.isInitialized) {
                                 handsDelegate.showOwnerHandsDialog()
                             }
@@ -352,7 +353,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
     }
 
     override fun receiveApplySite(roomId: String?, message: ChatMessageData?) {
-         binding.chatBottom.setHandStatus(true,true)
+         binding.chatBottom.setShowHandStatus(handsDelegate.isOwner,true)
     }
 
     override fun roomAttributesDidUpdated(roomId: String?, attributeMap: MutableMap<String, String>?, fromId: String?) {
@@ -372,5 +373,13 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
     override fun roomAttributesDidRemoved(roomId: String?, keyList: List<String>?, fromId: String?) {
         super.roomAttributesDidRemoved(roomId, keyList, fromId)
         "roomAttributesDidRemoved roomId:$roomId  fromId:$fromId keyList:$keyList".logE("roomAttributesDid")
+    }
+
+    override fun onTokenWillExpire() {
+
+    }
+
+    override fun receiveDeclineApply(roomId: String?, message: ChatMessageData?) {
+
     }
 }

@@ -2,6 +2,7 @@ package io.agora.chatroom.fragment;
 
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,10 +16,13 @@ import java.util.List;
 import io.agora.baseui.BaseListFragment;
 import io.agora.baseui.adapter.RoomBaseRecyclerViewAdapter;
 import io.agora.baseui.general.callback.OnResourceParseCallback;
+import io.agora.buddy.tool.LogToolsKt;
 import io.agora.chatroom.R;
 import io.agora.chatroom.adapter.ChatroomRaisedAdapter;
+import io.agora.chatroom.general.net.HttpManager;
 import io.agora.chatroom.model.ChatroomRaisedViewModel;
 import manager.ChatroomMsgHelper;
+import tools.ValueCallBack;
 import tools.bean.VRMicListBean;
 
 public class ChatroomRaisedHandsFragment extends BaseListFragment<VRMicListBean.ApplyListBean> implements ChatroomRaisedAdapter.onActionListener, SwipeRefreshLayout.OnRefreshListener {
@@ -33,6 +37,7 @@ public class ChatroomRaisedHandsFragment extends BaseListFragment<VRMicListBean.
     private int total;
     private itemCountListener listener;
     private String roomId;
+    private static final String TAG = "ChatroomRaisedHandsFragment";
 
     @Nullable
     @Override
@@ -62,6 +67,12 @@ public class ChatroomRaisedHandsFragment extends BaseListFragment<VRMicListBean.
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        handsViewModel.getRaisedList(getActivity(), roomId,pageSize,cursor);
+    }
+
+    @Override
     protected void initViewModel() {
         super.initViewModel();
         handsViewModel = new ViewModelProvider(this).get(ChatroomRaisedViewModel.class);
@@ -71,7 +82,6 @@ public class ChatroomRaisedHandsFragment extends BaseListFragment<VRMicListBean.
                 public void onSuccess(@Nullable VRMicListBean data) {
                     if (data != null){
                         count = dataList.size();
-                        cursor = data.getCursor();
                         total = data.getTotal();
                         if (null != dataList && !dataList.containsAll(data.getApply_list())){
                             dataList.addAll(data.getApply_list());
@@ -80,6 +90,11 @@ public class ChatroomRaisedHandsFragment extends BaseListFragment<VRMicListBean.
                         if (null != listener)
                             listener.getItemCount(total);
                     }
+                }
+
+                @Override
+                public void onError(int code, String message) {
+                    super.onError(code, message);
                 }
             });
         });
@@ -95,7 +110,6 @@ public class ChatroomRaisedHandsFragment extends BaseListFragment<VRMicListBean.
     @Override
     protected void initData() {
         super.initData();
-        handsViewModel.getRaisedList(getActivity(), roomId,pageSize,cursor);
     }
 
     @Override
@@ -120,8 +134,18 @@ public class ChatroomRaisedHandsFragment extends BaseListFragment<VRMicListBean.
     }
 
     @Override
-    public void onItemActionClick(View view,int position) {
+    public void onItemActionClick(View view,int index,String uid) {
+        HttpManager.getInstance(getActivity()).applySubmitMic(roomId, uid, index, new ValueCallBack<Boolean>() {
+            @Override
+            public void onSuccess(Boolean var1) {
+                LogToolsKt.logE("onActionClick apply onSuccess " + uid, TAG);
+            }
 
+            @Override
+            public void onError(int code, String desc) {
+                LogToolsKt.logE("onActionClick apply onError " + code + " "+ desc, TAG);
+            }
+        });
     }
 
     public interface itemCountListener{
