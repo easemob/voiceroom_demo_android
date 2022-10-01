@@ -4,7 +4,7 @@
     android:layout_height="36dp"
     android:orientation="horizontal"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@drawable/bg_barrage_shape"
+    android:background="@drawable/bg_barrage_system_shape"
     android:gravity="center_vertical"
     android:layout_marginStart="15dp"
     android:paddingTop="8dp"

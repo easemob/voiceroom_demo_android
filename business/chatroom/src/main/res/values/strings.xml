@@ -44,6 +44,8 @@
 
     <string name="chatroom_raised_hands_title">Raised Hands</string>
     <string name="chatroom_invite_hands_title">Invite On-Stage</string>
+    <string name="chatroom_invite">Invite</string>
+    <string name="chatroom_accept">Accept</string>
     <string name="chatroom_request_speak">Request to Speak?</string>
     <string name="chatroom_prompt">Prompt</string>
     <string name="chatroom_confirm">Confirm</string>

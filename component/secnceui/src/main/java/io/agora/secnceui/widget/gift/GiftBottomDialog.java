@@ -28,6 +28,7 @@ public class GiftBottomDialog extends BottomDialogFragment implements View.OnCli
     private OnSendClickListener listener;
     private List<GiftBean> list;
     private ConstraintLayout countLayout;
+    private AppCompatTextView total_count;
     private int GiftNum = 1;
     private GiftBean giftBean;
 
@@ -48,6 +49,7 @@ public class GiftBottomDialog extends BottomDialogFragment implements View.OnCli
         mViewPager = findViewById(R.id.view_pager);
         countLayout = findViewById(R.id.gift_count_layout);
         count = findViewById(R.id.count);
+        total_count = findViewById(R.id.total_count);
 
         send = findViewById(R.id.send);
         adapter = new GiftFragmentAdapter(mContext);
@@ -163,6 +165,7 @@ public class GiftBottomDialog extends BottomDialogFragment implements View.OnCli
                                @Override
                                public void OnItemClick(int position, String num) {
                                    GiftNum = Integer.parseInt(num);
+                                   total_count.setText(getString(R.string.dialog_gift_total_count,num));
                                    if (giftBean != null && GiftNum >= 1){
                                        giftBean.setNum(GiftNum);
                                        count.setText(num);

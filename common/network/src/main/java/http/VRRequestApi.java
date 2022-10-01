@@ -107,6 +107,7 @@ public class VRRequestApi {
         if (!TextUtils.isEmpty(cursor)){
             api = api + "&cursor=" + cursor;
         }
+        Log.e("fetchApplyMembers","url: " + api);
         return api;
     }
 

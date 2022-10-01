@@ -7,8 +7,9 @@
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/mtTabText"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingTop="9dp"
+        android:layout_height="26dp"
+        android:paddingBottom="2dp"
+        android:paddingTop="2dp"
         android:text="@string/chatroom_raised_hands_title"
         android:textColor="@color/dark_grey_color_040925"
         android:textSize="@dimen/sp_15"
@@ -20,10 +21,10 @@
 
     <View
         android:id="@+id/vTabTip"
-        android:layout_width="0dp"
-        android:layout_height="2dp"
+        android:layout_width="24dp"
+        android:layout_height="3dp"
         android:layout_marginTop="10dp"
-        android:background="@drawable/bg_tab_indicator"
+        android:background="@color/chatroom_hands_tab_text_color"
         app:layout_constraintEnd_toEndOf="@id/mtTabText"
         app:layout_constraintStart_toStartOf="@id/mtTabText"
         app:layout_constraintTop_toBottomOf="@id/mtTabText" />

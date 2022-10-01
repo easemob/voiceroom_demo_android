@@ -48,11 +48,12 @@ public class ChatroomRaisedAdapter extends RoomBaseRecyclerViewAdapter<VRMicList
                     avatar.setImageResource(resId);
                 }
                 name.setText(item.getMember().getName());
+                action.setText(mContext.getString(R.string.chatroom_accept));
                 action.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         if (listener != null)
-                            listener.onItemActionClick(view,position);
+                            listener.onItemActionClick(view,item.getMic_index(),item.getMember().getUid());
                     }
                 });
             }
@@ -63,6 +64,6 @@ public class ChatroomRaisedAdapter extends RoomBaseRecyclerViewAdapter<VRMicList
     }
 
     public interface onActionListener{
-        void onItemActionClick(View view,int index);
+        void onItemActionClick(View view,int index,String uid);
     }
 }

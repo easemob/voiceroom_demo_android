@@ -47,6 +47,7 @@ public class ChatroomMessagesView extends RelativeLayout{
     private static final int ITEM_DEFAULT_TYPE = 0;
     private static final int ITEM_SYSTEM_TYPE = 1;
     private String chatroomId;
+    private String ownerId;
     private Context mContext;
 
     public ChatroomMessagesView(Context context) {
@@ -69,8 +70,9 @@ public class ChatroomMessagesView extends RelativeLayout{
         listview = (RecyclerView) findViewById(R.id.listview);
     }
 
-    public void init(String chatroomId){
+    public void init(String chatroomId,String owner){
         this.chatroomId = chatroomId;
+        this.ownerId = owner;
         adapter = new ListAdapter(getContext(), ChatroomMsgHelper.getInstance().getMessageData(chatroomId));
         ScrollSpeedLinearLayoutManger scrollSpeedLinearLayoutManger = new ScrollSpeedLinearLayoutManger(getContext());
         //设置item滑动速度
@@ -169,12 +171,17 @@ public class ChatroomMessagesView extends RelativeLayout{
 
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+            String from = "";
             final ChatMessageData message = messages.get(position);
-            String from = ChatroomMsgHelper.getInstance().getUserName(message);
-//            String from = message.getFrom();
+            from = ChatroomMsgHelper.getInstance().getUserName(message);
             String s = message.getContent();
-
             if (holder instanceof MyViewHolder){
+                if (from.equals(ownerId)){
+                    ((MyViewHolder) holder).ownerIcon.setVisibility(VISIBLE);
+                }
+                if (TextUtils.isEmpty(from)){
+                    from = message.getFrom();
+                }
                 showText(((MyViewHolder) holder).name, ((MyViewHolder) holder).content, from, s);
             }else if (holder instanceof SystemViewHolder){
                 showSystemMsg(((SystemViewHolder) holder).name ,from,"");
@@ -243,10 +250,12 @@ public class ChatroomMessagesView extends RelativeLayout{
     private static class MyViewHolder extends RecyclerView.ViewHolder{
         TextView name;
         TextView content;
+        ImageView ownerIcon;
         public MyViewHolder(View itemView) {
             super(itemView);
             name = (TextView) itemView.findViewById(R.id.name);
             content = (TextView) itemView.findViewById(R.id.content);
+            ownerIcon = itemView.findViewById(R.id.owner);
         }
     }
 

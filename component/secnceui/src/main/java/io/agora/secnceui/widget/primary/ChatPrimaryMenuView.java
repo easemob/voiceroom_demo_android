@@ -15,18 +15,13 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.constraintlayout.widget.ConstraintLayout;
-
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
 import io.agora.secnceui.R;
 import io.agora.secnceui.widget.expression.ExpressionIcon;
 import io.agora.secnceui.widget.expression.ExpressionView;
@@ -273,32 +268,23 @@ public class ChatPrimaryMenuView extends RelativeLayout implements ExpressionVie
         }
     }
 
-    public void setShowHandStatus(boolean isShowHandStatus){
-        ImageView handStatus = menuLayout.findViewById(R.id.extend_item_hand_up_status);
-        if (isShowHandStatus){
-            handStatus.setVisibility(VISIBLE);
-        }else {
-            handStatus.setVisibility(GONE);
-        }
-    }
-
-    public void setHandStatus(boolean isShow,boolean role){
-        ImageView hand = menuLayout.findViewById(R.id.extend_item_hand_up);
-        ImageView dot = menuLayout.findViewById(R.id.extend_item_hand_up_status);
-        if (role){
-            hand.setImageResource(R.drawable.icon_handuphard);
-            if (isShow){
-                dot.setVisibility(VISIBLE);
+    public void setShowHandStatus(boolean isOwner,boolean isShowHandStatus){
+        if (isOwner){
+            ImageView handStatus = menuLayout.findViewById(R.id.extend_item_hand_up_status);
+            if (isShowHandStatus){
+                handStatus.setVisibility(VISIBLE);
             }else {
-                dot.setVisibility(GONE);
+                handStatus.setVisibility(GONE);
             }
         }else {
-            if (isShow){
+            ImageView hand = menuLayout.findViewById(R.id.extend_item_hand_up);
+            if (isShowHandStatus){
                 hand.setImageResource(R.drawable.icon_handup_dot);
             }else {
                 hand.setImageResource(R.drawable.icon_handuphard);
             }
         }
+
     }
 
     public void setEnableHand(boolean isEnable){

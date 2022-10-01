@@ -15,26 +15,16 @@ import tools.bean.VRoomUserBean;
 
 public class ChatroomRaisedViewModel extends AndroidViewModel {
    private ChatroomHandsRepository mRepository;
-   private SingleSourceLiveData<Resource<VRoomUserBean>> inviteObservable;
    private SingleSourceLiveData<Resource<VRMicListBean>> raisedObservable;
 
    public ChatroomRaisedViewModel(@NonNull Application application) {
       super(application);
       mRepository = new ChatroomHandsRepository();
-      inviteObservable = new SingleSourceLiveData<>();
       raisedObservable = new SingleSourceLiveData<>();
-   }
-
-   public LiveData<Resource<VRoomUserBean>> getInviteObservable(){
-      return inviteObservable;
    }
 
    public LiveData<Resource<VRMicListBean>> getRaisedObservable(){
       return raisedObservable;
-   }
-
-   public void getInviteList(Context context,String roomId,int pageSize,String cursor){
-      inviteObservable.setSource(mRepository.getInvitedList(context,roomId,pageSize,cursor));
    }
 
    public void getRaisedList(Context context,String roomId,int pageSize,String cursor){

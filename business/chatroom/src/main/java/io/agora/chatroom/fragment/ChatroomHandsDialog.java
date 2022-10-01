@@ -1,8 +1,10 @@
 package io.agora.chatroom.fragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -76,6 +78,7 @@ public class ChatroomHandsDialog extends BottomDialogFragment {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 if(tab.getCustomView() != null) {
+                    Log.e("ChatroomHandsDialog","onTabSelected");
                     index = tab.getPosition();
                     title = tab.getCustomView().findViewById(R.id.mtTabText);
                     ViewGroup.LayoutParams layoutParams = title.getLayoutParams();
@@ -84,12 +87,14 @@ public class ChatroomHandsDialog extends BottomDialogFragment {
                     title.setGravity(Gravity.CENTER);
                     String content = getString(titles[index]) + getString(R.string.room_tab_layout_count,String.valueOf(mCount));
                     title.setText(content);
+                    title.setTextColor(getResources().getColor(R.color.dark_grey_color_040925));
                 }
             }
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
                 if(tab.getCustomView() != null) {
+                    Log.e("ChatroomHandsDialog","onTabUnselected");
                     TextView title = tab.getCustomView().findViewById(R.id.mtTabText);
                     title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
                     title.setText(titles[tab.getPosition()]);
@@ -99,7 +104,7 @@ public class ChatroomHandsDialog extends BottomDialogFragment {
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-
+                Log.e("ChatroomHandsDialog","onTabReselected");
             }
         });
     }

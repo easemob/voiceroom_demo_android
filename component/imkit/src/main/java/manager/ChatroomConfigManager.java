@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 
 import bean.ChatMessageData;
+import bean.ChatroomConstants;
+import custormgift.CustomMsgHelper;
 import custormgift.OnCustomMsgReceiveListener;
 import io.agora.CallBack;
 import io.agora.ChatRoomChangeListener;
@@ -19,6 +21,7 @@ import io.agora.chat.ChatClient;
 import io.agora.chat.ChatMessage;
 import io.agora.chat.ChatOptions;
 import io.agora.chat.ChatRoom;
+import io.agora.chat.CustomMessageBody;
 import io.agora.chat.GroupReadAck;
 import io.agora.util.EMLog;
 
@@ -132,7 +135,8 @@ public class ChatroomConfigManager {
 
         @Override
         public void onTokenWillExpire() {
-            // TODO: 2022/9/20  重新获取token
+            if (ChatListener != null)
+                ChatListener.onTokenWillExpire();
         }
     };
 
@@ -193,6 +197,7 @@ public class ChatroomConfigManager {
         default void userBeKicked(String roomId,int reason){}
         default void roomAttributesDidUpdated(String roomId,Map<String, String> attributeMap,String fromId){}
         default void roomAttributesDidRemoved(String roomId,List<String> keyList,String fromId){}
+        default void onTokenWillExpire(){}
     }
 
     public void setChatRoomListener(ChatroomListener listener){
@@ -281,5 +286,9 @@ public class ChatroomConfigManager {
             ChatListener.roomAttributesDidRemoved(chatRoomId,keyList,from);
         }
     };
+
+    public void renewToken(String newToken){
+        ChatClient.getInstance().renewToken(newToken);
+    }
 
 }

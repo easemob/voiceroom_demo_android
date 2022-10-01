@@ -14,9 +14,12 @@ import java.util.List;
 import io.agora.baseui.BaseListFragment;
 import io.agora.baseui.adapter.RoomBaseRecyclerViewAdapter;
 import io.agora.baseui.general.callback.OnResourceParseCallback;
+import io.agora.buddy.tool.LogToolsKt;
 import io.agora.chatroom.R;
 import io.agora.chatroom.adapter.ChatroomInviteAdapter;
+import io.agora.chatroom.general.net.HttpManager;
 import io.agora.chatroom.model.ChatroomInviteViewModel;
+import tools.ValueCallBack;
 import tools.bean.VMemberBean;
 import tools.bean.VRoomUserBean;
 
@@ -32,6 +35,7 @@ public class ChatroomInviteHandsFragment extends BaseListFragment<VMemberBean> i
     private String total;
     private itemCountListener listener;
     private String roomId;
+    private static final String TAG = "ChatroomInviteHandsFragment";
 
     @Nullable
     @Override
@@ -80,6 +84,7 @@ public class ChatroomInviteHandsFragment extends BaseListFragment<VMemberBean> i
                         }
                         if (null != listener)
                             listener.getItemCount(total);
+                        finishRefresh();
                     }
                 }
             });
@@ -111,14 +116,38 @@ public class ChatroomInviteHandsFragment extends BaseListFragment<VMemberBean> i
     }
 
     @Override
-    public void onItemClick(View view, int position) {
+    public void onItemActionClick(View view, int index,String uid) {
+        HttpManager.getInstance(getActivity()).invitationMic(roomId, uid, new ValueCallBack<Boolean>() {
+            @Override
+            public void onSuccess(Boolean var1) {
+                LogToolsKt.logE("onActionClick Invite onSuccess " + uid, TAG);
+            }
 
+            @Override
+            public void onError(int code, String desc) {
+                LogToolsKt.logE("onActionClick Invite onError " + code + " "+ desc, TAG);
+            }
+        });
     }
 
     @Override
     public void onRefresh() {
+        cursor = "";
+        count = 0;
+        handsViewModel.getInviteList(getActivity(),roomId,pageSize,cursor);
+    }
+
+    @Override
+    public void onItemClick(View view, int position) {
 
     }
+
+    protected void finishRefresh() {
+        if(refreshLayout != null && refreshLayout.isRefreshing()) {
+            refreshLayout.setRefreshing(false);
+        }
+    }
+
 
     public interface itemCountListener{
         void getItemCount(int count);

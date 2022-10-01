@@ -13,9 +13,17 @@
     android:paddingLeft="10dp"
     android:paddingRight="12dp">
 
+    <ImageView
+        android:id="@+id/owner"
+        android:layout_marginStart="6dp"
+        android:visibility="gone"
+        android:layout_width="14dp"
+        android:layout_height="14dp"
+        android:src="@drawable/icon_owner"/>
+
     <TextView
         android:id="@+id/name"
-        android:layout_marginLeft="6dp"
+        android:layout_marginStart="3dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:text="nickname"

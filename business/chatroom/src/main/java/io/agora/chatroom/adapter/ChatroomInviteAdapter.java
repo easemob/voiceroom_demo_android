@@ -40,11 +40,12 @@ public class ChatroomInviteAdapter extends RoomBaseRecyclerViewAdapter<VMemberBe
                 avatar.setImageResource(resId);
             }
             name.setText(item.getName());
+            action.setText(mContext.getString(R.string.chatroom_invite));
             action.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if (listener != null)
-                        listener.onItemClick(view,position);
+                        listener.onItemActionClick(view,position,item.getUid());
                 }
             });
         }
@@ -63,7 +64,7 @@ public class ChatroomInviteAdapter extends RoomBaseRecyclerViewAdapter<VMemberBe
     }
 
     public interface onActionListener{
-        void onItemClick(View view,int position);
+        void onItemActionClick(View view,int position,String uid);
     }
 
 
