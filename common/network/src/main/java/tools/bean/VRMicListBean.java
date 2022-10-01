@@ -47,7 +47,7 @@ public class VRMicListBean implements Serializable {
          */
 
         private int mic_index;
-        private MemberBean member;
+        private VMemberBean member;
         private long created_at;
 
         public int getMic_index() {
@@ -58,11 +58,11 @@ public class VRMicListBean implements Serializable {
             this.mic_index = mic_index;
         }
 
-        public MemberBean getMember() {
+        public VMemberBean getMember() {
             return member;
         }
 
-        public void setMember(MemberBean member) {
+        public void setMember(VMemberBean member) {
             this.member = member;
         }
 
@@ -74,40 +74,40 @@ public class VRMicListBean implements Serializable {
             this.created_at = created_at;
         }
 
-        public static class MemberBean implements Serializable {
-            /**
-             * uid : XrVDDDqVCQiEPTHP0STFSg==
-             * name : apex3
-             * portrait : avatar13
-             */
-
-            private String uid;
-            private String name;
-            private String portrait;
-
-            public String getUid() {
-                return uid;
-            }
-
-            public void setUid(String uid) {
-                this.uid = uid;
-            }
-
-            public String getName() {
-                return name;
-            }
-
-            public void setName(String name) {
-                this.name = name;
-            }
-
-            public String getPortrait() {
-                return portrait;
-            }
-
-            public void setPortrait(String portrait) {
-                this.portrait = portrait;
-            }
-        }
+//        public static class MemberBean implements Serializable {
+//            /**
+//             * uid : XrVDDDqVCQiEPTHP0STFSg==
+//             * name : apex3
+//             * portrait : avatar13
+//             */
+//
+//            private String uid;
+//            private String name;
+//            private String portrait;
+//
+//            public String getUid() {
+//                return uid;
+//            }
+//
+//            public void setUid(String uid) {
+//                this.uid = uid;
+//            }
+//
+//            public String getName() {
+//                return name;
+//            }
+//
+//            public void setName(String name) {
+//                this.name = name;
+//            }
+//
+//            public String getPortrait() {
+//                return portrait;
+//            }
+//
+//            public void setPortrait(String portrait) {
+//                this.portrait = portrait;
+//            }
+//        }
     }
 }

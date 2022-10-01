@@ -1,21 +1,28 @@
-package io.agora.secnceui.ui.rank
+package io.agora.chatroom.fragment
 
 import android.graphics.Typeface
 import android.os.Bundle
+import android.util.SparseArray
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import io.agora.baseui.dialog.BaseFixedHeightSheetDialog
 import io.agora.buddy.tool.ResourcesTools
+import io.agora.chatroom.bean.RoomKitBean
 import io.agora.secnceui.R
 import io.agora.secnceui.databinding.DialogChatroomContributionAndAudienceBinding
-import io.agora.secnceui.ui.rank.fragment.RoomRankFragmentAdapter
 
-class RoomContributionAndAudienceSheetDialog constructor(val fragmentActivity: FragmentActivity, val isOwner: Boolean) :
+class RoomContributionAndAudienceSheetDialog constructor(
+    private val fragmentActivity: FragmentActivity,
+    val roomKitBean: RoomKitBean,
+    private val currentItem: Int = 0,
+) :
     BaseFixedHeightSheetDialog<DialogChatroomContributionAndAudienceBinding>() {
 
     override fun getViewBinding(
@@ -34,7 +41,7 @@ class RoomContributionAndAudienceSheetDialog constructor(val fragmentActivity: F
     }
 
     private fun initFragmentAdapter() {
-        val adapter = RoomRankFragmentAdapter(fragmentActivity)
+        val adapter = RoomRankFragmentAdapter(fragmentActivity, roomKitBean)
         binding?.apply {
             vpRankLayout.adapter = adapter
             val tabMediator = TabLayoutMediator(tabRankLayout, vpRankLayout) { tab, position ->
@@ -42,7 +49,7 @@ class RoomContributionAndAudienceSheetDialog constructor(val fragmentActivity: F
                     LayoutInflater.from(root.context).inflate(R.layout.view_chatroom_rank_tab_item, tab.view, false)
                 val tabText = customView.findViewById<TextView>(R.id.mtTabText)
                 tab.customView = customView
-                if (position == 0) {
+                if (position == RoomRankFragmentAdapter.PAGE_INDEX0) {
                     tabText.text = getString(R.string.chatroom_contribution_ranking)
                     onTabLayoutSelected(tab)
                 } else {
@@ -64,6 +71,7 @@ class RoomContributionAndAudienceSheetDialog constructor(val fragmentActivity: F
                 override fun onTabReselected(tab: TabLayout.Tab?) {
                 }
             })
+            vpRankLayout.setCurrentItem(currentItem, false)
         }
     }
 
@@ -84,6 +92,36 @@ class RoomContributionAndAudienceSheetDialog constructor(val fragmentActivity: F
             tabText.typeface = Typeface.defaultFromStyle(Typeface.NORMAL)
             val tabTip = it.findViewById<View>(R.id.vTabTip)
             tabTip.visibility = View.GONE
+        }
+    }
+
+    class RoomRankFragmentAdapter constructor(
+        fragmentActivity: FragmentActivity,
+        roomKitBean: RoomKitBean,
+    ) : FragmentStateAdapter(fragmentActivity) {
+
+        companion object {
+            const val PAGE_INDEX0 = 0
+            const val PAGE_INDEX1 = 1
+        }
+
+        private val fragments: SparseArray<Fragment> = SparseArray()
+
+        init {
+            with(fragments) {
+                put(PAGE_INDEX0, RoomContributionRankingFragment.getInstance(roomKitBean))
+                if (roomKitBean.isOwner) {
+                    put(PAGE_INDEX1, RoomAudienceListFragment.getInstance(roomKitBean))
+                }
+            }
+        }
+
+        override fun createFragment(position: Int): Fragment {
+            return fragments[position]
+        }
+
+        override fun getItemCount(): Int {
+            return fragments.size()
         }
     }
 }

@@ -51,7 +51,7 @@ internal class AgoraRtcClientEx : RtcBaseClientEx<RtcEngineEx>() {
             config.mAppId = initConfig?.appId
             config.mEventHandler = eventHandler
             config.mChannelProfile = Constants.CHANNEL_PROFILE_LIVE_BROADCASTING
-            config.mAudioScenario = Constants.AUDIO_SCENARIO_CHATROOM
+//            config.mAudioScenario = Constants.AUDIO_SCENARIO_CHATROOM
             config.mLogConfig  = RtcEngineConfig.LogConfig().apply {
                 level = Constants.LogLevel.getValue(Constants.LogLevel.LOG_LEVEL_ERROR)
             }

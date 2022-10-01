@@ -20,7 +20,7 @@ object RoomInfoConstructor {
         isOwner = curUserIsHost(roomInfo.owner?.uid)
     }
 
-    fun RoomKitBean.convertByRoomDetailInfo(roomDetails: VRoomDetail) {
+    fun RoomKitBean.convertByRoomDetailInfo(roomDetails: VRoomInfoBean.VRoomDetail) {
         roomId = roomDetails.room_id ?: ""
         chatroomId = roomDetails.chatroom_id ?: ""
         channelId = roomDetails.channel_id ?: ""
@@ -36,7 +36,7 @@ object RoomInfoConstructor {
     /**
      * 服务端roomInfo bean 转 ui bean
      */
-    fun serverRoomInfo2UiRoomInfo(roomDetail: VRoomDetail): RoomInfoBean {
+    fun serverRoomInfo2UiRoomInfo(roomDetail: VRoomInfoBean.VRoomDetail): RoomInfoBean {
         val roomInfo = RoomInfoBean().apply {
             channelId = roomDetail.channel_id ?: ""
             chatroomName = roomDetail.name ?: ""
@@ -60,18 +60,18 @@ object RoomInfoConstructor {
         return roomInfo
     }
 
-    private fun serverUser2UiUser(vUser: VRoomUser?): RoomUserInfoBean? {
+    private fun serverUser2UiUser(vUser: VMemberBean?): RoomUserInfoBean? {
         if (vUser == null) return null
         return RoomUserInfoBean().apply {
             userId = vUser.uid ?: ""
             chatUid = vUser.chat_uid ?: ""
-            rtcUid = vUser.rtcUid
+            rtcUid = vUser.rtc_uid ?: 0
             username = vUser.name ?: ""
             userAvatar = vUser.portrait ?: ""
         }
     }
 
-    private fun serverRoomRankUserToUiBean(vUser: VRoomRanking?): RoomRankUserBean? {
+    private fun serverRoomRankUserToUiBean(vUser: VRankingMemberBean?): RoomRankUserBean? {
         if (vUser == null) return null
         return RoomRankUserBean().apply {
             username = vUser.name ?: ""
@@ -83,7 +83,7 @@ object RoomInfoConstructor {
     /**
      * 服务端roomInfo bean 转 麦位 ui bean
      */
-    fun convertMicUiBean(vRoomMicInfoList: List<VRoomMicInfo>, ownerUid: String): List<MicInfoBean> {
+    fun convertMicUiBean(vRoomMicInfoList: List<VRMicBean>, ownerUid: String): List<MicInfoBean> {
         val micInfoList = mutableListOf<MicInfoBean>()
         for (i in vRoomMicInfoList.indices) {
             if (i > 5) break

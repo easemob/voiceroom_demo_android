@@ -1,6 +1,7 @@
 package tools.bean;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class VRGiftBean implements Serializable {
 
@@ -10,7 +11,7 @@ public class VRGiftBean implements Serializable {
     * cursor : string
     */
 
-   private RankingListBean ranking_list;
+   private List<VRankingMemberBean> ranking_list;
    private int total;
    private String cursor;
    /**
@@ -23,7 +24,7 @@ public class VRGiftBean implements Serializable {
    private int num;
    private String to_uid;
 
-   public RankingListBean getRanking_list() {
+   public List<VRankingMemberBean> getRanking_list() {
       return ranking_list;
    }
 
@@ -46,29 +47,4 @@ public class VRGiftBean implements Serializable {
    public String getTo_uid() {
       return to_uid;
    }
-
-   public static class RankingListBean implements Serializable {
-      /**
-       * name : string
-       * portrait : string
-       * amount : 0
-       */
-
-      private String name;
-      private String portrait;
-      private int amount;
-
-      public String getName() {
-         return name;
-      }
-
-      public String getPortrait() {
-         return portrait;
-      }
-
-      public int getAmount() {
-         return amount;
-      }
-   }
-
 }

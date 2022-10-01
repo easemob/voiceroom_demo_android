@@ -20,13 +20,14 @@ import io.agora.chatroom.adapter.ChatroomInviteAdapter;
 import io.agora.chatroom.general.net.HttpManager;
 import io.agora.chatroom.model.ChatroomInviteViewModel;
 import tools.ValueCallBack;
+import tools.bean.VMemberBean;
 import tools.bean.VRoomUserBean;
 
-public class ChatroomInviteHandsFragment extends BaseListFragment<VRoomUserBean.UsersBean> implements ChatroomInviteAdapter.onActionListener, SwipeRefreshLayout.OnRefreshListener {
+public class ChatroomInviteHandsFragment extends BaseListFragment<VMemberBean> implements ChatroomInviteAdapter.onActionListener, SwipeRefreshLayout.OnRefreshListener {
     private RecyclerView recyclerView;
     private SwipeRefreshLayout refreshLayout;
     private ChatroomInviteViewModel handsViewModel;
-    private List<VRoomUserBean.UsersBean> dataList = new ArrayList<>();
+    private List<VMemberBean> dataList = new ArrayList<>();
     private ChatroomInviteAdapter adapter;
     private int count;
     private int pageSize = 10;
@@ -75,7 +76,7 @@ public class ChatroomInviteHandsFragment extends BaseListFragment<VRoomUserBean.
                         count = dataList.size();
                         cursor = data.getCursor();
                         int total = data.getTotal();
-                        for (VRoomUserBean.UsersBean user : data.getMembers()) {
+                        for (VMemberBean user : data.getMembers()) {
                             if (null != dataList && !dataList.contains(user)){
                                 dataList.addAll(data.getMembers());
                                 adapter.addData(count,dataList);
@@ -109,7 +110,7 @@ public class ChatroomInviteHandsFragment extends BaseListFragment<VRoomUserBean.
     }
 
     @Override
-    protected RoomBaseRecyclerViewAdapter<VRoomUserBean.UsersBean> initAdapter() {
+    protected RoomBaseRecyclerViewAdapter<VMemberBean> initAdapter() {
         RoomBaseRecyclerViewAdapter adapter = new ChatroomInviteAdapter();
         return adapter;
     }
@@ -132,6 +133,7 @@ public class ChatroomInviteHandsFragment extends BaseListFragment<VRoomUserBean.
     @Override
     public void onRefresh() {
         cursor = "";
+        count = 0;
         handsViewModel.getInviteList(getActivity(),roomId,pageSize,cursor);
     }
 
