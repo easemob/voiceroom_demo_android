@@ -64,8 +64,14 @@ public class ChatroomListFragment extends BaseChatroomListFragment<VRoomBean.Roo
     @Override
     public void onResume() {
         super.onResume();
+        dataList.clear();
+        index = 0;
+        if (null != getArguments())
+            position = getArguments().getInt("position",0);
+
         chatroomViewModel.getDataList(getActivity(),pageSize,position-1,Cursor);
-        Log.e("chatroomViewModel"," onResume " + this);
+        Log.e("chatroomViewModel"," onResume :" + position);
+
     }
 
     @Override
@@ -82,15 +88,27 @@ public class ChatroomListFragment extends BaseChatroomListFragment<VRoomBean.Roo
             parseResource(response, new OnResourceParseCallback<>() {
                 @Override
                 public void onSuccess(@Nullable VRoomBean data) {
-                    Cursor = data.getCursor();
-                    dataList.addAll(data.getRooms());
-                    listAdapter.setData(dataList);
-                    if (dataList.size() > 0){
-                        index = dataList.size()-1;
+                    if (data != null){
+                        Cursor = data.getCursor();
+                        for (VRoomBean.RoomsBean room : data.getRooms()) {
+                            if (position == 0){
+                                if (!dataList.contains(data.getRooms())){
+                                    dataList.addAll(data.getRooms());
+                                }
+                            }else if (room.getType() == position-1){
+                                if (!dataList.contains(room)){
+                                    dataList.add(room);
+                                }
+                            }
+                        }
+                        listAdapter.addData(dataList);
+                        if (dataList.size() > 0){
+                            index = dataList.size()-1;
+                        }
+                        if (null != listener)
+                            listener.getItemCount(data.getTotal());
+                        finishRefresh();
                     }
-                    if (null != listener)
-                        listener.getItemCount(data.getTotal());
-                    finishRefresh();
                 }
             });
         });
