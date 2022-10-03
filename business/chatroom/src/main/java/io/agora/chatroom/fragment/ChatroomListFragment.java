@@ -2,34 +2,30 @@ package io.agora.chatroom.fragment;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import com.alibaba.android.arouter.launcher.ARouter;
-import java.util.ArrayList;
-import java.util.List;
+
 import io.agora.CallBack;
-import io.agora.ValueCallBack;
+import io.agora.baseui.adapter.RoomBaseRecyclerViewAdapter;
 import io.agora.baseui.general.callback.OnResourceParseCallback;
 import io.agora.buddy.tool.ThreadManager;
 import io.agora.buddy.tool.ToastTools;
 import io.agora.chat.ChatClient;
-import io.agora.chat.ChatRoom;
 import io.agora.chatroom.R;
 import io.agora.chatroom.adapter.ChatroomListAdapter;
 import io.agora.chatroom.general.repositories.ProfileManager;
-import io.agora.chatroom.model.PageViewModel;
 import io.agora.chatroom.model.ChatroomViewModel;
 import io.agora.config.RouterParams;
 import io.agora.config.RouterPath;
 import io.agora.secnceui.widget.encryption.ChatroomEncryptionInputDialog;
 import manager.ChatroomConfigManager;
-import manager.ChatroomMsgHelper;
 import tools.bean.VRUserBean;
 import tools.bean.VRoomBean;
 import tools.bean.VRoomInfoBean;
@@ -41,10 +37,10 @@ public class ChatroomListFragment extends BaseChatroomListFragment<VRoomBean.Roo
     private VRoomBean.RoomsBean roomBean;
     private itemCountListener listener;
     private String Cursor = "";
-    private int index = 0;
-    private List<VRoomBean.RoomsBean> dataList = new ArrayList<>();
     private String mPassWord;
     private int position;
+    private boolean isRefreshing = false;
+    private boolean isLoadingNextPage = false;
 
     @Override
     protected void initView(Bundle savedInstanceState) {
@@ -52,6 +48,12 @@ public class ChatroomListFragment extends BaseChatroomListFragment<VRoomBean.Roo
         Log.e("chatroomViewModel"," current fragment: " + this);
         listAdapter = (ChatroomListAdapter) mListAdapter;
         listAdapter.setEmptyView(R.layout.chatroom_no_data_layout);
+    }
+
+    @Override
+    protected RoomBaseRecyclerViewAdapter<VRoomBean.RoomsBean> initAdapter() {
+        RoomBaseRecyclerViewAdapter adapter = new ChatroomListAdapter();
+        return adapter;
     }
 
     @Override
@@ -64,14 +66,15 @@ public class ChatroomListFragment extends BaseChatroomListFragment<VRoomBean.Roo
     @Override
     public void onResume() {
         super.onResume();
+//        reset();
+        if (null != getArguments())
+            position = getArguments().getInt("position",0);
         chatroomViewModel.getDataList(getActivity(),pageSize,position-1,Cursor);
-        Log.e("chatroomViewModel"," onResume " + this);
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        Log.e("chatroomViewModel"," onPause " + this);
     }
 
     @Override
@@ -82,15 +85,19 @@ public class ChatroomListFragment extends BaseChatroomListFragment<VRoomBean.Roo
             parseResource(response, new OnResourceParseCallback<>() {
                 @Override
                 public void onSuccess(@Nullable VRoomBean data) {
-                    Cursor = data.getCursor();
-                    dataList.addAll(data.getRooms());
-                    listAdapter.setData(dataList);
-                    if (dataList.size() > 0){
-                        index = dataList.size()-1;
+                    if (data != null){
+                        Cursor = data.getCursor();
+                        if (isRefreshing){
+                            listAdapter.setData(data.getRooms());
+                        }else {
+                            listAdapter.addData(data.getRooms());
+                        }
+                        Log.e("ListFragment1","getData: " + listAdapter.getData().size());
+                        if (null != listener)
+                            listener.getItemCount(data.getTotal());
+                        finishRefresh();
+                        isRefreshing = false;
                     }
-                    if (null != listener)
-                        listener.getItemCount(data.getTotal());
-                    finishRefresh();
                 }
             });
         });
@@ -120,7 +127,46 @@ public class ChatroomListFragment extends BaseChatroomListFragment<VRoomBean.Roo
     @Override
     protected void initListener() {
         super.initListener();
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                LinearLayoutManager lm = (LinearLayoutManager) recyclerView.getLayoutManager();
+                int lastVisibleItemPosition = lm.findLastVisibleItemPosition();
+                int totalCount = lm.getItemCount();
+                if (lastVisibleItemPosition == totalCount - 1 && !isLoadingNextPage && !isRefreshing) {
+                        // 在前面addLoadItem后，itemCount已经变化
+                        // 增加一层判断，确保用户是滑到了正在加载的地方，才加载更多
+                        int findLastVisibleItemPosition = lm.findLastVisibleItemPosition();
+                        if (findLastVisibleItemPosition == lm.getItemCount() - 1) {
+                            ThreadManager.getInstance().runOnMainThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    isLoadingNextPage = true;
+                                    pullData();
+                                }
+                            });
+                        }
+                    }
+                }
+        });
     }
+
+    private void pullData() {
+        ThreadManager.getInstance().runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                chatroomViewModel.getDataList(getActivity(),pageSize,position-1,Cursor);
+                isLoadingNextPage = false;
+            }
+        });
+    }
+
 
     @Override
     public void onItemClick(View view, int position) {
@@ -199,7 +245,10 @@ public class ChatroomListFragment extends BaseChatroomListFragment<VRoomBean.Roo
     @Override
     public void onRefresh() {
         super.onRefresh();
-        chatroomViewModel.getDataList(getActivity(),pageSize,position,Cursor);
+        isRefreshing = true;
+        reset();
+        Log.e("ChatroomListFragment","onRefresh" + listAdapter.getItemCount());
+        chatroomViewModel.getDataList(getActivity(),pageSize,position-1,Cursor);
     }
 
     @Override
@@ -213,6 +262,11 @@ public class ChatroomListFragment extends BaseChatroomListFragment<VRoomBean.Roo
 
     public void SetItemCountChangeListener(itemCountListener listener){
         this.listener = listener;
+    }
+
+    private void reset(){
+        listAdapter.clearData();
+        Cursor = "";
     }
 
 }

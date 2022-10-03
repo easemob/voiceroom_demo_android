@@ -104,6 +104,7 @@ public class ChatroomCreateActivity extends BaseActivity implements RadioGroup.O
       mRadioGroup.setOnCheckedChangeListener(this);
       mTitleBar.setOnBackPressListener(this);
       mNext.setOnClickListener(this);
+      mRandom.setOnClickListener(this);
       mTableLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
          @Override
          public void onTabSelected(TabLayout.Tab tab) {
@@ -324,6 +325,8 @@ public class ChatroomCreateActivity extends BaseActivity implements RadioGroup.O
          mEditText.setFocusableInTouchMode(true);
          mEditText.requestFocus();
 
+      }else if (v.getId() == R.id.random){
+         mEdRoomName.setText(randomName());
       }
    }
 
@@ -361,6 +364,16 @@ public class ChatroomCreateActivity extends BaseActivity implements RadioGroup.O
       }else {
          chatroomViewModel.createSpatial(this,roomName,true,encryption);
       }
+   }
+
+   public String randomName(){
+      String roomName = "";
+      if (roomType == 0){
+         roomName = getString(R.string.room_create_chat_room)+" "+Math.round((Math.random()*999)+1);
+      }else {
+         roomName = getString(R.string.room_create_chat_3d_room)+" "+Math.round((Math.random()*999)+1);
+      }
+      return roomName;
    }
 
    public static class ViewHolder extends RecyclerView.ViewHolder {
