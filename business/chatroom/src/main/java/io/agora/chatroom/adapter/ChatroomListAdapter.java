@@ -10,7 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import com.google.android.material.imageview.ShapeableImageView;
 
-import java.util.List;
 
 import io.agora.baseui.adapter.RoomBaseRecyclerViewAdapter;
 import io.agora.chatroom.R;
@@ -54,12 +53,20 @@ public class ChatroomListAdapter extends RoomBaseRecyclerViewAdapter<VRoomBean.R
 
         @Override
         public void setData(VRoomBean.RoomsBean item, int position) {
-            Log.e("setData","getType" + item.getType());
+            int resId = 0;
             itemType( item.getType());
             showPrivate(item.isIs_private(),item.getType());
             roomName.setText(item.getName());
             ownerName.setText(item.getOwner().getName());
             roomCount.setText(mContext.getString(R.string.room_list_count,String.valueOf(item.getMember_count())));
+            try {
+                resId = mContext.getResources().getIdentifier(item.getOwner().getPortrait(), "drawable", mContext.getPackageName());
+            }catch (Exception e){
+                Log.e("getResources()", e.getMessage());
+            }
+            if (resId != 0){
+                ownerAvatar.setImageResource(resId);
+            }
         }
 
         private void itemType(int type){
@@ -81,18 +88,12 @@ public class ChatroomListAdapter extends RoomBaseRecyclerViewAdapter<VRoomBean.R
         private void showPrivate(boolean isShow,int type){
             if (isShow){
                 title_layout.setVisibility(View.VISIBLE);
-                if (type == 2){
-                    icon.setBackgroundResource(R.drawable.icon_official);
-                    title.setText(mContext.getString(R.string.room_list_title_official));
-                    return;
-                }
                 title.setText(mContext.getString(R.string.room_list_title_private));
             }else {
                 title_layout.setVisibility(View.GONE);
             }
         }
     }
-
 
 }
 
