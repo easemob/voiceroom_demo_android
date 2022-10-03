@@ -232,18 +232,11 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
             }
 
             override fun onInputViewFocusChange(focus: Boolean) {
-                if (focus) {
-                    binding.bottomLayout.isVisible = false
-                    binding.likeView.isVisible = false
-                } else {
-                    binding.bottomLayout.isVisible = true
-                    binding.likeView.isVisible = true
-                }
+                checkFocus(focus)
             }
 
             override fun onInputLayoutClick() {
-                binding.bottomLayout.isVisible = false
-                binding.likeView.isVisible = false
+                checkFocus(false)
             }
 
             override fun onEmojiClick(isShow: Boolean) {
@@ -255,6 +248,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
                     ProfileManager.getInstance().profile.name, object : OnMsgCallBack() {
                         override fun onSuccess(message: ChatMessageData?) {
                             binding.messageView.refresh()
+                            hideKeyboard()
                         }
 
                         override fun onError(messageId: String?, code: Int, error: String?) {
@@ -332,7 +326,6 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
             binding.chatBottom.hideExpressionView()
             binding.chatBottom.showInput()
             binding.likeView.isVisible = true
-            binding.bottomLayout.isVisible = true
             binding.chatBottom.hindViewChangeIcon()
             hideKeyboard()
             binding.clMain.isFocusable = true
@@ -348,7 +341,9 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
     }
 
     override fun receiveApplySite(roomId: String?, message: ChatMessageData?) {
-         binding.chatBottom.setShowHandStatus(handsDelegate.isOwner,true)
+        if (handsDelegate.isOwner){
+            binding.chatBottom.setShowHandStatus(handsDelegate.isOwner,true)
+        }
     }
 
     override fun roomAttributesDidUpdated(roomId: String?, attributeMap: MutableMap<String, String>?, fromId: String?) {
@@ -363,6 +358,10 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
                 binding.rvChatroom3dMicLayout.receiverAttributeMap(it)
             }
         }
+    }
+
+    private fun checkFocus(focus:Boolean){
+        binding.likeView.isVisible = !focus
     }
 
     override fun roomAttributesDidRemoved(roomId: String?, keyList: List<String>?, fromId: String?) {

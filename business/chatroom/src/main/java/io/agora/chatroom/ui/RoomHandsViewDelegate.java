@@ -1,7 +1,6 @@
 package io.agora.chatroom.ui;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
 import androidx.fragment.app.FragmentActivity;
 import io.agora.buddy.tool.ToastTools;
@@ -19,6 +18,7 @@ public class RoomHandsViewDelegate {
     private String roomId;
     private ChatPrimaryMenuView chatPrimaryMenuView;
     private String owner;
+    private boolean isRequest;
 
     RoomHandsViewDelegate(FragmentActivity activity,ChatPrimaryMenuView view){
         this.activity = activity;
@@ -53,23 +53,39 @@ public class RoomHandsViewDelegate {
 
     public void showMemberHandsDialog(){
        new CommonSheetAlertDialog()
-               .contentText(activity.getString(R.string.chatroom_request_speak))
+               .contentText(isRequest? activity.getString(R.string.chatroom_cancel_request_speak):activity.getString(R.string.chatroom_request_speak))
                .rightText(activity.getString(R.string.chatroom_confirm))
                .leftText(activity.getString(R.string.chatroom_cancel))
                .setOnClickListener(new CommonSheetAlertDialog.OnClickBottomListener() {
                    @Override
                    public void onConfirmClick() {
-                       HttpManager.getInstance(activity).submitMic(roomId, -1, new ValueCallBack<Boolean>() {
-                           @Override
-                           public void onSuccess(Boolean var1) {
-                               ToastTools.show(activity,activity.getString(R.string.chatroom_mic_apply_success), Toast.LENGTH_SHORT);
-                           }
+                       if (isRequest){
+                           HttpManager.getInstance(activity).cancelSubmitMic(roomId, new ValueCallBack<Boolean>() {
+                               @Override
+                               public void onSuccess(Boolean var1) {
+                                   ToastTools.show(activity,activity.getString(R.string.chatroom_mic_cancel_apply_success), Toast.LENGTH_SHORT);
+                                   chatPrimaryMenuView.setShowHandStatus(false,false);
+                               }
 
-                           @Override
-                           public void onError(int code, String desc) {
-                               ToastTools.show(activity,activity.getString(R.string.chatroom_mic_apply_fail,desc), Toast.LENGTH_SHORT);
-                           }
-                       });
+                               @Override
+                               public void onError(int code, String desc) {
+                                   ToastTools.show(activity,activity.getString(R.string.chatroom_mic_cancel_apply_fail,desc), Toast.LENGTH_SHORT);
+                               }
+                           });
+                       }else {
+                           HttpManager.getInstance(activity).submitMic(roomId, -1, new ValueCallBack<Boolean>() {
+                               @Override
+                               public void onSuccess(Boolean var1) {
+                                   ToastTools.show(activity,activity.getString(R.string.chatroom_mic_apply_success), Toast.LENGTH_SHORT);
+                                   isRequest = true;
+                               }
+
+                               @Override
+                               public void onError(int code, String desc) {
+                                   ToastTools.show(activity,activity.getString(R.string.chatroom_mic_apply_fail,desc), Toast.LENGTH_SHORT);
+                               }
+                           });
+                       }
                    }
 
                    @Override

@@ -48,11 +48,14 @@
     <string name="chatroom_invite">Invite</string>
     <string name="chatroom_accept">Accept</string>
     <string name="chatroom_request_speak">Request to Speak?</string>
+    <string name="chatroom_cancel_request_speak">Cancel Request to Speak?</string>
     <string name="chatroom_prompt">Prompt</string>
     <string name="chatroom_confirm">Confirm</string>
     <string name="chatroom_cancel">Cancel</string>
     <string name="chatroom_mic_apply_success">Successful apply for Mic</string>
     <string name="chatroom_mic_apply_fail">Fail apply for Mic:%1$s</string>
+    <string name="chatroom_mic_cancel_apply_success">Cancel Successful apply for Mic</string>
+    <string name="chatroom_mic_cancel_apply_fail">Fail Cancel apply for Mic:%1$s</string>
 
     <!-- mic -->
     <string name="chatroom_mic_submit_sent">Your request has been sent,%n please wait for reply</string>
