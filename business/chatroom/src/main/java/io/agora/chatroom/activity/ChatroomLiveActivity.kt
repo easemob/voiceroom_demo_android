@@ -131,8 +131,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
             "systemInset:left:${systemInset.left},top:${systemInset.top},right:${systemInset.right},bottom:${systemInset.bottom}".logE("insets==")
             "paddingInset:left:${binding.clMain.paddingLeft},top:${binding.clMain.paddingTop},right:${binding.clMain.paddingRight},bottom:${binding.clMain.paddingBottom}".logE("insets==")
 
-            binding.clMain.setPaddingRelative(0, systemInset.top, 0, 0
-            )
+            binding.clMain.setPaddingRelative(0, systemInset.top, 0, systemInset.bottom)
             WindowInsetsCompat.CONSUMED
         }
         binding.clMain.setOnTouchListener(OnTouchListener { v, event ->
@@ -231,7 +230,13 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
                         })
                     }
                     io.agora.secnceui.R.id.extend_item_mic -> {
-                        ToastTools.show(this@ChatroomLiveActivity,"点击mic",Toast.LENGTH_LONG)
+                        if (RtcRoomController.get().isLocalAudioEnable){
+                            binding.chatBottom.setEnableMic(true)
+                            roomObservableDelegate.muteLocalAudio(true)
+                        }else{
+                            binding.chatBottom.setEnableMic(false)
+                            roomObservableDelegate.muteLocalAudio(false)
+                        }
                     }
                     io.agora.secnceui.R.id.extend_item_hand_up -> {
                         "extend_item_hand_up isOwner:${handsDelegate.isOwner}".logE("onChatExtendMenuItemClick")
