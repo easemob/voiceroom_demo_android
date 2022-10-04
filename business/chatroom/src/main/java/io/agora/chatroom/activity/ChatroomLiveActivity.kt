@@ -10,6 +10,7 @@ import android.view.View
 import android.view.View.OnTouchListener
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
@@ -22,12 +23,14 @@ import io.agora.baseui.adapter.OnItemClickListener
 import io.agora.buddy.tool.GsonTools.toBean
 import io.agora.buddy.tool.ToastTools
 import io.agora.buddy.tool.logE
+import io.agora.chat.ChatClient
 import io.agora.chatroom.R
 import io.agora.chatroom.bean.RoomKitBean
 import io.agora.chatroom.controller.RtcRoomController
 import io.agora.chatroom.databinding.ActivityChatroomBinding
 import io.agora.chatroom.general.constructor.RoomInfoConstructor.convertByRoomDetailInfo
 import io.agora.chatroom.general.constructor.RoomInfoConstructor.convertByRoomInfo
+import io.agora.chatroom.general.net.HttpManager
 import io.agora.chatroom.general.repositories.ProfileManager
 import io.agora.chatroom.model.ChatroomViewModel
 import io.agora.chatroom.ui.RoomGiftViewDelegate
@@ -47,7 +50,9 @@ import org.json.JSONException
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
 import pub.devrel.easypermissions.PermissionRequest
+import tools.ValueCallBack
 import tools.bean.VRMicBean
+import tools.bean.VRUserBean
 import tools.bean.VRoomBean
 import tools.bean.VRoomInfoBean
 
@@ -104,6 +109,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
             roomInfoBean?.room?.let { roomDetail ->
                 roomKitBean.convertByRoomDetailInfo(roomDetail)
                 handsDelegate.onRoomDetails(roomDetail.room_id,roomDetail.owner.uid)
+                giftViewDelegate.onRoomDetails(roomDetail.room_id,roomDetail.owner.uid)
             }
         } else {
             // 房间列表进入，需请求详情
@@ -111,6 +117,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
                 roomKitBean.convertByRoomInfo(roomInfo)
                 handsDelegate.onRoomDetails(roomBean.room_id,roomBean.ownerUid)
                 roomViewModel.getDetails(this, roomKitBean.roomId)
+                giftViewDelegate.onRoomDetails(roomBean.room_id,roomBean.owner.uid)
             }
         }
         ChatroomMsgHelper.getInstance().init(roomKitBean.chatroomId)
@@ -218,7 +225,9 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
                             finish()
                         })
                     }
-                    io.agora.secnceui.R.id.extend_item_mic -> {}
+                    io.agora.secnceui.R.id.extend_item_mic -> {
+                        ToastTools.show(this@ChatroomLiveActivity,"点击mic",Toast.LENGTH_LONG)
+                    }
                     io.agora.secnceui.R.id.extend_item_hand_up -> {
                         "extend_item_hand_up isOwner:${handsDelegate.isOwner}".logE("onChatExtendMenuItemClick")
                         if (handsDelegate.isOwner){
@@ -392,7 +401,18 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
     }
 
     override fun onTokenWillExpire() {
+        HttpManager.getInstance(this).loginWithToken(
+            ChatClient.getInstance().deviceInfo.getString("deviceid"),
+            ProfileManager.getInstance().profile.portrait,object : ValueCallBack<VRUserBean>{
+                override fun onSuccess(bean: VRUserBean?) {
+                    ChatroomConfigManager.getInstance().renewToken(bean!!.im_token)
+                }
 
+                override fun onError(code: Int, desc: String?) {
+                    "onError: $code  desc: $desc".logE("onTokenWillExpire")
+                }
+
+            })
     }
 
     override fun receiveDeclineApply(roomId: String?, message: ChatMessageData?) {

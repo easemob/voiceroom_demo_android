@@ -1,5 +1,6 @@
 package io.agora.chatroom.activity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,12 +24,13 @@ import io.agora.CallBack;
 import io.agora.ValueCallBack;
 import io.agora.baseui.BaseActivity;
 import io.agora.baseui.general.callback.OnResourceParseCallback;
-import io.agora.buddy.tool.ThreadManager;
 import io.agora.buddy.tool.ToastTools;
 import io.agora.chat.ChatClient;
 import io.agora.chat.ChatRoom;
+import io.agora.chatroom.ChatroomApplication;
 import io.agora.chatroom.R;
 import io.agora.chatroom.adapter.ChatroomSoundSelectionAdapter;
+import io.agora.chatroom.general.interfaceOrImplement.UserActivityLifecycleCallbacks;
 import io.agora.chatroom.general.repositories.ProfileManager;
 import io.agora.chatroom.model.ChatroomViewModel;
 import io.agora.config.ConfigConstants;
@@ -165,14 +167,7 @@ public class ChatroomSoundSelectionActivity extends BaseActivity implements Chat
                     .build(RouterPath.ChatroomPath)
                     .withSerializable(RouterParams.KEY_CHATROOM_DETAILS_INFO, data)
                     .navigation();
-
-            ThreadManager.getInstance().runOnMainThread(new Runnable() {
-               @Override
-               public void run() {
-
-               }
-            });
-
+            finishCreateActivity();
             finish();
          }
 
@@ -213,6 +208,28 @@ public class ChatroomSoundSelectionActivity extends BaseActivity implements Chat
          createNormalRoom(false,sound_effect);
       }else {
          createSpatialRoom();
+      }
+
+   }
+
+   /**
+    * 结束创建activity
+    */
+   protected void finishCreateActivity() {
+      UserActivityLifecycleCallbacks lifecycleCallbacks = ChatroomApplication.getInstance().getLifecycleCallbacks();
+      if(lifecycleCallbacks == null) {
+         finish();
+         return;
+      }
+      List<Activity> activities = lifecycleCallbacks.getActivityList();
+      if(activities == null || activities.isEmpty()) {
+         finish();
+         return;
+      }
+      for(Activity activity : activities) {
+         if(activity != lifecycleCallbacks.current() && activity instanceof ChatroomCreateActivity) {
+            activity.finish();
+         }
       }
    }
 }

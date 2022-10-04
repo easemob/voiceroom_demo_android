@@ -1131,7 +1131,9 @@ public class HttpManager {
         try {
             requestBody.putOpt("gift_id", gift_id);
             requestBody.putOpt("num", num);
-            requestBody.putOpt("to_uid", to_uid);
+            if (to_uid != 0){
+                requestBody.putOpt("to_uid", to_uid);
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }

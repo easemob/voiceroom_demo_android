@@ -281,6 +281,7 @@ public class ChatroomCreateActivity extends BaseActivity implements RadioGroup.O
                     .build(RouterPath.ChatroomPath)
                     .withSerializable(RouterParams.KEY_CHATROOM_DETAILS_INFO, data)
                     .navigation();
+            finish();
          }
 
          @Override
