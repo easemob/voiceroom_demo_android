@@ -17,6 +17,7 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import bean.ChatMessageData
 import com.alibaba.android.arouter.facade.annotation.Route
+import custormgift.CustomMsgHelper
 import custormgift.OnMsgCallBack
 import io.agora.baseui.BaseUiActivity
 import io.agora.baseui.adapter.OnItemClickListener
@@ -89,7 +90,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         roomViewModel = ViewModelProvider(this)[ChatroomViewModel::class.java]
-        giftViewDelegate = RoomGiftViewDelegate.getInstance(this,binding.chatroomGiftView)
+        giftViewDelegate = RoomGiftViewDelegate.getInstance(this,binding.chatroomGiftView,binding.svgaView)
         handsDelegate = RoomHandsViewDelegate.getInstance(this,binding.chatBottom)
         initListeners()
         initData()
@@ -354,6 +355,9 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
 
     override fun receiveGift(roomId: String?, message: ChatMessageData?) {
         binding.chatroomGiftView.refresh()
+        if (CustomMsgHelper.getInstance().getMsgGiftId(message).equals("VoiceRoomGift9")){
+            giftViewDelegate.showGiftAction()
+        }
     }
 
     override fun receiveApplySite(roomId: String?, message: ChatMessageData?) {

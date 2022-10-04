@@ -7,6 +7,13 @@ import android.widget.TextView;
 
 import androidx.fragment.app.FragmentActivity;
 
+import com.opensource.svgaplayer.SVGADrawable;
+import com.opensource.svgaplayer.SVGAImageView;
+import com.opensource.svgaplayer.SVGAParser;
+import com.opensource.svgaplayer.SVGAVideoEntity;
+
+import org.jetbrains.annotations.NotNull;
+
 import bean.ChatMessageData;
 import custormgift.CustomMsgHelper;
 import custormgift.OnMsgCallBack;
@@ -22,19 +29,21 @@ import tools.ValueCallBack;
 public class RoomGiftViewDelegate {
    private FragmentActivity activity;
    private GiftBottomDialog dialog;
-   private int time = 2;
+   private int time,Animation_time = 2;
    private TextView send;
    private ChatroomGiftView giftView;
    private String roomId;
    private String owner;
+   private SVGAImageView svgaImageView;
 
-   RoomGiftViewDelegate(FragmentActivity activity, ChatroomGiftView giftView){
+   RoomGiftViewDelegate(FragmentActivity activity, ChatroomGiftView giftView,SVGAImageView svgaImageView){
       this.activity = activity;
       this.giftView = giftView;
+      this.svgaImageView = svgaImageView;
    }
 
-   public static RoomGiftViewDelegate getInstance(FragmentActivity activity, ChatroomGiftView giftView){
-      return new RoomGiftViewDelegate(activity,giftView);
+   public static RoomGiftViewDelegate getInstance(FragmentActivity activity, ChatroomGiftView giftView,SVGAImageView svgaImageView){
+      return new RoomGiftViewDelegate(activity,giftView,svgaImageView);
    }
 
    public void onRoomDetails(String roomId,String owner){
@@ -70,6 +79,9 @@ public class RoomGiftViewDelegate {
                      send.setEnabled(false);
                      startTask();
                   }
+                  if (giftBean.getId().equals("VoiceRoomGift9")){
+                     showGiftAction();
+                  }
                   HttpManager.getInstance(activity).sendGift(roomId,
                           giftBean.getId(), giftBean.getNum(), 0, new ValueCallBack<Boolean>() {
                              @Override
@@ -96,6 +108,7 @@ public class RoomGiftViewDelegate {
 
    private Handler handler = new Handler();
    private Runnable task;
+   private Runnable showTask;
 
    // 开启倒计时任务
    private void startTask() {
@@ -125,4 +138,56 @@ public class RoomGiftViewDelegate {
          time = 2;
       }
    }
+
+   public void showGiftAction(){
+      String name = "animation_of_rocket.svga";
+      SVGAParser svgaParser = SVGAParser.Companion.shareParser();
+      svgaParser.setFrameSize(100, 100);
+      svgaParser.decodeFromAssets(name, new SVGAParser.ParseCompletion() {
+         @Override
+         public void onComplete(@NotNull SVGAVideoEntity videoItem) {
+            Log.e("zzzz", "onComplete: ");
+            svgaImageView.setVideoItem(videoItem);
+            svgaImageView.stepToFrame(0, true);
+            startAnimationTask();
+         }
+
+         @Override
+         public void onError() {
+            Log.e("zzzz", "onComplete: ");
+         }
+
+      }, null);
+   }
+
+   public void startAnimationTask(){
+      handler.postDelayed(showTask = new Runnable() {
+         @Override
+         public void run() {
+            // 在这里执行具体的任务
+            Animation_time--;
+            Log.e("startActionTask","Animation_time: " + Animation_time);
+            // 任务执行完后再次调用postDelayed开启下一次任务
+            if (Animation_time==0){
+               stopActionTask();
+               Log.e("startActionTask","isAnimating: " + svgaImageView.isAnimating());
+               if (svgaImageView.isAnimating()){
+                  svgaImageView.stopAnimation(true);
+               }
+            }else {
+               handler.postDelayed(this, 1000);
+            }
+         }
+      }, 1000);
+   }
+
+   // 停止计时任务
+   private void stopActionTask() {
+      if (showTask != null) {
+         handler.removeCallbacks(showTask);
+         showTask = null;
+         Animation_time = 2;
+      }
+   }
+
 }

@@ -72,6 +72,7 @@ dependencies {
     api dep["constraintlayout"]
     api dep["recyclerview"]
     api dep["material"]
+    api project(':SVGAPlayer')
 
     testImplementation dep["junit"]
     androidTestImplementation dep["junit-android"]

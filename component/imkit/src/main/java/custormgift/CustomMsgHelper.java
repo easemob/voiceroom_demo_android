@@ -241,7 +241,7 @@ public class CustomMsgHelper implements MessageListener {
         if(params.size() <= 0) {
             return;
         }
-        sendCustomMsg(CustomMsgType.CHATROOM_GIFT.getName(), params, callBack);
+        sendCustomMsg(CustomMsgType.CHATROOM_SYSTEM.getName(), params, callBack);
     }
 
     /**
