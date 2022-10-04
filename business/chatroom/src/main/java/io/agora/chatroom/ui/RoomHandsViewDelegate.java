@@ -1,6 +1,7 @@
 package io.agora.chatroom.ui;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 import androidx.fragment.app.FragmentActivity;
 import io.agora.buddy.tool.ToastTools;
@@ -32,6 +33,8 @@ public class RoomHandsViewDelegate {
     public void onRoomDetails(String roomId,String owner){
         this.roomId = roomId;
         this.owner = owner;
+        Log.e("onRoomDetails","owner: " + owner);
+        Log.e("onRoomDetails","getUid: " + ProfileManager.getInstance().getProfile().getUid());
     }
 
     public boolean isOwner(){
@@ -65,6 +68,7 @@ public class RoomHandsViewDelegate {
                                public void onSuccess(Boolean var1) {
                                    ToastTools.show(activity,activity.getString(R.string.chatroom_mic_cancel_apply_success), Toast.LENGTH_SHORT);
                                    chatPrimaryMenuView.setShowHandStatus(false,false);
+                                   isRequest = false;
                                }
 
                                @Override
@@ -73,7 +77,7 @@ public class RoomHandsViewDelegate {
                                }
                            });
                        }else {
-                           HttpManager.getInstance(activity).submitMic(roomId, -1, new ValueCallBack<Boolean>() {
+                           HttpManager.getInstance(activity).submitMic(roomId, -999, new ValueCallBack<Boolean>() {
                                @Override
                                public void onSuccess(Boolean var1) {
                                    ToastTools.show(activity,activity.getString(R.string.chatroom_mic_apply_success), Toast.LENGTH_SHORT);

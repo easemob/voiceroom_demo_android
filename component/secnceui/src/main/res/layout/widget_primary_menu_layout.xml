@@ -44,7 +44,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_alignParentEnd="true"
-            android:layout_marginStart="30dp"
+            android:layout_marginStart="20dp"
             android:layout_marginEnd="15dp"
             android:layout_toEndOf="@+id/input_layout"
             android:gravity="center_vertical|right" />

@@ -13,6 +13,8 @@ import tools.bean.VRMicListBean;
 
 public class ChatroomRaisedAdapter extends RoomBaseRecyclerViewAdapter<VRMicListBean.ApplyListBean> {
     private onActionListener listener;
+    private boolean isAccepted;
+    private String selectUid;
 
     @Override
     public RoomBaseRecyclerViewAdapter.ViewHolder<VRMicListBean.ApplyListBean> getViewHolder(ViewGroup parent, int viewType) {
@@ -56,8 +58,26 @@ public class ChatroomRaisedAdapter extends RoomBaseRecyclerViewAdapter<VRMicList
                             listener.onItemActionClick(view,item.getMic_index(),item.getMember().getUid());
                     }
                 });
+                action.setText(mContext.getString(R.string.chatroom_accept));
+                if (item.getMember().getUid().equals(selectUid)){
+                    if (isAccepted){
+                        action.setText(mContext.getString(R.string.chatroom_accepted));
+                        action.setBackgroundResource(R.drawable.bg_rect_radius20_grey);
+                        action.setEnabled(false);
+                    }else {
+                        action.setText(mContext.getString(R.string.chatroom_accept));
+                        action.setBackgroundResource(R.drawable.bg_rect_radius20_gradient_blue);
+                        action.setEnabled(true);
+                    }
+                }
             }
         }
+
+    public void setAccepted(String uid,boolean isAccepted){
+        this.isAccepted = isAccepted;
+        this.selectUid = uid;
+        notifyDataSetChanged();
+    }
 
     public void setOnActionListener(onActionListener listener){
         this.listener = listener;

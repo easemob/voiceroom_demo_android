@@ -4,6 +4,9 @@ import android.app.ActivityManager;
 import android.content.Context;
 import android.util.Log;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.List;
 import java.util.Map;
 
@@ -58,6 +61,7 @@ public class ChatroomConfigManager {
         ChatroomMsgHelper.getInstance().setOnCustomMsgReceiveListener(new OnCustomMsgReceiveListener() {
             @Override
             public void onReceiveGiftMsg(ChatMessageData message) {
+                if (ChatListener != null)
                 ChatListener.receiveGift(message.getConversationId(),message);
             }
 
@@ -68,21 +72,26 @@ public class ChatroomConfigManager {
 
             @Override
             public void onReceiveNormalMsg(ChatMessageData message) {
+                if (ChatListener != null)
                 ChatListener.receiveTextMessage(message.getConversationId(),message);
             }
 
             @Override
             public void onReceiveApplySite(ChatMessageData message) {
+                Log.e("setOnCustomMsgReceiveListener","onReceiveApplySite");
+                if (ChatListener != null)
                 ChatListener.receiveApplySite(message.getConversationId(),message);
             }
 
             @Override
             public void onReceiveInviteSite(ChatMessageData message) {
+                if (ChatListener != null)
                 ChatListener.receiveInviteSite(message.getConversationId(),message);
             }
 
             @Override
             public void onReceiveDeclineApply(ChatMessageData message) {
+                if (ChatListener != null)
                 ChatListener.receiveDeclineApply(message.getConversationId(),message);
             }
         });

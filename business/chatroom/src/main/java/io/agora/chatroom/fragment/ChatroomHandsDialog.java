@@ -15,6 +15,8 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.android.material.textview.MaterialTextView;
 import java.util.ArrayList;
+import java.util.Objects;
+
 import io.agora.baseui.BaseInitFragment;
 import io.agora.chatroom.R;
 import io.agora.secnceui.utils.DeviceUtils;
@@ -78,7 +80,7 @@ public class ChatroomHandsDialog extends BottomDialogFragment {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 if(tab.getCustomView() != null) {
-                    Log.e("ChatroomHandsDialog","onTabSelected");
+                    Log.e("ChatroomHandsDialog","onTabSelected：" + mCount);
                     index = tab.getPosition();
                     title = tab.getCustomView().findViewById(R.id.mtTabText);
                     ViewGroup.LayoutParams layoutParams = title.getLayoutParams();
@@ -94,8 +96,8 @@ public class ChatroomHandsDialog extends BottomDialogFragment {
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
                 if(tab.getCustomView() != null) {
-                    Log.e("ChatroomHandsDialog","onTabUnselected");
-                    TextView title = tab.getCustomView().findViewById(R.id.mtTabText);
+                    Log.e("ChatroomHandsDialog","onTabUnselected：" + mCount);
+                    MaterialTextView title = tab.getCustomView().findViewById(R.id.mtTabText);
                     title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
                     title.setText(titles[tab.getPosition()]);
                     title.setTextColor(getResources().getColor(R.color.color_979CBB));
@@ -105,8 +107,11 @@ public class ChatroomHandsDialog extends BottomDialogFragment {
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
                 Log.e("ChatroomHandsDialog","onTabReselected");
+                title = tab.getCustomView().findViewById(R.id.mtTabText);
             }
         });
+        mViewPager.setCurrentItem(0);
+        mTableLayout.selectTab(mTableLayout.getTabAt(0));
     }
 
     private void setupWithViewPager() {
@@ -121,6 +126,9 @@ public class ChatroomHandsDialog extends BottomDialogFragment {
                         @Override
                         public void getItemCount(int count) {
                             mCount = count;
+                            String content = requireActivity().getString(titles[index]) + getString(R.string.room_tab_layout_count,String.valueOf(mCount));
+                            Log.e("getItemCount","content1: " + content);
+                            title.setText(content);
                         }
                     });
                 }else if (fragments.get(position) instanceof ChatroomInviteHandsFragment){
@@ -128,6 +136,9 @@ public class ChatroomHandsDialog extends BottomDialogFragment {
                         @Override
                         public void getItemCount(int count) {
                             mCount = count;
+                            String content = requireActivity().getResources().getString(titles[index]) + getString(R.string.room_tab_layout_count,String.valueOf(mCount));
+                            Log.e("getItemCount","content2: " + content);
+                            title.setText(content);
                         }
                     });
                 }
@@ -148,7 +159,7 @@ public class ChatroomHandsDialog extends BottomDialogFragment {
             @Override
             public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
                 tab.setCustomView(R.layout.chatroom_hands_tab_item);
-                TextView title = tab.getCustomView().findViewById(R.id.mtTabText);
+                MaterialTextView title = tab.getCustomView().findViewById(R.id.mtTabText);
                 title.setText(titles[position]);
             }
         });

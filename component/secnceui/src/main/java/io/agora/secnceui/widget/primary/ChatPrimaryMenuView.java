@@ -22,6 +22,8 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+import io.agora.buddy.tool.ThreadManager;
 import io.agora.secnceui.R;
 import io.agora.secnceui.widget.expression.ExpressionIcon;
 import io.agora.secnceui.widget.expression.ExpressionView;
@@ -228,10 +230,11 @@ public class ChatPrimaryMenuView extends RelativeLayout implements ExpressionVie
             LinearLayoutCompat.LayoutParams marginLayoutParams = new LinearLayoutCompat.LayoutParams(dp2px(activity,38), dp2px(activity,38));
             marginLayoutParams.leftMargin = dp2px(activity,5);
             marginLayoutParams.setMarginStart(dp2px(activity,5));
-            imageView.setPadding(dp2px(activity,5),dp2px(activity,7)
+            imageView.setPadding(dp2px(activity,4),dp2px(activity,7)
                     ,dp2px(activity,5),dp2px(activity,7));
             imageView.setImageResource(itemModel.image);
             imageView.setBackgroundResource(R.drawable.bg_primary_menu_item_icon);
+//            imageView.setBackgroundResource(R.color.white);
             imageView.setId(itemModel.id);
 
             if (itemModel.id == R.id.extend_item_gift){
@@ -247,7 +250,7 @@ public class ChatPrimaryMenuView extends RelativeLayout implements ExpressionVie
             });
             if (itemModel.id == R.id.extend_item_hand_up){
                 RelativeLayout relativeLayout = new RelativeLayout(activity);
-                relativeLayout.setLayoutParams(new RelativeLayout.LayoutParams(dp2px(activity,40), dp2px(activity,38)));
+                relativeLayout.setLayoutParams(new RelativeLayout.LayoutParams(dp2px(activity,42), dp2px(activity,38)));
 
                 ImageView status = new ImageView(activity);
                 status.setId(R.id.extend_item_hand_up_status);
@@ -258,7 +261,7 @@ public class ChatPrimaryMenuView extends RelativeLayout implements ExpressionVie
                         RelativeLayout.LayoutParams.WRAP_CONTENT,
                         RelativeLayout.LayoutParams.WRAP_CONTENT);
                 imgLayout.addRule(RelativeLayout.ALIGN_PARENT_TOP | ALIGN_PARENT_RIGHT);
-                imgLayout.setMargins(0,13,13,0);
+                imgLayout.setMargins(0,15,15,0);
                 relativeLayout.addView(imageView, marginLayoutParams);
                 relativeLayout.addView(status, imgLayout);
                 menuLayout.addView(relativeLayout);
@@ -269,30 +272,36 @@ public class ChatPrimaryMenuView extends RelativeLayout implements ExpressionVie
     }
 
     public void setShowHandStatus(boolean isOwner,boolean isShowHandStatus){
-        if (isOwner){
-            ImageView handStatus = menuLayout.findViewById(R.id.extend_item_hand_up_status);
-            if (isShowHandStatus){
-                handStatus.setVisibility(VISIBLE);
-            }else {
-                handStatus.setVisibility(GONE);
+        ThreadManager.getInstance().runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                if (isOwner){
+                    ImageView handStatus = menuLayout.findViewById(R.id.extend_item_hand_up_status);
+                    if (isShowHandStatus){
+                        handStatus.setVisibility(VISIBLE);
+                    }else {
+                        handStatus.setVisibility(GONE);
+                    }
+                }else {
+                    ImageView hand = menuLayout.findViewById(R.id.extend_item_hand_up);
+                    if (isShowHandStatus){
+                        hand.setImageResource(R.drawable.icon_handup_dot);
+                    }else {
+                        hand.setImageResource(R.drawable.icon_handuphard);
+                    }
+                }
             }
-        }else {
-            ImageView hand = menuLayout.findViewById(R.id.extend_item_hand_up);
-            if (isShowHandStatus){
-                hand.setImageResource(R.drawable.icon_handup_dot);
-            }else {
-                hand.setImageResource(R.drawable.icon_handuphard);
-            }
-        }
-
+        });
     }
 
     public void setEnableHand(boolean isEnable){
         ImageView hand = menuLayout.findViewById(R.id.extend_item_hand_up);
-        if (isEnable){
+        if (!isEnable){
             hand.setImageResource(R.drawable.icon_vector);
+            hand.setEnabled(false);
         }else {
             hand.setImageResource(R.drawable.icon_handuphard);
+            hand.setEnabled(true);
         }
     }
 

@@ -44,7 +44,9 @@
     <string name="chatroom_raised_hands_title">Raised Hands</string>
     <string name="chatroom_invite_hands_title">Invite On-Stage</string>
     <string name="chatroom_invite">邀请</string>
+    <string name="chatroom_invited">已邀请</string>
     <string name="chatroom_accept">同意</string>
+    <string name="chatroom_accepted">已同意</string>
     <string name="chatroom_request_speak">请求上麦？</string>
     <string name="chatroom_cancel_request_speak">撤销上麦申请</string>
     <string name="chatroom_prompt">提示</string>

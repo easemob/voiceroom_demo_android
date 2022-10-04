@@ -3,6 +3,7 @@ package io.agora.chatroom.activity
 import android.Manifest
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -18,6 +19,7 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import custormgift.OnMsgCallBack
 import io.agora.baseui.BaseUiActivity
 import io.agora.baseui.adapter.OnItemClickListener
+import io.agora.buddy.tool.GsonTools.toBean
 import io.agora.buddy.tool.ToastTools
 import io.agora.buddy.tool.logE
 import io.agora.chatroom.R
@@ -28,7 +30,8 @@ import io.agora.chatroom.general.constructor.RoomInfoConstructor.convertByRoomDe
 import io.agora.chatroom.general.constructor.RoomInfoConstructor.convertByRoomInfo
 import io.agora.chatroom.general.repositories.ProfileManager
 import io.agora.chatroom.model.ChatroomViewModel
-import io.agora.chatroom.ui.*
+import io.agora.chatroom.ui.RoomGiftViewDelegate
+import io.agora.chatroom.ui.RoomHandsViewDelegate
 import io.agora.chatroom.ui.RoomObservableViewDelegate
 import io.agora.config.ConfigConstants
 import io.agora.config.RouterParams
@@ -40,9 +43,11 @@ import io.agora.secnceui.widget.primary.MenuItemClickListener
 import io.agora.secnceui.widget.top.OnLiveTopClickListener
 import manager.ChatroomConfigManager
 import manager.ChatroomMsgHelper
+import org.json.JSONException
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
 import pub.devrel.easypermissions.PermissionRequest
+import tools.bean.VRMicBean
 import tools.bean.VRoomBean
 import tools.bean.VRoomInfoBean
 
@@ -98,6 +103,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
             // 详情进入数据全
             roomInfoBean?.room?.let { roomDetail ->
                 roomKitBean.convertByRoomDetailInfo(roomDetail)
+                handsDelegate.onRoomDetails(roomDetail.room_id,roomDetail.owner.uid)
             }
         } else {
             // 房间列表进入，需请求详情
@@ -218,6 +224,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
                         if (handsDelegate.isOwner){
                             if (this@ChatroomLiveActivity::handsDelegate.isInitialized) {
                                 handsDelegate.showOwnerHandsDialog()
+                                binding.chatBottom.setShowHandStatus(true,false)
                             }
                         }else{
                             if (this@ChatroomLiveActivity::handsDelegate.isInitialized) {
@@ -341,9 +348,8 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
     }
 
     override fun receiveApplySite(roomId: String?, message: ChatMessageData?) {
-        if (handsDelegate.isOwner){
-            binding.chatBottom.setShowHandStatus(handsDelegate.isOwner,true)
-        }
+        Log.e("liveActivity", "receiveApplySite")
+        binding.chatBottom.setShowHandStatus(handsDelegate.isOwner,true)
     }
 
     override fun roomAttributesDidUpdated(roomId: String?, attributeMap: MutableMap<String, String>?, fromId: String?) {
@@ -356,6 +362,22 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
                 binding.rvChatroom2dMicLayout.receiverAttributeMap(it)
             }else{
                 binding.rvChatroom3dMicLayout.receiverAttributeMap(it)
+            }
+        }
+        for (entry in attributeMap!!.entries) {
+            try {
+                val json = attributeMap[entry.key]
+                Log.e("attributeMap", "key: $json");
+                val attribute = toBean(json, VRMicBean::class.java)
+                attribute.let {
+                    if ( attribute!!.member.chat_uid.equals(ProfileManager.getInstance().profile.chat_uid)){
+                        binding.chatBottom.setEnableHand(false)
+                    }else{
+                        binding.chatBottom.setEnableHand(true)
+                    }
+                }
+            } catch (e: JSONException) {
+                e.printStackTrace()
             }
         }
     }

@@ -99,6 +99,7 @@ public class ChatroomSoundSelectionActivity extends BaseActivity implements Chat
    protected void initData() {
       super.initData();
       getSoundSelectionData(this);
+      adapter.setSelectedPosition(0);
       chatroomViewModel = new ViewModelProvider(this).get(ChatroomViewModel.class);
       chatroomViewModel.getCreateObservable().observe(this,response -> {
          parseResource(response, new OnResourceParseCallback<VRoomInfoBean>() {
