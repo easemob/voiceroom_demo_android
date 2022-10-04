@@ -14,10 +14,10 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import io.agora.baseui.adapter.OnItemClickListener
 import io.agora.buddy.tool.logE
+import io.agora.config.ConfigConstants
 import io.agora.secnceui.R
 import io.agora.secnceui.annotation.MicClickAction
 import io.agora.secnceui.bean.MicInfoBean
-import io.agora.secnceui.constants.ScenesConstant
 import io.agora.secnceui.databinding.ViewChatroom3dMicLayoutBinding
 import io.agora.secnceui.ui.mic.IRoomMicView
 import kotlin.math.abs
@@ -115,25 +115,25 @@ class Room3DMicLayout : ConstraintLayout, View.OnClickListener, IRoomMicView {
 
     fun setUpMicInfoMap(micInfoList: MutableMap<String, MicInfoBean>) {
         this.micInfoMap.putAll(micInfoList)
-        micInfoMap[ScenesConstant.KeyMic0]?.let {
+        micInfoMap[ConfigConstants.MicConstant.KeyMic0]?.let {
             binding.micV0.binding(it)
         }
-        micInfoMap[ScenesConstant.KeyMic1]?.let {
+        micInfoMap[ConfigConstants.MicConstant.KeyMic1]?.let {
             binding.micV1.binding(it)
         }
-        micInfoMap[ScenesConstant.KeyMic2]?.let {
+        micInfoMap[ConfigConstants.MicConstant.KeyMic2]?.let {
             binding.micV2Red.binding(it)
         }
-        micInfoMap[ScenesConstant.KeyMic3]?.let {
+        micInfoMap[ConfigConstants.MicConstant.KeyMic3]?.let {
             binding.micV3Blue.binding(it)
         }
-        micInfoMap[ScenesConstant.KeyMic4]?.let {
+        micInfoMap[ConfigConstants.MicConstant.KeyMic4]?.let {
             binding.micV4.binding(it)
         }
-        micInfoMap[ScenesConstant.KeyMic5]?.let {
+        micInfoMap[ConfigConstants.MicConstant.KeyMic5]?.let {
             binding.micV5.binding(it)
         }
-        micInfoMap[ScenesConstant.KeyMic6]?.let {
+        micInfoMap[ConfigConstants.MicConstant.KeyMic6]?.let {
             binding.micViewCenter.binding(it)
         }
     }
@@ -160,39 +160,39 @@ class Room3DMicLayout : ConstraintLayout, View.OnClickListener, IRoomMicView {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.micV1 -> {
-                micInfoMap[ScenesConstant.KeyMic0]?.let {
+                micInfoMap[ConfigConstants.MicConstant.KeyMic0]?.let {
                     onItemClickListener?.onItemClick(it, v, 0, -1)
                 }
             }
             R.id.micV0 -> {
-                micInfoMap[ScenesConstant.KeyMic1]?.let {
+                micInfoMap[ConfigConstants.MicConstant.KeyMic1]?.let {
                     onItemClickListener?.onItemClick(it, v, 1, -1)
                 }
             }
             R.id.micV2Red -> {
-                micInfoMap[ScenesConstant.KeyMic2]?.let {
+                micInfoMap[ConfigConstants.MicConstant.KeyMic2]?.let {
                     onBotClickListener?.onItemClick(it, v, 5, -1)
                 }
             }
             R.id.micV3Blue -> {
-                micInfoMap[ScenesConstant.KeyMic3]?.let {
+                micInfoMap[ConfigConstants.MicConstant.KeyMic3]?.let {
                     onBotClickListener?.onItemClick(it, v, 2, -1)
                 }
             }
 
             R.id.micV4 -> {
-                micInfoMap[ScenesConstant.KeyMic4]?.let {
+                micInfoMap[ConfigConstants.MicConstant.KeyMic4]?.let {
                     onItemClickListener?.onItemClick(it, v, 3, -1)
                 }
             }
             R.id.micV5 -> {
-                micInfoMap[ScenesConstant.KeyMic5]?.let {
+                micInfoMap[ConfigConstants.MicConstant.KeyMic5]?.let {
                     onItemClickListener?.onItemClick(it, v, 4, -1)
                 }
             }
 
             R.id.micViewCenter -> {
-                micInfoMap[ScenesConstant.KeyMic6]?.let {
+                micInfoMap[ConfigConstants.MicConstant.KeyMic6]?.let {
                     onItemClickListener?.onItemClick(it, v, 6, -1)
                 }
             }
@@ -374,7 +374,7 @@ class Room3DMicLayout : ConstraintLayout, View.OnClickListener, IRoomMicView {
         return -1
     }
 
-    override fun receiverAttributeMap(attributeMap: Map<String, String>) {
+    override fun receiverAttributeMap(newMicMap: Map<Int, MicInfoBean>) {
 
     }
 }

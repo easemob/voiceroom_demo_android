@@ -75,4 +75,37 @@ object ConfigConstants {
         const val AINS_MicrophoneScreenTap = 14 //玩⼿机时⼿指敲击屏幕
     }
     //--------AI 降噪-14种噪音试听 end--------
+
+    object MicConstant{
+        const val KeyMic0 = "mic_0"
+        const val KeyMic1 = "mic_1"
+        const val KeyMic2 = "mic_2"
+        const val KeyMic3 = "mic_3"
+        const val KeyMic4 = "mic_4"
+        const val KeyMic5 = "mic_5"
+        const val KeyMic6 = "mic_6"
+        const val KeyMic7 = "mic_7"
+
+        const val KeyIndex0 = 0
+        const val KeyIndex1 = 1
+        const val KeyIndex2 = 2
+        const val KeyIndex3 = 3
+        const val KeyIndex4 = 4
+        const val KeyIndex5 = 5
+        const val KeyIndex6 = 6
+        const val KeyIndex7 = 7
+
+        val micMap: MutableMap<String, Int> by lazy {
+            mutableMapOf(
+                KeyMic0 to KeyIndex0,
+                KeyMic1 to KeyIndex1,
+                KeyMic2 to KeyIndex2,
+                KeyMic3 to KeyIndex3,
+                KeyMic4 to KeyIndex4,
+                KeyMic5 to KeyIndex5,
+                KeyMic6 to KeyIndex6,
+                KeyMic7 to KeyIndex7
+            )
+        }
+    }
 }

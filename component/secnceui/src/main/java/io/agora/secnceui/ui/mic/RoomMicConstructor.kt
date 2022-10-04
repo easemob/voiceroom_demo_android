@@ -5,7 +5,6 @@ import io.agora.config.ConfigConstants
 import io.agora.secnceui.R
 import io.agora.secnceui.annotation.*
 import io.agora.secnceui.bean.*
-import io.agora.secnceui.constants.ScenesConstant
 
 object RoomMicConstructor {
 
@@ -45,9 +44,9 @@ object RoomMicConstructor {
     fun builderDefault3dMicMap(context: Context, isUserBot: Boolean = false): MutableMap<String, MicInfoBean> {
 
         return mutableMapOf(
-            ScenesConstant.KeyMic0 to MicInfoBean(index = 0),
-            ScenesConstant.KeyMic1 to MicInfoBean(index = 1),
-            ScenesConstant.KeyMic2 to MicInfoBean(
+            ConfigConstants.MicConstant.KeyMic0 to MicInfoBean(index = 0),
+            ConfigConstants.MicConstant.KeyMic1 to MicInfoBean(index = 1),
+            ConfigConstants.MicConstant.KeyMic2 to MicInfoBean(
                 index = 2,
                 micStatus = if (isUserBot) MicStatus.BotActivated else MicStatus.BotInactive,
                 audioVolumeType = ConfigConstants.VolumeType.Volume_Unknown,
@@ -56,7 +55,7 @@ object RoomMicConstructor {
                     userAvatar = "icon_chatroom_blue_robot"
                 }
             ),
-            ScenesConstant.KeyMic3 to MicInfoBean(
+            ConfigConstants.MicConstant.KeyMic3 to MicInfoBean(
                 index = 5,
                 micStatus = if (isUserBot) MicStatus.BotActivated else MicStatus.BotInactive,
                 audioVolumeType = ConfigConstants.VolumeType.Volume_Unknown,
@@ -65,9 +64,9 @@ object RoomMicConstructor {
                     userAvatar = "icon_chatroom_red_robot"
                 }
             ),
-            ScenesConstant.KeyMic4 to MicInfoBean(index = 3),
-            ScenesConstant.KeyMic5 to MicInfoBean(index = 4),
-            ScenesConstant.KeyMic6 to MicInfoBean(index = 6),
+            ConfigConstants.MicConstant.KeyMic4 to MicInfoBean(index = 3),
+            ConfigConstants.MicConstant.KeyMic5 to MicInfoBean(index = 4),
+            ConfigConstants.MicConstant.KeyMic6 to MicInfoBean(index = 6),
         )
     }
 

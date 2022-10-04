@@ -28,6 +28,7 @@ import io.agora.chatroom.R
 import io.agora.chatroom.bean.RoomKitBean
 import io.agora.chatroom.controller.RtcRoomController
 import io.agora.chatroom.databinding.ActivityChatroomBinding
+import io.agora.chatroom.general.constructor.RoomInfoConstructor
 import io.agora.chatroom.general.constructor.RoomInfoConstructor.convertByRoomDetailInfo
 import io.agora.chatroom.general.constructor.RoomInfoConstructor.convertByRoomInfo
 import io.agora.chatroom.general.net.HttpManager
@@ -126,8 +127,12 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
 
     private fun initListeners() {
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { _: View?, insets: WindowInsetsCompat ->
-            val inset = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            binding.clMain.setPaddingRelative(0, inset.top, 0, inset.bottom)
+            val systemInset = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            "systemInset:left:${systemInset.left},top:${systemInset.top},right:${systemInset.right},bottom:${systemInset.bottom}".logE("insets==")
+            "paddingInset:left:${binding.clMain.paddingLeft},top:${binding.clMain.paddingTop},right:${binding.clMain.paddingRight},bottom:${binding.clMain.paddingBottom}".logE("insets==")
+
+            binding.clMain.setPaddingRelative(0, systemInset.top, 0, 0
+            )
             WindowInsetsCompat.CONSUMED
         }
         binding.clMain.setOnTouchListener(OnTouchListener { v, event ->
@@ -292,7 +297,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
         if (keyCode == KeyEvent.KEYCODE_BACK && event.repeatCount == 0) {
             return false
         }
-        return super.onKeyDown(keyCode, event);
+        return super.onKeyDown(keyCode, event)
     }
 
     override fun finish() {
@@ -363,14 +368,15 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
 
     override fun roomAttributesDidUpdated(roomId: String?, attributeMap: MutableMap<String, String>?, fromId: String?) {
         super.roomAttributesDidUpdated(roomId, attributeMap, fromId)
-        "roomAttributesDidUpdated roomId:$roomId  fromId:$fromId attributeMap:$attributeMap".logE("roomAttributesDid")
+        "roomAttributesDidUpdated currentThread:${Thread.currentThread()} roomId:$roomId  fromId:$fromId attributeMap:$attributeMap".logE("roomAttributesDid")
         if (isFinishing) return
         if (!TextUtils.equals(roomKitBean.chatroomId, roomId)) return
         attributeMap?.let {
+            val newMicMap = RoomInfoConstructor.convertAttrMicUiBean(it, roomKitBean.ownerId)
             if (roomKitBean.roomType == ConfigConstants.RoomType.Common_Chatroom) { // 普通房间
-                binding.rvChatroom2dMicLayout.receiverAttributeMap(it)
-            }else{
-                binding.rvChatroom3dMicLayout.receiverAttributeMap(it)
+                binding.rvChatroom2dMicLayout.receiverAttributeMap(newMicMap)
+            } else {
+                binding.rvChatroom3dMicLayout.receiverAttributeMap(newMicMap)
             }
         }
         for (entry in attributeMap!!.entries) {

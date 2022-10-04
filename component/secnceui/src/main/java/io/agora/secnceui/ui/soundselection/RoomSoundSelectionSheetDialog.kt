@@ -47,7 +47,7 @@ class RoomSoundSelectionSheetDialog constructor(
         }
 
         binding?.apply {
-            setOnApplyWindowInsets(rvBottomSheetSoundSelection)
+            setOnApplyWindowInsets(root)
             ivBottomSheetBack.setOnClickListener {
                 onHandleOnBackPressed()
             }

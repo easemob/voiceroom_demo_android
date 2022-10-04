@@ -11,7 +11,7 @@ import io.agora.config.ConfigConstants
 import io.agora.secnceui.annotation.MicStatus
 import io.agora.secnceui.bean.BotMicInfoBean
 import io.agora.secnceui.bean.ImAttrBean
-import io.agora.secnceui.constants.ScenesConstant
+import io.agora.secnceui.bean.MicInfoBean
 import io.agora.secnceui.databinding.ItemChatroom2dBotMicBinding
 
 class Room2DBotMicAdapter constructor(
@@ -64,14 +64,10 @@ class Room2DBotMicAdapter constructor(
         notifyItemChanged(0)
     }
 
-    fun receiverAttributeMap(attributeMap: Map<String, String>) {
-        if (attributeMap.containsKey(ScenesConstant.KeyMic6)) {
-            val value = attributeMap[ScenesConstant.KeyMic6]
-            GsonTools.toBean(value, ImAttrBean::class.java)?.let { attrBean ->
-                ThreadManager.getInstance().runOnMainThread {
-                    activeBot(attrBean.status == MicStatus.BotActivated)
-                }
-            }
+    fun receiverAttributeMap(newMicMap: Map<Int, MicInfoBean>) {
+        if (newMicMap.containsKey(ConfigConstants.MicConstant.KeyIndex6)) {
+            val value = newMicMap[ConfigConstants.MicConstant.KeyIndex6]
+            activeBot(value?.micStatus == MicStatus.BotActivated)
         }
     }
 }

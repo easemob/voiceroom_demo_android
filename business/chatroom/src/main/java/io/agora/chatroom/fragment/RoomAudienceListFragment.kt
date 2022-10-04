@@ -186,7 +186,9 @@ class RoomAudienceListFragment : BaseUiFragment<FragmentChatroomAudienceListBind
                         }
 
                         override fun onError(var1: Int, var2: String?) {
-
+                            context?.let {
+                                ToastTools.show(it,"kickMic onError $var1 $var2")
+                            }
                         }
                     })
             }
