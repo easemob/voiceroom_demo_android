@@ -1,8 +1,11 @@
 package io.agora.chatroom.general.constructor
 
 import android.text.TextUtils
+import com.google.gson.reflect.TypeToken
+import io.agora.buddy.tool.GsonTools
 import io.agora.chatroom.bean.RoomKitBean
 import io.agora.chatroom.general.repositories.ProfileManager
+import io.agora.config.ConfigConstants
 import io.agora.secnceui.bean.*
 import tools.bean.*
 
@@ -99,5 +102,27 @@ object RoomInfoConstructor {
             micInfoList.add(micInfo)
         }
         return micInfoList
+    }
+
+    /**
+     * im kv 属性转换ui bean
+     */
+    fun convertAttrMicUiBean(attributeMap: Map<String, String>, ownerUid: String): Map<Int, MicInfoBean> {
+        val micInfoMap = mutableMapOf<Int, MicInfoBean>()
+        attributeMap.entries.forEach { entry ->
+            val index = ConfigConstants.MicConstant.micMap[entry.key] ?: -1
+            GsonTools.toBean<VRMicBean>(entry.value, object : TypeToken<VRMicBean>() {}.type)?.let { attrBean ->
+                val micInfo = MicInfoBean().apply {
+                    this.index = index
+                    this.micStatus = attrBean.status
+                    attrBean.member?.let { roomUser ->
+                        userInfo = serverUser2UiUser(roomUser)
+                        ownerTag = !TextUtils.isEmpty(ownerUid) && TextUtils.equals(ownerUid, roomUser.uid)
+                    }
+                }
+                micInfoMap[index] = micInfo
+            }
+        }
+        return micInfoMap
     }
 }

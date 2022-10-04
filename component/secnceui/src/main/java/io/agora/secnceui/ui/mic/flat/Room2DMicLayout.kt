@@ -120,7 +120,7 @@ class Room2DMicLayout : ConstraintLayout, IRoomMicView {
     }
 
     override fun updateMicStatusByAction(index: Int, @MicClickAction action: Int) {
-        room2DMicAdapter?.updateMicStatusByAction(index, action)
+//        room2DMicAdapter?.updateMicStatusByAction(index, action)
     }
 
     override fun exchangeMic(from: Int, to: Int) {
@@ -136,8 +136,8 @@ class Room2DMicLayout : ConstraintLayout, IRoomMicView {
         return -1
     }
 
-    override fun receiverAttributeMap(attributeMap: Map<String, String>) {
-        room2DMicAdapter?.receiverAttributeMap(attributeMap)
-        room2DMicBotAdapter?.receiverAttributeMap(attributeMap)
+    override fun receiverAttributeMap(newMicMap: Map<Int, MicInfoBean>) {
+        room2DMicAdapter?.receiverAttributeMap(newMicMap)
+        room2DMicBotAdapter?.receiverAttributeMap(newMicMap)
     }
 }

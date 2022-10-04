@@ -91,22 +91,22 @@ internal class AgoraRtcClientEx : RtcBaseClientEx<RtcEngineEx>() {
             return false
         }
         val options = ChannelMediaOptions()
-        if (config.broadcaster) {
-            rtcEngine?.setClientRole(Constants.CLIENT_ROLE_BROADCASTER)
+        rtcEngine?.setClientRole(Constants.CLIENT_ROLE_BROADCASTER)
+       /* if (config.broadcaster) {
         } else {
             rtcEngine?.setClientRole(Constants.CLIENT_ROLE_AUDIENCE)
-        }
-        when (config.soundType) {
-            SoundSelection.SocialChat -> {
-                rtcEngine?.setChannelProfile(Constants.CHANNEL_PROFILE_LIVE_BROADCASTING)
-                rtcEngine?.setAudioProfile(Constants.AUDIO_PROFILE_MUSIC_HIGH_QUALITY)
-                rtcEngine?.setAudioScenario(Constants.AUDIO_SCENARIO_GAME_STREAMING)
-            }
-            else -> {
-                // TODO: 最佳音效设置
-                rtcEngine?.setChannelProfile(Constants.CHANNEL_PROFILE_COMMUNICATION)
-            }
-        }
+        }*/
+//        when (config.soundType) {
+//            SoundSelection.SocialChat -> {
+//                rtcEngine?.setChannelProfile(Constants.CHANNEL_PROFILE_LIVE_BROADCASTING)
+//                rtcEngine?.setAudioProfile(Constants.AUDIO_PROFILE_MUSIC_HIGH_QUALITY)
+//                rtcEngine?.setAudioScenario(Constants.AUDIO_SCENARIO_GAME_STREAMING)
+//            }
+//            else -> {
+//                // TODO: 最佳音效设置
+//                rtcEngine?.setChannelProfile(Constants.CHANNEL_PROFILE_COMMUNICATION)
+//            }
+//        }
         val rtcConnection = RtcConnection(config.roomId, config.userId)
         val status =
             rtcEngine?.joinChannelEx(config.appToken, rtcConnection, options, eventHandler)

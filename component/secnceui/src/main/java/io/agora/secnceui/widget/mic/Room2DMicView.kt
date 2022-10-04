@@ -57,6 +57,7 @@ class Room2DMicView : ConstraintLayout {
             } else {
                 if (micInfo.userInfo == null) { // 没人
                     ivMicInnerIcon.isVisible = true
+                    ivMicInfo.setImageResource(0)
                     mtMicUsername.text = micInfo.index.toString()
                     mtMicUsername.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
                     when (micInfo.micStatus) {

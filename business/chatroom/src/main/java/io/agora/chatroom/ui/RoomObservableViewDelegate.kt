@@ -578,13 +578,11 @@ class RoomObservableViewDelegate constructor(
                         }
                         MicClickAction.Mute -> {
                             //自己禁言
-                            RtcRoomController.get().enableLocalAudio(true)
-                            micViewModel.closeMic(activity, roomKitBean.roomId, micInfo.index)
+                            muteLocalAudio(true, micInfo.index)
                         }
                         MicClickAction.UnMute -> {
                             //取消自己禁言
-                            RtcRoomController.get().enableLocalAudio(false)
-                            micViewModel.cancelCloseMic(activity, roomKitBean.roomId, micInfo.index)
+                            muteLocalAudio(false, micInfo.index)
                         }
                         MicClickAction.Lock -> {
                             //房主锁麦
@@ -647,6 +645,18 @@ class RoomObservableViewDelegate constructor(
             .leftText(activity.getString(R.string.chatroom_cancel))
             .setOnClickListener(onClickListener)
             .show(activity.supportFragmentManager, "CommonSheetAlertDialog")
+    }
+
+    /**
+     * 自己关麦
+     */
+    fun muteLocalAudio(mute: Boolean, index: Int = -1) {
+        RtcRoomController.get().enableLocalAudio(mute)
+        if (mute) {
+            micViewModel.closeMic(activity, roomKitBean.roomId, index)
+        } else {
+            micViewModel.cancelCloseMic(activity, roomKitBean.roomId, index)
+        }
     }
 
     var onRoomViewDelegateListener: OnRoomViewDelegateListener? = null
