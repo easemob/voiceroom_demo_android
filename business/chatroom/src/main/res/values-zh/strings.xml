@@ -44,13 +44,18 @@
     <string name="chatroom_raised_hands_title">Raised Hands</string>
     <string name="chatroom_invite_hands_title">Invite On-Stage</string>
     <string name="chatroom_invite">邀请</string>
+    <string name="chatroom_invited">已邀请</string>
     <string name="chatroom_accept">同意</string>
+    <string name="chatroom_accepted">已同意</string>
     <string name="chatroom_request_speak">请求上麦？</string>
+    <string name="chatroom_cancel_request_speak">撤销上麦申请</string>
     <string name="chatroom_prompt">提示</string>
     <string name="chatroom_confirm">确认</string>
     <string name="chatroom_cancel">取消</string>
     <string name="chatroom_mic_apply_success">申请上麦成功</string>
     <string name="chatroom_mic_apply_fail">申请上麦失败：%1$s</string>
+    <string name="chatroom_mic_cancel_apply_success">撤销上麦申请成功</string>
+    <string name="chatroom_mic_cancel_apply_fail">撤销上麦申请失败：%1$s</string>
 
     <!-- mic -->
     <string name="chatroom_mic_submit_sent">你的请求已提交,等待房主确认</string>

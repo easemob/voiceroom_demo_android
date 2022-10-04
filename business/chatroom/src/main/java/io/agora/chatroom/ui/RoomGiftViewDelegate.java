@@ -10,11 +10,14 @@ import androidx.fragment.app.FragmentActivity;
 import bean.ChatMessageData;
 import custormgift.CustomMsgHelper;
 import custormgift.OnMsgCallBack;
+import io.agora.chatroom.general.net.HttpManager;
 import io.agora.chatroom.general.repositories.ProfileManager;
 import io.agora.secnceui.bean.GiftBean;
 import io.agora.secnceui.widget.gift.ChatroomGiftView;
 import io.agora.secnceui.widget.gift.GiftBottomDialog;
 import io.agora.secnceui.widget.gift.OnSendClickListener;
+import manager.ChatroomMsgHelper;
+import tools.ValueCallBack;
 
 public class RoomGiftViewDelegate {
    private FragmentActivity activity;
@@ -22,6 +25,8 @@ public class RoomGiftViewDelegate {
    private int time = 2;
    private TextView send;
    private ChatroomGiftView giftView;
+   private String roomId;
+   private String owner;
 
    RoomGiftViewDelegate(FragmentActivity activity, ChatroomGiftView giftView){
       this.activity = activity;
@@ -30,6 +35,13 @@ public class RoomGiftViewDelegate {
 
    public static RoomGiftViewDelegate getInstance(FragmentActivity activity, ChatroomGiftView giftView){
       return new RoomGiftViewDelegate(activity,giftView);
+   }
+
+   public void onRoomDetails(String roomId,String owner){
+      this.roomId = roomId;
+      this.owner = owner;
+      Log.e("onRoomDetails","owner: " + owner);
+      Log.e("onRoomDetails","getUid: " + ProfileManager.getInstance().getProfile().getUid());
    }
 
 
@@ -58,6 +70,18 @@ public class RoomGiftViewDelegate {
                      send.setEnabled(false);
                      startTask();
                   }
+                  HttpManager.getInstance(activity).sendGift(roomId,
+                          giftBean.getId(), giftBean.getNum(), 0, new ValueCallBack<Boolean>() {
+                             @Override
+                             public void onSuccess(Boolean var1) {
+                               Log.e("sendGift","Successfully reported");
+                             }
+
+                             @Override
+                             public void onError(int code, String desc) {
+                                Log.e("sendGift","Reporting failed: " + code + " "+ desc);
+                             }
+                          });
                }
 
                @Override

@@ -3,12 +3,14 @@ package io.agora.chatroom.activity
 import android.Manifest
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnTouchListener
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
@@ -18,17 +20,21 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import custormgift.OnMsgCallBack
 import io.agora.baseui.BaseUiActivity
 import io.agora.baseui.adapter.OnItemClickListener
+import io.agora.buddy.tool.GsonTools.toBean
 import io.agora.buddy.tool.ToastTools
 import io.agora.buddy.tool.logE
+import io.agora.chat.ChatClient
 import io.agora.chatroom.R
 import io.agora.chatroom.bean.RoomKitBean
 import io.agora.chatroom.controller.RtcRoomController
 import io.agora.chatroom.databinding.ActivityChatroomBinding
 import io.agora.chatroom.general.constructor.RoomInfoConstructor.convertByRoomDetailInfo
 import io.agora.chatroom.general.constructor.RoomInfoConstructor.convertByRoomInfo
+import io.agora.chatroom.general.net.HttpManager
 import io.agora.chatroom.general.repositories.ProfileManager
 import io.agora.chatroom.model.ChatroomViewModel
-import io.agora.chatroom.ui.*
+import io.agora.chatroom.ui.RoomGiftViewDelegate
+import io.agora.chatroom.ui.RoomHandsViewDelegate
 import io.agora.chatroom.ui.RoomObservableViewDelegate
 import io.agora.config.ConfigConstants
 import io.agora.config.RouterParams
@@ -40,9 +46,13 @@ import io.agora.secnceui.widget.primary.MenuItemClickListener
 import io.agora.secnceui.widget.top.OnLiveTopClickListener
 import manager.ChatroomConfigManager
 import manager.ChatroomMsgHelper
+import org.json.JSONException
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
 import pub.devrel.easypermissions.PermissionRequest
+import tools.ValueCallBack
+import tools.bean.VRMicBean
+import tools.bean.VRUserBean
 import tools.bean.VRoomBean
 import tools.bean.VRoomInfoBean
 
@@ -98,6 +108,8 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
             // 详情进入数据全
             roomInfoBean?.room?.let { roomDetail ->
                 roomKitBean.convertByRoomDetailInfo(roomDetail)
+                handsDelegate.onRoomDetails(roomDetail.room_id,roomDetail.owner.uid)
+                giftViewDelegate.onRoomDetails(roomDetail.room_id,roomDetail.owner.uid)
             }
         } else {
             // 房间列表进入，需请求详情
@@ -105,6 +117,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
                 roomKitBean.convertByRoomInfo(roomInfo)
                 handsDelegate.onRoomDetails(roomBean.room_id,roomBean.ownerUid)
                 roomViewModel.getDetails(this, roomKitBean.roomId)
+                giftViewDelegate.onRoomDetails(roomBean.room_id,roomBean.owner.uid)
             }
         }
         ChatroomMsgHelper.getInstance().init(roomKitBean.chatroomId)
@@ -212,12 +225,15 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
                             finish()
                         })
                     }
-                    io.agora.secnceui.R.id.extend_item_mic -> {}
+                    io.agora.secnceui.R.id.extend_item_mic -> {
+                        ToastTools.show(this@ChatroomLiveActivity,"点击mic",Toast.LENGTH_LONG)
+                    }
                     io.agora.secnceui.R.id.extend_item_hand_up -> {
                         "extend_item_hand_up isOwner:${handsDelegate.isOwner}".logE("onChatExtendMenuItemClick")
                         if (handsDelegate.isOwner){
                             if (this@ChatroomLiveActivity::handsDelegate.isInitialized) {
                                 handsDelegate.showOwnerHandsDialog()
+                                binding.chatBottom.setShowHandStatus(true,false)
                             }
                         }else{
                             if (this@ChatroomLiveActivity::handsDelegate.isInitialized) {
@@ -232,18 +248,11 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
             }
 
             override fun onInputViewFocusChange(focus: Boolean) {
-                if (focus) {
-                    binding.bottomLayout.isVisible = false
-                    binding.likeView.isVisible = false
-                } else {
-                    binding.bottomLayout.isVisible = true
-                    binding.likeView.isVisible = true
-                }
+                checkFocus(focus)
             }
 
             override fun onInputLayoutClick() {
-                binding.bottomLayout.isVisible = false
-                binding.likeView.isVisible = false
+                checkFocus(false)
             }
 
             override fun onEmojiClick(isShow: Boolean) {
@@ -255,6 +264,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
                     ProfileManager.getInstance().profile.name, object : OnMsgCallBack() {
                         override fun onSuccess(message: ChatMessageData?) {
                             binding.messageView.refresh()
+                            hideKeyboard()
                         }
 
                         override fun onError(messageId: String?, code: Int, error: String?) {
@@ -332,7 +342,6 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
             binding.chatBottom.hideExpressionView()
             binding.chatBottom.showInput()
             binding.likeView.isVisible = true
-            binding.bottomLayout.isVisible = true
             binding.chatBottom.hindViewChangeIcon()
             hideKeyboard()
             binding.clMain.isFocusable = true
@@ -348,7 +357,8 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
     }
 
     override fun receiveApplySite(roomId: String?, message: ChatMessageData?) {
-         binding.chatBottom.setShowHandStatus(handsDelegate.isOwner,true)
+        Log.e("liveActivity", "receiveApplySite")
+        binding.chatBottom.setShowHandStatus(handsDelegate.isOwner,true)
     }
 
     override fun roomAttributesDidUpdated(roomId: String?, attributeMap: MutableMap<String, String>?, fromId: String?) {
@@ -363,6 +373,26 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
                 binding.rvChatroom3dMicLayout.receiverAttributeMap(it)
             }
         }
+        for (entry in attributeMap!!.entries) {
+            try {
+                val json = attributeMap[entry.key]
+                Log.e("attributeMap", "key: $json");
+                val attribute = toBean(json, VRMicBean::class.java)
+                attribute.let {
+                    if ( attribute!!.member.chat_uid.equals(ProfileManager.getInstance().profile.chat_uid)){
+                        binding.chatBottom.setEnableHand(false)
+                    }else{
+                        binding.chatBottom.setEnableHand(true)
+                    }
+                }
+            } catch (e: JSONException) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    private fun checkFocus(focus:Boolean){
+        binding.likeView.isVisible = !focus
     }
 
     override fun roomAttributesDidRemoved(roomId: String?, keyList: List<String>?, fromId: String?) {
@@ -371,7 +401,18 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
     }
 
     override fun onTokenWillExpire() {
+        HttpManager.getInstance(this).loginWithToken(
+            ChatClient.getInstance().deviceInfo.getString("deviceid"),
+            ProfileManager.getInstance().profile.portrait,object : ValueCallBack<VRUserBean>{
+                override fun onSuccess(bean: VRUserBean?) {
+                    ChatroomConfigManager.getInstance().renewToken(bean!!.im_token)
+                }
 
+                override fun onError(code: Int, desc: String?) {
+                    "onError: $code  desc: $desc".logE("onTokenWillExpire")
+                }
+
+            })
     }
 
     override fun receiveDeclineApply(roomId: String?, message: ChatMessageData?) {

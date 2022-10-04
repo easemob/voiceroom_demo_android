@@ -66,7 +66,7 @@ public class ChatroomListFragment extends BaseChatroomListFragment<VRoomBean.Roo
     @Override
     public void onResume() {
         super.onResume();
-//        reset();
+        reset();
         if (null != getArguments())
             position = getArguments().getInt("position",0);
         chatroomViewModel.getDataList(getActivity(),pageSize,position-1,Cursor);
@@ -106,7 +106,7 @@ public class ChatroomListFragment extends BaseChatroomListFragment<VRoomBean.Roo
             parseResource(response, new OnResourceParseCallback<VRoomInfoBean>() {
                 @Override
                 public void onSuccess(@Nullable VRoomInfoBean data) {
-                    goChatroomPage(roomBean,mPassWord,data);
+                    goChatroomPage(roomBean,mPassWord);
                 }
 
                 @Override
@@ -202,11 +202,10 @@ public class ChatroomListFragment extends BaseChatroomListFragment<VRoomBean.Roo
                 .navigation();
     }
 
-    private void goChatroomPage(VRoomBean.RoomsBean roomBean,String password,VRoomInfoBean bean) {
+    private void goChatroomPage(VRoomBean.RoomsBean roomBean,String password) {
         ARouter.getInstance()
                 .build(RouterPath.ChatroomPath)
                 .withSerializable(RouterParams.KEY_CHATROOM_INFO, roomBean)
-                .withSerializable(RouterParams.KEY_CHATROOM_DETAILS_INFO,bean)
                 .withString(RouterParams.KEY_CHATROOM_JOIN_PASSWORD,password)
                 .navigation();
     }

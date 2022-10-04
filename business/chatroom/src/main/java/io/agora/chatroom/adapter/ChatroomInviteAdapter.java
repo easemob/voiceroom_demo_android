@@ -13,6 +13,8 @@ import tools.bean.VMemberBean;
 
 public class ChatroomInviteAdapter extends RoomBaseRecyclerViewAdapter<VMemberBean> {
     private onActionListener listener;
+    private boolean isInvited;
+    private String selectUid;
 
     @Override
     public RoomBaseRecyclerViewAdapter.ViewHolder<VMemberBean> getViewHolder(ViewGroup parent, int viewType) {
@@ -40,7 +42,6 @@ public class ChatroomInviteAdapter extends RoomBaseRecyclerViewAdapter<VMemberBe
                 avatar.setImageResource(resId);
             }
             name.setText(item.getName());
-            action.setText(mContext.getString(R.string.chatroom_invite));
             action.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -48,6 +49,19 @@ public class ChatroomInviteAdapter extends RoomBaseRecyclerViewAdapter<VMemberBe
                         listener.onItemActionClick(view,position,item.getUid());
                 }
             });
+            action.setText(mContext.getString(R.string.chatroom_invite));
+            if (item.getUid().equals(selectUid)){
+                if (isInvited){
+                    action.setText(mContext.getString(R.string.chatroom_invited));
+                    action.setBackgroundResource(R.drawable.bg_rect_radius20_grey);
+                    action.setEnabled(false);
+                }else {
+                    action.setText(mContext.getString(R.string.chatroom_invite));
+                    action.setBackgroundResource(R.drawable.bg_rect_radius20_gradient_blue);
+                    action.setEnabled(true);
+                }
+            }
+
         }
 
         @Override
@@ -67,7 +81,10 @@ public class ChatroomInviteAdapter extends RoomBaseRecyclerViewAdapter<VMemberBe
         void onItemActionClick(View view,int position,String uid);
     }
 
-
-
+    public void setInvited(String uid,boolean isInvited){
+        this.isInvited = isInvited;
+        this.selectUid = uid;
+        notifyDataSetChanged();
+    }
 
 }

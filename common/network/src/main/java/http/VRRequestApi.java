@@ -7,11 +7,11 @@ public class VRRequestApi {
     VRRequestApi(){}
     public static VRRequestApi mInstance;
     private final String BASE_URL = "https://a1-test-voiceroom.easemob.com";
-    private final String BASE_ROOM = "/%1$d";
-    private final String LOGIN = "/user/login/device";
-    private final String ROOM_LIST = "/voice/room/list?limit=%1$s";
+    private final String BASE_ROOM = "/voice/room/%1$s";
     private final String BASE_MEMBERS = "/voice/room/%1$s/members";
     private final String BASE_MIC = "/voice/room/%1$s/mic";
+    private final String LOGIN = "/user/login/device";
+    private final String ROOM_LIST = "/voice/room/list?limit=%1$s";
     private final String CREATE_ROOM = "/voice/room/create";
     private final String ROOM_DETAILS = "/voice/room/%1$s";
     private final String FETCH_ROOM_MEMBERS = "/voice/room/%1$s/members/list?limit=%2$s";
@@ -91,7 +91,7 @@ public class VRRequestApi {
     }
 
     public String checkPassword(String roomId){
-        return BASE_URL + String.format(BASE_MEMBERS,roomId) +CHECK;
+        return BASE_URL + String.format(BASE_ROOM,roomId) +CHECK;
     }
 
     public String leaveRoom(String roomId){

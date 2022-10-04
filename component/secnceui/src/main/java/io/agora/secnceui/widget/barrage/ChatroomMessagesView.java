@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import bean.ChatMessageData;
 import bean.ChatroomConstants;
 import custormgift.CustomMsgHelper;
+import io.agora.buddy.tool.ThreadManager;
 import io.agora.secnceui.R;
 import io.agora.secnceui.utils.DeviceUtils;
 import io.agora.secnceui.widget.expression.SmileUtils;
@@ -49,6 +50,7 @@ public class ChatroomMessagesView extends RelativeLayout{
     private String chatroomId;
     private String ownerId;
     private Context mContext;
+    private boolean isScrollBottom;
 
     public ChatroomMessagesView(Context context) {
         super(context);
@@ -109,7 +111,24 @@ public class ChatroomMessagesView extends RelativeLayout{
 
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-
+                super.onScrolled(recyclerView, dx, dy);
+                LinearLayoutManager lm = (LinearLayoutManager) recyclerView.getLayoutManager();
+                int lastVisibleItemPosition = lm.findLastVisibleItemPosition();
+                int totalCount = lm.getItemCount();
+                Log.e("onScrolled","lastVisibleItemPosition: " + lastVisibleItemPosition + " totalCount: " + (totalCount - 1));
+                if (lastVisibleItemPosition == totalCount - 1 ) {
+                    int findLastVisibleItemPosition = lm.findLastVisibleItemPosition();
+                    if (findLastVisibleItemPosition == lm.getItemCount() - 1) {
+                        ThreadManager.getInstance().runOnMainThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                isScrollBottom = true;
+                            }
+                        });
+                    }
+                }else {
+                    isScrollBottom = false;
+                }
             }
         });
     }
@@ -127,7 +146,12 @@ public class ChatroomMessagesView extends RelativeLayout{
 
     public void refresh(){
         if(adapter != null){
-            adapter.refresh();
+            Log.e("refresh","isScrollBottom: " + isScrollBottom);
+            if (isScrollBottom){
+                refreshSelectLast();
+            }else {
+                adapter.refresh();
+            }
         }
     }
 
@@ -224,7 +248,6 @@ public class ChatroomMessagesView extends RelativeLayout{
 
         @Override
         public int getItemCount() {
-            Log.e("RecyclerView","ListAdapter");
             return messages.size();
         }
 
@@ -238,7 +261,6 @@ public class ChatroomMessagesView extends RelativeLayout{
                     @Override
                     public void run() {
                         notifyItemRangeInserted(startPosition,messages.size());
-                        listview.smoothScrollToPosition(adapter.getItemCount()-1);
                     }
                 });
             }

@@ -197,6 +197,7 @@ public class GiftBottomDialog extends BottomDialogFragment implements View.OnCli
             giftBean.setNum(1);
         }
        count.setText("1");
+       total_count.setText(getString(R.string.dialog_gift_total_count,"1"));
    }
 
 }

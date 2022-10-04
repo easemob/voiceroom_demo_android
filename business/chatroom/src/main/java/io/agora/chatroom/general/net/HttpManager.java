@@ -401,6 +401,12 @@ public class HttpManager {
                 });
     }
 
+    /**
+     * 校验密码
+     * @param roomId
+     * @param password
+     * @param callBack
+     */
     public void checkPassword(String roomId,String password,ValueCallBack<VRoomInfoBean> callBack){
         Log.e("joinRoom","roomId:"+roomId);
         Log.e("joinRoom","Authorization:"+ ProfileManager.getInstance().getProfile().getAuthorization());
@@ -423,14 +429,14 @@ public class HttpManager {
                 .asyncExecute(new VRHttpCallback() {
                     @Override
                     public void onSuccess(String result) {
-                        LogToolsKt.logE("joinRoom success: " + result, TAG);
+                        LogToolsKt.logE("checkPassword success: " + result, TAG);
                         VRoomInfoBean bean = GsonTools.toBean(result,VRoomInfoBean.class);
                         callBack.onSuccess(bean);
                     }
 
                     @Override
                     public void onError(int code, String msg) {
-                        LogToolsKt.logE("joinRoom onError " + msg, TAG);
+                        LogToolsKt.logE("checkPassword onError " + msg, TAG);
                         callBack.onError(code,msg);
                     }
                 });
@@ -541,7 +547,9 @@ public class HttpManager {
         headers.put("Authorization", "Bearer " + ProfileManager.getInstance().getProfile().getAuthorization());
         JSONObject requestBody = new JSONObject();
         try {
-            requestBody.putOpt("mic_index", mic_index);
+            if (mic_index != -999){
+                requestBody.putOpt("mic_index", mic_index);
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -613,6 +621,7 @@ public class HttpManager {
                     public void onSuccess(String result) {
                         LogToolsKt.logE("getMicInfo success: " + result, TAG);
                         VRMicBean bean = GsonTools.toBean(result,VRMicBean.class);
+
                         callBack.onSuccess(bean);
                     }
 
@@ -1122,7 +1131,9 @@ public class HttpManager {
         try {
             requestBody.putOpt("gift_id", gift_id);
             requestBody.putOpt("num", num);
-            requestBody.putOpt("to_uid", to_uid);
+            if (to_uid != 0){
+                requestBody.putOpt("to_uid", to_uid);
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }

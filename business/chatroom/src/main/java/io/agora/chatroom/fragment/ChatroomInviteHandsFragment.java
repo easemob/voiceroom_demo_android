@@ -7,14 +7,19 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import io.agora.baseui.BaseListFragment;
 import io.agora.baseui.adapter.RoomBaseRecyclerViewAdapter;
 import io.agora.baseui.general.callback.OnResourceParseCallback;
 import io.agora.buddy.tool.LogToolsKt;
+import io.agora.buddy.tool.ThreadManager;
 import io.agora.chatroom.R;
 import io.agora.chatroom.adapter.ChatroomInviteAdapter;
 import io.agora.chatroom.general.net.HttpManager;
@@ -29,13 +34,14 @@ public class ChatroomInviteHandsFragment extends BaseListFragment<VMemberBean> i
     private ChatroomInviteViewModel handsViewModel;
     private List<VMemberBean> dataList = new ArrayList<>();
     private ChatroomInviteAdapter adapter;
-    private int count;
     private int pageSize = 10;
     private String cursor = "";
-    private String total;
     private itemCountListener listener;
     private String roomId;
     private static final String TAG = "ChatroomInviteHandsFragment";
+    private Map<String,Boolean> map = new HashMap<>();
+    private boolean isRefreshing = false;
+    private boolean isLoadingNextPage = false;
 
     @Nullable
     @Override
@@ -73,18 +79,17 @@ public class ChatroomInviteHandsFragment extends BaseListFragment<VMemberBean> i
                 @Override
                 public void onSuccess(@Nullable VRoomUserBean data) {
                     if (data != null){
-                        count = dataList.size();
                         cursor = data.getCursor();
                         int total = data.getTotal();
-                        for (VMemberBean user : data.getMembers()) {
-                            if (null != dataList && !dataList.contains(user)){
-                                dataList.addAll(data.getMembers());
-                                adapter.addData(count,dataList);
-                            }
+                        if (isRefreshing){
+                            adapter.setData(data.getMembers());
+                        }else {
+                            adapter.addData(data.getMembers());
                         }
                         if (null != listener)
                             listener.getItemCount(total);
                         finishRefresh();
+                        isRefreshing = false;
                     }
                 }
             });
@@ -96,12 +101,55 @@ public class ChatroomInviteHandsFragment extends BaseListFragment<VMemberBean> i
         super.initListener();
         adapter.setOnActionListener(this);
         refreshLayout.setOnRefreshListener(this);
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                LinearLayoutManager lm = (LinearLayoutManager) recyclerView.getLayoutManager();
+                int lastVisibleItemPosition = lm.findLastVisibleItemPosition();
+                int totalCount = lm.getItemCount();
+                if (lastVisibleItemPosition == totalCount - 1 && !isLoadingNextPage && !isRefreshing) {
+                    // 在前面addLoadItem后，itemCount已经变化
+                    // 增加一层判断，确保用户是滑到了正在加载的地方，才加载更多
+                    int findLastVisibleItemPosition = lm.findLastVisibleItemPosition();
+                    if (findLastVisibleItemPosition == lm.getItemCount() - 1) {
+                        ThreadManager.getInstance().runOnMainThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                isLoadingNextPage = true;
+                                pullData();
+                            }
+                        });
+                    }
+                }
+            }
+        });
+    }
+
+    private void pullData() {
+        ThreadManager.getInstance().runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                handsViewModel.getInviteList(getActivity(),roomId,pageSize,cursor);
+                isLoadingNextPage = false;
+            }
+        });
     }
 
     @Override
     protected void initData() {
         super.initData();
         handsViewModel.getInviteList(getActivity(),roomId,pageSize,cursor);
+        for (VMemberBean vMemberBean : dataList) {
+            if (map.containsKey(vMemberBean.getUid())){
+                adapter.setInvited(vMemberBean.getUid(), Boolean.TRUE.equals(map.get(vMemberBean.getUid())));
+            }
+        }
     }
 
     @Override
@@ -116,11 +164,18 @@ public class ChatroomInviteHandsFragment extends BaseListFragment<VMemberBean> i
     }
 
     @Override
-    public void onItemActionClick(View view, int index,String uid) {
+    public void onItemActionClick(View view, int position,String uid) {
         HttpManager.getInstance(getActivity()).invitationMic(roomId, uid, new ValueCallBack<Boolean>() {
             @Override
             public void onSuccess(Boolean var1) {
                 LogToolsKt.logE("onActionClick Invite onSuccess " + uid, TAG);
+                ThreadManager.getInstance().runOnMainThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        adapter.setInvited(uid,true);
+                        map.put(uid,true);
+                    }
+                });
             }
 
             @Override
@@ -132,8 +187,8 @@ public class ChatroomInviteHandsFragment extends BaseListFragment<VMemberBean> i
 
     @Override
     public void onRefresh() {
-        cursor = "";
-        count = 0;
+        reset();
+        isRefreshing = true;
         handsViewModel.getInviteList(getActivity(),roomId,pageSize,cursor);
     }
 
@@ -146,6 +201,11 @@ public class ChatroomInviteHandsFragment extends BaseListFragment<VMemberBean> i
         if(refreshLayout != null && refreshLayout.isRefreshing()) {
             refreshLayout.setRefreshing(false);
         }
+    }
+
+    private void reset(){
+        adapter.clearData();
+        cursor = "";
     }
 
 
