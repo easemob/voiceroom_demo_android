@@ -2,6 +2,7 @@ package tools.bean;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 
 import io.agora.config.ConfigConstants;
 
@@ -18,6 +19,19 @@ public class VRoomBean implements Serializable {
 
    public String getCursor() {
       return cursor;
+   }
+
+   @Override
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof VRoomBean)) return false;
+      VRoomBean vRoomBean = (VRoomBean) o;
+      return Objects.equals(getRooms(), vRoomBean.getRooms());
+   }
+
+   @Override
+   public int hashCode() {
+      return Objects.hash(getRooms());
    }
 
    public void setCursor(String cursor) {
@@ -64,6 +78,19 @@ public class VRoomBean implements Serializable {
       private int member_count;
       private boolean use_robot;
       private String sound_effect;
+
+      @Override
+      public boolean equals(Object o) {
+         if (this == o) return true;
+         if (!(o instanceof RoomsBean)) return false;
+         RoomsBean bean = (RoomsBean) o;
+         return Objects.equals(getChatroom_id(), bean.getChatroom_id());
+      }
+
+      @Override
+      public int hashCode() {
+         return Objects.hash(getChatroom_id());
+      }
 
       public String getName() {
          return name;

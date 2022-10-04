@@ -1,6 +1,7 @@
 package io.agora.chatroom.fragment;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -41,6 +42,7 @@ public class ChatroomListFragment extends BaseChatroomListFragment<VRoomBean.Roo
     private int position;
     private boolean isRefreshing = false;
     private boolean isLoadingNextPage = false;
+    private boolean isEnd;
 
     @Override
     protected void initView(Bundle savedInstanceState) {
@@ -69,7 +71,7 @@ public class ChatroomListFragment extends BaseChatroomListFragment<VRoomBean.Roo
         reset();
         if (null != getArguments())
             position = getArguments().getInt("position",0);
-        chatroomViewModel.getDataList(getActivity(),pageSize,position-1,Cursor);
+        chatroomViewModel.getDataList(getActivity(),pageSize,position-1,"");
     }
 
     @Override
@@ -87,6 +89,10 @@ public class ChatroomListFragment extends BaseChatroomListFragment<VRoomBean.Roo
                 public void onSuccess(@Nullable VRoomBean data) {
                     if (data != null){
                         Cursor = data.getCursor();
+                        if (TextUtils.isEmpty(Cursor)){
+                            isEnd = true;
+                        }
+                        Log.e("ListFragment1","getCursor: " + data.getCursor());
                         if (isRefreshing){
                             listAdapter.setData(data.getRooms());
                         }else {
@@ -148,7 +154,9 @@ public class ChatroomListFragment extends BaseChatroomListFragment<VRoomBean.Roo
                                 @Override
                                 public void run() {
                                     isLoadingNextPage = true;
-                                    pullData();
+                                    if (!isEnd){
+                                        pullData();
+                                    }
                                 }
                             });
                         }
@@ -161,6 +169,7 @@ public class ChatroomListFragment extends BaseChatroomListFragment<VRoomBean.Roo
         ThreadManager.getInstance().runOnMainThread(new Runnable() {
             @Override
             public void run() {
+                Log.e("ListFragment1","Cursor: " + Cursor);
                 chatroomViewModel.getDataList(getActivity(),pageSize,position-1,Cursor);
                 isLoadingNextPage = false;
             }
@@ -244,7 +253,6 @@ public class ChatroomListFragment extends BaseChatroomListFragment<VRoomBean.Roo
     @Override
     public void onRefresh() {
         super.onRefresh();
-        isRefreshing = true;
         reset();
         Log.e("ChatroomListFragment","onRefresh" + listAdapter.getItemCount());
         chatroomViewModel.getDataList(getActivity(),pageSize,position-1,Cursor);
@@ -264,7 +272,7 @@ public class ChatroomListFragment extends BaseChatroomListFragment<VRoomBean.Roo
     }
 
     private void reset(){
-        listAdapter.clearData();
+        isRefreshing = true;
         Cursor = "";
     }
 
