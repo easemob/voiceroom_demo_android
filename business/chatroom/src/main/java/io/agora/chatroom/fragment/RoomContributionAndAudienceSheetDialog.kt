@@ -20,7 +20,7 @@ import io.agora.secnceui.databinding.DialogChatroomContributionAndAudienceBindin
 
 class RoomContributionAndAudienceSheetDialog constructor(
     private val fragmentActivity: FragmentActivity,
-    val roomKitBean: RoomKitBean,
+    private val roomKitBean: RoomKitBean,
     private val currentItem: Int = 0,
 ) :
     BaseFixedHeightSheetDialog<DialogChatroomContributionAndAudienceBinding>() {

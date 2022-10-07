@@ -52,7 +52,7 @@ internal class AgoraRtcClientEx : RtcBaseClientEx<RtcEngineEx>() {
             config.mEventHandler = eventHandler
             config.mChannelProfile = Constants.CHANNEL_PROFILE_LIVE_BROADCASTING
 //            config.mAudioScenario = Constants.AUDIO_SCENARIO_CHATROOM
-            config.mLogConfig  = RtcEngineConfig.LogConfig().apply {
+            config.mLogConfig = RtcEngineConfig.LogConfig().apply {
                 level = Constants.LogLevel.getValue(Constants.LogLevel.LOG_LEVEL_ERROR)
             }
 
@@ -65,7 +65,7 @@ internal class AgoraRtcClientEx : RtcBaseClientEx<RtcEngineEx>() {
             }
             rtcEngine?.apply {
                 // 设置场景
-                setAudioProfile(Constants.AUDIO_PROFILE_SPEECH_STANDARD, Constants.AUDIO_SCENARIO_CHATROOM)
+//                setAudioProfile(Constants.AUDIO_PROFILE_SPEECH_STANDARD, Constants.AUDIO_SCENARIO_CHATROOM)
                 //设置加密方式
                 val encryptionConfig = EncryptionConfig()
                 encryptionConfig.encryptionMode = EncryptionConfig.EncryptionMode.AES_128_XTS
@@ -90,12 +90,13 @@ internal class AgoraRtcClientEx : RtcBaseClientEx<RtcEngineEx>() {
             rtcListener?.onError(RtcErrorStatus(IRtcEngineEventHandler.ErrorCode.ERR_FAILED, errMsg))
             return false
         }
-        val options = ChannelMediaOptions()
-        rtcEngine?.setClientRole(Constants.CLIENT_ROLE_BROADCASTER)
-       /* if (config.broadcaster) {
-        } else {
-            rtcEngine?.setClientRole(Constants.CLIENT_ROLE_AUDIENCE)
-        }*/
+        rtcEngine?.apply {
+            setChannelProfile(Constants.CHANNEL_PROFILE_LIVE_BROADCASTING)
+            setAudioProfile(Constants.AUDIO_PROFILE_MUSIC_HIGH_QUALITY)
+            setAudioScenario(Constants.AUDIO_SCENARIO_GAME_STREAMING)
+            setClientRole(Constants.CLIENT_ROLE_BROADCASTER)
+        }
+
 //        when (config.soundType) {
 //            SoundSelection.SocialChat -> {
 //                rtcEngine?.setChannelProfile(Constants.CHANNEL_PROFILE_LIVE_BROADCASTING)
@@ -107,9 +108,12 @@ internal class AgoraRtcClientEx : RtcBaseClientEx<RtcEngineEx>() {
 //                rtcEngine?.setChannelProfile(Constants.CHANNEL_PROFILE_COMMUNICATION)
 //            }
 //        }
-        val rtcConnection = RtcConnection(config.roomId, config.userId)
-        val status =
-            rtcEngine?.joinChannelEx(config.appToken, rtcConnection, options, eventHandler)
+        val options = ChannelMediaOptions().apply {
+            publishMicrophoneTrack = config.broadcaster
+        }
+//        val rtcConnection = RtcConnection(config.roomId, config.userId)
+//        val status = rtcEngine?.joinChannelEx(config.appToken, rtcConnection, options, eventHandler)
+        val status = rtcEngine?.joinChannel(config.appToken, config.roomId, config.userId, options)
         if (status != IRtcEngineEventHandler.ErrorCode.ERR_OK) {
             val errorMsg = "join channel error status not ERR_OK!"
             errorMsg.logE(TAG)

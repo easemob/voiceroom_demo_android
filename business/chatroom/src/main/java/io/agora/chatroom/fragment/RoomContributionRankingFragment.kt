@@ -78,11 +78,11 @@ class RoomContributionRankingFragment : BaseUiFragment<FragmentChatroomContribut
                     binding?.slContributionRanking?.isRefreshing = false
                     "getGifts total：${data?.ranking_list?.size}".logE()
                     if (data == null) return
-                    total = data.total
+                    total = data.ranking_list?.size ?: 0
                     isEnd = true
                     checkEmpty()
                     if (!data.ranking_list.isNullOrEmpty()) {
-                        contributionAdapter?.addItems(data.ranking_list)
+                        contributionAdapter?.submitListAndPurge(data.ranking_list)
                     }
                 }
 

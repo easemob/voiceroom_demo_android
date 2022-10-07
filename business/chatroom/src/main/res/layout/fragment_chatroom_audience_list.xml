@@ -16,6 +16,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/bg_chatroom_contribution_empty"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/glHorizontal20" />
@@ -28,6 +29,7 @@
         android:text="@string/chatroom_contribution_empty"
         android:textColor="@color/dark_grey_color_979CBB"
         android:textSize="@dimen/sp_14"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="@+id/ivContributionEmpty"
         app:layout_constraintStart_toStartOf="@+id/ivContributionEmpty"
         app:layout_constraintTop_toBottomOf="@+id/ivContributionEmpty" />
