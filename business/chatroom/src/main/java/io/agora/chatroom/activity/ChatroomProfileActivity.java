@@ -15,17 +15,13 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.constraintlayout.widget.ConstraintLayout;
-
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.google.android.material.imageview.ShapeableImageView;
-
 import org.json.JSONException;
 
 import io.agora.baseui.BaseActivity;
 import io.agora.baseui.popupwindow.CommonPopupWindow;
-import io.agora.buddy.tool.ThreadManager;
 import io.agora.buddy.tool.ToastTools;
 import io.agora.chat.ChatClient;
 import io.agora.chatroom.R;
@@ -50,6 +46,7 @@ public class ChatroomProfileActivity extends BaseActivity implements View.OnClic
    private ImageView edit;
    private InputMethodManager inputManager;
    private ConstraintLayout baseLayout;
+   private ConstraintLayout disclaimer;
    private String nick;
 
    @Override
@@ -66,6 +63,7 @@ public class ChatroomProfileActivity extends BaseActivity implements View.OnClic
       nickName = findViewById(R.id.nick_name);
       number = findViewById(R.id.number);
       baseLayout = findViewById(R.id.base_layout);
+      disclaimer = findViewById(R.id.disclaimer_layout);
       inputManager = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
    }
 
@@ -75,6 +73,7 @@ public class ChatroomProfileActivity extends BaseActivity implements View.OnClic
       edit.setOnClickListener(this);
       avatar.setOnClickListener(this);
       titleBar.setOnBackPressListener(this);
+      disclaimer.setOnClickListener(this);
 
       baseLayout.setOnTouchListener(new View.OnTouchListener() {
          @Override
@@ -126,6 +125,10 @@ public class ChatroomProfileActivity extends BaseActivity implements View.OnClic
          nickName.setFocusable(true);
          nickName.setFocusableInTouchMode(true);
          nickName.requestFocus();
+         nickName.setSelection(nickName.getText().length());
+         showKeyboard();
+      }else if (v.getId() == R.id.disclaimer_layout){
+
       }
 
    }
@@ -159,6 +162,7 @@ public class ChatroomProfileActivity extends BaseActivity implements View.OnClic
               .height(DeviceUtils.dp2px(this,535))
               .outsideTouchable(true)
               .focusable(true)
+              .animationStyle(io.agora.secnceui.R.style.BottomDialogFragment_Animation)
               .clippingEnabled(false)
               .alpha(0.618f)
               .layoutId(this,R.layout.chatroom_profile_avatar)
@@ -166,6 +170,9 @@ public class ChatroomProfileActivity extends BaseActivity implements View.OnClic
                  @Override
                  public void getView(CommonPopupWindow popupWindow, ChatroomProfileAvatarBinding view) {
                     ProfileGridAdapter adapter = new ProfileGridAdapter(ChatroomProfileActivity.this);
+                    String avatarUrl = ProfileManager.getInstance().getProfile().getPortrait();
+                    int index = adapter.getSelectedPosition(avatarUrl);
+                    adapter.setSelectedPosition(index);
                     view.gridView.setAdapter(adapter);
                     adapter.SetOnItemClickListener(new ProfileGridAdapter.OnItemClickListener() {
                        @Override

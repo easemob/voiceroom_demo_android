@@ -1,5 +1,6 @@
 package io.agora.chatroom.fragment;
 
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -50,6 +51,10 @@ public class ChatroomListFragment extends BaseChatroomListFragment<VRoomBean.Roo
         Log.e("chatroomViewModel"," current fragment: " + this);
         listAdapter = (ChatroomListAdapter) mListAdapter;
         listAdapter.setEmptyView(R.layout.chatroom_no_data_layout);
+
+        float offsetPx = getResources().getDimension(R.dimen.space_84dp);
+        BottomOffsetDecoration bottomOffsetDecoration = new BottomOffsetDecoration((int) offsetPx);
+        mRecyclerView.addItemDecoration(bottomOffsetDecoration);
     }
 
     @Override
@@ -274,6 +279,27 @@ public class ChatroomListFragment extends BaseChatroomListFragment<VRoomBean.Roo
     private void reset(){
         isRefreshing = true;
         Cursor = "";
+    }
+
+    static class BottomOffsetDecoration extends RecyclerView.ItemDecoration {
+        private int mBottomOffset;
+
+        public BottomOffsetDecoration(int bottomOffset) {
+            mBottomOffset = bottomOffset;
+        }
+
+        @Override
+        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+            super.getItemOffsets(outRect, view, parent, state);
+            int dataSize = state.getItemCount();
+            int position = parent.getChildAdapterPosition(view);
+            if (dataSize > 0 && position == dataSize - 1) {
+                outRect.set(0, 0, 0, mBottomOffset);
+            } else {
+                outRect.set(0, 0, 0, 0);
+            }
+
+        }
     }
 
 }
