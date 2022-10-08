@@ -54,7 +54,7 @@ public class ChatroomSoundSelectionActivity extends BaseActivity implements Chat
    private String roomName;
    private String encryption;
    private int roomType;
-   private String sound_effect;
+   private int sound_effect = ConfigConstants.SoundSelection.Social_Chat;
 
    @Override
    protected int getLayoutId() {
@@ -183,7 +183,7 @@ public class ChatroomSoundSelectionActivity extends BaseActivity implements Chat
    @Override
    public void OnItemClick(int position, SoundSelectionBean bean) {
       adapter.setSelectedPosition(position);
-      sound_effect = bean.getSoundName();
+      sound_effect = bean.getSoundSelectionType();
    }
 
    public void getSoundSelectionData(Context context) {
@@ -201,11 +201,26 @@ public class ChatroomSoundSelectionActivity extends BaseActivity implements Chat
    @Override
    public void onClick(View view) {
       if (roomType == 0){
-         if (TextUtils.isEmpty(sound_effect)){
-            ToastTools.show(this,"Please select a sound effect",Toast.LENGTH_LONG);
-            return;
+//         if (TextUtils.isEmpty(sound_effect)){
+//            ToastTools.show(this,"Please select a sound effect",Toast.LENGTH_LONG);
+//            return;
+//         }
+         String soundEffect;
+         switch (sound_effect){
+            case ConfigConstants.SoundSelection.Karaoke:
+               soundEffect = ConfigConstants.SoundSelectionText.Karaoke;
+               break;
+            case ConfigConstants.SoundSelection.Gaming_Buddy:
+               soundEffect = ConfigConstants.SoundSelectionText.Gaming_Buddy;
+               break;
+            case ConfigConstants.SoundSelection.Professional_Broadcaster:
+               soundEffect = ConfigConstants.SoundSelectionText.Professional_Broadcaster;
+               break;
+            default:
+               soundEffect = ConfigConstants.SoundSelectionText.Social_Chat;
+               break;
          }
-         createNormalRoom(false,sound_effect);
+         createNormalRoom(false,soundEffect);
       }else {
          createSpatialRoom();
       }
