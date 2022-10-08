@@ -3,7 +3,6 @@ package io.agora.rtckit.internal
 import android.content.Context
 import io.agora.buddy.tool.logE
 import io.agora.rtc2.*
-import io.agora.rtc2.internal.EncryptionConfig
 import io.agora.rtckit.annotation.SoundSelection
 import io.agora.rtckit.internal.base.RtcBaseAudioEngine
 import io.agora.rtckit.internal.base.RtcBaseDeNoiseEngine
@@ -50,8 +49,6 @@ internal class AgoraRtcClientEx : RtcBaseClientEx<RtcEngineEx>() {
             config.mContext = context
             config.mAppId = initConfig?.appId
             config.mEventHandler = eventHandler
-            config.mChannelProfile = Constants.CHANNEL_PROFILE_LIVE_BROADCASTING
-//            config.mAudioScenario = Constants.AUDIO_SCENARIO_CHATROOM
             config.mLogConfig = RtcEngineConfig.LogConfig().apply {
                 level = Constants.LogLevel.getValue(Constants.LogLevel.LOG_LEVEL_ERROR)
             }
@@ -62,18 +59,6 @@ internal class AgoraRtcClientEx : RtcBaseClientEx<RtcEngineEx>() {
                 e.printStackTrace()
                 "rtc engine init error:${e.message}".logE(TAG)
                 return false
-            }
-            rtcEngine?.apply {
-                // 设置场景
-//                setAudioProfile(Constants.AUDIO_PROFILE_SPEECH_STANDARD, Constants.AUDIO_SCENARIO_CHATROOM)
-                //设置加密方式
-                val encryptionConfig = EncryptionConfig()
-                encryptionConfig.encryptionMode = EncryptionConfig.EncryptionMode.AES_128_XTS
-                enableEncryption(true, encryptionConfig)
-                enableWirelessAccelerate(true)
-                enableAudio()
-                enableDualStreamMode(false)
-                enableAudioVolumeIndication(4000, 3, false)
             }
             return true
         }
@@ -90,30 +75,34 @@ internal class AgoraRtcClientEx : RtcBaseClientEx<RtcEngineEx>() {
             rtcListener?.onError(RtcErrorStatus(IRtcEngineEventHandler.ErrorCode.ERR_FAILED, errMsg))
             return false
         }
+
         rtcEngine?.apply {
-            setChannelProfile(Constants.CHANNEL_PROFILE_LIVE_BROADCASTING)
-            setAudioProfile(Constants.AUDIO_PROFILE_MUSIC_HIGH_QUALITY)
-            setAudioScenario(Constants.AUDIO_SCENARIO_GAME_STREAMING)
-            setClientRole(Constants.CLIENT_ROLE_BROADCASTER)
+            when (config.soundType) {
+                SoundSelection.SocialChat, SoundSelection.Karaoke -> { // 社交语聊，ktv
+                    setChannelProfile(Constants.CHANNEL_PROFILE_LIVE_BROADCASTING)
+                    setAudioProfile(Constants.AUDIO_PROFILE_MUSIC_HIGH_QUALITY)
+                    setAudioScenario(Constants.AUDIO_SCENARIO_GAME_STREAMING)
+                    if (config.broadcaster) {
+                        setClientRole(Constants.CLIENT_ROLE_BROADCASTER)
+                    } else {
+                        setClientRole(Constants.CLIENT_ROLE_AUDIENCE)
+                    }
+                }
+                SoundSelection.GamingBuddy -> { // 游戏陪玩
+                    setChannelProfile(Constants.CHANNEL_PROFILE_COMMUNICATION)
+                }
+                else -> { //专业主播
+                    setAudioProfile(Constants.AUDIO_PROFILE_MUSIC_HIGH_QUALITY)
+                    setAudioScenario(Constants.AUDIO_SCENARIO_GAME_STREAMING)
+                    setParameters("{\"che.audio.custom_payload_type\":73}")
+                    setParameters("{\"che.audio.custom_bitrate\":128000}")
+                    // setRecordingDeviceVolume(128) 4.0.1上才支持
+                    setParameters("{\"che.audio.input_channels\":2}")
+                }
+            }
         }
 
-//        when (config.soundType) {
-//            SoundSelection.SocialChat -> {
-//                rtcEngine?.setChannelProfile(Constants.CHANNEL_PROFILE_LIVE_BROADCASTING)
-//                rtcEngine?.setAudioProfile(Constants.AUDIO_PROFILE_MUSIC_HIGH_QUALITY)
-//                rtcEngine?.setAudioScenario(Constants.AUDIO_SCENARIO_GAME_STREAMING)
-//            }
-//            else -> {
-//                // TODO: 最佳音效设置
-//                rtcEngine?.setChannelProfile(Constants.CHANNEL_PROFILE_COMMUNICATION)
-//            }
-//        }
-        val options = ChannelMediaOptions().apply {
-            publishMicrophoneTrack = config.broadcaster
-        }
-//        val rtcConnection = RtcConnection(config.roomId, config.userId)
-//        val status = rtcEngine?.joinChannelEx(config.appToken, rtcConnection, options, eventHandler)
-        val status = rtcEngine?.joinChannel(config.appToken, config.roomId, config.userId, options)
+        val status = rtcEngine?.joinChannel(config.appToken, config.roomId, "", config.userId)
         if (status != IRtcEngineEventHandler.ErrorCode.ERR_OK) {
             val errorMsg = "join channel error status not ERR_OK!"
             errorMsg.logE(TAG)
@@ -125,6 +114,14 @@ internal class AgoraRtcClientEx : RtcBaseClientEx<RtcEngineEx>() {
 
     override fun leaveChannel() {
         rtcEngine?.leaveChannel()
+    }
+
+    override fun switchRole(broadcaster: Boolean) {
+        if (broadcaster) {
+            rtcEngine?.setClientRole(Constants.CLIENT_ROLE_BROADCASTER)
+        } else {
+            rtcEngine?.setClientRole(Constants.CLIENT_ROLE_AUDIENCE)
+        }
     }
 
     override fun createAudioEngine(): RtcBaseAudioEngine<RtcEngineEx> {

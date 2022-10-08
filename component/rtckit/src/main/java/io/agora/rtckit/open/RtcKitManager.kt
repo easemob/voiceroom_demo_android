@@ -76,6 +76,10 @@ class RtcKitManager {
         middleService?.leaveChannel()
     }
 
+    fun switchRole(broadcaster: Boolean) {
+        middleService?.switchRole(broadcaster)
+    }
+
     fun operateAudio(audioEvent: RtcAudioEvent) {
         middleService?.onAudioEvent(audioEvent)
     }

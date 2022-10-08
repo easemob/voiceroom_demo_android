@@ -142,6 +142,7 @@ public class BaseRecyclerViewAdapter<B extends ViewBinding, T, H extends BaseRec
 
     @SuppressLint("NotifyDataSetChanged")
     public void submitListAndPurge(@NonNull List<T> dataList) {
+        this.dataList.clear();
         this.dataList = dataList;
         notifyDataSetChanged();
     }

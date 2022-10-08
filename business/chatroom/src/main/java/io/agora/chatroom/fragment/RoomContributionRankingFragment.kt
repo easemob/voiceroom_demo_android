@@ -24,6 +24,7 @@ import io.agora.chatroom.databinding.FragmentChatroomContributionRankingBinding
 import io.agora.chatroom.databinding.ItemChatroomContributionRankingBinding
 import io.agora.secnceui.R
 import io.agora.chatroom.model.RoomRankViewModel
+import io.agora.chatroom.model.RoomRankViewModelFactory
 import tools.bean.VRGiftBean
 import tools.bean.VRankingMemberBean
 
@@ -61,7 +62,8 @@ class RoomContributionRankingFragment : BaseUiFragment<FragmentChatroomContribut
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        roomRankViewModel = ViewModelProvider(requireActivity())[RoomRankViewModel::class.java]
+        roomRankViewModel = ViewModelProvider(this, RoomRankViewModelFactory())[RoomRankViewModel::class.java]
+
         arguments?.apply {
             roomKitBean = getSerializable(KEY_ROOM_INFO) as RoomKitBean?
             roomKitBean?.let {
@@ -76,9 +78,9 @@ class RoomContributionRankingFragment : BaseUiFragment<FragmentChatroomContribut
             parseResource(response, object : OnResourceParseCallback<VRGiftBean>() {
                 override fun onSuccess(data: VRGiftBean?) {
                     binding?.slContributionRanking?.isRefreshing = false
-                    "getGifts total：${data?.ranking_list?.size}".logE()
+                    total = data?.ranking_list?.size ?: 0
+                    "getGifts total：${total}".logE()
                     if (data == null) return
-                    total = data.ranking_list?.size ?: 0
                     isEnd = true
                     checkEmpty()
                     if (!data.ranking_list.isNullOrEmpty()) {

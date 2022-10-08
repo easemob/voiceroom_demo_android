@@ -40,7 +40,7 @@ class RoomLiveTopView : ConstraintLayout, View.OnClickListener, IRoomLiveTopView
 
         binding.ivChatroomBack.setOnClickListener(this)
         binding.llChatroomMemberRank.setOnClickListener(this)
-        binding.mtChatroomMembers.setOnClickListener(this)
+//        binding.mtChatroomMembers.setOnClickListener(this)
         binding.mtChatroomNotice.setOnClickListener(this)
         binding.mtChatroomAgoraSound.setOnClickListener(this)
     }

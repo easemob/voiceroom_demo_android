@@ -325,8 +325,7 @@ class RoomObservableViewDelegate constructor(
      */
     fun onClickRank(currentItem: Int = 0) {
         RoomContributionAndAudienceSheetDialog(activity, roomKitBean, currentItem).show(
-            activity.supportFragmentManager,
-            "ContributionAndAudienceSheetDialog"
+            activity.supportFragmentManager, "ContributionAndAudienceSheetDialog"
         )
     }
 
@@ -563,7 +562,7 @@ class RoomObservableViewDelegate constructor(
                         MicClickAction.Invite -> {
                             // 房主邀请他人
                             if (data.enable) {
-                                onClickRank(currentItem = 1)
+                                onRoomViewDelegateListener?.onInvitation()
                             } else {
                                 ToastTools.show(activity, activity.getString(R.string.chatroom_mic_close_by_host))
                             }
@@ -664,5 +663,7 @@ class RoomObservableViewDelegate constructor(
     interface OnRoomViewDelegateListener {
         // 提交上麦请求成功回调
         fun onSubmitMicResponse()
+
+        fun onInvitation()
     }
 }

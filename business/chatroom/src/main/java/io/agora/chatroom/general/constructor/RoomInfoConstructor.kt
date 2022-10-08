@@ -47,7 +47,7 @@ object RoomInfoConstructor {
             memberCount = roomDetail.member_count ?: 0
             giftCount = roomDetail.gift_amount ?: 0
             watchCount = roomDetail.click_count ?: 0
-            soundSelection = roomDetail.getSoundSelection()
+            soundSelection = roomDetail.soundSelection
         }
         roomDetail.ranking_list?.let { rankList ->
             val rankUsers = mutableListOf<RoomRankUserBean>()

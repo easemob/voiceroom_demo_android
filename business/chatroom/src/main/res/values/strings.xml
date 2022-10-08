@@ -69,4 +69,18 @@
     <string name="chatroom_exchange_mic_success">Exchange seat success</string>
     <string name="chatroom_exchange_mic_fail">Exchange seat error:%1$s</string>
     <string name="chatroom_mic_close_by_host">Mic close by host</string>
+    <string name="chatroom_mic_kicked_out">Kicked Out</string>
+    <string name="chatroom_mic_kicked_off">Kicked Off</string>
+    <string name="chatroom_mic_unblocked">Mic Unblocked</string>
+    <string name="chatroom_mic_blocked">Mic Blocked</string>
+    <string name="chatroom_mic_muted">Mic Muted</string>
+    <string name="chatroom_mic_unmuted">Mic Unmuted</string>
+    <string name="chatroom_mic_audience_accepted_invitation">%1$s Accepted Invitation</string>
+    <string name="chatroom_mic_audience_rejected_invitation">%1$s Rejected Invitation</string>
+    <string name="chatroom_mic_stafe_is_full">The stage is full,try again later</string>
+    <string name="chatroom_mic_request_cancelled">Request Cancelled</string>
+    <string name="chatroom_mic_on_stage">On-Stage</string>
+    <string name="chatroom_mic_off_stage">Off-Stage</string>
+    <string name="chatroom_mic_removed_from_stage">You were removed from stage</string>
+    <string name="chatroom_mic_kicked_out_of_the_room">You have been kicked out of the room</string>
 </resources>

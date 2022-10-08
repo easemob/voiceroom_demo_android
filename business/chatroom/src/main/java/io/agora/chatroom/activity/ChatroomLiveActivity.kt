@@ -437,4 +437,11 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
     override fun onSubmitMicResponse() {
 
     }
+
+    override fun onInvitation() {
+        if (this@ChatroomLiveActivity::handsDelegate.isInitialized) {
+            handsDelegate.showOwnerHandsDialog()
+            binding.chatBottom.setShowHandStatus(true,false)
+        }
+    }
 }

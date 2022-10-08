@@ -52,6 +52,7 @@ class RoomAudienceListFragment : BaseUiFragment<FragmentChatroomAudienceListBind
     private var cursor = ""
     private var total = 0
     private var isEnd = false
+    private val members = mutableListOf<VMemberBean>()
 
     private var audienceAdapter: BaseRecyclerViewAdapter<ItemChatroomAudienceListBinding, VMemberBean, RoomAudienceListViewHolder>? =
         null
@@ -62,7 +63,8 @@ class RoomAudienceListFragment : BaseUiFragment<FragmentChatroomAudienceListBind
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        roomRankViewModel = ViewModelProvider(requireActivity())[RoomRankViewModel::class.java]
+        roomRankViewModel =
+            ViewModelProvider(this, ViewModelProvider.NewInstanceFactory())[RoomRankViewModel::class.java]
         arguments?.apply {
             roomKitBean = getSerializable(KEY_ROOM_INFO) as RoomKitBean?
             roomKitBean?.let {
@@ -115,7 +117,7 @@ class RoomAudienceListFragment : BaseUiFragment<FragmentChatroomAudienceListBind
     private fun initAdapter(recyclerView: RecyclerView) {
         audienceAdapter =
             BaseRecyclerViewAdapter(
-                null,
+                members,
                 null,
                 object : OnItemChildClickListener<VMemberBean> {
                     override fun onItemChildClick(
@@ -126,7 +128,7 @@ class RoomAudienceListFragment : BaseUiFragment<FragmentChatroomAudienceListBind
                         itemViewType: Long
                     ) {
                         if (extData is Int) {
-                            handleRequest(roomKitBean?.roomId, data?.uid, data?.mic_index, extData)
+                            handleRequest(roomKitBean?.roomId, data?.uid, extData)
                         }
                     }
                 },
@@ -159,15 +161,15 @@ class RoomAudienceListFragment : BaseUiFragment<FragmentChatroomAudienceListBind
         }
     }
 
-    private fun handleRequest(roomId: String?, uid: String?, micIndex: Int?, @MicClickAction action: Int) {
+    private fun handleRequest(roomId: String?, uid: String?, @MicClickAction action: Int) {
         if (roomId.isNullOrEmpty() || uid.isNullOrEmpty()) return
-        context?.let {  parentContext ->
+        context?.let { parentContext ->
             if (action == MicClickAction.Invite) {
                 HttpManager.getInstance(parentContext).invitationMic(roomId, uid, object : ValueCallBack<Boolean> {
                     override fun onSuccess(var1: Boolean?) {
                         if (var1 != true) return
                         context?.let {
-                            ToastTools.show(it,"invitationMic success")
+                            ToastTools.show(it, "invitationMic success")
                         }
                     }
 
@@ -177,17 +179,17 @@ class RoomAudienceListFragment : BaseUiFragment<FragmentChatroomAudienceListBind
                 })
             } else if (action == MicClickAction.KickOff) {
                 HttpManager.getInstance(parentContext)
-                    .kickMic(roomId, uid, micIndex ?: -1, object : ValueCallBack<Boolean> {
+                    .kickMic(roomId, uid, -1, object : ValueCallBack<Boolean> {
                         override fun onSuccess(var1: Boolean?) {
                             if (var1 != true) return
                             context?.let {
-                                ToastTools.show(it,"kickMic success")
+                                ToastTools.show(it, "kickMic success")
                             }
                         }
 
                         override fun onError(var1: Int, var2: String?) {
                             context?.let {
-                                ToastTools.show(it,"kickMic onError $var1 $var2")
+                                ToastTools.show(it, "kickMic onError $var1 $var2")
                             }
                         }
                     })
