@@ -9,4 +9,5 @@
     <dimen name="text_size_18sp">18sp</dimen>
 
     <dimen name="space_8dp">8dp</dimen>
+    <dimen name="space_84dp">84dp</dimen>
 </resources>

@@ -16,6 +16,7 @@ import java.util.List;
 
 import io.agora.chatroom.R;
 import io.agora.chatroom.bean.ProfileBean;
+import io.agora.chatroom.general.repositories.ProfileManager;
 
 public class ProfileGridAdapter extends BaseAdapter {
    private Context context;
@@ -74,15 +75,18 @@ public class ProfileGridAdapter extends BaseAdapter {
          }
       });
       imageView.setImageResource(data.get(position).getAvatarResource());
+      imageView.setAlpha(0.5f);
       if(selectedPosition == position) {
          check.setEnabled(false);
          item.setEnabled(false);
          imageBg.setVisibility(View.VISIBLE);
+         imageView.setAlpha(1.0f);
       }else {
          check.setEnabled(true);
          item.setEnabled(true);
-         imageBg.setVisibility(View.GONE);
+         imageBg.setVisibility(View.INVISIBLE);
          data.get(position).setChecked(false);
+         imageView.setAlpha(0.5f);
       }
       return view;
    }
@@ -98,6 +102,15 @@ public class ProfileGridAdapter extends BaseAdapter {
    public void setSelectedPosition(int position) {
       this.selectedPosition = position;
       notifyDataSetChanged();
+   }
+
+   public int getSelectedPosition(String avatar){
+      for (int i = 0; i < data.size(); i++) {
+         if (data.get(i).getAvatarName().equals(avatar)){
+            return i;
+         }
+      }
+      return -1;
    }
 
 }

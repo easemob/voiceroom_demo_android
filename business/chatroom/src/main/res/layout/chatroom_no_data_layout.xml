@@ -11,8 +11,8 @@
         app:layout_constraintVertical_bias="0.25"
         android:id="@+id/empty_icon"
         android:src="@mipmap/icon_empty_room_layout"
-        android:layout_width="237dp"
-        android:layout_height="138dp"/>
+        android:layout_width="238dp"
+        android:layout_height="140dp"/>
 
     <TextView
         app:layout_constraintTop_toBottomOf="@+id/empty_icon"
@@ -20,6 +20,7 @@
         app:layout_constraintRight_toRightOf="parent"
         android:layout_below="@+id/empty_icon"
         android:text="@string/room_empty_data"
+        android:textColor="@color/dark_grey_color_979CBB"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
