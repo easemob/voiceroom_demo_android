@@ -29,7 +29,8 @@ import tools.ValueCallBack;
 public class RoomGiftViewDelegate {
    private FragmentActivity activity;
    private GiftBottomDialog dialog;
-   private int time,Animation_time = 2;
+   private int time = 2;
+   private int Animation_time = 2;
    private TextView send;
    private ChatroomGiftView giftView;
    private String roomId;
