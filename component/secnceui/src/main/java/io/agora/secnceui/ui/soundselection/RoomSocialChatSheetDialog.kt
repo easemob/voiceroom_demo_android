@@ -25,6 +25,7 @@ class RoomSocialChatSheetDialog constructor(private val onClickSocialChatListene
             mtSocialChatMore.setOnClickListener {
                 onClickSocialChatListener.onMoreSound()
             }
+            mtBottomSheetTitle.text = titleText
             mtSocialChatContent.text = contentText
             customers?.forEach { customerBean ->
                 val customerImage = AppCompatImageView(root.context)
@@ -42,8 +43,13 @@ class RoomSocialChatSheetDialog constructor(private val onClickSocialChatListene
         view.layoutParams = layoutParams
     }
 
+    private var titleText: String = ""
     private var contentText: String = ""
     private var customers: List<CustomerUsageBean>? = null
+
+    fun titleText(titleText: String) = apply {
+        this.titleText = titleText
+    }
 
     fun contentText(contentText: String) = apply {
         this.contentText = contentText

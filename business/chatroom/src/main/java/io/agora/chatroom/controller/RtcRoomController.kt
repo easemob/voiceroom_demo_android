@@ -39,6 +39,10 @@ class RtcRoomController : IRtcKitListener {
 
     private var rtcManger: RtcKitManager? = null
 
+    /**是否是主播*/
+    var isBroadcaster = true
+
+    /**local mute*/
     var isLocalAudioEnable = true
 
     /**第一次启动机器，播放*/
@@ -86,6 +90,7 @@ class RtcRoomController : IRtcKitListener {
         rtcChannelConfig.userId = userId
         rtcChannelConfig.broadcaster = broadcaster
         this.joinCallback =  joinCallback
+        this.isBroadcaster = broadcaster
         rtcManger?.joinChannel(rtcChannelConfig)
     }
 

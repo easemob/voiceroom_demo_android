@@ -111,7 +111,7 @@ class RoomObservableViewDelegate constructor(
                     ToastTools.show(activity, "close bot onSuccess：$data")
                     if (data != true) return
                     // 关闭机器人，暂停所有音效播放
-                    iRoomMicView.activeBot(false)
+//                    iRoomMicView.activeBot(false)
                     RtcRoomController.get().stopAllEffect()
                 }
             })
@@ -181,7 +181,8 @@ class RoomObservableViewDelegate constructor(
                     "leave mic：$data".logE()
                     data?.let {
                         if (it.second) {
-                            ToastTools.show(activity, "leave mic:${it.first}")
+                            // 用户下麦
+                            ToastTools.show(activity, activity.getString(R.string.chatroom_mic_off_stage))
                             iRoomMicView.updateMicStatusByAction(it.first, MicClickAction.OffStage)
                         }
                     }
@@ -195,7 +196,7 @@ class RoomObservableViewDelegate constructor(
                     "mute mic：$data".logE()
                     data?.let {
                         if (it.second) {
-                            ToastTools.show(activity, "mute mic:${it.first}")
+                            ToastTools.show(activity, activity.getString(R.string.chatroom_mic_muted))
                             iRoomMicView.updateMicStatusByAction(it.first, MicClickAction.ForceMute)
                         }
                     }
@@ -209,7 +210,7 @@ class RoomObservableViewDelegate constructor(
                     "cancel mute mic：$data".logE()
                     data?.let {
                         if (it.second) {
-                            ToastTools.show(activity, "cancel mute mic:${it.first}")
+                            ToastTools.show(activity, activity.getString(R.string.chatroom_mic_unmuted))
                             iRoomMicView.updateMicStatusByAction(it.first, MicClickAction.ForceUnMute)
                         }
                     }
@@ -223,7 +224,7 @@ class RoomObservableViewDelegate constructor(
                     "kick mic：$data".logE()
                     data?.let {
                         if (it.second) {
-                            ToastTools.show(activity, "kick mic:${it.first}")
+                            ToastTools.show(activity, activity.getString(R.string.chatroom_mic_kicked_off))
                             iRoomMicView.updateMicStatusByAction(it.first, MicClickAction.KickOff)
                         }
                     }
@@ -247,7 +248,7 @@ class RoomObservableViewDelegate constructor(
                     "lock mic：$data".logE()
                     data?.let {
                         if (it.second) {
-                            ToastTools.show(activity, "lock mic:${it.first}")
+                            ToastTools.show(activity, activity.getString(R.string.chatroom_mic_blocked))
                             iRoomMicView.updateMicStatusByAction(it.first, MicClickAction.Lock)
                         }
                     }
@@ -261,7 +262,7 @@ class RoomObservableViewDelegate constructor(
                     "cancel lock mic：$data".logE()
                     data?.let {
                         if (it.second) {
-                            ToastTools.show(activity, "cancel lock mic:${it.first}")
+                            ToastTools.show(activity, activity.getString(R.string.chatroom_mic_unblocked))
                             iRoomMicView.updateMicStatusByAction(it.first, MicClickAction.UnLock)
                         }
                     }
@@ -362,7 +363,8 @@ class RoomObservableViewDelegate constructor(
                     activity.supportFragmentManager, "mtSpatialAudio"
                 )
             }
-        }).contentText(curSoundSelection.soundIntroduce)
+        }).titleText(curSoundSelection.soundName)
+            .contentText(curSoundSelection.soundIntroduce)
             .customers(curSoundSelection.customer ?: mutableListOf())
             .show(activity.supportFragmentManager, "chatroomSocialChatSheetDialog")
     }

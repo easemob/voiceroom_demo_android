@@ -158,25 +158,32 @@ public class ChatroomSoundSelectionActivity extends BaseActivity implements Chat
    }
 
    public void joinRoom(VRoomInfoBean data){
-      ChatroomConfigManager.getInstance().joinRoom(
-              Objects.requireNonNull(data.getRoom()).getChatroom_id(), new ValueCallBack<ChatRoom>() {
-         @Override
-         public void onSuccess(ChatRoom chatRoom) {
-            EMLog.e("ChatroomSoundSelectionActivity", "joinRoom onSuccess: ");
-            ARouter.getInstance()
-                    .build(RouterPath.ChatroomPath)
-                    .withSerializable(RouterParams.KEY_CHATROOM_DETAILS_INFO, data)
-                    .navigation();
-            finishCreateActivity();
-            finish();
-         }
-
-         @Override
-         public void onError(int code, String desc) {
-            EMLog.e("ChatroomSoundSelectionActivity", "joinRoom Fail code: "+code + " desc: " + desc);
-
-         }
-      });
+      // TODO: 2022/10/8 进入房间后再joinRoom
+      ARouter.getInstance()
+              .build(RouterPath.ChatroomPath)
+              .withSerializable(RouterParams.KEY_CHATROOM_DETAILS_INFO, data)
+              .navigation();
+      finishCreateActivity();
+      finish();
+//      ChatroomConfigManager.getInstance().joinRoom(
+//              Objects.requireNonNull(data.getRoom()).getChatroom_id(), new ValueCallBack<ChatRoom>() {
+//         @Override
+//         public void onSuccess(ChatRoom chatRoom) {
+//            EMLog.e("ChatroomSoundSelectionActivity", "joinRoom onSuccess: ");
+//            ARouter.getInstance()
+//                    .build(RouterPath.ChatroomPath)
+//                    .withSerializable(RouterParams.KEY_CHATROOM_DETAILS_INFO, data)
+//                    .navigation();
+//            finishCreateActivity();
+//            finish();
+//         }
+//
+//         @Override
+//         public void onError(int code, String desc) {
+//            EMLog.e("ChatroomSoundSelectionActivity", "joinRoom Fail code: "+code + " desc: " + desc);
+//
+//         }
+//      });
    }
 
 
