@@ -24,6 +24,8 @@ internal abstract class RtcBaseClientEx<T> {
 
     abstract fun leaveChannel()
 
+    abstract fun switchRole(broadcaster: Boolean)
+
     /**创建音频管理引擎*/
     abstract fun createAudioEngine(): RtcBaseAudioEngine<T>?
 

@@ -110,9 +110,10 @@ class RoomContributionAndAudienceSheetDialog constructor(
         init {
             with(fragments) {
                 put(PAGE_INDEX0, RoomContributionRankingFragment.getInstance(roomKitBean))
-                if (roomKitBean.isOwner) {
-                    put(PAGE_INDEX1, RoomAudienceListFragment.getInstance(roomKitBean))
-                }
+                // todo 一期不显示用户列表
+//                if (roomKitBean.isOwner) {
+//                    put(PAGE_INDEX1, RoomAudienceListFragment.getInstance(roomKitBean))
+//                }
             }
         }
 

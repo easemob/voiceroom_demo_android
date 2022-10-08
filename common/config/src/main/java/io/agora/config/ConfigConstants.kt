@@ -25,7 +25,7 @@ object ConfigConstants {
         const val Social_Chat = "Social Chat"
         const val Karaoke = "Karaoke"
         const val Gaming_Buddy = "Gaming Buddy"
-        const val Professional_Broadcaster = "Professional broadcaster"
+        const val Professional_Broadcaster = "Professional podcaster"
     }
 
     //--------AI 降噪模式 start--------

@@ -15,6 +15,8 @@ interface IRtcMiddleService {
 
     fun leaveChannel()
 
+    fun switchRole(broadcaster:Boolean)
+
     /**处理音频事件*/
     fun onAudioEvent(audioEvent: RtcAudioEvent)
 

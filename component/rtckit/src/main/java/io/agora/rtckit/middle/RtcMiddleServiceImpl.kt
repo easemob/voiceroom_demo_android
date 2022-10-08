@@ -33,6 +33,10 @@ class RtcMiddleServiceImpl constructor(
         rtcClient.leaveChannel()
     }
 
+    override fun switchRole(broadcaster: Boolean) {
+        rtcClient.switchRole(broadcaster)
+    }
+
     override fun onAudioEvent(audioEvent: RtcAudioEvent) {
         rtcClient.getAudioEngine()?.apply {
             when (audioEvent) {

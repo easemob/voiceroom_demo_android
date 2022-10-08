@@ -89,6 +89,10 @@ class RtcRoomController : IRtcKitListener {
         rtcManger?.joinChannel(rtcChannelConfig)
     }
 
+    fun switchRole(broadcaster: Boolean){
+        rtcManger?.switchRole(broadcaster)
+    }
+
     /**
      * 降噪控制
      */
