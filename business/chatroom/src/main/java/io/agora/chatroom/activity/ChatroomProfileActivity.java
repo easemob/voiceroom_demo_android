@@ -1,6 +1,7 @@
 package io.agora.chatroom.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -15,6 +16,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.google.android.material.imageview.ShapeableImageView;
@@ -47,6 +50,7 @@ public class ChatroomProfileActivity extends BaseActivity implements View.OnClic
    private InputMethodManager inputManager;
    private ConstraintLayout baseLayout;
    private ConstraintLayout disclaimer;
+   private LinearLayoutCompat content;
    private String nick;
 
    @Override
@@ -64,6 +68,7 @@ public class ChatroomProfileActivity extends BaseActivity implements View.OnClic
       number = findViewById(R.id.number);
       baseLayout = findViewById(R.id.base_layout);
       disclaimer = findViewById(R.id.disclaimer_layout);
+      content = findViewById(R.id.content_layout);
       inputManager = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
    }
 
@@ -121,14 +126,14 @@ public class ChatroomProfileActivity extends BaseActivity implements View.OnClic
          showDialog(v);
       }else if (v.getId() == R.id.edit){
          getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+         content.setFocusable(false);
+         content.setFocusableInTouchMode(false);
          nickName.setEnabled(true);
-         nickName.setFocusable(true);
-         nickName.setFocusableInTouchMode(true);
          nickName.requestFocus();
          nickName.setSelection(nickName.getText().length());
-         showKeyboard();
+         showKeyboard(nickName);
       }else if (v.getId() == R.id.disclaimer_layout){
-
+         startActivity(new Intent(ChatroomProfileActivity.this,ChatroomDisclaimerActivity.class));
       }
 
    }
@@ -148,6 +153,9 @@ public class ChatroomProfileActivity extends BaseActivity implements View.OnClic
             nickName.setEnabled(false);
             nickName.setFocusable(false);
             nickName.setFocusableInTouchMode(false);
+            VRUserBean bean = ProfileManager.getInstance().getProfile();
+            bean.setName(nickName.getText().toString());
+            updateProfile(bean);
             break;
          case EditorInfo.IME_ACTION_NEXT:
             // next stuff
@@ -189,22 +197,7 @@ public class ChatroomProfileActivity extends BaseActivity implements View.OnClic
                           int resId = bean.getAvatarResource();
                           if (resId != 0){
                              avatar.setImageResource(resId);
-                             try {
-                                HttpManager.getInstance(ChatroomProfileActivity.this).loginWithToken(
-                                        ChatClient.getInstance().getDeviceInfo().getString("deviceid"), bean.getAvatarName(), new ValueCallBack<VRUserBean>() {
-                                           @Override
-                                           public void onSuccess(VRUserBean var1) {
-                                              ProfileManager.getInstance().setProfile(var1);
-                                           }
-
-                                           @Override
-                                           public void onError(int var1, String var2) {
-                                              ToastTools.show(ChatroomProfileActivity.this, var2, Toast.LENGTH_LONG);
-                                           }
-                                        });
-                             } catch (JSONException e) {
-                                e.printStackTrace();
-                             }
+                             updateProfile(bean);
                           }
                        }
                     });
@@ -212,6 +205,46 @@ public class ChatroomProfileActivity extends BaseActivity implements View.OnClic
               })
               .build(this)
               .showAtLocation(itemView, Gravity.BOTTOM, 0, 0);
+   }
+
+   private void updateProfile(ProfileBean bean){
+      try {
+         HttpManager.getInstance(ChatroomProfileActivity.this).loginWithToken(
+                 ChatClient.getInstance().getDeviceInfo().getString("deviceid"), bean.getAvatarName(), new ValueCallBack<VRUserBean>() {
+                    @Override
+                    public void onSuccess(VRUserBean var1) {
+                       ProfileManager.getInstance().setProfile(var1);
+                       ToastTools.show(ChatroomProfileActivity.this,getString(R.string.room_profile_update_name),Toast.LENGTH_LONG);
+                    }
+
+                    @Override
+                    public void onError(int var1, String var2) {
+                       ToastTools.show(ChatroomProfileActivity.this, var2, Toast.LENGTH_LONG);
+                    }
+                 });
+      } catch (JSONException e) {
+         e.printStackTrace();
+      }
+   }
+
+   private void updateProfile(VRUserBean bean){
+      try {
+         HttpManager.getInstance(ChatroomProfileActivity.this).loginWithToken(
+                 ChatClient.getInstance().getDeviceInfo().getString("deviceid"),bean.getPortrait(), new ValueCallBack<VRUserBean>() {
+                    @Override
+                    public void onSuccess(VRUserBean var1) {
+                       ProfileManager.getInstance().setProfile(var1);
+                       ToastTools.show(ChatroomProfileActivity.this,getString(R.string.room_profile_update_name),Toast.LENGTH_LONG);
+                    }
+
+                    @Override
+                    public void onError(int var1, String var2) {
+                       ToastTools.show(ChatroomProfileActivity.this, var2, Toast.LENGTH_LONG);
+                    }
+                 });
+      } catch (JSONException e) {
+         e.printStackTrace();
+      }
    }
 
 }

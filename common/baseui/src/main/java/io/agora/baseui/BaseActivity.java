@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.ColorRes;
@@ -146,10 +147,9 @@ public class BaseActivity extends AppCompatActivity implements IParserSource {
         }
     }
 
-    public void showKeyboard(){
-        getWindow().setSoftInputMode(
-                WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE
-        );
+    public void showKeyboard(EditText editText){
+        InputMethodManager imm = (InputMethodManager) editText.getContext( ).getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(editText,0);
     }
 
     /**
