@@ -368,6 +368,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
         if (CustomMsgHelper.getInstance().getMsgGiftId(message).equals("VoiceRoomGift9")){
             giftViewDelegate.showGiftAction()
         }
+        roomObservableDelegate.receiveGift(roomKitBean.roomId)
     }
 
     override fun receiveApplySite(roomId: String?, message: ChatMessageData?) {
@@ -430,9 +431,24 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
             })
     }
 
+    //接收拒绝申请消息
     override fun receiveDeclineApply(roomId: String?, message: ChatMessageData?) {
-
+        super.receiveDeclineApply(roomId, message)
+        // TODO: 用户拒绝申请,房主提示
+        ToastTools.show(this,getString(R.string.chatroom_mic_audience_rejected_invitation,""))
     }
+
+    //接收邀请消息
+    override fun receiveInviteSite(roomId: String?, message: ChatMessageData?) {
+        super.receiveInviteSite(roomId, message)
+        // TODO:  过滤自己
+        if (true){
+            roomObservableDelegate.receiveInviteSite(roomKitBean.roomId)
+        }else{
+            ToastTools.show(this,getString(R.string.chatroom_mic_audience_accepted_invitation,""))
+        }
+    }
+
     // 麦位管理请求上麦成功回调，更改小手状态
     override fun onSubmitMicResponse() {
 

@@ -6,44 +6,30 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
-import androidx.core.view.isVisible
 import io.agora.baseui.dialog.BaseFragmentDialog
 import io.agora.buddy.tool.dp
-import io.agora.secnceui.databinding.DialogCenterFragmentAlertBinding
+import io.agora.secnceui.databinding.DialogCenterFragmentContentBinding
 
 /**
  * 中间弹框，确认/取消按钮
  */
-class CommonFragmentAlertDialog constructor() : BaseFragmentDialog<DialogCenterFragmentAlertBinding>() {
+class CommonFragmentContentDialog constructor() : BaseFragmentDialog<DialogCenterFragmentContentBinding>() {
 
-    override fun getViewBinding(inflater: LayoutInflater, container: ViewGroup?): DialogCenterFragmentAlertBinding {
-        return DialogCenterFragmentAlertBinding.inflate(inflater, container, false)
+    override fun getViewBinding(inflater: LayoutInflater, container: ViewGroup?): DialogCenterFragmentContentBinding {
+        return DialogCenterFragmentContentBinding.inflate(inflater, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         dialog?.setCanceledOnTouchOutside(false)
         mBinding?.apply {
-//            addMargin(view)
-            if (!TextUtils.isEmpty(titleText)) {
-                mtTitle.text = titleText
-            } else {
-                mtTitle.isVisible = false
-            }
             if (!TextUtils.isEmpty(contentText)) {
                 mtContent.text = contentText
             }
-            if (!TextUtils.isEmpty(leftText)) {
-                mbLeft.text = leftText
+            if (!TextUtils.isEmpty(submitText)) {
+                mbSubmit.text = submitText
             }
-            if (!TextUtils.isEmpty(rightText)) {
-                mbRight.text = rightText
-            }
-            mbLeft.setOnClickListener {
-                clickListener?.onCancelClick()
-                dismiss()
-            }
-            mbRight.setOnClickListener {
+            mbSubmit.setOnClickListener {
                 clickListener?.onConfirmClick()
                 dismiss()
             }
@@ -58,26 +44,16 @@ class CommonFragmentAlertDialog constructor() : BaseFragmentDialog<DialogCenterF
         view.layoutParams = layoutParams
     }
 
-    private var titleText: String = ""
     private var contentText: String = ""
-    private var leftText: String = ""
-    private var rightText: String = ""
+    private var submitText: String = ""
     private var clickListener: OnClickBottomListener? = null
-
-    fun titleText(titleText: String) = apply {
-        this.titleText = titleText
-    }
 
     fun contentText(contentText: String) = apply {
         this.contentText = contentText
     }
 
-    fun leftText(leftText: String) = apply {
-        this.leftText = leftText
-    }
-
-    fun rightText(rightText: String) = apply {
-        this.rightText = rightText
+    fun submitText(submitText: String) = apply {
+        this.submitText = submitText
     }
 
     fun setOnClickListener(clickListener: OnClickBottomListener) = apply {
@@ -89,10 +65,5 @@ class CommonFragmentAlertDialog constructor() : BaseFragmentDialog<DialogCenterF
          * 点击确定按钮事件
          */
         fun onConfirmClick()
-
-        /**
-         * 点击取消按钮事件
-         */
-        fun onCancelClick() {}
     }
 }

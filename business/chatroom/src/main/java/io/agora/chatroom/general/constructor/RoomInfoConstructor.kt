@@ -125,4 +125,17 @@ object RoomInfoConstructor {
         }
         return micInfoMap
     }
+
+    fun convertServerRankToUiRank(rankList: List<VRankingMemberBean>): List<RoomRankUserBean> {
+        val rankUsers = mutableListOf<RoomRankUserBean>()
+
+        for (i in rankList.indices) {
+            // 取前三名
+            if (i > 2) break
+            serverRoomRankUserToUiBean(rankList[i])?.let { rankUser ->
+                rankUsers.add(rankUser)
+            }
+        }
+        return rankUsers
+    }
 }

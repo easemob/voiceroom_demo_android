@@ -7,10 +7,12 @@ import android.widget.CompoundButton
 import android.widget.SeekBar
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
+import bean.ChatMessageData
 import io.agora.baseui.adapter.OnItemClickListener
 import io.agora.baseui.general.callback.OnResourceParseCallback
 import io.agora.baseui.general.net.Resource
 import io.agora.baseui.interfaces.IParserSource
+import io.agora.buddy.tool.ThreadManager
 import io.agora.buddy.tool.ToastTools
 import io.agora.buddy.tool.logE
 import io.agora.chatroom.R
@@ -40,7 +42,9 @@ import io.agora.secnceui.ui.soundselection.RoomSoundSelectionSheetDialog
 import io.agora.secnceui.ui.spatialaudio.RoomSpatialAudioSheetDialog
 import io.agora.secnceui.widget.top.IRoomLiveTopView
 import tools.ValueCallBack
+import tools.bean.VRGiftBean
 import tools.bean.VRoomInfoBean
+import kotlin.random.Random
 
 /**
  * @author create by zhangwei03
@@ -348,7 +352,7 @@ class RoomObservableViewDelegate constructor(
      */
     fun onClickSoundSocial(vRoomInfo: VRoomInfoBean?) {
         val curSoundSelection = RoomSoundSelectionConstructor.builderCurSoundSelection(
-            activity, ConfigConstants.SoundSelection.Social_Chat
+            activity, vRoomInfo?.room?.soundSelection ?: ConfigConstants.SoundSelection.Social_Chat
         )
         RoomSocialChatSheetDialog(object :
             RoomSocialChatSheetDialog.OnClickSocialChatListener {
@@ -656,6 +660,71 @@ class RoomObservableViewDelegate constructor(
         } else {
             micViewModel.cancelCloseMic(activity, roomKitBean.roomId, index)
         }
+    }
+
+    private var updateRankRunnable: Runnable? = null
+
+    // 收到礼物消息
+    fun receiveGift(roomId: String) {
+        if (updateRankRunnable != null) {
+            ThreadManager.getInstance().removeCallbacks(updateRankRunnable)
+        }
+        val longDelay = Random.nextInt(1000, 10000)
+        "receiveGift longDelay：$longDelay".logE(TAG)
+        updateRankRunnable = Runnable {
+            HttpManager.getInstance(activity).getGiftList(roomId, object : ValueCallBack<VRGiftBean> {
+                override fun onSuccess(var1: VRGiftBean?) {
+                    var1?.ranking_list?.let {
+                        val rankList = RoomInfoConstructor.convertServerRankToUiRank(it)
+                        if (activity.isFinishing) return
+                        ThreadManager.getInstance().runOnMainThread {
+                            iRoomTopView.onRankMember(rankList)
+                        }
+                    }
+                }
+
+                override fun onError(var1: Int, var2: String?) {
+
+                }
+            })
+        }
+        ThreadManager.getInstance().runOnMainThreadDelay(updateRankRunnable, longDelay)
+    }
+
+    fun receiveInviteSite(roomId: String) {
+        CommonFragmentAlertDialog()
+            .contentText(activity.getString(R.string.chatroom_mic_anchor_invited_you_on_stage))
+            .leftText(activity.getString(R.string.chatroom_decline))
+            .rightText(activity.getString(R.string.chatroom_accept))
+            .setOnClickListener(object : CommonFragmentAlertDialog.OnClickBottomListener {
+                override fun onConfirmClick() {
+                    HttpManager.getInstance(activity).agreeMicInvitation(roomId, object : ValueCallBack<Boolean> {
+                        override fun onSuccess(var1: Boolean?) {
+                            if (var1 == true) {
+                                // 上台
+                                RtcRoomController.get().switchRole(true)
+                            }
+                        }
+
+                        override fun onError(var1: Int, var2: String?) {
+
+                        }
+                    })
+                }
+
+                override fun onCancelClick() {
+                    HttpManager.getInstance(activity).rejectMicInvitation(roomId, object : ValueCallBack<Boolean> {
+                        override fun onSuccess(var1: Boolean?) {
+
+                        }
+
+                        override fun onError(var1: Int, var2: String?) {
+                        }
+
+                    })
+                }
+            })
+            .show(activity.supportFragmentManager, "CommonFragmentAlertDialog")
     }
 
     var onRoomViewDelegateListener: OnRoomViewDelegateListener? = null

@@ -875,6 +875,35 @@ public class HttpManager {
     }
 
     /**
+     * 用户同意上麦邀请
+     * @param roomId
+     */
+    public void agreeMicInvitation(String roomId,ValueCallBack<Boolean> callBack){
+        Log.e("agreeMicInvitation","roomId:"+roomId);
+        Log.e("agreeMicInvitation","Authorization:"+ ProfileManager.getInstance().getProfile().getAuthorization());
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Content-Type", "application/json");
+        headers.put("Authorization", "Bearer " + ProfileManager.getInstance().getProfile().getAuthorization());
+        new VRHttpClientManager.Builder(mContext)
+                .setUrl(VRRequestApi.get().agreeMicInvitation(roomId))
+                .setHeaders(headers)
+                .setRequestMethod(Method_POST)
+                .asyncExecute(new VRHttpCallback() {
+                    @Override
+                    public void onSuccess(String result) {
+                        LogToolsKt.logE("agreeMicInvitation success: " + result, TAG);
+                        callBack.onSuccess(true);
+                    }
+
+                    @Override
+                    public void onError(int code, String msg) {
+                        LogToolsKt.logE("agreeMicInvitation onError " + msg, TAG);
+                        callBack.onError(code,msg);
+                    }
+                });
+    }
+
+    /**
      * 用户拒绝上麦邀请
      * @param roomId
      */
@@ -1063,7 +1092,7 @@ public class HttpManager {
             e.printStackTrace();
         }
         new VRHttpClientManager.Builder(mContext)
-                .setUrl(VRRequestApi.get().ApplyAgreeInvitation(roomId))
+                .setUrl(VRRequestApi.get().applyAgreeInvitation(roomId))
                 .setHeaders(headers)
                 .setParams(requestBody.toString())
                 .setRequestMethod(Method_POST)

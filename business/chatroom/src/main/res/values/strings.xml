@@ -51,6 +51,7 @@
     <string name="chatroom_invite">Invite</string>
     <string name="chatroom_invited">Invited</string>
     <string name="chatroom_accept">Accept</string>
+    <string name="chatroom_decline">Decline</string>
     <string name="chatroom_accepted">Accepted</string>
     <string name="chatroom_request_speak">Request to Speak?</string>
     <string name="chatroom_cancel_request_speak">Cancel Request to Speak?</string>
@@ -86,8 +87,7 @@
     <string name="chatroom_mic_off_stage">Off-Stage</string>
     <string name="chatroom_mic_removed_from_stage">You were removed from stage</string>
     <string name="chatroom_mic_kicked_out_of_the_room">You have been kicked out of the room</string>
-
-
+    <string name="chatroom_mic_anchor_invited_you_on_stage">Anchor Invited You On-Stage</string>
 
     <string name="room_disclaimer_content_1">[Agora Chat Room Demo] (this "Product") is a test product provided by Agora. This Product is available for our current and potential customers only, and for them to test the functionality and quality of this Product. This Product is provided neither for commercial nor for public use.
 Agora enjoys the copyright and ownership of this product. You shall not modify, consolidate, compile, adjust, reverse engineer, sub-license, transfer, sell this Product or infringe the legitimate interests of Agora in any way.</string>
@@ -95,5 +95,4 @@ Agora enjoys the copyright and ownership of this product. You shall not modify, 
     <string name="room_disclaimer_content_3">It’s your freedom to choose to test this Product or not. But if you decide to do so, and if you download, install, or use this Product, it means that you confirm and agree that under no circumstances shall Agora be liable for any form of loss or injury caused to yourself or others when you use this Product for any reason, in any manner.</string>
     <string name="room_disclaimer_email">If you have any query, please feel free to contact
         support@agora.io</string>
-
 </resources>

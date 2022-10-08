@@ -77,4 +77,8 @@ public class ThreadManager {
     public boolean isMainThread() {
         return Looper.getMainLooper().getThread() == Thread.currentThread();
     }
+
+    public void removeCallbacks(Runnable runnable) {
+        mMainThreadHandler.removeCallbacks(runnable);
+    }
 }

@@ -10,6 +10,7 @@ import io.agora.config.ConfigConstants
 import io.agora.secnceui.R
 import io.agora.secnceui.annotation.ChatroomTopType
 import io.agora.secnceui.bean.RoomInfoBean
+import io.agora.secnceui.bean.RoomRankUserBean
 import io.agora.secnceui.constants.ScenesConstant
 import io.agora.secnceui.databinding.ViewChatroomLiveTopBinding
 
@@ -66,6 +67,36 @@ class RoomLiveTopView : ConstraintLayout, View.OnClickListener, IRoomLiveTopView
                 )
             )
             val topGifts = chatroomInfo.topRankUsers
+            if (topGifts.isNullOrEmpty()) {
+                llChatroomMemberRank.isVisible = false
+            } else {
+                llChatroomMemberRank.isVisible = true
+                topGifts.forEachIndexed { index, audienceBean ->
+                    val resId = ResourcesTools.getDrawableId(llChatroomMemberRank.context, audienceBean.userAvatar)
+                    when (index) {
+                        0 -> {
+                            ivChatroomMember1.isVisible = true
+                            binding.ivChatroomMember1.setImageResource(resId)
+                        }
+                        1 -> {
+                            ivChatroomMember2.isVisible = true
+                            binding.ivChatroomMember2.setImageResource(resId)
+                        }
+                        2 -> {
+                            ivChatroomMember3.isVisible = true
+                            binding.ivChatroomMember3.setImageResource(resId)
+                        }
+                        else -> {
+                            return
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    override fun onRankMember(topGifts: List<RoomRankUserBean>) {
+        binding.apply {
             if (topGifts.isNullOrEmpty()) {
                 llChatroomMemberRank.isVisible = false
             } else {

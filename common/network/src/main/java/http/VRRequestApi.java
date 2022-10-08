@@ -155,6 +155,10 @@ public class VRRequestApi {
         return BASE_URL + String.format(BASE_MIC,roomId) + MIC_INVITE +  MIC_REJECT_INVITE;
     }
 
+    public String agreeMicInvitation(String roomId){
+        return BASE_URL + String.format(BASE_MIC,roomId) + MIC_INVITE + MIC_AGREE;
+    }
+
     public String lockMic(String roomId){
         return BASE_URL + String.format(BASE_MIC,roomId) + MIC_LOCK;
     }
@@ -171,7 +175,7 @@ public class VRRequestApi {
         return BASE_URL + String.format(BASE_MIC,roomId)+ MIC_APPLY + MIC_INVITE;
     }
 
-    public String ApplyAgreeInvitation(String roomId){
+    public String applyAgreeInvitation(String roomId){
         return BASE_URL + String.format(BASE_MIC,roomId)+ MIC_APPLY + MIC_AGREE;
     }
 
