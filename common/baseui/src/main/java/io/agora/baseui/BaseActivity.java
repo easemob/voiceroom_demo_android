@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.TextView;
 
 import androidx.annotation.ColorRes;
 import androidx.annotation.NonNull;
@@ -229,6 +230,16 @@ public class BaseActivity extends AppCompatActivity implements IParserSource {
      */
     public static float dip2px(Context context, float value) {
         return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, context.getResources().getDisplayMetrics());
+    }
+
+    /**
+     * set titleText Style
+     * @param view textView
+     * @param type Typeface {NORMAL, BOLD, ITALIC, BOLD_ITALIC}
+     */
+    public void setTextStyle(TextView view, int type){
+        if (null != view && type >= 0 && type<= 3)
+            view.setTypeface(null,type);
     }
 
 }

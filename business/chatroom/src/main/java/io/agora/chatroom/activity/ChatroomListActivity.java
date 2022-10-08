@@ -1,7 +1,9 @@
 package io.agora.chatroom.activity;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -20,6 +22,7 @@ import com.google.android.material.tabs.TabLayoutMediator;
 import io.agora.baseui.BaseActivity;
 import io.agora.chatroom.R;
 import io.agora.chatroom.fragment.ChatroomListFragment;
+import io.agora.chatroom.general.repositories.ProfileManager;
 import io.agora.chatroom.model.PageViewModel;
 import io.agora.config.RouterPath;
 import io.agora.secnceui.widget.titlebar.ChatroomTitleBar;
@@ -37,6 +40,7 @@ public class ChatroomListActivity extends BaseActivity implements ChatroomTitleB
     private TextView title;
     private int mCount;
     private int index;
+    private int resId = 0;
     private int[] titles = {R.string.tab_layout_all,R.string.tab_layout_chat_room,R.string.tab_layout_audio_room};
 
     @Override
@@ -51,6 +55,17 @@ public class ChatroomListActivity extends BaseActivity implements ChatroomTitleB
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        try {
+            resId = getResources().getIdentifier(ProfileManager.getInstance().getProfile().getPortrait(), "drawable", getPackageName());
+            mVRAvatar.setImageResource(resId);
+        }catch (Exception e){
+            Log.e("getResources()", e.getMessage());
+        }
+    }
+
+    @Override
     protected void initView(Bundle savedInstanceState) {
         mVRTitleBar =  findViewById(R.id.title_bar);
         mVRAvatar = findViewById(R.id.image_avatar);
@@ -58,6 +73,7 @@ public class ChatroomListActivity extends BaseActivity implements ChatroomTitleB
         mTableLayout = findViewById(R.id.agora_tab_layout);
         mViewPager = findViewById(R.id.vp_fragment);
         mButtonLayout = findViewById(R.id.bottom_layout);
+        setTextStyle(mVRTitleBar.getTitle(), Typeface.BOLD);
     }
 
     @Override
@@ -82,12 +98,6 @@ public class ChatroomListActivity extends BaseActivity implements ChatroomTitleB
                 if(tab.getCustomView() != null) {
                     index = tab.getPosition();
                     title = tab.getCustomView().findViewById(R.id.tab_item_title);
-                    ViewGroup.LayoutParams layoutParams = title.getLayoutParams();
-                    layoutParams.height = (int)dip2px(mContext, 26);
-                    title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-                    title.setGravity(Gravity.CENTER);
-                    String content = getString(titles[index]) + getString(R.string.room_tab_layout_count,String.valueOf(mCount));
-                    title.setText(content);
                 }
             }
 
@@ -102,7 +112,7 @@ public class ChatroomListActivity extends BaseActivity implements ChatroomTitleB
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-
+                title.setText(getString(titles[index]));
             }
         });
 
@@ -138,7 +148,13 @@ public class ChatroomListActivity extends BaseActivity implements ChatroomTitleB
                     @Override
                     public void getItemCount(int count) {
                         mCount = count;
-                        String content = getString(titles[index]) + getString(R.string.room_tab_layout_count,String.valueOf(count));
+                        ViewGroup.LayoutParams layoutParams = title.getLayoutParams();
+                        layoutParams.height = (int)dip2px(mContext, 26);
+                        title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+                        setTextStyle(title,Typeface.BOLD);
+                        title.setGravity(Gravity.CENTER);
+                        String content = getString(titles[index]) + getString(R.string.room_tab_layout_count,String.valueOf(mCount));
+                        title.setTextColor(getColor(R.color.dark_grey_color_040925));
                         title.setText(content);
                     }
                 });
@@ -167,7 +183,7 @@ public class ChatroomListActivity extends BaseActivity implements ChatroomTitleB
 
     @Override
     public void onBackPress(View view) {
-        onBackPressed();
+
     }
 
     @Override
