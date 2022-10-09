@@ -88,6 +88,12 @@
     <string name="chatroom_mic_removed_from_stage">You were removed from stage</string>
     <string name="chatroom_mic_kicked_out_of_the_room">You have been kicked out of the room</string>
     <string name="chatroom_mic_anchor_invited_you_on_stage">Anchor Invited You On-Stage</string>
+    <string name="chatroom_mic_exchange_mic_success">Exchange mic success</string>
+    <string name="chatroom_mic_exchange_mic_failed">Exchange mic failed</string>
+    <string name="chatroom_first_enter_room_notice_tips">Welcome to Agora Chat Room 2.0 I am the robot Agora Red. Can you see the robot assistant at the right coner? Click it and experience the new features.</string>
+    <string name="chatroom_notice_edit_hint">Announce to chatroom, 140 character limit.</string>
+    <string name="chatroom_edit">Edit</string>
+    <string name="chatroom_notice_edit_limit">140 character limit.</string>
 
     <string name="room_disclaimer_content_1">[Agora Chat Room Demo] (this "Product") is a test product provided by Agora. This Product is available for our current and potential customers only, and for them to test the functionality and quality of this Product. This Product is provided neither for commercial nor for public use.
 Agora enjoys the copyright and ownership of this product. You shall not modify, consolidate, compile, adjust, reverse engineer, sub-license, transfer, sell this Product or infringe the legitimate interests of Agora in any way.</string>

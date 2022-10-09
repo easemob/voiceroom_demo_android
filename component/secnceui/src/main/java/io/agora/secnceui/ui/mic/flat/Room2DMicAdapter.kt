@@ -108,16 +108,26 @@ class Room2DMicAdapter constructor(
 
     fun receiverAttributeMap(newMicMap: Map<Int, MicInfoBean>) {
         var needUpdate = false
+        // 是否只更新一条
+        var onlyOneUpdate = newMicMap.size == 1
+        var onlyUpdateItemIndex = -1
         newMicMap.entries.forEach { entry ->
             val index = entry.key
             if (index >= 0 && index < dataList.size) {
                 dataList[index] = entry.value
                 needUpdate = true
+                if (onlyOneUpdate) {
+                    onlyUpdateItemIndex = index
+                }
             }
         }
         if (needUpdate) {
             ThreadManager.getInstance().runOnMainThread {
-                notifyDataSetChanged()
+                if (onlyUpdateItemIndex >= 0) {
+                    notifyItemChanged(onlyUpdateItemIndex)
+                } else {
+                    notifyItemChanged(0, dataList.size)
+                }
             }
         }
     }

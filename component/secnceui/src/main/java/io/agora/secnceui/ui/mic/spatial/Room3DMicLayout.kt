@@ -362,10 +362,6 @@ class Room3DMicLayout : ConstraintLayout, View.OnClickListener, IRoomMicView {
 
     }
 
-    override fun updateMicStatusByAction(index: Int, @MicClickAction action: Int) {
-
-    }
-
     override fun exchangeMic(from: Int, to: Int) {
 
     }

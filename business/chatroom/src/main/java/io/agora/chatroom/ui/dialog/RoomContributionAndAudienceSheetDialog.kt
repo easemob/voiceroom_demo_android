@@ -1,4 +1,4 @@
-package io.agora.chatroom.fragment
+package io.agora.chatroom.ui.dialog
 
 import android.graphics.Typeface
 import android.os.Bundle
@@ -15,6 +15,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import io.agora.baseui.dialog.BaseFixedHeightSheetDialog
 import io.agora.buddy.tool.ResourcesTools
 import io.agora.chatroom.bean.RoomKitBean
+import io.agora.chatroom.ui.fragment.RoomContributionRankingFragment
 import io.agora.secnceui.R
 import io.agora.secnceui.databinding.DialogChatroomContributionAndAudienceBinding
 
@@ -34,9 +35,6 @@ class RoomContributionAndAudienceSheetDialog constructor(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding?.apply {
-            setOnApplyWindowInsets(root)
-        }
         initFragmentAdapter()
     }
 

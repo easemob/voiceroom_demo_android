@@ -36,7 +36,6 @@ class RoomAudioSettingsSheetDialog constructor(private val audioSettingsListener
         super.onViewCreated(view, savedInstanceState)
 
         binding?.apply {
-            setOnApplyWindowInsets(root)
             if (audioSettingsInfo.roomType == ConfigConstants.RoomType.Common_Chatroom) {
                 mtSpatialAudio.isVisible = false
                 mtSpatialAudioArrow.isVisible = false

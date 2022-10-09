@@ -119,10 +119,6 @@ class Room2DMicLayout : ConstraintLayout, IRoomMicView {
         room2DMicBotAdapter?.updateVolume(speakerType, volume)
     }
 
-    override fun updateMicStatusByAction(index: Int, @MicClickAction action: Int) {
-//        room2DMicAdapter?.updateMicStatusByAction(index, action)
-    }
-
     override fun exchangeMic(from: Int, to: Int) {
 
     }

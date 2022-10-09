@@ -38,6 +38,7 @@ public class ChatroomViewModel extends AndroidViewModel {
     private SingleSourceLiveData<Resource<Boolean>> closeBotObservable;
     private SingleSourceLiveData<Resource<Boolean>> robotVolumeObservable;
     private SingleSourceLiveData<Resource<VRoomInfoBean>> checkObservable;
+    private SingleSourceLiveData<Resource<Boolean>> roomNoticeObservable;
     private final AtomicBoolean joinRtcChannel = new AtomicBoolean(false);
     private final AtomicBoolean joinImRoom = new AtomicBoolean(false);
 
@@ -53,6 +54,7 @@ public class ChatroomViewModel extends AndroidViewModel {
         closeBotObservable = new SingleSourceLiveData<>();
         robotVolumeObservable = new SingleSourceLiveData<>();
         checkObservable = new SingleSourceLiveData<>();
+        roomNoticeObservable = new SingleSourceLiveData<>();
     }
 
     public LiveData<Resource<VRoomBean>> getRoomObservable() {
@@ -69,6 +71,10 @@ public class ChatroomViewModel extends AndroidViewModel {
 
     public LiveData<Resource<VRoomInfoBean>> getRoomDetailObservable() {
         return roomDetailsObservable;
+    }
+
+    public LiveData<Resource<Boolean>> getRoomNoticeObservable() {
+        return roomNoticeObservable;
     }
 
     public LiveData<Resource<Boolean>> getLeaveObservable() {
@@ -185,6 +191,10 @@ public class ChatroomViewModel extends AndroidViewModel {
 
     public void updateBotVolume(Context context, String roomId, int robotVolume) {
         robotVolumeObservable.setSource(mRepository.changeRobotVolume(context, roomId, robotVolume));
+    }
+
+    public void updateRoomNotice(Context context, String roomId, String notice) {
+        roomNoticeObservable.setSource(mRepository.updateRoomNotice(context, roomId, notice));
     }
 
     /**

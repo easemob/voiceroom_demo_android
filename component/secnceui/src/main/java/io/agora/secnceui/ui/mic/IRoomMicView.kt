@@ -1,7 +1,5 @@
 package io.agora.secnceui.ui.mic
 
-import io.agora.secnceui.annotation.MicClickAction
-import io.agora.secnceui.annotation.MicStatus
 import io.agora.secnceui.bean.MicInfoBean
 
 /**
@@ -20,9 +18,6 @@ interface IRoomMicView {
     fun updateBotVolume(speakerType: Int, volume: Int)
 
     fun receiverAttributeMap(newMicMap: Map<Int, MicInfoBean>)
-
-    /**麦位状态*/
-    fun updateMicStatusByAction(index: Int, @MicClickAction action: Int)
 
     /**
      * 交换麦位

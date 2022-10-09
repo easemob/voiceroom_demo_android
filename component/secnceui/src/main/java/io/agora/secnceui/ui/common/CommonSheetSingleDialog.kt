@@ -23,7 +23,6 @@ class CommonSheetSingleDialog constructor(): BaseSheetDialog<DialogBottomSheetSi
         super.onViewCreated(view, savedInstanceState)
         dialog?.setCanceledOnTouchOutside(false)
         binding?.apply {
-            setOnApplyWindowInsets(root)
             if (!TextUtils.isEmpty(singleText)){
                 mbCancel.text = singleText
             }

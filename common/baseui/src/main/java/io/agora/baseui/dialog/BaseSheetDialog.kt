@@ -36,17 +36,6 @@ abstract class BaseSheetDialog<B : ViewBinding?> : BottomSheetDialogFragment() {
         bottomSheetBehavior.isHideable = false
     }
 
-    protected fun setOnApplyWindowInsets(view: View) {
-//        dialog?.window?.let {
-//            ViewCompat.setOnApplyWindowInsetsListener(it.decorView) { v: View?, insets: WindowInsetsCompat ->
-//                val inset = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-//                Log.d("setOnApplyWindowInsets", inset.toString())
-//                view.setPadding(0, 0, 0, inset.bottom)
-//                WindowInsetsCompat.CONSUMED
-//            }
-//        }
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         binding = null

@@ -21,7 +21,6 @@ class RoomSocialChatSheetDialog constructor(private val onClickSocialChatListene
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding?.apply {
-            setOnApplyWindowInsets(root)
             mtSocialChatMore.setOnClickListener {
                 onClickSocialChatListener.onMoreSound()
             }

@@ -20,6 +20,8 @@ import custormgift.CustomMsgHelper
 import custormgift.OnMsgCallBack
 import io.agora.baseui.BaseUiActivity
 import io.agora.baseui.adapter.OnItemClickListener
+import io.agora.baseui.general.callback.OnResourceParseCallback
+import io.agora.baseui.general.net.Resource
 import io.agora.buddy.tool.GsonTools.toBean
 import io.agora.buddy.tool.ToastTools
 import io.agora.buddy.tool.logE
@@ -126,6 +128,17 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
     }
 
     private fun initListeners() {
+        // 房间详情
+        roomViewModel.roomDetailObservable.observe(this) { response: Resource<VRoomInfoBean> ->
+            parseResource(response, object : OnResourceParseCallback<VRoomInfoBean>() {
+
+                override fun onSuccess(data: VRoomInfoBean?) {
+                    "getRoomDetails onSuccess：$data".logE("getRoomDetails")
+                    roomInfoBean = data
+                    roomObservableDelegate.onRoomDetails(data)
+                }
+            })
+        }
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { _: View?, insets: WindowInsetsCompat ->
             val systemInset = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             "systemInset:left:${systemInset.left},top:${systemInset.top},right:${systemInset.right},bottom:${systemInset.bottom}".logE(
@@ -218,13 +231,17 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
             }
 
             override fun onClickNotice(view: View) {
-                roomObservableDelegate.onClickNotice(roomInfoBean)
+                roomObservableDelegate.onClickNotice(
+                    roomInfoBean?.room?.announcement
+                        ?: getString(R.string.chatroom_first_enter_room_notice_tips)
+                )
             }
 
             override fun onClickSoundSocial(view: View) {
-                roomObservableDelegate.onClickSoundSocial(roomInfoBean, finishBack = {
-                    finish()
-                })
+                roomObservableDelegate.onClickSoundSocial(
+                    roomInfoBean?.room?.soundSelection ?: ConfigConstants.SoundSelection.Social_Chat, finishBack = {
+                        finish()
+                    })
             }
         })
         binding.chatBottom.setMenuItemOnClickListener(object : MenuItemClickListener {
@@ -379,6 +396,13 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
     override fun receiveApplySite(roomId: String?, message: ChatMessageData?) {
         Log.e("liveActivity", "receiveApplySite")
         binding.chatBottom.setShowHandStatus(handsDelegate.isOwner, true)
+    }
+
+    override fun announcementChanged(roomId: String?, announcement: String?) {
+        super.announcementChanged(roomId, announcement)
+        "announcementChanged roomId:$roomId  announcement:$announcement".logE("announcementChanged")
+        if (!TextUtils.equals(roomKitBean.chatroomId, roomId)) return
+        roomInfoBean?.room?.announcement = announcement
     }
 
     override fun roomAttributesDidUpdated(roomId: String?, attributeMap: MutableMap<String, String>?, fromId: String?) {

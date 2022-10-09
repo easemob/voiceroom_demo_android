@@ -176,6 +176,26 @@ public class ChatroomRepository extends BaseRepository {
         }.asLiveData();
     }
 
+    public LiveData<Resource<Boolean>> updateRoomNotice(Context context, String roomId, String notice) {
+        return new NetworkOnlyResource<Boolean>() {
+            @Override
+            protected void createCall(@NonNull ResultCallBack<LiveData<Boolean>> callBack) {
+                HttpManager.getInstance(context).updateRoomInfo(roomId, null, notice, null,
+                        null, null, null, null, new ValueCallBack<Boolean>() {
+                            @Override
+                            public void onSuccess(Boolean var1) {
+                                callBack.onSuccess(createLiveData(var1));
+                            }
+
+                            @Override
+                            public void onError(int code, String desc) {
+                                callBack.onError(code, desc);
+                            }
+                        });
+            }
+        }.asLiveData();
+    }
+
     public LiveData<Resource<VRoomInfoBean>> checkPassword(Context context, String roomId, String password) {
         return new NetworkOnlyResource<VRoomInfoBean>() {
             @Override
