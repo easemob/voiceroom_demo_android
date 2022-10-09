@@ -547,7 +547,7 @@ public class HttpManager {
         headers.put("Authorization", "Bearer " + ProfileManager.getInstance().getProfile().getAuthorization());
         JSONObject requestBody = new JSONObject();
         try {
-            if (mic_index != -999){
+            if (mic_index >= 0) {
                 requestBody.putOpt("mic_index", mic_index);
             }
         } catch (JSONException e) {

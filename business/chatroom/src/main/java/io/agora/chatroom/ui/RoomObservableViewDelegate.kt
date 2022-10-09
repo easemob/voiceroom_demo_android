@@ -81,6 +81,10 @@ class RoomObservableViewDelegate constructor(
     /**当前用户位置*/
     private var myselfIndex: Int = -1
 
+    fun isOnMic(): Boolean {
+        return myselfIndex >= 0
+    }
+
     init {
         // 房间详情
         roomViewModel.roomDetailObservable.observe(activity) { response: Resource<VRoomInfoBean> ->
@@ -403,7 +407,7 @@ class RoomObservableViewDelegate constructor(
     /**
      * 音效
      */
-    fun onClickSoundSocial(vRoomInfo: VRoomInfoBean?) {
+    fun onClickSoundSocial(vRoomInfo: VRoomInfoBean?, finishBack: () -> Unit) {
         val curSoundSelection = RoomSoundSelectionConstructor.builderCurSoundSelection(
             activity, vRoomInfo?.room?.soundSelection ?: ConfigConstants.SoundSelection.Social_Chat
         )
@@ -411,9 +415,7 @@ class RoomObservableViewDelegate constructor(
             RoomSocialChatSheetDialog.OnClickSocialChatListener {
 
             override fun onMoreSound() {
-                RoomSpatialAudioSheetDialog(roomKitBean.isOwner).show(
-                    activity.supportFragmentManager, "mtSpatialAudio"
-                )
+                onSoundSelectionDialog(RtcRoomController.get().soundEffect, finishBack)
             }
         }).titleText(curSoundSelection.soundName)
             .contentText(curSoundSelection.soundIntroduce)
@@ -592,26 +594,7 @@ class RoomObservableViewDelegate constructor(
                         }
                     })
             else
-                showAlertDialog(activity.getString(R.string.chatroom_request_speak),
-                    object : CommonSheetAlertDialog.OnClickBottomListener {
-                        override fun onConfirmClick() {
-                            HttpManager.getInstance(activity)
-                                .submitMic(roomKitBean.roomId, micInfo.index, object : ValueCallBack<Boolean?> {
-                                    override fun onSuccess(var1: Boolean?) {
-                                        ToastTools.show(
-                                            activity, activity.getString(R.string.chatroom_mic_submit_sent),
-                                        )
-                                    }
-
-                                    override fun onError(code: Int, desc: String) {
-                                        ToastTools.show(
-                                            activity,
-                                            activity.getString(R.string.chatroom_mic_apply_fail, desc),
-                                        )
-                                    }
-                                })
-                        }
-                    })
+                onRoomViewDelegateListener?.onUserClickOnStage(micInfo.index)
         } else if (roomKitBean.isOwner || ProfileManager.getInstance()
                 .isMyself(micInfo.userInfo?.userId)
         ) { // 房主或者自己
@@ -785,5 +768,8 @@ class RoomObservableViewDelegate constructor(
     interface OnRoomViewDelegateListener {
 
         fun onInvitation()
+
+        // 用户点击上台
+        fun onUserClickOnStage(micIndex: Int)
     }
 }
