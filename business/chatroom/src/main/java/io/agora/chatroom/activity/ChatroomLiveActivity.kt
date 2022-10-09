@@ -383,6 +383,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
         if (!TextUtils.equals(roomKitBean.chatroomId, roomId)) return
         attributeMap?.let {
             val newMicMap = RoomInfoConstructor.convertAttrMicUiBean(it, roomKitBean.ownerId)
+            roomObservableDelegate.onUpdateMicMap(newMicMap)
             if (roomKitBean.roomType == ConfigConstants.RoomType.Common_Chatroom) { // 普通房间
                 binding.rvChatroom2dMicLayout.receiverAttributeMap(newMicMap)
             } else {
@@ -441,17 +442,13 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
     //接收邀请消息
     override fun receiveInviteSite(roomId: String?, message: ChatMessageData?) {
         super.receiveInviteSite(roomId, message)
-        // TODO:  过滤自己
-        if (true){
-            roomObservableDelegate.receiveInviteSite(roomKitBean.roomId)
-        }else{
-            ToastTools.show(this,getString(R.string.chatroom_mic_audience_accepted_invitation,""))
+        // TODO:  过滤自己,micIndex？
+        var micIndex = -1
+        if (true) {
+            roomObservableDelegate.receiveInviteSite(roomKitBean.roomId, micIndex)
+        } else {
+            ToastTools.show(this, getString(R.string.chatroom_mic_audience_accepted_invitation, ""))
         }
-    }
-
-    // 麦位管理请求上麦成功回调，更改小手状态
-    override fun onSubmitMicResponse() {
-
     }
 
     override fun onInvitation() {

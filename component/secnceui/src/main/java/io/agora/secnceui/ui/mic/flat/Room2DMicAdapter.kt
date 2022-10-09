@@ -121,4 +121,11 @@ class Room2DMicAdapter constructor(
             }
         }
     }
+
+    fun updateVolume(index: Int, volume: Int) {
+        if (index >= 0 && index < dataList.size) {
+            dataList[index].audioVolumeType = volume
+            notifyItemChanged(index)
+        }
+    }
 }

@@ -75,4 +75,12 @@ public class ProfileManager {
         }
         return null;
     }
+
+    public int rtcUid() {
+        VRUserBean currentUser = getProfile();
+        if (currentUser != null) {
+            return currentUser.getRtc_uid();
+        }
+        return -1;
+    }
 }

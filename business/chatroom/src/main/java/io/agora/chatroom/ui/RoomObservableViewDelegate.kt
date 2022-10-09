@@ -7,13 +7,13 @@ import android.widget.CompoundButton
 import android.widget.SeekBar
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
-import bean.ChatMessageData
 import io.agora.baseui.adapter.OnItemClickListener
 import io.agora.baseui.general.callback.OnResourceParseCallback
 import io.agora.baseui.general.net.Resource
 import io.agora.baseui.interfaces.IParserSource
 import io.agora.buddy.tool.ThreadManager
 import io.agora.buddy.tool.ToastTools
+import io.agora.buddy.tool.logD
 import io.agora.buddy.tool.logE
 import io.agora.chatroom.R
 import io.agora.chatroom.bean.RoomKitBean
@@ -75,6 +75,11 @@ class RoomObservableViewDelegate constructor(
         ViewModelProvider(activity)[RoomMicViewModel::class.java]
     }
 
+    /**麦位信息，index,rtcUid*/
+    private val micMap = mutableMapOf<Int, Int>()
+
+    /**当前用户位置*/
+    private var myselfIndex: Int = -1
 
     init {
         // 房间详情
@@ -133,6 +138,21 @@ class RoomObservableViewDelegate constructor(
                     iRoomMicView.updateBotVolume(speaker, ConfigConstants.VolumeType.Volume_None)
                 } else {
                     iRoomMicView.updateBotVolume(speaker, ConfigConstants.VolumeType.Volume_Medium)
+                }
+            }
+
+            override fun onUserVolume(rtcUid: Int, volume: Int) {
+                "onAudioVolumeIndication uid:${rtcUid},volume:${volume}".logD("onUserVolume")
+                if (rtcUid == 0) {
+                    // 自己
+                    if (myselfIndex >= 0) {
+                        iRoomMicView.updateVolume(myselfIndex, volume)
+                    }
+                } else {
+                    val micIndex = findIndexByRtcUid(rtcUid)
+                    if (micIndex >= 0) {
+                        iRoomMicView.updateVolume(micIndex, volume)
+                    }
                 }
             }
         })
@@ -302,6 +322,38 @@ class RoomObservableViewDelegate constructor(
     }
 
     /**
+     * 麦位index,rtcUid
+     */
+    fun onUpdateMicMap(updateMap: Map<Int, MicInfoBean>) {
+        updateMap.forEach { (index, micInfo) ->
+            val rtcUid = micInfo.userInfo?.rtcUid ?: -1
+            if (rtcUid > 0) {
+                micMap[index] = rtcUid
+                // 当前用户在麦位上
+                if (rtcUid == ProfileManager.getInstance().rtcUid()) {
+                    myselfIndex = rtcUid
+                }
+            } else {
+                val removeRtcUid = micMap.remove(index)
+                // 当前用户从麦位移除
+                if (removeRtcUid == ProfileManager.getInstance().rtcUid()) {
+                    myselfIndex = -1
+                }
+            }
+        }
+        RtcRoomController.get().switchRole(myselfIndex >= 0)
+    }
+
+    private fun findIndexByRtcUid(rtcUid: Int): Int {
+        micMap.entries.forEach {
+            if (it.value == rtcUid) {
+                return it.key
+            }
+        }
+        return -1
+    }
+
+    /**
      * 详情
      */
     fun onRoomDetails(vRoomInfoBean: VRoomInfoBean?) {
@@ -318,11 +370,11 @@ class RoomObservableViewDelegate constructor(
             }
             it.mic_info?.let { micList ->
                 iRoomMicView.updateAdapter(
-                    RoomInfoConstructor.convertMicUiBean(micList, ownerUid), vRoomInfoBean.room?.isUse_robot ?: false
+                    RoomInfoConstructor.convertMicUiBean(micList, ownerUid),
+                    vRoomInfoBean.room?.isUse_robot ?: false
                 )
             }
         }
-
     }
 
     /**
@@ -465,7 +517,8 @@ class RoomObservableViewDelegate constructor(
                         val audioUrl =
                             if (ainsSoundBean.soundMode == ConfigConstants.AINSMode.AINS_High) soundAudioBean.audioUrlHigh else soundAudioBean.audioUrl
                         // 试听降噪音效
-                        RtcRoomController.get().playEffect(soundAudioBean.soundId, audioUrl, soundAudioBean.speakerType)
+                        RtcRoomController.get()
+                            .playEffect(soundAudioBean.soundId, audioUrl, soundAudioBean.speakerType)
                     }
                 } else {
                     onBotMicClick(false, activity.getString(R.string.chatroom_open_bot_to_sound_effect))
@@ -545,8 +598,6 @@ class RoomObservableViewDelegate constructor(
                             HttpManager.getInstance(activity)
                                 .submitMic(roomKitBean.roomId, micInfo.index, object : ValueCallBack<Boolean?> {
                                     override fun onSuccess(var1: Boolean?) {
-                                        // 已经发出申请
-                                        onRoomViewDelegateListener?.onSubmitMicResponse()
                                         ToastTools.show(
                                             activity, activity.getString(R.string.chatroom_mic_submit_sent),
                                         )
@@ -561,7 +612,9 @@ class RoomObservableViewDelegate constructor(
                                 })
                         }
                     })
-        } else if (roomKitBean.isOwner || ProfileManager.getInstance().isMyself(micInfo.userInfo?.userId)) { // 房主或者自己
+        } else if (roomKitBean.isOwner || ProfileManager.getInstance()
+                .isMyself(micInfo.userInfo?.userId)
+        ) { // 房主或者自己
             RoomMicManagerSheetDialog(object : OnItemClickListener<MicManagerBean> {
                 override fun onItemClick(data: MicManagerBean, view: View, position: Int, viewType: Long) {
                     when (data.micClickAction) {
@@ -693,25 +746,23 @@ class RoomObservableViewDelegate constructor(
         ThreadManager.getInstance().runOnMainThreadDelay(updateRankRunnable, longDelay)
     }
 
-    fun receiveInviteSite(roomId: String) {
+    fun receiveInviteSite(roomId: String, micIndex: Int) {
         CommonFragmentAlertDialog()
             .contentText(activity.getString(R.string.chatroom_mic_anchor_invited_you_on_stage))
             .leftText(activity.getString(R.string.chatroom_decline))
             .rightText(activity.getString(R.string.chatroom_accept))
             .setOnClickListener(object : CommonFragmentAlertDialog.OnClickBottomListener {
                 override fun onConfirmClick() {
-                    HttpManager.getInstance(activity).agreeMicInvitation(roomId, object : ValueCallBack<Boolean> {
-                        override fun onSuccess(var1: Boolean?) {
-                            if (var1 == true) {
-                                // 上台
-                                RtcRoomController.get().switchRole(true)
+                    HttpManager.getInstance(activity)
+                        .agreeMicInvitation(roomId, micIndex, object : ValueCallBack<Boolean> {
+                            override fun onSuccess(var1: Boolean?) {
+
                             }
-                        }
 
-                        override fun onError(var1: Int, var2: String?) {
+                            override fun onError(var1: Int, var2: String?) {
 
-                        }
-                    })
+                            }
+                        })
                 }
 
                 override fun onCancelClick() {
@@ -732,8 +783,6 @@ class RoomObservableViewDelegate constructor(
     var onRoomViewDelegateListener: OnRoomViewDelegateListener? = null
 
     interface OnRoomViewDelegateListener {
-        // 提交上麦请求成功回调
-        fun onSubmitMicResponse()
 
         fun onInvitation()
     }

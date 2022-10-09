@@ -112,7 +112,7 @@ class Room2DMicLayout : ConstraintLayout, IRoomMicView {
     }
 
     override fun updateVolume(index: Int, volume: Int) {
-
+        room2DMicAdapter?.updateVolume(index,volume)
     }
 
     override fun updateBotVolume(speakerType: Int, volume: Int) {

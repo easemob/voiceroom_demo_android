@@ -878,15 +878,23 @@ public class HttpManager {
      * 用户同意上麦邀请
      * @param roomId
      */
-    public void agreeMicInvitation(String roomId,ValueCallBack<Boolean> callBack){
+    public void agreeMicInvitation(String roomId,int mic_index,ValueCallBack<Boolean> callBack){
         Log.e("agreeMicInvitation","roomId:"+roomId);
         Log.e("agreeMicInvitation","Authorization:"+ ProfileManager.getInstance().getProfile().getAuthorization());
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
         headers.put("Authorization", "Bearer " + ProfileManager.getInstance().getProfile().getAuthorization());
+
+        JSONObject requestBody = new JSONObject();
+        try {
+            if (mic_index >= 0) requestBody.putOpt("mic_index", mic_index);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         new VRHttpClientManager.Builder(mContext)
                 .setUrl(VRRequestApi.get().agreeMicInvitation(roomId))
                 .setHeaders(headers)
+                .setParams(requestBody.toString())
                 .setRequestMethod(Method_POST)
                 .asyncExecute(new VRHttpCallback() {
                     @Override
