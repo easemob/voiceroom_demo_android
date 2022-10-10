@@ -44,10 +44,11 @@ object RoomInfoConstructor {
             channelId = roomDetail.channel_id ?: ""
             chatroomName = roomDetail.name ?: ""
             owner = serverUser2UiUser(roomDetail.owner)
-            memberCount = roomDetail.member_count ?: 0
-            giftCount = roomDetail.gift_amount ?: 0
-            watchCount = roomDetail.click_count ?: 0
+            memberCount = roomDetail.member_count
+            giftCount = roomDetail.gift_amount
+            watchCount = roomDetail.click_count
             soundSelection = roomDetail.soundSelection
+            roomType = roomDetail.type
         }
         roomDetail.ranking_list?.let { rankList ->
             val rankUsers = mutableListOf<RoomRankUserBean>()
@@ -68,7 +69,7 @@ object RoomInfoConstructor {
         return RoomUserInfoBean().apply {
             userId = vUser.uid ?: ""
             chatUid = vUser.chat_uid ?: ""
-            rtcUid = vUser.rtc_uid ?: 0
+            rtcUid = vUser.rtc_uid
             username = vUser.name ?: ""
             userAvatar = vUser.portrait ?: ""
         }
@@ -86,10 +87,11 @@ object RoomInfoConstructor {
     /**
      * 服务端roomInfo bean 转 麦位 ui bean
      */
-    fun convertMicUiBean(vRoomMicInfoList: List<VRMicBean>, ownerUid: String): List<MicInfoBean> {
+    fun convertMicUiBean(vRoomMicInfoList: List<VRMicBean>, roomType: Int, ownerUid: String): List<MicInfoBean> {
         val micInfoList = mutableListOf<MicInfoBean>()
+        val interceptIndex = if (roomType == ConfigConstants.RoomType.Common_Chatroom) 5 else 4
         for (i in vRoomMicInfoList.indices) {
-            if (i > 5) break
+            if (i > interceptIndex) break
             val serverMicInfo = vRoomMicInfoList[i]
             val micInfo = MicInfoBean().apply {
                 index = serverMicInfo.mic_index
@@ -110,7 +112,8 @@ object RoomInfoConstructor {
     fun convertAttrMicUiBean(attributeMap: Map<String, String>, ownerUid: String): Map<Int, MicInfoBean> {
         val micInfoMap = mutableMapOf<Int, MicInfoBean>()
         attributeMap.entries.forEach { entry ->
-            val index = ConfigConstants.MicConstant.micMap[entry.key] ?: -1
+            var index = ConfigConstants.MicConstant.micMap[entry.key]
+            if (index == null) index = -1
             GsonTools.toBean<VRMicBean>(entry.value, object : TypeToken<VRMicBean>() {}.type)?.let { attrBean ->
                 val micInfo = MicInfoBean().apply {
                     this.index = index

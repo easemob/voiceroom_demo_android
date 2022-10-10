@@ -12,6 +12,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import io.agora.ValueCallBack;
 import io.agora.baseui.general.net.Resource;
 import io.agora.buddy.tool.LogToolsKt;
+import io.agora.buddy.tool.ThreadManager;
 import io.agora.chat.ChatClient;
 import io.agora.chat.ChatRoom;
 import io.agora.chatroom.bean.RoomKitBean;
@@ -105,18 +106,18 @@ public class ChatroomViewModel extends AndroidViewModel {
 
     public void joinRoom(Context context, String roomId) {
         if (joinRtcChannel.get() && joinImRoom.get()) {
-            joinObservable.setSource(mRepository.joinRoom(context, roomId, ""));
+            ThreadManager.getInstance().runOnMainThread(() -> joinObservable.setSource(mRepository.joinRoom(context, roomId, "")));
         }
     }
 
     public void joinRoom(Context context, String roomId, String password) {
         if (joinRtcChannel.get() && joinImRoom.get()) {
-            joinObservable.setSource(mRepository.joinRoom(context, roomId, password));
+            ThreadManager.getInstance().runOnMainThread(() -> joinObservable.setSource(mRepository.joinRoom(context, roomId, password)));
         }
     }
 
     public void leaveRoom(Context context, String roomId) {
-        joinObservable.setSource(mRepository.leaveRoom(context, roomId));
+        leaveObservable.setSource(mRepository.leaveRoom(context, roomId));
     }
 
     public void initSdkJoin(RoomKitBean roomKitBean,String password) {

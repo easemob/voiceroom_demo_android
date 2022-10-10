@@ -94,6 +94,11 @@
     <string name="chatroom_notice_edit_hint">Announce to chatroom, 140 character limit.</string>
     <string name="chatroom_edit">Edit</string>
     <string name="chatroom_notice_edit_limit">140 character limit.</string>
+    <string name="chatroom_notice_post">Post</string>
+    <string name="chatroom_notice_posted">Notice Posted</string>
+    <string name="chatroom_notice_posted_error">Notice Post Failed</string>
+    <string name="chatroom_join_room_success">Joined Success</string>
+    <string name="chatroom_join_room_failed">Joined Failed</string>
 
     <string name="room_disclaimer_content_1">[Agora Chat Room Demo] (this "Product") is a test product provided by Agora. This Product is available for our current and potential customers only, and for them to test the functionality and quality of this Product. This Product is provided neither for commercial nor for public use.
 Agora enjoys the copyright and ownership of this product. You shall not modify, consolidate, compile, adjust, reverse engineer, sub-license, transfer, sell this Product or infringe the legitimate interests of Agora in any way.</string>

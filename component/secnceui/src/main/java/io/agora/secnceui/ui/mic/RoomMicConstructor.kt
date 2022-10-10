@@ -6,7 +6,7 @@ import io.agora.secnceui.R
 import io.agora.secnceui.annotation.*
 import io.agora.secnceui.bean.*
 
-object RoomMicConstructor {
+internal object RoomMicConstructor {
 
     fun builderDefault2dMicList(): MutableList<MicInfoBean> {
         return mutableListOf(
@@ -41,12 +41,15 @@ object RoomMicConstructor {
         return mutableListOf(BotMicInfoBean(blueBot, redBot))
     }
 
-    fun builderDefault3dMicMap(context: Context, isUserBot: Boolean = false): MutableMap<String, MicInfoBean> {
-
+    fun builderDefault3dMicMap(context: Context, isUserBot: Boolean = false): Map<Int, MicInfoBean> {
         return mutableMapOf(
-            ConfigConstants.MicConstant.KeyMic0 to MicInfoBean(index = 0),
-            ConfigConstants.MicConstant.KeyMic1 to MicInfoBean(index = 1),
-            ConfigConstants.MicConstant.KeyMic2 to MicInfoBean(
+            ConfigConstants.MicConstant.KeyIndex0 to MicInfoBean(index = 0),
+            ConfigConstants.MicConstant.KeyIndex1 to MicInfoBean(index = 1),
+            ConfigConstants.MicConstant.KeyIndex2 to MicInfoBean(index = 5),
+            ConfigConstants.MicConstant.KeyIndex3 to MicInfoBean(index = 6),
+            // mic4 中间座位
+            ConfigConstants.MicConstant.KeyIndex4 to MicInfoBean(index = 4),
+            ConfigConstants.MicConstant.KeyIndex5 to MicInfoBean(
                 index = 2,
                 micStatus = if (isUserBot) MicStatus.BotActivated else MicStatus.BotInactive,
                 audioVolumeType = ConfigConstants.VolumeType.Volume_Unknown,
@@ -55,8 +58,8 @@ object RoomMicConstructor {
                     userAvatar = "icon_chatroom_blue_robot"
                 }
             ),
-            ConfigConstants.MicConstant.KeyMic3 to MicInfoBean(
-                index = 5,
+            ConfigConstants.MicConstant.KeyIndex6 to MicInfoBean(
+                index = 3,
                 micStatus = if (isUserBot) MicStatus.BotActivated else MicStatus.BotInactive,
                 audioVolumeType = ConfigConstants.VolumeType.Volume_Unknown,
                 userInfo = RoomUserInfoBean().apply {
@@ -64,9 +67,6 @@ object RoomMicConstructor {
                     userAvatar = "icon_chatroom_red_robot"
                 }
             ),
-            ConfigConstants.MicConstant.KeyMic4 to MicInfoBean(index = 3),
-            ConfigConstants.MicConstant.KeyMic5 to MicInfoBean(index = 4),
-            ConfigConstants.MicConstant.KeyMic6 to MicInfoBean(index = 6),
         )
     }
 

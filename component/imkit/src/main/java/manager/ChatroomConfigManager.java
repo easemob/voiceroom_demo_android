@@ -85,12 +85,14 @@ public class ChatroomConfigManager {
 
             @Override
             public void onReceiveInviteSite(ChatMessageData message) {
+                Log.e("setOnCustomMsgReceiveListener","onReceiveApplySite");
                 if (ChatListener != null)
                 ChatListener.receiveInviteSite(message.getConversationId(),message);
             }
 
             @Override
             public void onReceiveDeclineApply(ChatMessageData message) {
+                Log.e("setOnCustomMsgReceiveListener","onReceiveApplySite");
                 if (ChatListener != null)
                 ChatListener.receiveDeclineApply(message.getConversationId(),message);
             }

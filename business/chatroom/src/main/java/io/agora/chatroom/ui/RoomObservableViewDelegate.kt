@@ -85,12 +85,17 @@ class RoomObservableViewDelegate constructor(
     }
 
     init {
+        if (roomKitBean.isOwner) myselfIndex = 0
         // 更新公告
         roomViewModel.roomNoticeObservable.observe(activity) { response: Resource<Boolean> ->
             parseResource(response, object : OnResourceParseCallback<Boolean>() {
                 override fun onSuccess(data: Boolean?) {
                     if (data != true) return
-                    ToastTools.show(activity, "change room notice success")
+                    ToastTools.show(activity, activity.getString(R.string.chatroom_notice_posted))
+                }
+
+                override fun onError(code: Int, message: String?) {
+                    ToastTools.show(activity, message ?: activity.getString(R.string.chatroom_notice_posted))
                 }
             })
         }
@@ -338,24 +343,22 @@ class RoomObservableViewDelegate constructor(
     /**
      * 详情
      */
-    fun onRoomDetails(vRoomInfoBean: VRoomInfoBean?) {
-        val isUseBot = vRoomInfoBean?.room?.isUse_robot ?: false
+    fun onRoomDetails(vRoomInfoBean: VRoomInfoBean) {
+        val isUseBot = vRoomInfoBean.room?.isUse_robot ?: false
         RtcRoomController.get().isUseBot = isUseBot
-        RtcRoomController.get().botVolume = vRoomInfoBean?.room?.robot_volume ?: 50
+        RtcRoomController.get().botVolume = vRoomInfoBean.room?.robot_volume ?: 50
         RtcRoomController.get().soundEffect =
-            vRoomInfoBean?.room?.soundSelection ?: ConfigConstants.SoundSelection.Social_Chat
+            vRoomInfoBean.room?.soundSelection ?: ConfigConstants.SoundSelection.Social_Chat
 
-        val ownerUid = vRoomInfoBean?.room?.owner?.uid ?: ""
-        vRoomInfoBean?.let {
-            it.room?.let { vRoomInfo ->
-                iRoomTopView.onChatroomInfo(RoomInfoConstructor.serverRoomInfo2UiRoomInfo(vRoomInfo))
-            }
-            it.mic_info?.let { micList ->
-                iRoomMicView.updateAdapter(
-                    RoomInfoConstructor.convertMicUiBean(micList, ownerUid),
-                    vRoomInfoBean.room?.isUse_robot ?: false
-                )
-            }
+        val ownerUid = vRoomInfoBean.room?.owner?.uid ?: ""
+        vRoomInfoBean.room?.let { vRoomInfo ->
+            iRoomTopView.onChatroomInfo(RoomInfoConstructor.serverRoomInfo2UiRoomInfo(vRoomInfo))
+        }
+        vRoomInfoBean.mic_info?.let { micList ->
+            iRoomMicView.onInitMic(
+                RoomInfoConstructor.convertMicUiBean(micList, roomKitBean.roomType, ownerUid),
+                vRoomInfoBean.room?.isUse_robot ?: false
+            )
         }
     }
 
@@ -558,7 +561,6 @@ class RoomObservableViewDelegate constructor(
                                                 activity,
                                                 activity.getString(R.string.chatroom_mic_exchange_mic_success),
                                             )
-                                            iRoomMicView.exchangeMic(mineMicIndex, micInfo.index)
                                         }
 
                                         override fun onError(code: Int, desc: String) {

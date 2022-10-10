@@ -23,6 +23,7 @@ import io.agora.baseui.adapter.OnItemClickListener
 import io.agora.baseui.general.callback.OnResourceParseCallback
 import io.agora.baseui.general.net.Resource
 import io.agora.buddy.tool.GsonTools.toBean
+import io.agora.buddy.tool.ThreadManager
 import io.agora.buddy.tool.ToastTools
 import io.agora.buddy.tool.logE
 import io.agora.chat.ChatClient
@@ -43,7 +44,6 @@ import io.agora.config.ConfigConstants
 import io.agora.config.RouterParams
 import io.agora.config.RouterPath
 import io.agora.secnceui.bean.MicInfoBean
-import io.agora.secnceui.ui.mic.RoomMicConstructor
 import io.agora.secnceui.widget.barrage.ChatroomMessagesView
 import io.agora.secnceui.widget.primary.MenuItemClickListener
 import io.agora.secnceui.widget.top.OnLiveTopClickListener
@@ -98,6 +98,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
         initData()
         initView()
         requestAudioPermission()
+        showLoading(false)
     }
 
     private fun initData() {
@@ -133,9 +134,30 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
             parseResource(response, object : OnResourceParseCallback<VRoomInfoBean>() {
 
                 override fun onSuccess(data: VRoomInfoBean?) {
-                    "getRoomDetails onSuccess：$data".logE("getRoomDetails")
                     roomInfoBean = data
-                    roomObservableDelegate.onRoomDetails(data)
+                    data?.let {
+                        roomObservableDelegate.onRoomDetails(it)
+                    }
+                }
+            })
+        }
+        roomViewModel.joinObservable.observe(this) { response: Resource<Boolean> ->
+            parseResource(response, object : OnResourceParseCallback<Boolean>() {
+
+                override fun onSuccess(data: Boolean?) {
+                  ToastTools.show(this@ChatroomLiveActivity,getString(R.string.chatroom_join_room_success))
+                }
+
+                override fun onHideLoading() {
+                    super.onHideLoading()
+                    dismissLoading()
+                }
+
+                override fun onError(code: Int, message: String?) {
+                    ToastTools.show(this@ChatroomLiveActivity, getString(R.string.chatroom_join_room_failed))
+                    ThreadManager.getInstance().runOnMainThreadDelay({
+                        finish()
+                    }, 500)
                 }
             })
         }
@@ -175,6 +197,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
             binding.rvChatroom3dMicLayout.isVisible = false
             roomObservableDelegate =
                 RoomObservableViewDelegate(this, roomKitBean, binding.cTopView, binding.rvChatroom2dMicLayout)
+            binding.rvChatroom2dMicLayout.setMyRtcUid(ProfileManager.getInstance().rtcUid())
             binding.rvChatroom2dMicLayout.onItemClickListener(
                 object : OnItemClickListener<MicInfoBean> {
                     override fun onItemClick(data: MicInfoBean, view: View, position: Int, viewType: Long) {
@@ -198,6 +221,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
             binding.rvChatroom3dMicLayout.isVisible = true
             roomObservableDelegate =
                 RoomObservableViewDelegate(this, roomKitBean, binding.cTopView, binding.rvChatroom3dMicLayout)
+            binding.rvChatroom3dMicLayout.setMyRtcUid(ProfileManager.getInstance().rtcUid())
             binding.rvChatroom3dMicLayout.onItemClickListener(
                 object : OnItemClickListener<MicInfoBean> {
                     override fun onItemClick(data: MicInfoBean, view: View, position: Int, viewType: Long) {
@@ -214,10 +238,12 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
                         }
                     }
                 },
-            ).setUpMicInfoMap(RoomMicConstructor.builderDefault3dMicMap(this))
+            ).setUpMicInfoMap(RtcRoomController.get().isUseBot)
         }
         // 头部 如果是创建房间进来有详情
-        roomObservableDelegate.onRoomDetails(roomInfoBean)
+        roomInfoBean?.let {
+            roomObservableDelegate.onRoomDetails(it)
+        }
         roomObservableDelegate.onRoomViewDelegateListener = this
         binding.cTopView.setOnLiveTopClickListener(object : OnLiveTopClickListener {
             override fun onClickBack(view: View) {

@@ -12,13 +12,14 @@ import io.agora.secnceui.R
 import io.agora.secnceui.annotation.MicStatus
 import io.agora.secnceui.bean.MicInfoBean
 import io.agora.secnceui.databinding.ViewChatroom2dMicBinding
+import io.agora.secnceui.ui.mic.IRoomMicView
 
 /**
  * @author create by zhangwei03
  *
  * 普通麦位
  */
-class Room2DMicView : ConstraintLayout {
+class Room2DMicView : ConstraintLayout ,IRoomMicBinding{
 
     private lateinit var mBinding: ViewChatroom2dMicBinding
 
@@ -39,7 +40,7 @@ class Room2DMicView : ConstraintLayout {
         mBinding = ViewChatroom2dMicBinding.bind(root)
     }
 
-    fun binding(micInfo: MicInfoBean) {
+    override fun binding(micInfo: MicInfoBean) {
         mBinding.apply {
             if (micInfo.micStatus == MicStatus.BotActivated || micInfo.micStatus == MicStatus.BotInactive) { // 机器人
                 ivMicInnerIcon.isVisible = false
