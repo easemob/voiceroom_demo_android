@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -43,11 +42,8 @@ import io.agora.chatroom.R;
 import io.agora.chatroom.bean.PageBean;
 import io.agora.chatroom.general.repositories.ProfileManager;
 import io.agora.chatroom.model.ChatroomViewModel;
-import io.agora.config.ConfigConstants;
 import io.agora.config.RouterParams;
 import io.agora.config.RouterPath;
-import io.agora.secnceui.bean.SoundSelectionBean;
-import io.agora.secnceui.ui.soundselection.RoomSoundSelectionSheetDialog;
 import io.agora.secnceui.widget.encryption.ChatroomEncryptionInputView;
 import io.agora.secnceui.widget.titlebar.ChatroomTitleBar;
 import manager.ChatroomConfigManager;
@@ -99,8 +95,6 @@ public class ChatroomCreateActivity extends BaseActivity implements RadioGroup.O
    @Override
    protected void initListener() {
       super.initListener();
-      mEditText.setOnClickListener(this);
-      mEdRoomName.setOnClickListener(this);
       mRadioGroup.setOnCheckedChangeListener(this);
       mTitleBar.setOnBackPressListener(this);
       mNext.setOnClickListener(this);
@@ -140,6 +134,7 @@ public class ChatroomCreateActivity extends BaseActivity implements RadioGroup.O
             }else {
                mNext.setText(getString(R.string.room_create_go_live));
             }
+            mEdRoomName.setText(randomName());
          }
       });
 
@@ -193,6 +188,7 @@ public class ChatroomCreateActivity extends BaseActivity implements RadioGroup.O
    @Override
    protected void onDestroy() {
       super.onDestroy();
+      mEditText.rest();
    }
 
    @Override
@@ -205,9 +201,6 @@ public class ChatroomCreateActivity extends BaseActivity implements RadioGroup.O
    public void onCheckedChanged(RadioGroup group, int checkedId) {
       if (checkedId == R.id.radioButton_private) {
          isPublic = false;
-         baseLayout.setFocusable(true);
-         baseLayout.setFocusableInTouchMode(true);
-         baseLayout.requestFocus();
       } else if (checkedId == R.id.radioButton_public) {
          isPublic = true;
       }
@@ -222,7 +215,7 @@ public class ChatroomCreateActivity extends BaseActivity implements RadioGroup.O
          ((RecyclerView) recyclerView).setClipToPadding(false);
       }
       CompositePageTransformer compositePageTransformer = new CompositePageTransformer();
-      compositePageTransformer.addTransformer(new MarginPageTransformer(16));
+      compositePageTransformer.addTransformer(new MarginPageTransformer(20));
       mViewPager.setPageTransformer(compositePageTransformer);
       // set adapter
       mViewPager.setAdapter(new RecyclerView.Adapter<ViewHolder>() {
@@ -298,6 +291,10 @@ public class ChatroomCreateActivity extends BaseActivity implements RadioGroup.O
        }else {
           mEditText.setVisibility(View.VISIBLE);
           mTip.setVisibility(View.VISIBLE);
+          mEditText.setFocusable(true);
+          mEditText.setFocusableInTouchMode(true);
+          mEditText.requestFocus();
+          showKeyboard(mEditText);
        }
    }
 
@@ -312,20 +309,6 @@ public class ChatroomCreateActivity extends BaseActivity implements RadioGroup.O
             encryption =  mEditText.getText().toString().trim();
             roomName = mEdRoomName.getText().toString().trim();
             check();
-      }else if (v.getId() == R.id.ed_room_name){
-
-         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-         mEdRoomName.setFocusable(true);
-         mEdRoomName.setFocusableInTouchMode(true);
-         mEdRoomName.requestFocus();
-
-      }else if (v.getId() == R.id.ed_pwd){
-
-         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
-         mEditText.setFocusable(true);
-         mEditText.setFocusableInTouchMode(true);
-         mEditText.requestFocus();
-
       }else if (v.getId() == R.id.random){
          mEdRoomName.setText(randomName());
       }

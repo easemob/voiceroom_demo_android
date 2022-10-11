@@ -147,6 +147,12 @@ public class CustomMsgHelper implements MessageListener {
                         listener.onReceiveInviteSite(ChatroomMsgHelper.getInstance().parseChatMessage(message));
                     }
                     break;
+                case CHATROOM_SYSTEM:
+                    AllNormalList.add(ChatroomMsgHelper.getInstance().parseChatMessage(message));
+                    if (listener != null){
+                        listener.onReceiveSystem(ChatroomMsgHelper.getInstance().parseChatMessage(message));
+                    }
+                    break;
             }
         }
     }

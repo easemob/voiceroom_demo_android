@@ -34,9 +34,9 @@ public enum CustomMsgType {
     CHATROOM_INVITE_SITE("chatroom_inviteSiteNotify"),
 
     /**
-     * 系统消息
+     * 系统消息 成员加入
      */
-    CHATROOM_SYSTEM("chatroom_system"),
+    CHATROOM_SYSTEM("chatroom_join"),
     ;
 
     private String name;

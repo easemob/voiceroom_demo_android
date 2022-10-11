@@ -25,7 +25,8 @@ public class ChatroomEncryptionInputView extends AppCompatEditText {
    private int checkedColor, defaultColor, backColor, textColor, waitInputColor;
    private int textLength;
    private int Circle, Round;
-   private boolean isPwd, isWaitInput;
+   private boolean isPwd, isWaitInput,isStart;
+   private Paint l;
 
    public ChatroomEncryptionInputView(Context context) {
       super(context);
@@ -65,7 +66,7 @@ public class ChatroomEncryptionInputView extends AppCompatEditText {
          textColor = t.getColor(R.styleable.chatroom_encryption_input_style_textColor, 0xFF444444);
          waitInputColor = t.getColor(R.styleable.chatroom_encryption_input_style_waitInputColor, 0xFF444444);
          isPwd = t.getBoolean(R.styleable.chatroom_encryption_input_style_isPwd, true);
-         isWaitInput = t.getBoolean(R.styleable.chatroom_encryption_input_style_isWaitInput, false);
+         isWaitInput = t.getBoolean(R.styleable.chatroom_encryption_input_style_isWaitInput, true);
          t.recycle();
       }
    }
@@ -76,6 +77,7 @@ public class ChatroomEncryptionInputView extends AppCompatEditText {
       sidePaint = new Paint();
       backPaint = new Paint();
       textPaint = new Paint();
+
 
       rectFS = new ArrayList<>();
       mText = "";
@@ -139,11 +141,11 @@ public class ChatroomEncryptionInputView extends AppCompatEditText {
       textPaint.setStyle(Paint.Style.FILL);
       textPaint.setColor(textColor);
 
-      Log.e(TAG, "getMeasuredWidth: "+ getMeasuredWidth());
-      Log.e(TAG, "getMeasuredHeight: "+ getMeasuredHeight());
+//      Log.e(TAG, "getMeasuredWidth: "+ getMeasuredWidth());
+//      Log.e(TAG, "getMeasuredHeight: "+ getMeasuredHeight());
 //      int Wide = Math.min(getMeasuredHeight(), getMeasuredWidth() / textLength);
       int Wide = getMeasuredWidth() / textLength;
-      Log.e(TAG, "Wide: "+ Wide);
+//      Log.e(TAG, "Wide: "+ Wide);
       RectF rect = null;
       for (int i = 0; i < textLength; i++) {
          //区分已输入和未输入的边框颜色
@@ -152,21 +154,25 @@ public class ChatroomEncryptionInputView extends AppCompatEditText {
          } else {
             sidePaint.setColor(defaultColor);
          }
-         Log.e(TAG, "spzceX: "+ spzceX  + " spzceY:" + spzceY);
+//         Log.e(TAG, "spzceX: "+ spzceX  + " spzceY:" + spzceY);
          //RectF的参数(left,  top,  right,  bottom); 画出每个矩形框并设置间距，间距其实是增加左边框距离，缩小上下右边框距离；
 //            rect = new RectF(i * Wide + spzceX , spzceY, i * Wide + Wide - spzceX, Wide - spzceY); //四个值，分别代表4条线，距离起点位置的线
-         Log.e(TAG, "left: " + (i * Wide + spzceX)  + " top:" + spzceY + " right:"+ (i * Wide + Wide - spzceX) + " bottom:" + (Wide - spzceY));
+//         Log.e(TAG, "left: " + (i * Wide + spzceX)  + " top:" + spzceY + " right:"+ (i * Wide + Wide - spzceX) + " bottom:" + (Wide - spzceY));
          rect = new RectF(i * Wide + spzceX , spzceY, i * Wide + Wide - spzceX , getMeasuredHeight() - spzceY); //四个值，分别代表4条线，距离起点位置的线
          canvas.drawRoundRect(rect, Round, Round, backPaint); //绘制背景色
          canvas.drawRoundRect(rect, Round, Round, sidePaint); //绘制边框；
          rectFS.add(rect);
 
          if (isWaitInput && i == mText.length()) {  //显示待输入的线
-            Paint l = new Paint();
+            l = new Paint();
             l.setStrokeWidth(3);
             l.setStyle(Paint.Style.FILL);
             l.setColor(waitInputColor);
             canvas.drawLine(i * Wide + Wide / 2, getMeasuredHeight() / 2 - getMeasuredHeight() / 5, i * Wide + Wide / 2, getMeasuredHeight() / 2 + getMeasuredHeight() / 5, l);
+//            if (!isStart){
+//               post(cursorAnimation);
+//               isStart = true;
+//            }
          }
       }
       //画密码圆点
@@ -174,7 +180,7 @@ public class ChatroomEncryptionInputView extends AppCompatEditText {
          if (isPwd) {
             canvas.drawCircle(rectFS.get(j).centerX(), rectFS.get(j).centerY(), Circle, textPaint);
          } else {
-            Log.e(TAG, "centerX: "+ rectFS.get(j).centerX()  + " centerY():" + rectFS.get(j).centerY());
+//            Log.e(TAG, "centerX: "+ rectFS.get(j).centerX()  + " centerY():" + rectFS.get(j).centerY());
             canvas.drawText(mText.substring(j, j + 1), rectFS.get(j).centerX() - (textSize - spzceX) / 2, rectFS.get(j).centerY() + (textSize - spzceY) / 2, textPaint);
 //                Rect textRect = new Rect();
 //                textPaint.getTextBounds(mText.substring(j, j + 1), 0, 1, textRect);
@@ -183,6 +189,22 @@ public class ChatroomEncryptionInputView extends AppCompatEditText {
          }
       }
    }
+
+   // Cursor blink animation
+   private Runnable cursorAnimation = new Runnable() {
+      public void run() {
+
+//         // Switch the cursor visibility and set it
+//         Log.e("cursorAnimation","getAlpha1: " + l.getAlpha());
+//         int newAlpha = (l.getAlpha() == 0) ? 255 : 0;
+//         l.setAlpha(newAlpha);
+//         Log.e("cursorAnimation","getAlpha2: " + l.getAlpha());
+//         // Call onDraw() to draw the cursor with the new Paint
+//         invalidate();
+//         // Wait 500 milliseconds before calling self again
+//         postDelayed(cursorAnimation, 2000);
+      }
+   };
 
    private int dp2px(float dpValue) {
       float scale = mC.getResources().getDisplayMetrics().density;
@@ -370,5 +392,9 @@ public class ChatroomEncryptionInputView extends AppCompatEditText {
    public void setWaitInput(boolean waitInput) {
       isWaitInput = waitInput;
 
+   }
+
+   public void rest(){
+      removeCallbacks(cursorAnimation);
    }
 }

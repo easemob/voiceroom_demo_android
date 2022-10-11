@@ -114,9 +114,9 @@ public class ChatroomListFragment extends BaseChatroomListFragment<VRoomBean.Roo
         });
 
         chatroomViewModel.getCheckPasswordObservable().observe(this,response -> {
-            parseResource(response, new OnResourceParseCallback<VRoomInfoBean>() {
+            parseResource(response, new OnResourceParseCallback<Boolean>() {
                 @Override
-                public void onSuccess(@Nullable VRoomInfoBean data) {
+                public void onSuccess(@Nullable Boolean data) {
                     goChatroomPage(roomBean,mPassWord);
                 }
 

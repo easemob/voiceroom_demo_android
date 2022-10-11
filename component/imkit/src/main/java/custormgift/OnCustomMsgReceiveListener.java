@@ -43,4 +43,10 @@ public interface OnCustomMsgReceiveListener {
      */
     void onReceiveDeclineApply(ChatMessageData message);
 
+    /**
+     * 接收系统消息
+     * @param message
+     */
+    void onReceiveSystem(ChatMessageData message);
+
 }

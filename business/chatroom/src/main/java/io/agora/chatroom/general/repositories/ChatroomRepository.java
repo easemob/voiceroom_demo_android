@@ -2,6 +2,7 @@ package io.agora.chatroom.general.repositories;
 
 
 import android.content.Context;
+import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import io.agora.baseui.general.callback.ResultCallBack;
@@ -176,13 +177,13 @@ public class ChatroomRepository extends BaseRepository {
         }.asLiveData();
     }
 
-    public LiveData<Resource<VRoomInfoBean>> checkPassword(Context context, String roomId, String password) {
-        return new NetworkOnlyResource<VRoomInfoBean>() {
+    public LiveData<Resource<Boolean>> checkPassword(Context context, String roomId, String password) {
+        return new NetworkOnlyResource<Boolean>() {
             @Override
-            protected void createCall(@NonNull ResultCallBack<LiveData<VRoomInfoBean>> callBack) {
-                HttpManager.getInstance(context).checkPassword(roomId, password, new ValueCallBack<VRoomInfoBean>() {
+            protected void createCall(@NonNull ResultCallBack<LiveData<Boolean>> callBack) {
+                HttpManager.getInstance(context).checkPassword(roomId, password, new ValueCallBack<Boolean>() {
                     @Override
-                    public void onSuccess(VRoomInfoBean var1) {
+                    public void onSuccess(Boolean var1) {
                         callBack.onSuccess(createLiveData(var1));
                     }
 

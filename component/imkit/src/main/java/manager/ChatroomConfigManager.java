@@ -24,6 +24,7 @@ import io.agora.chat.ChatClient;
 import io.agora.chat.ChatMessage;
 import io.agora.chat.ChatOptions;
 import io.agora.chat.ChatRoom;
+import io.agora.chat.ChatThreadManager;
 import io.agora.chat.CustomMessageBody;
 import io.agora.chat.GroupReadAck;
 import io.agora.util.EMLog;
@@ -93,6 +94,12 @@ public class ChatroomConfigManager {
             public void onReceiveDeclineApply(ChatMessageData message) {
                 if (ChatListener != null)
                 ChatListener.receiveDeclineApply(message.getConversationId(),message);
+            }
+
+            @Override
+            public void onReceiveSystem(ChatMessageData message) {
+                if (ChatListener != null)
+                ChatListener.receiveSystem(message.getConversationId(),message);
             }
         });
     }
@@ -218,6 +225,8 @@ public class ChatroomConfigManager {
         default void roomAttributesDidRemoved(String roomId,List<String> keyList,String fromId){}
         //token即将过期
         default void onTokenWillExpire(){}
+        //收到系统消息
+        default void receiveSystem(String roomId, ChatMessageData message){}
     }
 
     public void setChatRoomListener(ChatroomListener listener){

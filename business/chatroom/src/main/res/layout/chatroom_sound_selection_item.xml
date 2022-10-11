@@ -20,8 +20,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_goneMarginTop="10dp"
-        app:strokeColor="@color/dark_grey_color_C6C4DE"
-        app:strokeWidth="1dp">
+        app:strokeColor="@color/color_D8D8D8"
+        app:strokeWidth="1.5dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/item"
@@ -64,7 +64,7 @@
                 android:layout_marginEnd="20dp"
                 android:layout_marginTop="13dp"
                 android:textSize="@dimen/text_size_13sp"
-                android:textColor="#3C4267"
+                android:textColor="#979CBB"
                 android:textColorHint="#979CBB"
                 android:hint="Current Customer Usage"
                 android:layout_width="wrap_content"

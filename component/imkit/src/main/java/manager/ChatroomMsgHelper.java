@@ -3,6 +3,9 @@ package manager;
 import android.text.TextUtils;
 import android.util.Log;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -227,6 +230,27 @@ public class ChatroomMsgHelper {
             }
         }
         Log.e("Helper","getUserName: " + userName);
+        return userName;
+    }
+
+    public String getSystemUserName(ChatMessageData msg){
+        String jsonString = "";
+        String userName = "";
+        Map<String,String> params = msg.getCustomParams();
+        if (params.containsKey("room_user")){
+            jsonString = params.get("room_user");
+            Log.e("getSystemUserName","jsonString: " + jsonString);
+            if (!TextUtils.isEmpty(jsonString)){
+                try {
+                    assert jsonString != null;
+                    JSONObject jsonObject = new JSONObject(jsonString);
+                    userName = jsonObject.getString("name");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        Log.e("getSystemUserName","userName: " + userName);
         return userName;
     }
 

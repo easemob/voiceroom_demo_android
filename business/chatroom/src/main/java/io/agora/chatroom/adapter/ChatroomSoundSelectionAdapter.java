@@ -11,6 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.constraintlayout.widget.ConstraintLayout;
+
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.textview.MaterialTextView;
 import java.util.Objects;
 
@@ -59,6 +61,7 @@ public class ChatroomSoundSelectionAdapter extends RoomBaseRecyclerViewAdapter<S
         private LinearLayout layout;
         private AppCompatImageView icon;
         private Context context;
+        private MaterialCardView cardView;
 
         public soundViewHold(@NonNull View itemView) {
             super(itemView);
@@ -68,11 +71,11 @@ public class ChatroomSoundSelectionAdapter extends RoomBaseRecyclerViewAdapter<S
             sound_desc = itemView.findViewById(R.id.sound_desc);
             layout = itemView.findViewById(R.id.llSoundCustomerUsage);
             icon = itemView.findViewById(R.id.ivSoundSelected);
+            cardView = itemView.findViewById(R.id.mcvSoundSelectionContent);
         }
 
         @Override
         public void setData(SoundSelectionBean bean, int position) {
-            Log.e("soundViewHold","setData" + bean.getSoundName());
             item.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -95,8 +98,10 @@ public class ChatroomSoundSelectionAdapter extends RoomBaseRecyclerViewAdapter<S
             }
             if(selectedPosition == position) {
                 icon.setVisibility(View.VISIBLE);
+                cardView.setStrokeColor(mContext.getColor(R.color.color_009FFF));
             }else {
                 icon.setVisibility(View.GONE);
+                cardView.setStrokeColor(mContext.getColor(R.color.color_D8D8D8));
             }
         }
     }

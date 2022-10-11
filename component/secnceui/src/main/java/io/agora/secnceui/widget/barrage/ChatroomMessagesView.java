@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import bean.ChatMessageData;
 import bean.ChatroomConstants;
 import custormgift.CustomMsgHelper;
+import custormgift.CustomMsgType;
 import io.agora.buddy.tool.ThreadManager;
 import io.agora.secnceui.R;
 import io.agora.secnceui.utils.DeviceUtils;
@@ -48,7 +49,7 @@ public class ChatroomMessagesView extends RelativeLayout{
     private static final int ITEM_DEFAULT_TYPE = 0;
     private static final int ITEM_SYSTEM_TYPE = 1;
     private String chatroomId;
-    private String ownerId;
+    private boolean isOwner;
     private Context mContext;
     private boolean isScrollBottom;
 
@@ -72,9 +73,9 @@ public class ChatroomMessagesView extends RelativeLayout{
         listview = (RecyclerView) findViewById(R.id.listview);
     }
 
-    public void init(String chatroomId,String owner){
+    public void init(String chatroomId,Boolean isOwner){
         this.chatroomId = chatroomId;
-        this.ownerId = owner;
+        this.isOwner = isOwner;
         adapter = new ListAdapter(getContext(), ChatroomMsgHelper.getInstance().getMessageData(chatroomId));
         ScrollSpeedLinearLayoutManger scrollSpeedLinearLayoutManger = new ScrollSpeedLinearLayoutManger(getContext());
         //设置item滑动速度
@@ -187,7 +188,7 @@ public class ChatroomMessagesView extends RelativeLayout{
         @Override
         public int getItemViewType(int position) {
             final ChatMessageData message = messages.get(position);
-            if(message.getExt().containsKey(ChatroomConstants.MSG_KEY_MEMBER_ADD)) {
+            if(!TextUtils.isEmpty(message.getEvent()) && message.getEvent().equals(CustomMsgType.CHATROOM_SYSTEM.getName())) {
                 return ITEM_SYSTEM_TYPE;
             }
             return ITEM_DEFAULT_TYPE;
@@ -200,7 +201,7 @@ public class ChatroomMessagesView extends RelativeLayout{
             from = ChatroomMsgHelper.getInstance().getUserName(message);
             String s = message.getContent();
             if (holder instanceof MyViewHolder){
-                if (from.equals(ownerId)){
+                if (isOwner){
                     ((MyViewHolder) holder).ownerIcon.setVisibility(VISIBLE);
                 }
                 if (TextUtils.isEmpty(from)){
@@ -208,6 +209,7 @@ public class ChatroomMessagesView extends RelativeLayout{
                 }
                 showText(((MyViewHolder) holder).name, ((MyViewHolder) holder).content, from, s);
             }else if (holder instanceof SystemViewHolder){
+                from = ChatroomMsgHelper.getInstance().getSystemUserName(message);
                 showSystemMsg(((SystemViewHolder) holder).name ,from,"");
             }
 

@@ -33,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:text="@string/chatroom_input_chat_title"
-                android:textColor="@color/black"
+                android:textColor="@color/white_80"
                 android:textSize="@dimen/text_size_12sp" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
@@ -79,8 +79,11 @@
                 android:layout_marginStart="18dp"
                 android:layout_marginEnd="5dp"
                 android:background="@color/white"
+                android:hint="Aa"
+                android:maxLength="80"
+                android:maxLines="1"
                 android:textSize="@dimen/text_size_16sp"
-                android:textColor="@color/color_B6B8C9"
+                android:textColor="@color/color_333333"
                 android:layout_width="0dp"
                 android:layout_height="22dp"/>
 

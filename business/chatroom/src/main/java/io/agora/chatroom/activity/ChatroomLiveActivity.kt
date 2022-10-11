@@ -10,7 +10,6 @@ import android.view.View
 import android.view.View.OnTouchListener
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
-import android.widget.Toast
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
@@ -22,6 +21,7 @@ import custormgift.OnMsgCallBack
 import io.agora.baseui.BaseUiActivity
 import io.agora.baseui.adapter.OnItemClickListener
 import io.agora.buddy.tool.GsonTools.toBean
+import io.agora.buddy.tool.ThreadManager
 import io.agora.buddy.tool.ToastTools
 import io.agora.buddy.tool.logE
 import io.agora.chat.ChatClient
@@ -154,7 +154,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
         if (roomKitBean.roomType == ConfigConstants.RoomType.Common_Chatroom) { // 普通房间
             binding.likeView.likeView.setOnClickListener { binding.likeView.addFavor() }
             binding.chatroomGiftView.init(roomKitBean.chatroomId)
-            binding.messageView.init(roomKitBean.chatroomId,roomKitBean.ownerId)
+            binding.messageView.init(roomKitBean.chatroomId, (roomKitBean.ownerId == ProfileManager.getInstance().profile.uid))
             binding.rvChatroom2dMicLayout.isVisible = true
             binding.rvChatroom3dMicLayout.isVisible = false
             roomObservableDelegate =
@@ -259,7 +259,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
             }
 
             override fun onInputViewFocusChange(focus: Boolean) {
-                checkFocus(focus)
+
             }
 
             override fun onInputLayoutClick() {
@@ -271,15 +271,16 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
             }
 
             override fun onSendMessage(content: String?) {
+                if (content!!.isNotEmpty())
                 ChatroomMsgHelper.getInstance().sendTxtMsg(content,
                     ProfileManager.getInstance().profile.name, object : OnMsgCallBack() {
                         override fun onSuccess(message: ChatMessageData?) {
-                            binding.messageView.refresh()
-                            hideKeyboard()
+                            binding.messageView.refreshSelectLast()
+                            binding.likeView.isVisible = true
                         }
 
                         override fun onError(messageId: String?, code: Int, error: String?) {
-
+                            Log.e("send error", " $code $error")
                         }
                     })
             }
@@ -350,17 +351,16 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
 
     private fun reset() {
         if (roomKitBean.roomType == ConfigConstants.RoomType.Common_Chatroom){
-            binding.chatBottom.hideExpressionView()
+            binding.chatBottom.hideExpressionView(false)
+            hideKeyboard()
             binding.chatBottom.showInput()
             binding.likeView.isVisible = true
             binding.chatBottom.hindViewChangeIcon()
-            hideKeyboard()
-            binding.clMain.isFocusable = true
         }
     }
 
     override fun receiveTextMessage(roomId: String?, message: ChatMessageData?) {
-        binding.messageView.refresh()
+        binding.messageView.refreshSelectLast()
     }
 
     override fun receiveGift(roomId: String?, message: ChatMessageData?) {
@@ -382,11 +382,13 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
         if (isFinishing) return
         if (!TextUtils.equals(roomKitBean.chatroomId, roomId)) return
         attributeMap?.let {
-            val newMicMap = RoomInfoConstructor.convertAttrMicUiBean(it, roomKitBean.ownerId)
-            if (roomKitBean.roomType == ConfigConstants.RoomType.Common_Chatroom) { // 普通房间
-                binding.rvChatroom2dMicLayout.receiverAttributeMap(newMicMap)
-            } else {
-                binding.rvChatroom3dMicLayout.receiverAttributeMap(newMicMap)
+            ThreadManager.getInstance().runOnMainThread {
+                val newMicMap = RoomInfoConstructor.convertAttrMicUiBean(it, roomKitBean.ownerId)
+                if (roomKitBean.roomType == ConfigConstants.RoomType.Common_Chatroom) { // 普通房间
+                    binding.rvChatroom2dMicLayout.receiverAttributeMap(newMicMap)
+                } else {
+                    binding.rvChatroom3dMicLayout.receiverAttributeMap(newMicMap)
+                }
             }
         }
         for (entry in attributeMap!!.entries) {
@@ -408,7 +410,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
     }
 
     private fun checkFocus(focus:Boolean){
-        binding.likeView.isVisible = !focus
+        binding.likeView.isVisible = focus
     }
 
     override fun roomAttributesDidRemoved(roomId: String?, keyList: List<String>?, fromId: String?) {
@@ -449,6 +451,11 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
         }
     }
 
+    override fun receiveSystem(roomId: String?, message: ChatMessageData?) {
+        super.receiveSystem(roomId, message)
+        binding.messageView.refreshSelectLast()
+    }
+
     // 麦位管理请求上麦成功回调，更改小手状态
     override fun onSubmitMicResponse() {
 
@@ -459,5 +466,10 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
             handsDelegate.showOwnerHandsDialog()
             binding.chatBottom.setShowHandStatus(true,false)
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        binding.chatroomGiftView.clear()
     }
 }
