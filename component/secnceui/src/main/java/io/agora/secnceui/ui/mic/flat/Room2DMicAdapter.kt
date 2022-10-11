@@ -126,7 +126,7 @@ class Room2DMicAdapter constructor(
                 if (onlyUpdateItemIndex >= 0) {
                     notifyItemChanged(onlyUpdateItemIndex)
                 } else {
-                    notifyItemChanged(0, dataList.size)
+                    notifyItemRangeChanged(0, dataList.size)
                 }
             }
         }

@@ -116,9 +116,8 @@
         style="@style/chatroom_top_text_style"
         android:layout_marginStart="15dp"
         android:drawableStart="@drawable/icon_chatroom_gift"
-        app:layout_constraintBottom_toBottomOf="@+id/mtChatroomAgoraSound"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/mtChatroomAgoraSound"
+        app:layout_constraintTop_toBottomOf="@+id/tbChatroomTop"
         tools:text="2000" />
 
     <com.google.android.material.textview.MaterialTextView
@@ -128,6 +127,7 @@
         android:drawableStart="@drawable/icon_chatroom_watch"
         app:layout_constraintStart_toEndOf="@+id/mtChatroomGifts"
         app:layout_constraintTop_toTopOf="@+id/mtChatroomGifts"
+        app:layout_constraintBottom_toBottomOf="@+id/mtChatroomGifts"
         tools:text="1000" />
 
     <com.google.android.material.textview.MaterialTextView
@@ -139,6 +139,7 @@
         android:text="@string/chatroom_notice"
         app:layout_constraintStart_toEndOf="@+id/mtChatroomWatch"
         app:layout_constraintTop_toTopOf="@+id/mtChatroomGifts"
+        app:layout_constraintBottom_toBottomOf="@+id/mtChatroomGifts"
         tools:text="Notice" />
 
     <androidx.constraintlayout.widget.Guideline
@@ -157,12 +158,13 @@
         android:drawablePadding="2dp"
         android:gravity="center_vertical"
         android:paddingStart="10dp"
-        android:paddingTop="5dp"
+        android:paddingTop="3dp"
         android:paddingEnd="15dp"
-        android:paddingBottom="5dp"
+        android:paddingBottom="3dp"
         android:text="@string/chatroom_social_chat"
         android:textColor="@color/white"
         android:textSize="@dimen/sp_10"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tbChatroomTop" />
+        app:layout_constraintTop_toTopOf="@+id/mtChatroomGifts"
+        app:layout_constraintBottom_toBottomOf="@+id/mtChatroomGifts"
+        app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
