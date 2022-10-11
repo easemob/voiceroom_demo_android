@@ -1,6 +1,7 @@
 package io.agora.chatroom.activity
 
 import android.os.Bundle
+import android.os.SystemClock
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,7 @@ import io.agora.baseui.BaseUiActivity
 import io.agora.baseui.BaseUiTool
 import io.agora.baseui.general.callback.OnResourceParseCallback
 import io.agora.buddy.tool.ResourcesTools
+import io.agora.buddy.tool.ThreadManager
 import io.agora.chatroom.databinding.ActivityChatroomSplashBinding
 import io.agora.chatroom.general.repositories.ProfileManager
 import io.agora.chatroom.model.LoginViewModel
@@ -33,6 +35,7 @@ class ChatroomSplashActivity : BaseUiActivity<ActivityChatroomSplashBinding>() {
             binding.mtChatroom.letterSpacing = -0.05f
         }
 
+        val startTime = SystemClock.elapsedRealtime()
         val loginViewModel: LoginViewModel = BaseUiTool.getViewModel(LoginViewModel::class.java, this)
         loginViewModel.loginObservable.observe(this) { response ->
             parseResource(response, object : OnResourceParseCallback<VRUserBean?>(true) {
@@ -40,7 +43,11 @@ class ChatroomSplashActivity : BaseUiActivity<ActivityChatroomSplashBinding>() {
                     Log.e("loginViewModel", "onSuccess")
                     ProfileManager.getInstance().profile = data
                     ChatroomConfigManager.getInstance().login(data!!.chat_uid,data.im_token)
-                    initSplashPage()
+
+                    val interval = SystemClock.elapsedRealtime() - startTime
+                    ThreadManager.getInstance().runOnMainThreadDelay({
+                        initSplashPage()
+                    }, (SPLASH_DELAYED - interval).toInt())
                 }
             })
         }
