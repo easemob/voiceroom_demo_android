@@ -157,7 +157,7 @@ public class ChatPrimaryMenuView extends RelativeLayout implements ExpressionVie
                     if (softKeyHeight == 0){
                         softKeyHeight = 765;
                     }
-                    Log.e("onGlobalLayout","softKeyHeight: " + softKeyHeight);
+//                    Log.e("onGlobalLayout","softKeyHeight: " + softKeyHeight);
                     if (mWindowHeight != height) {
                         //两次窗口高度相减，就是软键盘高度
                         softKeyHeight = mWindowHeight - height;

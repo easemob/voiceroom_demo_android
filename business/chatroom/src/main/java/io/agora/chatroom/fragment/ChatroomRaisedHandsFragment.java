@@ -7,8 +7,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -47,10 +51,16 @@ public class ChatroomRaisedHandsFragment extends BaseListFragment<VRMicListBean.
     private Map<String,Boolean> map = new HashMap<>();
     private boolean isRefreshing = false;
     private boolean isLoadingNextPage = false;
+    private View emptyView;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        emptyView = getLayoutInflater().inflate(R.layout.chatroom_no_data_layout, container,false);
+        TextView textView = emptyView.findViewById(R.id.content_item);
+        textView.setText(getString(R.string.empty_raised_hands));
+        LinearLayoutCompat.LayoutParams params = new LinearLayoutCompat.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        emptyView.setLayoutParams(params);
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
@@ -65,7 +75,11 @@ public class ChatroomRaisedHandsFragment extends BaseListFragment<VRMicListBean.
         recyclerView = findViewById(R.id.list);
         refreshLayout = findViewById(R.id.swipeLayout);
         adapter = (ChatroomRaisedAdapter) mListAdapter;
-        adapter.setEmptyView(R.layout.chatroom_no_data_layout);
+        if (emptyView == null){
+            adapter.setEmptyView(R.layout.chatroom_no_data_layout);
+        }else {
+            adapter.setEmptyView(emptyView);
+        }
     }
 
     @Override
