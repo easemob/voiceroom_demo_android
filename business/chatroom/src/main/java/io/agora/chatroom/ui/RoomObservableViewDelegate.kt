@@ -95,7 +95,7 @@ class RoomObservableViewDelegate constructor(
                 }
 
                 override fun onError(code: Int, message: String?) {
-                    ToastTools.show(activity, message ?: activity.getString(R.string.chatroom_notice_posted))
+                    ToastTools.show(activity, activity.getString(R.string.chatroom_notice_posted_error))
                 }
             })
         }
@@ -318,7 +318,7 @@ class RoomObservableViewDelegate constructor(
                 micMap[index] = rtcUid
                 // 当前用户在麦位上
                 if (rtcUid == ProfileManager.getInstance().rtcUid()) {
-                    myselfIndex = rtcUid
+                    myselfIndex = index
                 }
             } else {
                 val removeRtcUid = micMap.remove(index)
@@ -353,6 +353,10 @@ class RoomObservableViewDelegate constructor(
         val ownerUid = vRoomInfoBean.room?.owner?.uid ?: ""
         vRoomInfoBean.room?.let { vRoomInfo ->
             iRoomTopView.onChatroomInfo(RoomInfoConstructor.serverRoomInfo2UiRoomInfo(vRoomInfo))
+        }
+        // 房主rtcUid
+        vRoomInfoBean.room?.owner?.rtc_uid?.let {
+            micMap[0] = it
         }
         vRoomInfoBean.mic_info?.let { micList ->
             iRoomMicView.onInitMic(

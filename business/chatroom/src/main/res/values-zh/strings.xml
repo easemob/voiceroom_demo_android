@@ -91,7 +91,7 @@
     <string name="chatroom_mic_anchor_invited_you_on_stage">房主邀请你上麦</string>
     <string name="chatroom_mic_exchange_mic_success">交换麦位成功</string>
     <string name="chatroom_mic_exchange_mic_failed">交换麦位失败</string>
-    <string name="chatroom_first_enter_room_notice_tips">欢迎来到声网语聊房2.0，我是机器人助理小蓝，看到右下侧的机器人助理了吗，你可以点击了解各项功能</string>
+    <string name="chatroom_first_enter_room_notice_tips">欢迎！</string>
     <string name="chatroom_notice_edit_hint">向聊天室发布公告，最多140个字符。</string>
     <string name="chatroom_edit">编辑</string>
     <string name="chatroom_notice_edit_limit">最多140个字符。</string>
