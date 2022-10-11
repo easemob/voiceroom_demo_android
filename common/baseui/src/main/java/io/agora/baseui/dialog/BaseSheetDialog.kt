@@ -10,6 +10,8 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.activity.OnBackPressedCallback
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.viewbinding.ViewBinding
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -28,6 +30,16 @@ abstract class BaseSheetDialog<B : ViewBinding?> : BottomSheetDialogFragment() {
             }
         })
         return this.binding?.root
+    }
+
+    protected fun setOnApplyWindowInsets(view: View) {
+        dialog?.window?.let {
+            ViewCompat.setOnApplyWindowInsetsListener(it.decorView) { v: View?, insets: WindowInsetsCompat ->
+                val systemInset = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+                view.setPaddingRelative(0, 0, 0, systemInset.bottom)
+                WindowInsetsCompat.CONSUMED
+            }
+        }
     }
 
     override fun onStart() {

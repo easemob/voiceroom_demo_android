@@ -53,6 +53,7 @@ import org.json.JSONException
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
 import pub.devrel.easypermissions.PermissionRequest
+import tools.DefaultValueCallBack
 import tools.ValueCallBack
 import tools.bean.VRMicBean
 import tools.bean.VRUserBean
@@ -157,7 +158,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
                     ToastTools.show(this@ChatroomLiveActivity, getString(R.string.chatroom_join_room_failed))
                     ThreadManager.getInstance().runOnMainThreadDelay({
                         finish()
-                    }, 500)
+                    }, 1000)
                 }
             })
         }
