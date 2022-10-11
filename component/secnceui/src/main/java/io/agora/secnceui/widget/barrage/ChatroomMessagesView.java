@@ -2,13 +2,21 @@ package io.agora.secnceui.widget.barrage;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.graphics.PointF;
+import android.graphics.Rect;
+import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
+import android.text.style.ImageSpan;
+import android.text.style.LeadingMarginSpan;
+import android.text.style.StyleSpan;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -202,12 +210,11 @@ public class ChatroomMessagesView extends RelativeLayout{
             String s = message.getContent();
             if (holder instanceof MyViewHolder){
                 if (isOwner){
-                    ((MyViewHolder) holder).ownerIcon.setVisibility(VISIBLE);
                 }
                 if (TextUtils.isEmpty(from)){
                     from = message.getFrom();
                 }
-                showText(((MyViewHolder) holder).name, ((MyViewHolder) holder).content, from, s);
+                showText(((MyViewHolder) holder).content, from, s);
             }else if (holder instanceof SystemViewHolder){
                 from = ChatroomMsgHelper.getInstance().getSystemUserName(message);
                 showSystemMsg(((SystemViewHolder) holder).name ,from,"");
@@ -232,20 +239,48 @@ public class ChatroomMessagesView extends RelativeLayout{
             name.setText(span);
         }
 
-        private void showText(TextView name,TextView con, String nickName,String content) {
+        private void showText(TextView con, String nickName,String content) {
             StringBuilder builder = new StringBuilder();
-            if (!TextUtils.isEmpty(content) && SmileUtils.containsKey(content)){
-                Spannable span1 = SmileUtils.getSmiledText(context, content.trim());
-                con.setText(span1,TextView.BufferType.SPANNABLE);
-                builder.append(nickName).append(" : ");
+            if (isOwner){
+                builder.append("O").append(nickName).append(" : ").append(content);
             }else {
                 builder.append(nickName).append(" : ").append(content);
             }
+            if (!TextUtils.isEmpty(builder.toString()) && SmileUtils.containsKey(builder.toString())){
+                Spannable span1 = SmileUtils.getSmiledText(context, builder.toString());
+                if (isOwner){
+                    span1.setSpan(new CenteredImageSpan(mContext, R.drawable.icon_owner),0,1,0);
+                    span1.setSpan(new ForegroundColorSpan(ContextCompat.getColor(getContext(), R.color.color_8BB3FF)),
+                            0, nickName.length()+4, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    span1.setSpan(new ForegroundColorSpan(ContextCompat.getColor(getContext(), R.color.white)),
+                            nickName.length() + 4, builder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    span1.setSpan(new StyleSpan(Typeface.BOLD),0,nickName.length()+4,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                }else {
+                    span1.setSpan(new ForegroundColorSpan(ContextCompat.getColor(getContext(), R.color.color_8BB3FF)),
+                            0, nickName.length()+3, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    span1.setSpan(new ForegroundColorSpan(ContextCompat.getColor(getContext(), R.color.white)),
+                            nickName.length() + 3, builder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    span1.setSpan(new StyleSpan(Typeface.BOLD),0,nickName.length()+3,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                }
+                con.setText(span1,TextView.BufferType.SPANNABLE);
+                return;
+            }
             SpannableString span = new SpannableString(builder.toString());
-            span.setSpan(new ForegroundColorSpan(ContextCompat.getColor(getContext(), R.color.color_8BB3FF)), 0, nickName.length()+1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            span.setSpan(new ForegroundColorSpan(ContextCompat.getColor(getContext(), R.color.white)),
-                    nickName.length() + 1, builder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            name.setText(span, TextView.BufferType.SPANNABLE);
+            if (isOwner){
+                span.setSpan(new CenteredImageSpan(mContext, R.drawable.icon_owner),0,1,0);
+                span.setSpan(new ForegroundColorSpan(ContextCompat.getColor(getContext(), R.color.color_8BB3FF)),
+                        0, nickName.length()+4, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                span.setSpan(new StyleSpan(Typeface.BOLD),0,nickName.length()+4,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                span.setSpan(new ForegroundColorSpan(ContextCompat.getColor(getContext(), R.color.white)),
+                        nickName.length() + 4, builder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            }else {
+                span.setSpan(new ForegroundColorSpan(ContextCompat.getColor(getContext(), R.color.color_8BB3FF)),
+                        0, nickName.length()+3, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                span.setSpan(new StyleSpan(Typeface.BOLD),0,nickName.length()+3,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                span.setSpan(new ForegroundColorSpan(ContextCompat.getColor(getContext(), R.color.white)),
+                        nickName.length() + 3, builder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            }
+            con.setText(span, TextView.BufferType.SPANNABLE);
         }
 
         @Override
@@ -272,14 +307,10 @@ public class ChatroomMessagesView extends RelativeLayout{
 
 
     private static class MyViewHolder extends RecyclerView.ViewHolder{
-        TextView name;
         TextView content;
-        ImageView ownerIcon;
         public MyViewHolder(View itemView) {
             super(itemView);
-            name = (TextView) itemView.findViewById(R.id.name);
             content = (TextView) itemView.findViewById(R.id.content);
-            ownerIcon = itemView.findViewById(R.id.owner);
         }
     }
 
@@ -340,6 +371,30 @@ public class ChatroomMessagesView extends RelativeLayout{
 
         public void setSpeedFast() {
             MILLISECONDS_PER_INCH = context.getResources().getDisplayMetrics().density * 0.03f;
+        }
+    }
+
+    public static class CenteredImageSpan extends ImageSpan {
+
+        public CenteredImageSpan(Context context, final int drawableRes) {
+            super(context, drawableRes);
+        }
+
+        @Override
+        public void draw(@NonNull Canvas canvas, CharSequence text,
+                         int start, int end, float x,
+                         int top, int y, int bottom, @NonNull Paint paint) {
+            // image to draw
+            Drawable b = getDrawable();
+            // font metrics of text to be replaced
+            Paint.FontMetricsInt fm = paint.getFontMetricsInt();
+            int transY = (y + fm.descent + y + fm.ascent) / 2
+                    - b.getBounds().bottom / 2;
+
+            canvas.save();
+            canvas.translate(x-4, transY);
+            b.draw(canvas);
+            canvas.restore();
         }
     }
 }
