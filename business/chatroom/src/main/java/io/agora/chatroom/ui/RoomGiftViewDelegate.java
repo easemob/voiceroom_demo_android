@@ -4,10 +4,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-
 import androidx.fragment.app.FragmentActivity;
-
-import com.opensource.svgaplayer.SVGADrawable;
 import com.opensource.svgaplayer.SVGAImageView;
 import com.opensource.svgaplayer.SVGAParser;
 import com.opensource.svgaplayer.SVGAVideoEntity;
@@ -23,7 +20,6 @@ import io.agora.secnceui.bean.GiftBean;
 import io.agora.secnceui.widget.gift.ChatroomGiftView;
 import io.agora.secnceui.widget.gift.GiftBottomDialog;
 import io.agora.secnceui.widget.gift.OnSendClickListener;
-import manager.ChatroomMsgHelper;
 import tools.ValueCallBack;
 
 public class RoomGiftViewDelegate {
@@ -144,7 +140,7 @@ public class RoomGiftViewDelegate {
    public void showGiftAction(){
       String name = "animation_of_rocket.svga";
       SVGAParser svgaParser = SVGAParser.Companion.shareParser();
-      svgaParser.setFrameSize(100, 100);
+//      svgaParser.setFrameSize(100, 100);
       svgaParser.decodeFromAssets(name, new SVGAParser.ParseCompletion() {
          @Override
          public void onComplete(@NotNull SVGAVideoEntity videoItem) {
