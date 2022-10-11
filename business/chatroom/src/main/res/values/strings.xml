@@ -34,6 +34,8 @@
     <string name="room_tab_layout_count">(%1$s)</string>
     <string name="room_profile_update_name">update succeed</string>
 
+    <string name="empty_invite_hands">No audience yet</string>
+    <string name="empty_raised_hands">No one raised hands yet</string>
 
     <!-- gift -->
     <string name="gift_default_name_1">Sweet Heart</string>

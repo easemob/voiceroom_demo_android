@@ -214,7 +214,7 @@ public class ChatroomEncryptionInputView extends AppCompatEditText {
    /**
     * 输入监听
     */
-   interface OnTextChangeListener {
+   public interface OnTextChangeListener {
       void onTextChange(String pwd);
    }
 
