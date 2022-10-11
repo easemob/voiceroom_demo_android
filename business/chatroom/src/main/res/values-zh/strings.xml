@@ -7,19 +7,19 @@
 
     <string name="tab_layout_all">All</string>
     <string name="tab_layout_chat_room">Chat Room</string>
-    <string name="tab_layout_audio_room">Spatial Audio</string>
+    <string name="tab_layout_audio_room">Spatial Audio Room</string>
     <string name="tab_layout_karaoke_room">Karaoke</string>
 
     <string name="room_disclaimer">Disclaimer for demo</string>
 
-    <string name="room_create_encrypt">Encrypt Room?</string>
+    <string name="room_create_encrypt">Room Access?</string>
     <string name="room_create_private">Private</string>
     <string name="room_create_public">Public</string>
     <string name="room_create_next">Next</string>
     <string name="room_create_go_live">Go Live</string>
     <string name="room_create_chat_room">Chat Room</string>
     <string name="room_create_chat_3d_room">Spatial Audio Mode Room</string>
-    <string name="room_create_chat_room_desc">Multi-audio chat scenario where anyone can unmute their mic and speak</string>
+    <string name="room_create_chat_room_desc">Multi-audio chat scenario where anyone can unmute their mic and speak \n Co-Watch / Team Chat / Gaming Buddy Chat</string>
     <string name="room_create_3d_room">Chat Room+Spatial Audio Mode Room</string>
     <string name="room_create_3d_room_desc">Spatial audio chat room mode</string>
     <string name="room_create_ktv_room">KTV</string>

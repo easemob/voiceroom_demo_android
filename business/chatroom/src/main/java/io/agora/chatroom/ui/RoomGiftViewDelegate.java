@@ -30,7 +30,7 @@ public class RoomGiftViewDelegate {
    private FragmentActivity activity;
    private GiftBottomDialog dialog;
    private int time = 2;
-   private int Animation_time = 2;
+   private int Animation_time = 3;
    private TextView send;
    private ChatroomGiftView giftView;
    private String roomId;
@@ -82,6 +82,7 @@ public class RoomGiftViewDelegate {
                   }
                   if (giftBean.getId().equals("VoiceRoomGift9")){
                      showGiftAction();
+                     dialog.dismiss();
                   }
                   HttpManager.getInstance(activity).sendGift(roomId,
                           giftBean.getId(), giftBean.getNum(), 0, new ValueCallBack<Boolean>() {
@@ -187,7 +188,7 @@ public class RoomGiftViewDelegate {
       if (showTask != null) {
          handler.removeCallbacks(showTask);
          showTask = null;
-         Animation_time = 2;
+         Animation_time = 3;
       }
    }
 

@@ -2,6 +2,7 @@ package io.agora.chatroom.model;
 
 import android.app.Application;
 import android.content.Context;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -16,7 +17,6 @@ import io.agora.buddy.tool.ThreadManager;
 import io.agora.chat.ChatClient;
 import io.agora.chat.ChatRoom;
 import io.agora.chatroom.bean.RoomKitBean;
-import io.agora.chatroom.controller.RtcMicVolumeListener;
 import io.agora.chatroom.controller.RtcRoomController;
 import io.agora.chatroom.general.livedatas.SingleSourceLiveData;
 import io.agora.chatroom.general.repositories.ChatroomRepository;
@@ -38,7 +38,7 @@ public class ChatroomViewModel extends AndroidViewModel {
     private SingleSourceLiveData<Resource<Boolean>> openBotObservable;
     private SingleSourceLiveData<Resource<Boolean>> closeBotObservable;
     private SingleSourceLiveData<Resource<Boolean>> robotVolumeObservable;
-    private SingleSourceLiveData<Resource<VRoomInfoBean>> checkObservable;
+    private SingleSourceLiveData<Resource<Boolean>> checkObservable;
     private SingleSourceLiveData<Resource<Boolean>> roomNoticeObservable;
     private final AtomicBoolean joinRtcChannel = new AtomicBoolean(false);
     private final AtomicBoolean joinImRoom = new AtomicBoolean(false);
@@ -94,7 +94,7 @@ public class ChatroomViewModel extends AndroidViewModel {
         return robotVolumeObservable;
     }
 
-    public LiveData<Resource<VRoomInfoBean>> getCheckPasswordObservable(){ return checkObservable;}
+    public LiveData<Resource<Boolean>> getCheckPasswordObservable(){ return checkObservable;}
 
     public void getDataList(Context context, int pageSize, int type, String cursor) {
         roomObservable.setSource(mRepository.getRoomList(context, pageSize, type, cursor));
@@ -102,12 +102,6 @@ public class ChatroomViewModel extends AndroidViewModel {
 
     public void getDetails(Context context, String roomId) {
         roomDetailsObservable.setSource(mRepository.getRoomInfo(context, roomId));
-    }
-
-    public void joinRoom(Context context, String roomId) {
-        if (joinRtcChannel.get() && joinImRoom.get()) {
-            ThreadManager.getInstance().runOnMainThread(() -> joinObservable.setSource(mRepository.joinRoom(context, roomId, "")));
-        }
     }
 
     public void joinRoom(Context context, String roomId, String password) {
@@ -163,6 +157,7 @@ public class ChatroomViewModel extends AndroidViewModel {
 
     public void createNormalRoom(Context context, String name, boolean is_private,
                                  boolean allow_free_join_mic, String sound_effect) {
+        Log.e("apex","创建房间开始2");
         createObservable.setSource(mRepository.createRoom(context, name, is_private, "", 0,
                 allow_free_join_mic, sound_effect));
     }

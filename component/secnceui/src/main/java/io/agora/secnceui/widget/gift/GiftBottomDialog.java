@@ -98,8 +98,8 @@ public class GiftBottomDialog extends BottomDialogFragment implements View.OnCli
         adapter.setOnVpFragmentItemListener(new GiftFragmentAdapter.OnVpFragmentItemListener() {
             @Override
             public void onVpFragmentItem(int position, Object bean) {
-                reset();
                 giftBean = (GiftBean) bean;
+                reset();
             }
         });
     }
@@ -165,7 +165,8 @@ public class GiftBottomDialog extends BottomDialogFragment implements View.OnCli
                                @Override
                                public void OnItemClick(int position, String num) {
                                    GiftNum = Integer.parseInt(num);
-                                   total_count.setText(getString(R.string.dialog_gift_total_count,num));
+                                   int total = GiftNum * Integer.parseInt(giftBean.getPrice());
+                                   total_count.setText(getString(R.string.dialog_gift_total_count,String.valueOf(total)));
                                    if (giftBean != null && GiftNum >= 1){
                                        giftBean.setNum(GiftNum);
                                        count.setText(num);
@@ -193,11 +194,11 @@ public class GiftBottomDialog extends BottomDialogFragment implements View.OnCli
    }
 
    public void reset(){
+       count.setText("1");
         if (null != giftBean){
             giftBean.setNum(1);
+            total_count.setText(getString(R.string.dialog_gift_total_count,giftBean.getPrice()));
         }
-       count.setText("1");
-       total_count.setText(getString(R.string.dialog_gift_total_count,"1"));
    }
 
 }

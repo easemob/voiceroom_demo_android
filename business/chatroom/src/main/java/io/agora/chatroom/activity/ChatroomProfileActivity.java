@@ -214,12 +214,11 @@ public class ChatroomProfileActivity extends BaseActivity implements View.OnClic
                     @Override
                     public void onSuccess(VRUserBean var1) {
                        ProfileManager.getInstance().setProfile(var1);
-                       ToastTools.show(ChatroomProfileActivity.this,getString(R.string.room_profile_update_name),Toast.LENGTH_LONG);
                     }
 
                     @Override
                     public void onError(int var1, String var2) {
-                       ToastTools.show(ChatroomProfileActivity.this, var2, Toast.LENGTH_LONG);
+                       ToastTools.show(ChatroomProfileActivity.this, var2, Toast.LENGTH_SHORT);
                     }
                  });
       } catch (JSONException e) {
@@ -234,12 +233,11 @@ public class ChatroomProfileActivity extends BaseActivity implements View.OnClic
                     @Override
                     public void onSuccess(VRUserBean var1) {
                        ProfileManager.getInstance().setProfile(var1);
-                       ToastTools.show(ChatroomProfileActivity.this,getString(R.string.room_profile_update_name),Toast.LENGTH_LONG);
                     }
 
                     @Override
                     public void onError(int var1, String var2) {
-                       ToastTools.show(ChatroomProfileActivity.this, var2, Toast.LENGTH_LONG);
+                       ToastTools.show(ChatroomProfileActivity.this, var2, Toast.LENGTH_SHORT);
                     }
                  });
       } catch (JSONException e) {

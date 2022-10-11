@@ -54,7 +54,6 @@ public class ChatroomGiftView extends LinearLayout {
             if (adapter.messages.size() > 0){
                adapter.removeAll();
             }
-            Log.d("HandlerTask", "run");
             // 任务执行完后再次调用postDelayed开启下一次任务
             handler.postDelayed(this, delay);
          }
@@ -67,6 +66,10 @@ public class ChatroomGiftView extends LinearLayout {
          handler.removeCallbacks(task);
          task = null;
       }
+   }
+
+   public void clear(){
+      removeCallbacks(task);
    }
 
 

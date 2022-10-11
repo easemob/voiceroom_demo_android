@@ -48,11 +48,12 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@+id/avatar"
+            app:layout_constraintRight_toLeftOf="@+id/edit"
             android:orientation="vertical"
             android:focusable="true"
             android:focusableInTouchMode="true"
             android:layout_marginStart="15dp"
-            android:layout_width="150dp"
+            android:layout_width="0dp"
             android:layout_height="60dp">
 
             <EditText
@@ -60,7 +61,7 @@
                 app:layout_constraintLeft_toRightOf="@+id/avatar"
                 app:layout_constraintBottom_toTopOf="@+id/number"
                 android:background="@null"
-                android:layout_width="150dp"
+                android:layout_width="match_parent"
                 android:gravity="center_vertical"
                 android:enabled="false"
                 android:textSize="@dimen/text_size_18sp"
@@ -68,8 +69,9 @@
                 android:imeOptions="actionDone"
                 android:textColorHint="#040925"
                 android:hint="Username"
+                android:layout_marginEnd="5dp"
                 android:maxLines="1"
-                android:maxLength="64"
+                android:maxLength="16"
                 android:ellipsize="end"
                 android:singleLine="true"
                 android:layout_weight="1"
@@ -86,7 +88,8 @@
                 android:maxLines="1"
                 android:hint="ID：138234234234324"
                 android:gravity="center_vertical"
-                android:layout_width="150dp"
+                android:layout_width="match_parent"
+                android:layout_marginEnd="5dp"
                 android:layout_height="0dp"/>
 
         </androidx.appcompat.widget.LinearLayoutCompat>

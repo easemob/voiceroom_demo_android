@@ -3,6 +3,7 @@ package io.agora.chatroom.activity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -53,6 +54,7 @@ public class ChatroomSoundSelectionActivity extends BaseActivity implements Chat
    private boolean isPublic = true;
    private String roomName;
    private String encryption;
+   private String soundEffect;
    private int roomType;
    private int sound_effect = ConfigConstants.SoundSelection.Social_Chat;
 
@@ -86,6 +88,9 @@ public class ChatroomSoundSelectionActivity extends BaseActivity implements Chat
       goLive = findViewById(R.id.bottom_layout);
       adapter = new ChatroomSoundSelectionAdapter(this);
       recyclerView.setLayoutManager(new LinearLayoutManager(this));
+      float offsetPx = getResources().getDimension(R.dimen.space_84dp);
+      BottomOffsetDecoration bottomOffsetDecoration = new BottomOffsetDecoration((int) offsetPx);
+      recyclerView.addItemDecoration(bottomOffsetDecoration);
       recyclerView.setAdapter(adapter);
    }
 
@@ -102,6 +107,7 @@ public class ChatroomSoundSelectionActivity extends BaseActivity implements Chat
       super.initData();
       getSoundSelectionData(this);
       adapter.setSelectedPosition(0);
+      soundEffect = ConfigConstants.SoundSelectionText.Social_Chat;
       chatroomViewModel = new ViewModelProvider(this).get(ChatroomViewModel.class);
       chatroomViewModel.getCreateObservable().observe(this,response -> {
          parseResource(response, new OnResourceParseCallback<VRoomInfoBean>() {
@@ -208,11 +214,6 @@ public class ChatroomSoundSelectionActivity extends BaseActivity implements Chat
    @Override
    public void onClick(View view) {
       if (roomType == 0){
-//         if (TextUtils.isEmpty(sound_effect)){
-//            ToastTools.show(this,"Please select a sound effect",Toast.LENGTH_LONG);
-//            return;
-//         }
-         String soundEffect;
          switch (sound_effect){
             case ConfigConstants.SoundSelection.Karaoke:
                soundEffect = ConfigConstants.SoundSelectionText.Karaoke;
@@ -252,6 +253,27 @@ public class ChatroomSoundSelectionActivity extends BaseActivity implements Chat
          if(activity != lifecycleCallbacks.current() && activity instanceof ChatroomCreateActivity) {
             activity.finish();
          }
+      }
+   }
+
+   static class BottomOffsetDecoration extends RecyclerView.ItemDecoration {
+      private int mBottomOffset;
+
+      public BottomOffsetDecoration(int bottomOffset) {
+         mBottomOffset = bottomOffset;
+      }
+
+      @Override
+      public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+         super.getItemOffsets(outRect, view, parent, state);
+         int dataSize = state.getItemCount();
+         int position = parent.getChildAdapterPosition(view);
+         if (dataSize > 0 && position == dataSize - 1) {
+            outRect.set(0, 0, 0, mBottomOffset);
+         } else {
+            outRect.set(0, 0, 0, 0);
+         }
+
       }
    }
 }

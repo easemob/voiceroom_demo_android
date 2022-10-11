@@ -65,18 +65,19 @@ public class HttpManager {
         String userNick = "";
         Locale locale = mContext.getResources().getConfiguration().locale;
         String language = locale.getLanguage();
-        int index = (int) Math.round((Math.random()*20)+1);
+        int index = (int) Math.round((Math.random()*19)+1);
         String[] cn1 = {"李","王","张","刘","陈","杨","赵","黄","周","吴","徐","孙","胡","朱","高","林","何","郭","马","罗"};
         String[] cn2 = {"小明","小虎","小芳","小红","小雨","小雪","小鹏","小双","小彤","小晗","阿花","阿杰","阿鹏","阿飞","阿青","阿永","阿超","阿伟","阿信","阿华"};
-        String[] en1 = {"James","Robert","Michael","David","William","Richard","Joseph","Thomas","Charles","Mary","Patricia","Jennifer","Linda","Elizabeth","Barbara","Susan","Jessica","Sarah","Karen"};
+        String[] en1 = {"James ","Robert ","Michael ","David ","William ","Richard ","Joseph ","Thomas ","Charles ","Mary ","Patricia ","Jennifer ","Linda ","Elizabeth ","Barbara ","Susan ","Jessica ","Sarah ","Karen "};
         String[] en2 = {"Smith","Johnson","Brown","Jones","Garcia","Miller","Davis","Rodriguez","Martinez","Hernandez","Lopez","Gonzalez","Wilson","Anderson","Taylor","Moore","Jackson","Martin","Lee","Perez"};
         if (language.equals("zh")){
             userNick = cn1[index] + cn2[index];
         }else if (language.equals("en")){
             userNick = en1[index] + en2[index];
         }else {
-            userNick = en1[index] +" "+ en2[index];
+            userNick = en1[index] +"&#160;"+ en2[index];
         }
+        Log.e("httpManager","getRandomUserNick: " + userNick);
         return userNick;
     }
 
@@ -407,7 +408,7 @@ public class HttpManager {
      * @param password
      * @param callBack
      */
-    public void checkPassword(String roomId,String password,ValueCallBack<VRoomInfoBean> callBack){
+    public void checkPassword(String roomId,String password,ValueCallBack<Boolean> callBack){
         Log.e("joinRoom","roomId:"+roomId);
         Log.e("joinRoom","Authorization:"+ ProfileManager.getInstance().getProfile().getAuthorization());
         Map<String, String> headers = new HashMap<>();
@@ -430,8 +431,7 @@ public class HttpManager {
                     @Override
                     public void onSuccess(String result) {
                         LogToolsKt.logE("checkPassword success: " + result, TAG);
-                        VRoomInfoBean bean = GsonTools.toBean(result,VRoomInfoBean.class);
-                        callBack.onSuccess(bean);
+                        callBack.onSuccess(true);
                     }
 
                     @Override

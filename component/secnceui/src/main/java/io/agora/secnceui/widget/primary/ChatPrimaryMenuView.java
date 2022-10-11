@@ -89,7 +89,6 @@ public class ChatPrimaryMenuView extends RelativeLayout implements ExpressionVie
                     Log.d("focus", "focused");
                     if (null != clickListener)
                         clickListener.onInputViewFocusChange(true);
-                        checkShowExpression(false);
                 } else {
                     Log.d("focus", "focus lost");
                     if (null != clickListener)
@@ -103,15 +102,22 @@ public class ChatPrimaryMenuView extends RelativeLayout implements ExpressionVie
             public void onClick(View v) {
                 inputView.setVisibility(View.VISIBLE);
                 edContent.requestFocus();
+                showInputMethod(edContent);
+                SoftShowing(true);
+                expressionView.setVisibility(View.INVISIBLE);
                 inputLayout.setVisibility(GONE);
                 inputLayout.setEnabled(false);
+                hindViewChangeIcon();
+                isShowEmoji = false;
+                if (null != clickListener)
+                    clickListener.onInputLayoutClick();
             }
         });
         icon.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 isShowEmoji = !isShowEmoji;
-                SoftShowing();
+                SoftShowing(isShowEmoji);
                 checkShowExpression(isShowEmoji);
                 if (null != clickListener)
                     clickListener.onEmojiClick(isShowEmoji);
@@ -123,6 +129,14 @@ public class ChatPrimaryMenuView extends RelativeLayout implements ExpressionVie
                 if (null != clickListener)
                     clickListener.onSendMessage(edContent.getText().toString().trim());
                 edContent.setText("");
+                hideKeyboard();
+                inputView.setVisibility(View.GONE);
+                normalLayout.setVisibility(View.VISIBLE);
+                menuLayout.setVisibility(View.VISIBLE);
+                inputLayout.setVisibility(View.VISIBLE);
+                inputLayout.setEnabled(true);
+                hideExpressionView(false);
+
             }
         });
 
@@ -175,7 +189,8 @@ public class ChatPrimaryMenuView extends RelativeLayout implements ExpressionVie
         }
     }
 
-    public void SoftShowing(){
+    public void SoftShowing(boolean isShowEmoji){
+        Log.e("MenuView","SoftShowing: " + isShowEmoji);
         if (isShowEmoji){
             setViewLayoutParams(expressionView, ViewGroup.LayoutParams.MATCH_PARENT,softKeyHeight);
         }else {
@@ -234,11 +249,10 @@ public class ChatPrimaryMenuView extends RelativeLayout implements ExpressionVie
                     ,dp2px(activity,5),dp2px(activity,7));
             imageView.setImageResource(itemModel.image);
             imageView.setBackgroundResource(R.drawable.bg_primary_menu_item_icon);
-//            imageView.setBackgroundResource(R.color.white);
             imageView.setId(itemModel.id);
 
             if (itemModel.id == R.id.extend_item_gift){
-                marginLayoutParams.setMarginEnd(dp2px(activity,5));
+                marginLayoutParams.setMarginEnd(dp2px(activity,0));
             }
             imageView.setLayoutParams(marginLayoutParams);
             imageView.setOnClickListener(new OnClickListener() {
@@ -351,7 +365,9 @@ public class ChatPrimaryMenuView extends RelativeLayout implements ExpressionVie
     public void hideKeyboard() {
         InputMethodManager imm = (InputMethodManager)activity.getSystemService(Context.INPUT_METHOD_SERVICE);
         if (imm!=null && activity.getWindow().getAttributes().softInputMode != WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN) {
+            Log.e("MenuView","hideKeyboard" + activity.getCurrentFocus());
             if (activity.getCurrentFocus() != null){
+                Log.e("MenuView","hideKeyboard" + activity.getCurrentFocus());
                 imm.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
             }
         }
@@ -378,8 +394,12 @@ public class ChatPrimaryMenuView extends RelativeLayout implements ExpressionVie
         }
     }
 
-    public void hideExpressionView(){
-        expressionView.setVisibility(GONE);
+    public void hideExpressionView(Boolean isShowEx){
+        if (isShowEx){
+            expressionView.setVisibility(View.VISIBLE);
+        }else {
+            expressionView.setVisibility(View.GONE);
+        }
     }
 
     public void showInput(){
