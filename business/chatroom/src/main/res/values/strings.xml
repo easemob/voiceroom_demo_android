@@ -20,7 +20,7 @@
     <string name="room_create_go_live">Go Live</string>
     <string name="room_create_chat_room">Chat Room</string>
     <string name="room_create_chat_3d_room">Spatial Audio Mode Room</string>
-    <string name="room_create_chat_room_desc">Multi-audio chat scenario where anyone can unmute their mic and speak \n Co-Watch / Team Chat / Gaming Buddy Chat</string>
+    <string name="room_create_chat_room_desc">Multi-audio chat scenario where anyone can unmute their mic and speak \nCo-Watch / Team Chat / Gaming Buddy Chat</string>
     <string name="room_create_3d_room">Chat Room+Spatial Audio Mode Room</string>
     <string name="room_create_3d_room_desc">Spatial audio chat room mode</string>
     <string name="room_create_ktv_room">KTV</string>
