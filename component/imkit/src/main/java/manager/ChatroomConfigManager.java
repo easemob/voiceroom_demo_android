@@ -112,8 +112,8 @@ public class ChatroomConfigManager {
 
     private ChatOptions initChatOptions(Context context){
         ChatOptions options = new ChatOptions();
-        options.setAppKey("52117440#955012");
-//        options.setAppKey("81399972#1002901");
+//        options.setAppKey("52117440#955012");
+        options.setAppKey("81399972#1002901");
         options.setAutoLogin(false);
         return options;
     }

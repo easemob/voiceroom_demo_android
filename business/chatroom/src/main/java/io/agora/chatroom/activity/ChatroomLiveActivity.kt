@@ -156,7 +156,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
                 }
 
                 override fun onError(code: Int, message: String?) {
-                    ToastTools.show(this@ChatroomLiveActivity, getString(R.string.chatroom_join_room_failed))
+                    ToastTools.show(this@ChatroomLiveActivity, message ?: getString(R.string.chatroom_join_room_failed))
                     ThreadManager.getInstance().runOnMainThreadDelay({
                         finish()
                     }, 1000)
@@ -450,6 +450,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
         attributeMap?.let {
             ThreadManager.getInstance().runOnMainThread {
                 val newMicMap = RoomInfoConstructor.convertAttrMicUiBean(it, roomKitBean.ownerId)
+                roomObservableDelegate.onUpdateMicMap(newMicMap)
                 if (roomKitBean.roomType == ConfigConstants.RoomType.Common_Chatroom) { // 普通房间
                     binding.rvChatroom2dMicLayout.receiverAttributeMap(newMicMap)
                 } else {
