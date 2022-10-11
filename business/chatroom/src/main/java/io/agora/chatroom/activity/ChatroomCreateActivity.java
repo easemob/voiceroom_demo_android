@@ -43,6 +43,7 @@ import io.agora.chatroom.general.repositories.ProfileManager;
 import io.agora.chatroom.model.ChatroomViewModel;
 import io.agora.config.RouterParams;
 import io.agora.config.RouterPath;
+import io.agora.secnceui.utils.DeviceUtils;
 import io.agora.secnceui.widget.encryption.ChatroomEncryptionInputView;
 import io.agora.secnceui.widget.titlebar.ChatroomTitleBar;
 import manager.ChatroomConfigManager;
@@ -211,11 +212,11 @@ public class ChatroomCreateActivity extends BaseActivity implements RadioGroup.O
       mViewPager.setOffscreenPageLimit(1);
       View recyclerView = mViewPager.getChildAt(0);
       if(recyclerView instanceof RecyclerView){
-         recyclerView.setPadding(85, 0, 85, 0);
+         recyclerView.setPadding(DeviceUtils.dp2px(this,30), 0, DeviceUtils.dp2px(this,30), 0);
          ((RecyclerView) recyclerView).setClipToPadding(false);
       }
       CompositePageTransformer compositePageTransformer = new CompositePageTransformer();
-      compositePageTransformer.addTransformer(new MarginPageTransformer(20));
+      compositePageTransformer.addTransformer(new MarginPageTransformer(DeviceUtils.dp2px(this,16)));
       mViewPager.setPageTransformer(compositePageTransformer);
       // set adapter
       mViewPager.setAdapter(new RecyclerView.Adapter<ViewHolder>() {

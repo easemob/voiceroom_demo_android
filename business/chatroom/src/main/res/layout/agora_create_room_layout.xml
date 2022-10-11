@@ -88,7 +88,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             android:paddingStart="20dp"
             android:maxLines="1"
-            android:paddingEnd="8dp"
+            android:paddingEnd="20dp"
             android:hint="Set Room Name"
             android:maxLength="32"
             android:ellipsize="end"

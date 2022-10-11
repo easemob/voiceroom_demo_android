@@ -9,6 +9,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.material.imageview.ShapeableImageView;
 
 import java.util.List;
 
@@ -26,7 +27,7 @@ public class ExpressionGridAdapter extends ArrayAdapter<ExpressionIcon>{
         if(convertView == null){
            convertView = View.inflate(getContext(), R.layout.widget_row_expression, null);
         }
-        ImageView imageView = (ImageView) convertView.findViewById(R.id.iv_expression);
+        ShapeableImageView imageView = (ShapeableImageView) convertView.findViewById(R.id.iv_expression);
         ExpressionIcon emojicon = getItem(position);
         if(emojicon.getIcon() != 0){
             imageView.setImageResource(emojicon.getIcon());

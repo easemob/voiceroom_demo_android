@@ -44,7 +44,6 @@ public class ChatroomRaisedHandsFragment extends BaseListFragment<VRMicListBean.
     private List<VRMicListBean.ApplyListBean> dataList = new ArrayList<>();
     private int pageSize = 10;
     private String cursor = "";
-    private int total;
     private itemCountListener listener;
     private String roomId;
     private static final String TAG = "ChatroomRaisedHandsFragment";
@@ -90,11 +89,6 @@ public class ChatroomRaisedHandsFragment extends BaseListFragment<VRMicListBean.
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    @Override
     protected void initViewModel() {
         super.initViewModel();
         handsViewModel = new ViewModelProvider(this).get(ChatroomRaisedViewModel.class);
@@ -103,7 +97,8 @@ public class ChatroomRaisedHandsFragment extends BaseListFragment<VRMicListBean.
                 @Override
                 public void onSuccess(@Nullable VRMicListBean data) {
                     if (data != null){
-                        total = data.getTotal();
+                        int total = data.getTotal();
+                        cursor = data.getCursor();
                         if (isRefreshing){
                             adapter.setData(data.getApply_list());
                         }else {

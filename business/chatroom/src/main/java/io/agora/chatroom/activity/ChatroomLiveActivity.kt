@@ -492,6 +492,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
             ChatClient.getInstance().deviceInfo.getString("deviceid"),
             ProfileManager.getInstance().profile.portrait, object : ValueCallBack<VRUserBean> {
                 override fun onSuccess(bean: VRUserBean?) {
+                    "onSuccess: chat_uid: ${bean?.chat_uid} im_token: ${bean?.im_token}".logE("onTokenWillExpire")
                     ChatroomConfigManager.getInstance().renewToken(bean!!.im_token)
                 }
 
