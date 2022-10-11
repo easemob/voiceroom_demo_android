@@ -21,7 +21,7 @@
             android:layout_gravity="center_vertical"
             android:paddingStart="12dp"
             android:paddingTop="16dp"
-            android:paddingEnd="7dp"
+            android:paddingEnd="5dp"
             android:paddingBottom="16dp"
             android:src="@drawable/icon_chatroom_back" />
 

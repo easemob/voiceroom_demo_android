@@ -41,6 +41,7 @@ class RoomContributionAndAudienceSheetDialog constructor(
     private fun initFragmentAdapter() {
         val adapter = RoomRankFragmentAdapter(fragmentActivity, roomKitBean)
         binding?.apply {
+            setOnApplyWindowInsets(root)
             vpRankLayout.adapter = adapter
             val tabMediator = TabLayoutMediator(tabRankLayout, vpRankLayout) { tab, position ->
                 val customView =

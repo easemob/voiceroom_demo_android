@@ -15,5 +15,8 @@ class Room3DSpatialMicTutorialSheetDialog constructor(): BaseSheetDialog<DialogC
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding?.apply {
+            setOnApplyWindowInsets(root)
+        }
     }
 }

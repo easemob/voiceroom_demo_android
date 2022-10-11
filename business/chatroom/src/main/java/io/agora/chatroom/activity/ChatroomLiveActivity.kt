@@ -1,6 +1,7 @@
 package io.agora.chatroom.activity
 
 import android.Manifest
+import android.graphics.Color
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
@@ -22,6 +23,7 @@ import io.agora.baseui.BaseUiActivity
 import io.agora.baseui.adapter.OnItemClickListener
 import io.agora.baseui.general.callback.OnResourceParseCallback
 import io.agora.baseui.general.net.Resource
+import io.agora.baseui.utils.StatusBarCompat
 import io.agora.buddy.tool.GsonTools.toBean
 import io.agora.buddy.tool.ThreadManager
 import io.agora.buddy.tool.ToastTools
@@ -53,7 +55,6 @@ import org.json.JSONException
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
 import pub.devrel.easypermissions.PermissionRequest
-import tools.DefaultValueCallBack
 import tools.ValueCallBack
 import tools.bean.VRMicBean
 import tools.bean.VRUserBean
@@ -92,6 +93,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        StatusBarCompat.setLightStatusBar(this, false)
         roomViewModel = ViewModelProvider(this)[ChatroomViewModel::class.java]
         giftViewDelegate = RoomGiftViewDelegate.getInstance(this, binding.chatroomGiftView, binding.svgaView)
         handsDelegate = RoomHandsViewDelegate.getInstance(this, binding.chatBottom)
