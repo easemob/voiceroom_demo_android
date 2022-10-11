@@ -181,7 +181,7 @@ public class ChatPrimaryMenuView extends RelativeLayout implements ExpressionVie
 
     public static void setViewLayoutParams(View view,int width,int height){
         ViewGroup.LayoutParams lp = view.getLayoutParams();
-        Log.e("setViewLayoutParams","\n lp.height: " + lp.height +  "\n height: "+ height + "\n lp.width" +lp.width + "\n width:" +width );
+//        Log.e("setViewLayoutParams","\n lp.height: " + lp.height +  "\n height: "+ height + "\n lp.width" +lp.width + "\n width:" +width );
         if (lp.height != height || lp.width != width){
             lp.width = width;
             lp.height = height;
