@@ -1,7 +1,6 @@
 package io.agora.chatroom.activity
 
 import android.Manifest
-import android.graphics.Color
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
@@ -375,7 +374,14 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
         }
     }
 
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        // Forward results to EasyPermissions
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
+    }
+
     private fun onPermissionGrant() {
+        "onPermissionGrant initSdkJoin".logE()
         roomViewModel.initSdkJoin(roomKitBean, password)
     }
 

@@ -2,5 +2,5 @@
 <resources>
     <string name="error_network_error">Network unavailable</string>
     <string name="room_empty_data">No Chat Room Yet</string>
-    <string name="loading">Loading…</string>
+    <string name="loading">加载中…</string>
 </resources>
