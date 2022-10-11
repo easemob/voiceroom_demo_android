@@ -54,7 +54,16 @@ public class RoomHandsViewDelegate {
         chatPrimaryMenuView.setShowHandStatus(false, false);
     }
 
-    public void showMemberHandsDialog(){
+    // 用户点击上台
+    public void onUserClickOnStage(int micIndex) {
+        if (isRequest) {
+            ToastTools.show(activity, activity.getString(R.string.chatroom_mic_submit_sent), Toast.LENGTH_SHORT);
+        }else {
+            showMemberHandsDialog(micIndex);
+        }
+    }
+
+    public void showMemberHandsDialog(int micIndex){
        new CommonSheetAlertDialog()
                .contentText(isRequest? activity.getString(R.string.chatroom_cancel_request_speak):activity.getString(R.string.chatroom_request_speak))
                .rightText(activity.getString(R.string.chatroom_confirm))
@@ -77,7 +86,7 @@ public class RoomHandsViewDelegate {
                                }
                            });
                        }else {
-                           HttpManager.getInstance(activity).submitMic(roomId, -999, new ValueCallBack<Boolean>() {
+                           HttpManager.getInstance(activity).submitMic(roomId, micIndex, new ValueCallBack<Boolean>() {
                                @Override
                                public void onSuccess(Boolean var1) {
                                    ToastTools.show(activity,activity.getString(R.string.chatroom_mic_apply_success), Toast.LENGTH_SHORT);

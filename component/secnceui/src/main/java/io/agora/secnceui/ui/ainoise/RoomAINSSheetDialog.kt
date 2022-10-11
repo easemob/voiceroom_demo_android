@@ -58,7 +58,6 @@ class RoomAINSSheetDialog constructor(
         anisModeList.addAll(RoomAINSConstructor.builderDefaultAINSList(view.context, anisMode))
         anisSoundsList.addAll(RoomAINSConstructor.builderDefaultSoundList(view.context))
         binding?.apply {
-            setOnApplyWindowInsets(root)
             ivBottomSheetBack.setOnClickListener {
                 onHandleOnBackPressed()
             }

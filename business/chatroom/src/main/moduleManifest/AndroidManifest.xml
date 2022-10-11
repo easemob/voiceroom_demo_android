@@ -35,8 +35,9 @@
 
         <activity
             android:name="io.agora.chatroom.activity.ChatroomLiveActivity"
-            android:launchMode="singleTask"
-            android:exported="false"/>
+            android:exported="false"
+            android:keepScreenOn="true"
+            android:launchMode="singleTask" />
 
         <activity android:name=".activity.ChatroomListActivity"
             android:exported="false"

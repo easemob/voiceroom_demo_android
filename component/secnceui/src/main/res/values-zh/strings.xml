@@ -77,7 +77,6 @@
     <string name="chatroom_confirm">确认</string>
     <string name="chatroom_cancel">取消</string>
     <string name="chatroom_cancel_request">取消申请</string>
-    <string name="chatroom_first_enter_room_notice_tips">欢迎来到声网语聊房2.0，我是机器人助理小蓝，看到右下侧的机器人助理了吗，你可以点击了解各项功能</string>
     <string name="chatroom_social_chat_following_customers">以下客户都在⽤</string>
     <string name="chatroom_social_chat_more">更多最佳⾳效</string>
     <string name="chatroom_3d_spatial_audio">3D空间⾳频席位</string>

@@ -266,22 +266,29 @@ public class ChatroomCreateActivity extends BaseActivity implements RadioGroup.O
    }
 
    public void joinRoom(VRoomInfoBean data){
-      ChatClient.getInstance().chatroomManager().joinChatRoom(data.getRoom().getChatroom_id(), new ValueCallBack<ChatRoom>() {
-         @Override
-         public void onSuccess(ChatRoom value) {
-            Log.e("ChatroomCreateActivity","joinChatRoom onSuccess");
-            ARouter.getInstance()
-                    .build(RouterPath.ChatroomPath)
-                    .withSerializable(RouterParams.KEY_CHATROOM_DETAILS_INFO, data)
-                    .navigation();
-            finish();
-         }
-
-         @Override
-         public void onError(int error, String errorMsg) {
-            Log.e("ChatroomCreateActivity","joinChatRoom onError" + error +"  "+ errorMsg);
-         }
-      });
+      Log.e("ChatroomCreateActivity","joinChatRoom onSuccess");
+      ARouter.getInstance()
+              .build(RouterPath.ChatroomPath)
+              .withSerializable(RouterParams.KEY_CHATROOM_DETAILS_INFO, data)
+              .navigation();
+      finish();
+      // TODO: 2022/10/8 进入房间后再joinRoom
+//      ChatClient.getInstance().chatroomManager().joinChatRoom(data.getRoom().getChatroom_id(), new ValueCallBack<ChatRoom>() {
+//         @Override
+//         public void onSuccess(ChatRoom value) {
+//            Log.e("ChatroomCreateActivity","joinChatRoom onSuccess");
+//            ARouter.getInstance()
+//                    .build(RouterPath.ChatroomPath)
+//                    .withSerializable(RouterParams.KEY_CHATROOM_DETAILS_INFO, data)
+//                    .navigation();
+//            finish();
+//         }
+//
+//         @Override
+//         public void onError(int error, String errorMsg) {
+//            Log.e("ChatroomCreateActivity","joinChatRoom onError" + error +"  "+ errorMsg);
+//         }
+//      });
    }
 
    private void chickPrivate(){

@@ -6,7 +6,7 @@ package io.agora.secnceui.bean
 data class RoomUserInfoBean constructor(
     var userId: String = "",
     var chatUid: String = "",
-    var rtcUid: Int = 0,
+    var rtcUid: Int = -1,
     var username: String = "",
     var userAvatar: String = "",
 ) : BaseRoomBean

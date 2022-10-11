@@ -23,7 +23,6 @@ class CommonSheetAlertDialog constructor(): BaseSheetDialog<DialogBottomSheetAle
         super.onViewCreated(view, savedInstanceState)
         dialog?.setCanceledOnTouchOutside(false)
         binding?.apply {
-            setOnApplyWindowInsets(root)
             if (!TextUtils.isEmpty(contentText)){
                 mtContent.text = contentText
             }

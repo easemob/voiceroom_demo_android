@@ -9,6 +9,8 @@ import io.agora.rtc2.IRtcEngineEventHandler
 import io.agora.rtckit.annotation.RtcNetWorkQuality
 import io.agora.rtckit.constants.RtcKitConstant
 import io.agora.rtckit.open.status.RtcAudioChangeStatus
+import io.agora.rtckit.open.status.RtcAudioVolumeIndicationStatus
+import io.agora.rtckit.open.status.RtcAudioVolumeInfo
 import io.agora.rtckit.open.status.RtcErrorStatus
 
 /**
@@ -149,20 +151,17 @@ internal class AgoraRtcEventHandler(var rtcListener: IRtcClientListener?) : IRtc
      */
     override fun onAudioVolumeIndication(speakers: Array<out AudioVolumeInfo>?, totalVolume: Int) {
         super.onAudioVolumeIndication(speakers, totalVolume)
-//        if (!speakers.isNullOrEmpty()) {
-//            val speakerInfos: Array<RtcAudioVolumeInfo?> = arrayOfNulls(speakers.size)
-//
-//            speakers.forEachIndexed { index, audioVolumeInfo ->
-//                speakerInfos[index] = RtcAudioVolumeInfo(
-//                    uid = audioVolumeInfo.uid,
-//                    volume = audioVolumeInfo.volume,
-//                    vad = audioVolumeInfo.vad,
-//                    voicePitch = audioVolumeInfo.voicePitch
-//                )
-//                "onAudioVolumeIndication speakers index:${speakerInfos[index]},totalVolume:$totalVolume".logD(TAG)
-//            }
-//            rtcListener?.onAudioVolumeIndication(RtcAudioVolumeIndicationStatus(speakerInfos, totalVolume))
-//        }
+        if (!speakers.isNullOrEmpty()) {
+            val speakerInfoList = mutableListOf<RtcAudioVolumeInfo>()
+
+            speakers.forEachIndexed { index, audioVolumeInfo ->
+                speakerInfoList.add(
+                    RtcAudioVolumeInfo(uid = audioVolumeInfo.uid, volume = audioVolumeInfo.volume,)
+                )
+                "onAudioVolumeIndication uid:${audioVolumeInfo.uid},volume:${audioVolumeInfo.volume}".logD(TAG)
+            }
+            rtcListener?.onAudioVolumeIndication(RtcAudioVolumeIndicationStatus(speakerInfoList))
+        }
     }
 
     private fun getClientRole(role: Int): String {

@@ -67,7 +67,9 @@ class Room2DBotMicAdapter constructor(
     fun receiverAttributeMap(newMicMap: Map<Int, MicInfoBean>) {
         if (newMicMap.containsKey(ConfigConstants.MicConstant.KeyIndex6)) {
             val value = newMicMap[ConfigConstants.MicConstant.KeyIndex6]
-            activeBot(value?.micStatus == MicStatus.BotActivated)
+            ThreadManager.getInstance().runOnMainThread {
+                activeBot(value?.micStatus == MicStatus.BotActivated)
+            }
         }
     }
 }

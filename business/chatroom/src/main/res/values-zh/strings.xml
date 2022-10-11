@@ -86,6 +86,17 @@
     <string name="chatroom_mic_removed_from_stage">你已被房主移下台</string>
     <string name="chatroom_mic_kicked_out_of_the_room">你已被房主从语聊房移出</string>
     <string name="chatroom_mic_anchor_invited_you_on_stage">房主邀请你上麦</string>
+    <string name="chatroom_mic_exchange_mic_success">交换麦位成功</string>
+    <string name="chatroom_mic_exchange_mic_failed">交换麦位失败</string>
+    <string name="chatroom_first_enter_room_notice_tips">欢迎来到声网语聊房2.0，我是机器人助理小蓝，看到右下侧的机器人助理了吗，你可以点击了解各项功能</string>
+    <string name="chatroom_notice_edit_hint">向聊天室发布公告，最多140个字符。</string>
+    <string name="chatroom_edit">编辑</string>
+    <string name="chatroom_notice_edit_limit">最多140个字符。</string>
+    <string name="chatroom_notice_post">发布</string>
+    <string name="chatroom_notice_posted">公告已发布</string>
+    <string name="chatroom_notice_posted_error">公告发布失败</string>
+    <string name="chatroom_join_room_success">已加入语聊房</string>
+    <string name="chatroom_join_room_failed">加入语聊房失败</string>
 
     <string name="room_disclaimer_content_1">[Agora Chat Room Demo] (this "Product") is a test product provided by Agora. This Product is available for our current and potential customers only, and for them to test the functionality and quality of this Product. This Product is provided neither for commercial nor for public use.
 Agora enjoys the copyright and ownership of this product. You shall not modify, consolidate, compile, adjust, reverse engineer, sub-license, transfer, sell this Product or infringe the legitimate interests of Agora in any way.</string>

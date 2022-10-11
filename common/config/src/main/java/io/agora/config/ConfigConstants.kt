@@ -76,7 +76,7 @@ object ConfigConstants {
     }
     //--------AI 降噪-14种噪音试听 end--------
 
-    object MicConstant{
+    object MicConstant {
         const val KeyMic0 = "mic_0"
         const val KeyMic1 = "mic_1"
         const val KeyMic2 = "mic_2"

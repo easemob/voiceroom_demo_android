@@ -32,7 +32,7 @@ public class LoginViewModel extends AndroidViewModel {
         return loginObservable;
     }
 
-    public void LoginFromServer(Context context){
+    public void loginFromServer(Context context){
         try {
            String device = ChatClient.getInstance().getDeviceInfo().getString("deviceid");
            String portrait = "";

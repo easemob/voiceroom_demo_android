@@ -18,7 +18,7 @@ import io.agora.secnceui.databinding.ViewChatroom3dMicBinding
  *
  * 3d麦位
  */
-class Room3DMicView : ConstraintLayout {
+class Room3DMicView : ConstraintLayout, IRoomMicBinding {
 
     private lateinit var mBinding: ViewChatroom3dMicBinding
 
@@ -54,7 +54,7 @@ class Room3DMicView : ConstraintLayout {
         arrowAnim = null
     }
 
-    fun binding(micInfo: MicInfoBean) {
+    override fun binding(micInfo: MicInfoBean) {
         mBinding.apply {
             if (micInfo.userInfo == null) { // 没人
                 ivMicInnerIcon.isVisible = true

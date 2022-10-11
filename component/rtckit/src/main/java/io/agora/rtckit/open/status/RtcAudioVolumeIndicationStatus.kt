@@ -5,16 +5,11 @@ package io.agora.rtckit.open.status
  *
  * 用户音量提示回调。
  */
-class RtcAudioVolumeIndicationStatus(
-    val speakers: Array<RtcAudioVolumeInfo?>? = null,
-    val totalVolume: Int = 0,
-) {
+data class RtcAudioVolumeIndicationStatus constructor(
+    val speakers: List<RtcAudioVolumeInfo>? = null,
+)
 
-}
-
-data class RtcAudioVolumeInfo(
+data class RtcAudioVolumeInfo constructor(
     var uid: Int = 0,
-    var volume: Int = 0,
-    var vad: Int = 0,
-    var voicePitch: Double = 0.0,
+    var volume: Int = 0
 )

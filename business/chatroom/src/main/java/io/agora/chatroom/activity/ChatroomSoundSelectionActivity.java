@@ -118,8 +118,8 @@ public class ChatroomSoundSelectionActivity extends BaseActivity implements Chat
                      joinRoom(data);
                   }else {
                      VRUserBean userinfo = ProfileManager.getInstance().getProfile();
-                     Log.d("ChatroomCreateActivity","chat_uid: " + userinfo.getChat_uid());
-                     Log.d("ChatroomCreateActivity","im_token: " + userinfo.getIm_token());
+                     Log.d("ChatroomCreateActivity1","chat_uid: " + userinfo.getChat_uid());
+                     Log.d("ChatroomCreateActivity1","im_token: " + userinfo.getIm_token());
                      ChatroomConfigManager.getInstance().login(userinfo.getChat_uid(), userinfo.getIm_token(), new CallBack() {
                         @Override
                         public void onSuccess() {
@@ -128,7 +128,7 @@ public class ChatroomSoundSelectionActivity extends BaseActivity implements Chat
 
                         @Override
                         public void onError(int code, String desc) {
-                           EMLog.e("ChatroomSoundSelectionActivity", "Login Fail code: "+code + " desc: " + desc);
+                           EMLog.e("ChatroomSoundSelectionActivity1", "Login Fail code: "+code + " desc: " + desc);
                         }
                      });
                   }
@@ -164,25 +164,32 @@ public class ChatroomSoundSelectionActivity extends BaseActivity implements Chat
    }
 
    public void joinRoom(VRoomInfoBean data){
-      ChatroomConfigManager.getInstance().joinRoom(
-              Objects.requireNonNull(data.getRoom()).getChatroom_id(), new ValueCallBack<ChatRoom>() {
-         @Override
-         public void onSuccess(ChatRoom chatRoom) {
-            EMLog.e("ChatroomSoundSelectionActivity", "joinRoom onSuccess: ");
-            ARouter.getInstance()
-                    .build(RouterPath.ChatroomPath)
-                    .withSerializable(RouterParams.KEY_CHATROOM_DETAILS_INFO, data)
-                    .navigation();
-            finishCreateActivity();
-            finish();
-         }
-
-         @Override
-         public void onError(int code, String desc) {
-            EMLog.e("ChatroomSoundSelectionActivity", "joinRoom Fail code: "+code + " desc: " + desc);
-
-         }
-      });
+      // TODO: 2022/10/8 进入房间后再joinRoom
+      ARouter.getInstance()
+              .build(RouterPath.ChatroomPath)
+              .withSerializable(RouterParams.KEY_CHATROOM_DETAILS_INFO, data)
+              .navigation();
+      finishCreateActivity();
+      finish();
+//      ChatroomConfigManager.getInstance().joinRoom(
+//              Objects.requireNonNull(data.getRoom()).getChatroom_id(), new ValueCallBack<ChatRoom>() {
+//         @Override
+//         public void onSuccess(ChatRoom chatRoom) {
+//            EMLog.e("ChatroomSoundSelectionActivity", "joinRoom onSuccess: ");
+//            ARouter.getInstance()
+//                    .build(RouterPath.ChatroomPath)
+//                    .withSerializable(RouterParams.KEY_CHATROOM_DETAILS_INFO, data)
+//                    .navigation();
+//            finishCreateActivity();
+//            finish();
+//         }
+//
+//         @Override
+//         public void onError(int code, String desc) {
+//            EMLog.e("ChatroomSoundSelectionActivity", "joinRoom Fail code: "+code + " desc: " + desc);
+//
+//         }
+//      });
    }
 
 

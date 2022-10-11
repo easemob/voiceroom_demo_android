@@ -8,13 +8,13 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup
+import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import io.agora.baseui.adapter.OnItemChildClickListener
 import io.agora.baseui.adapter.OnItemClickListener
 import io.agora.buddy.tool.ResourcesTools
 import io.agora.buddy.tool.dp
 import io.agora.secnceui.R
-import io.agora.secnceui.annotation.MicClickAction
 import io.agora.secnceui.bean.*
 import io.agora.secnceui.databinding.ViewChatroom2dMicLayoutBinding
 import io.agora.secnceui.ui.mic.IRoomMicView
@@ -92,6 +92,7 @@ class Room2DMicLayout : ConstraintLayout, IRoomMicView {
             }
         }
         binding.rvChatroomMicLayout.apply {
+            (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
             addItemDecoration(MaterialDividerItemDecoration(context, MaterialDividerItemDecoration.VERTICAL).apply {
                 dividerThickness = 32.dp.toInt()
 
@@ -102,7 +103,7 @@ class Room2DMicLayout : ConstraintLayout, IRoomMicView {
         }
     }
 
-    override fun updateAdapter(micInfoList: List<MicInfoBean>, isBotActive: Boolean) {
+    override fun onInitMic(micInfoList: List<MicInfoBean>, isBotActive: Boolean) {
         room2DMicAdapter?.submitListAndPurge(micInfoList)
         room2DMicBotAdapter?.activeBot(isBotActive)
     }
@@ -112,19 +113,11 @@ class Room2DMicLayout : ConstraintLayout, IRoomMicView {
     }
 
     override fun updateVolume(index: Int, volume: Int) {
-
+        room2DMicAdapter?.updateVolume(index, volume)
     }
 
     override fun updateBotVolume(speakerType: Int, volume: Int) {
         room2DMicBotAdapter?.updateVolume(speakerType, volume)
-    }
-
-    override fun updateMicStatusByAction(index: Int, @MicClickAction action: Int) {
-//        room2DMicAdapter?.updateMicStatusByAction(index, action)
-    }
-
-    override fun exchangeMic(from: Int, to: Int) {
-
     }
 
     override fun findMicByUid(uid: String): Int {
@@ -139,5 +132,15 @@ class Room2DMicLayout : ConstraintLayout, IRoomMicView {
     override fun receiverAttributeMap(newMicMap: Map<Int, MicInfoBean>) {
         room2DMicAdapter?.receiverAttributeMap(newMicMap)
         room2DMicBotAdapter?.receiverAttributeMap(newMicMap)
+    }
+
+    private var myRtcUid: Int = -1
+
+    fun setMyRtcUid(rtcUid: Int) {
+        this.myRtcUid = rtcUid
+    }
+
+    override fun myRtcUid(): Int {
+        return myRtcUid
     }
 }

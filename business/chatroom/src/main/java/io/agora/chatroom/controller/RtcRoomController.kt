@@ -39,6 +39,10 @@ class RtcRoomController : IRtcKitListener {
 
     private var rtcManger: RtcKitManager? = null
 
+    /**是否是主播*/
+    var broadcaster = true
+
+    /**local mute*/
     var isLocalAudioEnable = true
 
     /**第一次启动机器，播放*/
@@ -71,7 +75,7 @@ class RtcRoomController : IRtcKitListener {
         this.micVolumeListener = micVolumeListener
     }
 
-    private var joinCallback:ValueCallBack<Boolean>?=null
+    private var joinCallback: ValueCallBack<Boolean>? = null
 
     /**加入rtc频道*/
     fun joinChannel(
@@ -85,12 +89,15 @@ class RtcRoomController : IRtcKitListener {
         rtcChannelConfig.roomId = roomId
         rtcChannelConfig.userId = userId
         rtcChannelConfig.broadcaster = broadcaster
-        this.joinCallback =  joinCallback
+        this.joinCallback = joinCallback
+        this.broadcaster = broadcaster
         rtcManger?.joinChannel(rtcChannelConfig)
     }
 
-    fun switchRole(broadcaster: Boolean){
+    fun switchRole(broadcaster: Boolean) {
+        if (this.broadcaster == broadcaster) return
         rtcManger?.switchRole(broadcaster)
+        this.broadcaster = broadcaster
     }
 
     /**
@@ -226,5 +233,20 @@ class RtcRoomController : IRtcKitListener {
     }
 
     override fun onAudioVolumeIndication(volumeIndicationStatus: RtcAudioVolumeIndicationStatus) {
+        ThreadManager.getInstance().runOnMainThread {
+            volumeIndicationStatus.speakers?.forEach { audioVolumeInfo ->
+                if (audioVolumeInfo.volume == 0) {
+                    micVolumeListener?.onUserVolume(audioVolumeInfo.uid, ConfigConstants.VolumeType.Volume_None)
+                } else if (audioVolumeInfo.volume <= 60) {
+                    micVolumeListener?.onUserVolume(audioVolumeInfo.uid, ConfigConstants.VolumeType.Volume_Low)
+                } else if (audioVolumeInfo.volume <= 120) {
+                    micVolumeListener?.onUserVolume(audioVolumeInfo.uid, ConfigConstants.VolumeType.Volume_Medium)
+                } else if (audioVolumeInfo.volume <= 180) {
+                    micVolumeListener?.onUserVolume(audioVolumeInfo.uid, ConfigConstants.VolumeType.Volume_High)
+                } else {
+                    micVolumeListener?.onUserVolume(audioVolumeInfo.uid, ConfigConstants.VolumeType.Volume_Max)
+                }
+            }
+        }
     }
 }

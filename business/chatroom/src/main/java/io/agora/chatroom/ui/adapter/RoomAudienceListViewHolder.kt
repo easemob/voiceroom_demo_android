@@ -1,4 +1,4 @@
-package io.agora.chatroom.adapter
+package io.agora.chatroom.ui.adapter
 
 import io.agora.baseui.adapter.BaseRecyclerViewAdapter
 import io.agora.buddy.tool.ResourcesTools
@@ -6,7 +6,6 @@ import io.agora.secnceui.R
 import io.agora.secnceui.annotation.MicClickAction
 import io.agora.chatroom.databinding.ItemChatroomAudienceListBinding
 import tools.bean.VMemberBean
-import tools.bean.VRoomUserBean
 
 class RoomAudienceListViewHolder constructor(private val binding: ItemChatroomAudienceListBinding) :
     BaseRecyclerViewAdapter.BaseViewHolder<ItemChatroomAudienceListBinding, VMemberBean>(binding) {

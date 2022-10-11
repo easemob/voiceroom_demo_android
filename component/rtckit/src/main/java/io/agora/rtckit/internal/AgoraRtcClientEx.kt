@@ -103,6 +103,8 @@ internal class AgoraRtcClientEx : RtcBaseClientEx<RtcEngineEx>() {
         }
 
         val status = rtcEngine?.joinChannel(config.appToken, config.roomId, "", config.userId)
+        // 启用用户音量提示。
+        rtcEngine?.enableAudioVolumeIndication(1000, 3, false)
         if (status != IRtcEngineEventHandler.ErrorCode.ERR_OK) {
             val errorMsg = "join channel error status not ERR_OK!"
             errorMsg.logE(TAG)

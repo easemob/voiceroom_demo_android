@@ -19,7 +19,6 @@ class RoomMicViewModel constructor(application: Application) : AndroidViewModel(
     private val mRepository by lazy { RoomMicRepository() }
 
     private val _applyMicListObservable: SingleSourceLiveData<Resource<VRMicListBean>> = SingleSourceLiveData()
-    private val _cancelSubmitMicObservable: SingleSourceLiveData<Resource<Boolean>> = SingleSourceLiveData()
     private val _micInfoObservable: SingleSourceLiveData<Resource<VRMicBean>> = SingleSourceLiveData()
     private val _closeMicObservable: SingleSourceLiveData<Resource<Pair<Int, Boolean>>> = SingleSourceLiveData()
     private val _cancelCloseMicObservable: SingleSourceLiveData<Resource<Pair<Int, Boolean>>> = SingleSourceLiveData()
@@ -35,7 +34,6 @@ class RoomMicViewModel constructor(application: Application) : AndroidViewModel(
     private val _rejectSubmitMicObservable: SingleSourceLiveData<Resource<Boolean>> = SingleSourceLiveData()
 
     fun applyMicListObservable(): LiveData<Resource<VRMicListBean>> = _applyMicListObservable
-    fun cancelSubmitMicObservable(): LiveData<Resource<Boolean>> = _cancelSubmitMicObservable
     fun micInfoObservable(): LiveData<Resource<VRMicBean>> = _micInfoObservable
     fun closeMicObservable(): LiveData<Resource<Pair<Int, Boolean>>> = _closeMicObservable
     fun cancelCloseMicObservable(): LiveData<Resource<Pair<Int, Boolean>>> = _cancelCloseMicObservable
@@ -53,11 +51,6 @@ class RoomMicViewModel constructor(application: Application) : AndroidViewModel(
     // 获取上麦申请列表
     fun getApplyMicList(context: Context, roomId: String, cursor: String, micIndex: Int) {
         _applyMicListObservable.setSource(mRepository.getApplyMicList(context, roomId, cursor, micIndex))
-    }
-
-    // 撤销上麦申请
-    fun cancelSubmitMic(context: Context, roomId: String) {
-        _cancelSubmitMicObservable.setSource(mRepository.cancelSubmitMic(context, roomId))
     }
 
     // 获取麦位信息

@@ -1,4 +1,4 @@
-package io.agora.chatroom.fragment
+package io.agora.chatroom.ui.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -18,7 +18,7 @@ import io.agora.buddy.tool.ResourcesTools
 import io.agora.buddy.tool.ThreadManager
 import io.agora.buddy.tool.dp
 import io.agora.buddy.tool.logE
-import io.agora.chatroom.adapter.RoomContributionRankingViewHolder
+import io.agora.chatroom.ui.adapter.RoomContributionRankingViewHolder
 import io.agora.chatroom.bean.RoomKitBean
 import io.agora.chatroom.databinding.FragmentChatroomContributionRankingBinding
 import io.agora.chatroom.databinding.ItemChatroomContributionRankingBinding

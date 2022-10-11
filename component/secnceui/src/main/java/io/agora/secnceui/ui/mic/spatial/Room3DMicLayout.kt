@@ -6,6 +6,7 @@ import android.graphics.Point
 import android.graphics.PointF
 import android.graphics.RectF
 import android.os.SystemClock
+import android.text.TextUtils
 import android.util.AttributeSet
 import android.util.Size
 import android.view.MotionEvent
@@ -13,13 +14,16 @@ import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import io.agora.baseui.adapter.OnItemClickListener
+import io.agora.buddy.tool.ThreadManager
 import io.agora.buddy.tool.logE
 import io.agora.config.ConfigConstants
 import io.agora.secnceui.R
-import io.agora.secnceui.annotation.MicClickAction
+import io.agora.secnceui.annotation.MicStatus
 import io.agora.secnceui.bean.MicInfoBean
 import io.agora.secnceui.databinding.ViewChatroom3dMicLayoutBinding
 import io.agora.secnceui.ui.mic.IRoomMicView
+import io.agora.secnceui.ui.mic.RoomMicConstructor
+import io.agora.secnceui.widget.mic.IRoomMicBinding
 import kotlin.math.abs
 import kotlin.math.atan2
 import kotlin.math.hypot
@@ -34,6 +38,9 @@ class Room3DMicLayout : ConstraintLayout, View.OnClickListener, IRoomMicView {
 
         // 时间间隔
         const val TIME_INTERVAL = 100
+
+        // 普通用户个数
+        const val USER_SIZE = 5
     }
 
     private lateinit var binding: ViewChatroom3dMicLayoutBinding
@@ -51,7 +58,7 @@ class Room3DMicLayout : ConstraintLayout, View.OnClickListener, IRoomMicView {
 
     // spatialView 尺寸
     private val micViewSize by lazy {
-        Size(binding.micViewCenter.width, binding.micViewCenter.height)
+        Size(binding.micV4Center.width, binding.micV4Center.height)
     }
 
     // rootView尺寸
@@ -62,8 +69,8 @@ class Room3DMicLayout : ConstraintLayout, View.OnClickListener, IRoomMicView {
     // 3d 座位最大移动距离
     private val maxTranslationScope by lazy {
         Size(
-            binding.root.width / 2 - binding.micViewCenter.width / 2,
-            binding.root.height / 2 - binding.micViewCenter.height / 2
+            binding.root.width / 2 - binding.micV4Center.width / 2,
+            binding.root.height / 2 - binding.micV4Center.height / 2
         )
     }
 
@@ -79,7 +86,11 @@ class Room3DMicLayout : ConstraintLayout, View.OnClickListener, IRoomMicView {
     private var onItemClickListener: OnItemClickListener<MicInfoBean>? = null
     private var onBotClickListener: OnItemClickListener<MicInfoBean>? = null
 
-    private val micInfoMap = mutableMapOf<String, MicInfoBean>()
+    /**麦位数据信息*/
+    private val micInfoMap = mutableMapOf<Int, MicInfoBean>()
+
+    /**麦位view信息*/
+    private val micViewMap = mutableMapOf<Int, IRoomMicBinding>()
 
     fun onItemClickListener(
         onItemClickListener: OnItemClickListener<MicInfoBean>,
@@ -108,44 +119,35 @@ class Room3DMicLayout : ConstraintLayout, View.OnClickListener, IRoomMicView {
         initListeners()
         post {
             // 当前移动的坐标圆点
-            preMovePoint.x = binding.micViewCenter.left + micViewSize.width / 2
-            preMovePoint.y = binding.micViewCenter.top + micViewSize.height / 2
+            preMovePoint.x = binding.micV4Center.left + micViewSize.width / 2
+            preMovePoint.y = binding.micV4Center.top + micViewSize.height / 2
         }
+        this.micViewMap[ConfigConstants.MicConstant.KeyIndex0] = binding.micV0
+        this.micViewMap[ConfigConstants.MicConstant.KeyIndex1] = binding.micV1
+        this.micViewMap[ConfigConstants.MicConstant.KeyIndex2] = binding.micV5
+        this.micViewMap[ConfigConstants.MicConstant.KeyIndex3] = binding.micV6
+        this.micViewMap[ConfigConstants.MicConstant.KeyIndex4] = binding.micV4Center
+        this.micViewMap[ConfigConstants.MicConstant.KeyIndex5] = binding.micV2Blue
+        this.micViewMap[ConfigConstants.MicConstant.KeyIndex6] = binding.micV3Red
     }
 
-    fun setUpMicInfoMap(micInfoList: MutableMap<String, MicInfoBean>) {
-        this.micInfoMap.putAll(micInfoList)
-        micInfoMap[ConfigConstants.MicConstant.KeyMic0]?.let {
-            binding.micV0.binding(it)
-        }
-        micInfoMap[ConfigConstants.MicConstant.KeyMic1]?.let {
-            binding.micV1.binding(it)
-        }
-        micInfoMap[ConfigConstants.MicConstant.KeyMic2]?.let {
-            binding.micV2Red.binding(it)
-        }
-        micInfoMap[ConfigConstants.MicConstant.KeyMic3]?.let {
-            binding.micV3Blue.binding(it)
-        }
-        micInfoMap[ConfigConstants.MicConstant.KeyMic4]?.let {
-            binding.micV4.binding(it)
-        }
-        micInfoMap[ConfigConstants.MicConstant.KeyMic5]?.let {
-            binding.micV5.binding(it)
-        }
-        micInfoMap[ConfigConstants.MicConstant.KeyMic6]?.let {
-            binding.micViewCenter.binding(it)
+    fun setUpMicInfoMap(isUseBot: Boolean) {
+        micInfoMap.putAll(RoomMicConstructor.builderDefault3dMicMap(context, isUseBot))
+        micInfoMap.entries.forEach { entry ->
+            micViewMap[entry.key]?.apply {
+                binding(entry.value)
+            }
         }
     }
 
     private fun initListeners() {
         binding.micV0.setOnClickListener(this)
         binding.micV1.setOnClickListener(this)
-        binding.micV2Red.setOnClickListener(this)
-        binding.micV3Blue.setOnClickListener(this)
-        binding.micV4.setOnClickListener(this)
+        binding.micV2Blue.setOnClickListener(this)
+        binding.micV3Red.setOnClickListener(this)
+        binding.micV4Center.setOnClickListener(this)
         binding.micV5.setOnClickListener(this)
-        binding.micViewCenter.setOnClickListener(this)
+        binding.micV6.setOnClickListener(this)
     }
 
     private fun getRect(view: View): RectF {
@@ -159,41 +161,42 @@ class Room3DMicLayout : ConstraintLayout, View.OnClickListener, IRoomMicView {
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.micV1 -> {
-                micInfoMap[ConfigConstants.MicConstant.KeyMic0]?.let {
+            R.id.micV0 -> {
+                micInfoMap[ConfigConstants.MicConstant.KeyIndex0]?.let {
                     onItemClickListener?.onItemClick(it, v, 0, -1)
                 }
             }
-            R.id.micV0 -> {
-                micInfoMap[ConfigConstants.MicConstant.KeyMic1]?.let {
+            R.id.micV1 -> {
+                micInfoMap[ConfigConstants.MicConstant.KeyIndex1]?.let {
                     onItemClickListener?.onItemClick(it, v, 1, -1)
                 }
             }
-            R.id.micV2Red -> {
-                micInfoMap[ConfigConstants.MicConstant.KeyMic2]?.let {
+
+            R.id.micV2Blue -> {
+                micInfoMap[ConfigConstants.MicConstant.KeyIndex5]?.let {
                     onBotClickListener?.onItemClick(it, v, 5, -1)
                 }
             }
-            R.id.micV3Blue -> {
-                micInfoMap[ConfigConstants.MicConstant.KeyMic3]?.let {
-                    onBotClickListener?.onItemClick(it, v, 2, -1)
+            R.id.micV3Red -> {
+                micInfoMap[ConfigConstants.MicConstant.KeyIndex6]?.let {
+                    onBotClickListener?.onItemClick(it, v, 6, -1)
                 }
             }
 
-            R.id.micV4 -> {
-                micInfoMap[ConfigConstants.MicConstant.KeyMic4]?.let {
-                    onItemClickListener?.onItemClick(it, v, 3, -1)
-                }
-            }
-            R.id.micV5 -> {
-                micInfoMap[ConfigConstants.MicConstant.KeyMic5]?.let {
+            R.id.micV4Center -> {
+                micInfoMap[ConfigConstants.MicConstant.KeyIndex4]?.let {
                     onItemClickListener?.onItemClick(it, v, 4, -1)
                 }
             }
+            R.id.micV5 -> {
+                micInfoMap[ConfigConstants.MicConstant.KeyIndex2]?.let {
+                    onItemClickListener?.onItemClick(it, v, 2, -1)
+                }
+            }
 
-            R.id.micViewCenter -> {
-                micInfoMap[ConfigConstants.MicConstant.KeyMic6]?.let {
-                    onItemClickListener?.onItemClick(it, v, 6, -1)
+            R.id.micV6 -> {
+                micInfoMap[ConfigConstants.MicConstant.KeyIndex3]?.let {
+                    onItemClickListener?.onItemClick(it, v, 3, -1)
                 }
             }
         }
@@ -211,6 +214,11 @@ class Room3DMicLayout : ConstraintLayout, View.OnClickListener, IRoomMicView {
             }
         }
         return super.onInterceptTouchEvent(event)
+    }
+
+    private fun canMove(): Boolean {
+        val centerRtcUid = micInfoMap[ConfigConstants.MicConstant.KeyIndex4]?.userInfo?.rtcUid ?: -1
+        return centerRtcUid == myRtcUid()
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
@@ -233,13 +241,13 @@ class Room3DMicLayout : ConstraintLayout, View.OnClickListener, IRoomMicView {
                 lastX = x
                 lastY = y
 
-                val nextTransitionX = binding.micViewCenter.translationX + dx
-                val nextTransitionY = binding.micViewCenter.translationY + dy
+                val nextTransitionX = binding.micV4Center.translationX + dx
+                val nextTransitionY = binding.micV4Center.translationY + dy
                 if (abs(nextTransitionX) > maxTranslationScope.width || abs(nextTransitionY) > maxTranslationScope.height) {
                     return false
                 }
-                binding.micViewCenter.translationX = nextTransitionX
-                binding.micViewCenter.translationY = nextTransitionY
+                binding.micV4Center.translationX = nextTransitionX
+                binding.micV4Center.translationY = nextTransitionY
                 isMove = true
                 // 计算箭头角度
                 val curTime = SystemClock.elapsedRealtime()
@@ -247,13 +255,13 @@ class Room3DMicLayout : ConstraintLayout, View.OnClickListener, IRoomMicView {
                     preTime = curTime
                     // 当前准备移动到的坐标圆点
                     val curPoint = Point(
-                        binding.micViewCenter.left + nextTransitionX.toInt() + micViewSize.width / 2,
-                        binding.micViewCenter.top + nextTransitionY.toInt() + micViewSize.height / 2
+                        binding.micV4Center.left + nextTransitionX.toInt() + micViewSize.width / 2,
+                        binding.micV4Center.top + nextTransitionY.toInt() + micViewSize.height / 2
                     )
                     // 移动的角度
                     val angle = getAngle(curPoint, preMovePoint)
                     if (abs(angle - preAngle) > OFFSET_ANGLE) {
-                        binding.micViewCenter.changeAngle(angle.toFloat())
+                        binding.micV4Center.changeAngle(angle.toFloat())
                         preMovePoint.x = curPoint.x
                         preMovePoint.y = curPoint.y
                         preAngle = angle
@@ -268,7 +276,7 @@ class Room3DMicLayout : ConstraintLayout, View.OnClickListener, IRoomMicView {
                     val correctedX = correctMotionEventX(x)
                     val correctedY = correctMotionEventY(y)
                     // 视角效果左上角坐标
-                    val micVisualPoint = PointF(binding.micViewCenter.x, binding.micViewCenter.y)
+                    val micVisualPoint = PointF(binding.micV4Center.x, binding.micV4Center.y)
                     val dx = (correctedX - micViewSize.width / 2 - micVisualPoint.x)
                     val dy = (correctedY - micViewSize.height / 2 - micVisualPoint.y)
                     // 点按增加偏移误差
@@ -276,10 +284,10 @@ class Room3DMicLayout : ConstraintLayout, View.OnClickListener, IRoomMicView {
                     // 移动相对距离
                     val dz = hypot(dx, dy)
                     // 已经移动距离
-                    val translatedX = binding.micViewCenter.translationX
-                    val translatedY = binding.micViewCenter.translationY
+                    val translatedX = binding.micV4Center.translationX
+                    val translatedY = binding.micV4Center.translationY
 
-                    binding.micViewCenter.animate()
+                    binding.micV4Center.animate()
                         .translationX(translatedX + dx)
                         .translationY(translatedY + dy)
                         .setDuration((dz * 1.5).toLong())
@@ -291,7 +299,7 @@ class Room3DMicLayout : ConstraintLayout, View.OnClickListener, IRoomMicView {
                     val curPoint = Point(correctedX, correctedY)
                     // 移动的角度
                     val angle = getAngle(curPoint, preMovePoint)
-                    binding.micViewCenter.changeAngle(angle.toFloat())
+                    binding.micV4Center.changeAngle(angle.toFloat())
                     preMovePoint.x = curPoint.x
                     preMovePoint.y = curPoint.y
                     preAngle = angle
@@ -335,7 +343,7 @@ class Room3DMicLayout : ConstraintLayout, View.OnClickListener, IRoomMicView {
      * 是否有是3d 座位移动
      */
     private fun check3DMicChildView(x: Int, y: Int): Boolean {
-        if (getRect(binding.micViewCenter).contains(x.toFloat(), y.toFloat())) {
+        if (getRect(binding.micV4Center).contains(x.toFloat(), y.toFloat())) {
             "onTouchEvent ACTION_DOWN checkChildView:${x} ${y}".logE(TAG)
             return true
         }
@@ -346,35 +354,124 @@ class Room3DMicLayout : ConstraintLayout, View.OnClickListener, IRoomMicView {
         childView.isClickable = isClickable
     }
 
-    override fun updateAdapter(micInfoList: List<MicInfoBean>, isBotActive: Boolean) {
-
+    override fun onInitMic(micInfoList: List<MicInfoBean>, isBotActive: Boolean) {
+        micInfoList.forEach { micInfo ->
+            val index = micInfo.index
+            micInfoMap[index] = micInfo
+            micViewMap[index]?.apply {
+                binding(micInfo)
+            }
+        }
+        activeBot(isBotActive)
     }
 
     override fun activeBot(active: Boolean) {
-
+        if (active) {
+            micInfoMap[ConfigConstants.MicConstant.KeyIndex5]?.apply {
+                this.micStatus = MicStatus.BotActivated
+                binding.micV2Blue.binding(this)
+                micViewMap[ConfigConstants.MicConstant.KeyIndex5]?.let {
+                    it.binding(this)
+                }
+            }
+            micInfoMap[ConfigConstants.MicConstant.KeyIndex6]?.apply {
+                this.micStatus = MicStatus.BotActivated
+                micViewMap[ConfigConstants.MicConstant.KeyIndex6]?.let {
+                    it.binding(this)
+                }
+            }
+        } else {
+            micInfoMap[ConfigConstants.MicConstant.KeyIndex5]?.apply {
+                this.micStatus = MicStatus.BotActivated
+                binding.micV2Blue.binding(this)
+                micViewMap[ConfigConstants.MicConstant.KeyIndex5]?.let {
+                    it.binding(this)
+                }
+            }
+            micInfoMap[ConfigConstants.MicConstant.KeyIndex6]?.apply {
+                this.micStatus = MicStatus.BotActivated
+                micViewMap[ConfigConstants.MicConstant.KeyIndex6]?.let {
+                    it.binding(this)
+                }
+            }
+        }
     }
 
     override fun updateVolume(index: Int, volume: Int) {
-
+        if (index >= 0 && index < micInfoMap.size) {
+            micInfoMap[index]?.apply {
+                this.audioVolumeType = volume
+            }
+        }
     }
 
+    /**更新机器人提示音量*/
     override fun updateBotVolume(speakerType: Int, volume: Int) {
-
-    }
-
-    override fun updateMicStatusByAction(index: Int, @MicClickAction action: Int) {
-
-    }
-
-    override fun exchangeMic(from: Int, to: Int) {
-
+        when (speakerType) {
+            ConfigConstants.BotSpeaker.BotBlue -> {
+                micInfoMap[ConfigConstants.MicConstant.KeyIndex5]?.apply {
+                    this.audioVolumeType = volume
+                    binding.micV2Blue.binding(this)
+                }
+            }
+            ConfigConstants.BotSpeaker.BotRed -> {
+                micInfoMap[ConfigConstants.MicConstant.KeyIndex6]?.apply {
+                    this.audioVolumeType = volume
+                    binding.micV3Red.binding(this)
+                }
+            }
+            else -> {
+                micInfoMap[ConfigConstants.MicConstant.KeyIndex5]?.apply {
+                    this.audioVolumeType = volume
+                    binding.micV2Blue.binding(this)
+                }
+                micInfoMap[ConfigConstants.MicConstant.KeyIndex6]?.apply {
+                    this.audioVolumeType = volume
+                    binding.micV3Red.binding(this)
+                }
+            }
+        }
     }
 
     override fun findMicByUid(uid: String): Int {
+        micInfoMap.entries.forEach { entry ->
+            val index = entry.key
+            val micInfo = entry.value
+            if (TextUtils.equals(micInfo.userInfo?.userId, uid)) {
+                return index
+            }
+        }
         return -1
     }
 
     override fun receiverAttributeMap(newMicMap: Map<Int, MicInfoBean>) {
+        ThreadManager.getInstance().runOnMainThread {
+            newMicMap.entries.forEach { entry ->
+                val index = entry.key
+                val micInfo = entry.value
+                // 普通用户
+                if (index < USER_SIZE) {
+                    micInfoMap[index] = micInfo
+                    micViewMap[index]?.apply {
+                        binding(micInfo)
+                    }
+                }
+            }
+            // 机器人
+            if (newMicMap.containsKey(ConfigConstants.MicConstant.KeyIndex5)) {
+                val value = newMicMap[ConfigConstants.MicConstant.KeyIndex5]
+                activeBot(value?.micStatus == MicStatus.BotActivated)
+            }
+        }
+    }
 
+    private var myRtcUid: Int = -1
+
+    fun setMyRtcUid(rtcUid: Int) {
+        this.myRtcUid = rtcUid
+    }
+
+    override fun myRtcUid(): Int {
+        return myRtcUid
     }
 }

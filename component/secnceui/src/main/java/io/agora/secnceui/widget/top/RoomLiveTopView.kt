@@ -53,12 +53,19 @@ class RoomLiveTopView : ConstraintLayout, View.OnClickListener, IRoomLiveTopView
             mtChatroomMembers.text = chatroomInfo.memberCount.toString()
             mtChatroomGifts.text = chatroomInfo.giftCount.toString()
             mtChatroomWatch.text = chatroomInfo.watchCount.toString()
-            mtChatroomAgoraSound.text = when (chatroomInfo.soundSelection) {
-                ConfigConstants.SoundSelection.Karaoke -> root.context.getString(R.string.chatroom_karaoke)
-                ConfigConstants.SoundSelection.Gaming_Buddy -> root.context.getString(R.string.chatroom_gaming_buddy)
-                ConfigConstants.SoundSelection.Professional_Broadcaster -> root.context.getString(R.string.chatroom_professional_broadcaster)
-                else -> root.context.getString(R.string.chatroom_social_chat)
+            // 普通房间显示 最佳音效
+            if (chatroomInfo.roomType == ConfigConstants.RoomType.Common_Chatroom) {
+                mtChatroomAgoraSound.isVisible = true
+                mtChatroomAgoraSound.text = when (chatroomInfo.soundSelection) {
+                    ConfigConstants.SoundSelection.Karaoke -> root.context.getString(R.string.chatroom_karaoke)
+                    ConfigConstants.SoundSelection.Gaming_Buddy -> root.context.getString(R.string.chatroom_gaming_buddy)
+                    ConfigConstants.SoundSelection.Professional_Broadcaster -> root.context.getString(R.string.chatroom_professional_broadcaster)
+                    else -> root.context.getString(R.string.chatroom_social_chat)
+                }
+            }else{
+                mtChatroomAgoraSound.isVisible = false
             }
+
             // 房主头像
             binding.ivChatroomOwner.setImageResource(
                 ResourcesTools.getDrawableId(

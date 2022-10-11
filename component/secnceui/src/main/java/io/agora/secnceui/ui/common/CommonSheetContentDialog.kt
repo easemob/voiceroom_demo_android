@@ -20,7 +20,6 @@ class CommonSheetContentDialog constructor(): BaseSheetDialog<DialogBottomSheetC
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding?.apply {
-            setOnApplyWindowInsets(root)
             if (!TextUtils.isEmpty(titleText)){
                 mtTitle.text = titleText
             }

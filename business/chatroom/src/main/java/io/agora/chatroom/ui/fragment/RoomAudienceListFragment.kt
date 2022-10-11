@@ -1,4 +1,4 @@
-package io.agora.chatroom.fragment
+package io.agora.chatroom.ui.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -16,7 +16,7 @@ import io.agora.baseui.adapter.OnItemChildClickListener
 import io.agora.baseui.general.callback.OnResourceParseCallback
 import io.agora.baseui.general.net.Resource
 import io.agora.buddy.tool.*
-import io.agora.chatroom.adapter.RoomAudienceListViewHolder
+import io.agora.chatroom.ui.adapter.RoomAudienceListViewHolder
 import io.agora.chatroom.bean.RoomKitBean
 import io.agora.chatroom.databinding.FragmentChatroomAudienceListBinding
 import io.agora.chatroom.databinding.ItemChatroomAudienceListBinding
