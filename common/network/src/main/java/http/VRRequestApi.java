@@ -7,8 +7,7 @@ public class VRRequestApi {
     VRRequestApi(){}
     public static VRRequestApi mInstance;
     private final String BASE_URL = "http://a1-test-voiceroom.easemob.com";
-//    private final String BASE_URL = "http://gateway-fulldemo-staging.agoralab.com";
-
+//    private final String BASE_URL = "http://gateway-fulldemo-staging.agoralab.co";
     private final String BASE_ROOM = "/voice/room/%1$s";
     private final String BASE_MEMBERS = "/voice/room/%1$s/members";
     private final String BASE_MIC = "/voice/room/%1$s/mic";

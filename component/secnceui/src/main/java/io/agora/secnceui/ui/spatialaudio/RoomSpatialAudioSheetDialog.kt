@@ -32,6 +32,7 @@ class RoomSpatialAudioSheetDialog constructor(private val isEnabled: Boolean = t
             binding?.mcbBlueBotSpatialAudio?.isChecked = spatialOpen
         }
         binding?.apply {
+            setOnApplyWindowInsets(root)
             ivBottomSheetBack.setOnClickListener {
                 onHandleOnBackPressed()
             }

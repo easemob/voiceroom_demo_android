@@ -21,7 +21,7 @@
             android:layout_gravity="center_vertical"
             android:paddingStart="12dp"
             android:paddingTop="16dp"
-            android:paddingEnd="7dp"
+            android:paddingEnd="5dp"
             android:paddingBottom="16dp"
             android:src="@drawable/icon_chatroom_back" />
 
@@ -37,11 +37,11 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="3dp"
+            android:layout_marginStart="8dp"
             android:orientation="vertical">
 
             <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/mtChatroomOwnerName"
+                android:id="@+id/mtChatroomName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
@@ -49,10 +49,10 @@
                 tools:text="Susan Stark" />
 
             <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/mtChatroomName"
+                android:id="@+id/mtChatroomOwnerName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/white"
+                android:textColor="@color/white_80"
                 android:textSize="@dimen/sp_10"
                 tools:text="Chatroom-0728-001" />
         </LinearLayout>

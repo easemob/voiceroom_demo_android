@@ -66,6 +66,7 @@ class RoomMicManagerSheetDialog constructor(private val onItemClickListener: OnI
             }
         }, RoomMicManagerViewHolder::class.java)
         binding?.apply {
+            setOnApplyWindowInsets(root)
             val itemDecoration =
                 MaterialDividerItemDecoration(root.context, MaterialDividerItemDecoration.HORIZONTAL).apply {
                     dividerColor = ResourcesCompat.getColor(root.context.resources, R.color.divider_color_979797, null)

@@ -11,6 +11,7 @@ import androidx.lifecycle.LiveData;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import io.agora.ValueCallBack;
+import io.agora.baseui.general.callback.ResultCallBack;
 import io.agora.baseui.general.net.Resource;
 import io.agora.buddy.tool.LogToolsKt;
 import io.agora.buddy.tool.ThreadManager;
@@ -20,6 +21,7 @@ import io.agora.chatroom.bean.RoomKitBean;
 import io.agora.chatroom.controller.RtcRoomController;
 import io.agora.chatroom.general.livedatas.SingleSourceLiveData;
 import io.agora.chatroom.general.repositories.ChatroomRepository;
+import io.agora.chatroom.general.repositories.NetworkOnlyResource;
 import io.agora.chatroom.general.repositories.ProfileManager;
 import tools.DefaultValueCallBack;
 import tools.bean.VRoomBean;
@@ -114,7 +116,7 @@ public class ChatroomViewModel extends AndroidViewModel {
         leaveObservable.setSource(mRepository.leaveRoom(context, roomId));
     }
 
-    public void initSdkJoin(RoomKitBean roomKitBean,String password) {
+    public void initSdkJoin(RoomKitBean roomKitBean, String password) {
         joinRtcChannel.set(false);
         joinImRoom.set(false);
         RtcRoomController.get().joinChannel(getApplication(), roomKitBean.getChannelId(),
@@ -130,6 +132,12 @@ public class ChatroomViewModel extends AndroidViewModel {
 
                     @Override
                     public void onError(int error, String errorMsg) {
+                        ThreadManager.getInstance().runOnMainThread(() -> joinObservable.setSource(new NetworkOnlyResource<Boolean>() {
+                            @Override
+                            protected void createCall(@NonNull ResultCallBack<LiveData<Boolean>> callBack) {
+                                callBack.onError(error, errorMsg);
+                            }
+                        }.asLiveData()));
                         LogToolsKt.logE("rtc  joinChannel onError " + error + "  " + errorMsg, TAG);
                     }
                 }
@@ -144,6 +152,12 @@ public class ChatroomViewModel extends AndroidViewModel {
 
             @Override
             public void onError(int error, String errorMsg) {
+                ThreadManager.getInstance().runOnMainThread(() -> joinObservable.setSource(new NetworkOnlyResource<Boolean>() {
+                    @Override
+                    protected void createCall(@NonNull ResultCallBack<LiveData<Boolean>> callBack) {
+                        callBack.onError(error, errorMsg);
+                    }
+                }.asLiveData()));
                 LogToolsKt.logE("im  joinChatRoom onError " + error + "  " + errorMsg, TAG);
             }
         });
