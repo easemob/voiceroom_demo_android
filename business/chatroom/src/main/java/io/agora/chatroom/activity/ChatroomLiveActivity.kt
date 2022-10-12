@@ -249,9 +249,16 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
         roomObservableDelegate.onRoomViewDelegateListener = this
         binding.cTopView.setOnLiveTopClickListener(object : OnLiveTopClickListener {
             override fun onClickBack(view: View) {
-                roomObservableDelegate.onExitRoom(getString(R.string.chatroom_exit), finishBack = {
+
+                if (roomKitBean.isOwner){
+                    roomObservableDelegate.onExitRoom(
+                        getString(R.string.chatroom_end_live),
+                        getString(R.string.chatroom_end_live_tips), finishBack = {
+                        finish()
+                    })
+                }else{
                     finish()
-                })
+                }
             }
 
             override fun onClickRank(view: View) {

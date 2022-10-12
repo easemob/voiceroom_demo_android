@@ -469,7 +469,11 @@ class RoomObservableViewDelegate constructor(
                             onBotMicClick(false, activity.getString(R.string.chatroom_open_bot_to_sound_effect))
                         }
                     } else {
-                        onExitRoom(activity.getString(R.string.chatroom_exit_and_create_one), finishBack)
+                        onExitRoom(
+                            activity.getString(R.string.chatroom_prompt),
+                            activity.getString(R.string.chatroom_exit_and_create_one),
+                            finishBack
+                        )
                     }
                 }
 
@@ -535,9 +539,9 @@ class RoomObservableViewDelegate constructor(
     /**
      * 退出房间
      */
-    fun onExitRoom(content: String, finishBack: () -> Unit) {
+    fun onExitRoom(title: String, content: String, finishBack: () -> Unit) {
         CommonFragmentAlertDialog()
-            .titleText(activity.getString(R.string.chatroom_prompt))
+            .titleText(title)
             .contentText(content)
             .leftText(activity.getString(R.string.chatroom_cancel))
             .rightText(activity.getString(R.string.chatroom_confirm))

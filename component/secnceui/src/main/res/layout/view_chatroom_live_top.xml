@@ -38,6 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:layout_marginEnd="130dp"
             android:orientation="vertical">
 
             <com.google.android.material.textview.MaterialTextView
@@ -46,6 +47,8 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
                 android:textSize="@dimen/sp_15"
+                android:maxLines="1"
+                android:ellipsize="end"
                 tools:text="Susan Stark" />
 
             <com.google.android.material.textview.MaterialTextView
@@ -53,7 +56,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white_80"
+                android:maxLines="1"
                 android:textSize="@dimen/sp_10"
+                android:ellipsize="end"
                 tools:text="Chatroom-0728-001" />
         </LinearLayout>
 
