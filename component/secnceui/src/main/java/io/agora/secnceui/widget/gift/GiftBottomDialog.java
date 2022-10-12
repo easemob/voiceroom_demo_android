@@ -31,6 +31,7 @@ public class GiftBottomDialog extends BottomDialogFragment implements View.OnCli
     private AppCompatTextView total_count;
     private int GiftNum = 1;
     private GiftBean giftBean;
+    private ImageView icon;
 
 
     public static GiftBottomDialog getNewInstance() {
@@ -50,6 +51,7 @@ public class GiftBottomDialog extends BottomDialogFragment implements View.OnCli
         countLayout = findViewById(R.id.gift_count_layout);
         count = findViewById(R.id.count);
         total_count = findViewById(R.id.total_count);
+        icon = findViewById(R.id.icon);
 
         send = findViewById(R.id.send);
         adapter = new GiftFragmentAdapter(mContext);
@@ -69,6 +71,7 @@ public class GiftBottomDialog extends BottomDialogFragment implements View.OnCli
     @Override
     public void initListener() {
         super.initListener();
+        mViewPager.setOffscreenPageLimit(1);
         mViewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
@@ -78,6 +81,8 @@ public class GiftBottomDialog extends BottomDialogFragment implements View.OnCli
                 currentIndex = position;
                 if (currentIndex == 0){
                     linearLayout.getChildAt(currentIndex).setEnabled(false);
+                }else if (currentIndex == 1){
+
                 }
 
             }
@@ -99,9 +104,26 @@ public class GiftBottomDialog extends BottomDialogFragment implements View.OnCli
             @Override
             public void onVpFragmentItem(int position, Object bean) {
                 giftBean = (GiftBean) bean;
+                check(giftBean.getPrice());
                 reset();
             }
+
+            @Override
+            public void onFirstData(GiftBean bean) {
+                giftBean = bean;
+                check(bean.getPrice());
+                total_count.setText(getString(R.string.dialog_gift_total_count,bean.getPrice()));
+                count.setText("1");
+            }
         });
+    }
+
+    private void isShowPop(boolean isShow){
+        if (isShow){
+            icon.setImageResource(R.drawable.icon_arrow_down);
+        }else {
+            icon.setImageResource(R.drawable.icon_arrow_up);
+        }
     }
 
     @Override
@@ -158,6 +180,7 @@ public class GiftBottomDialog extends BottomDialogFragment implements View.OnCli
                    .intercept(new CommonPopupWindow.ViewEvent<ChatroomGiftPopupwindowLayoutBinding>() {
                        @Override
                        public void getView(CommonPopupWindow popupWindow, ChatroomGiftPopupwindowLayoutBinding view) {
+                           isShowPop(true);
                            String[] data={"999","599","199","99", "9", "1"};
                            GiftAdapter adapter = new GiftAdapter(getContext(),1,data);
                            view.listView.setAdapter(adapter);
@@ -184,6 +207,7 @@ public class GiftBottomDialog extends BottomDialogFragment implements View.OnCli
                        @Override
                        public void onDismiss() {
                            /*每次dismiss都会回调*/
+                           isShowPop(false);
                        }
                    })
                    .build(getContext())
@@ -201,4 +225,15 @@ public class GiftBottomDialog extends BottomDialogFragment implements View.OnCli
         }
    }
 
+   public void check(String price){
+       if (Integer.parseInt(price) < 100){
+           icon.setAlpha(1.0f);
+           count.setAlpha(1.0f);
+           countLayout.setEnabled(true);
+       }else {
+           icon.setAlpha(0.2f);
+           count.setAlpha(0.2f);
+           countLayout.setEnabled(false);
+       }
+   }
 }

@@ -37,6 +37,13 @@ public class GiftFragmentAdapter extends FragmentStateAdapter {
                     listener.onVpFragmentItem(position, bean);
                 }
             }
+
+            @Override
+            public void onFirstItem(GiftBean firstBean) {
+                if(listener != null) {
+                    listener.onFirstData(firstBean);
+                }
+            }
         });
         //添加参数
         return fragment;
@@ -53,5 +60,6 @@ public class GiftFragmentAdapter extends FragmentStateAdapter {
 
     public interface OnVpFragmentItemListener {
         void onVpFragmentItem(int position, Object bean);
+        void onFirstData(GiftBean bean);
     }
 }
