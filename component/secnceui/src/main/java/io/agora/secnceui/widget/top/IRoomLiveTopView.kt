@@ -15,4 +15,10 @@ interface IRoomLiveTopView {
     fun onImageUpdate(@ChatroomTopType type: Int, avatar: String)
 
     fun onRankMember(topRankUsers: List<RoomRankUserBean>)
+
+    fun addOrSubMemberCount(add: Boolean){}
+
+    fun addOrSubWatchCount(add: Boolean){}
+
+    fun addOrSubGiftCount(add: Boolean){}
 }

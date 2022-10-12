@@ -35,30 +35,31 @@
             app:shapeAppearance="@style/chatroom_seat_roundStyle" />
 
         <LinearLayout
+            android:id="@+id/llTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginEnd="130dp"
+            android:layout_marginEnd="10dp"
             android:orientation="vertical">
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/mtChatroomName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:textColor="@color/white"
                 android:textSize="@dimen/sp_15"
-                android:maxLines="1"
-                android:ellipsize="end"
-                tools:text="Susan Stark" />
+                tools:text="Susan Star" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/mtChatroomOwnerName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/white_80"
-                android:maxLines="1"
-                android:textSize="@dimen/sp_10"
                 android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="@color/white_80"
+                android:textSize="@dimen/sp_10"
                 tools:text="Chatroom-0728-001" />
         </LinearLayout>
 
@@ -130,9 +131,9 @@
         style="@style/chatroom_top_text_style"
         android:layout_marginStart="5dp"
         android:drawableStart="@drawable/icon_chatroom_watch"
+        app:layout_constraintBottom_toBottomOf="@+id/mtChatroomGifts"
         app:layout_constraintStart_toEndOf="@+id/mtChatroomGifts"
         app:layout_constraintTop_toTopOf="@+id/mtChatroomGifts"
-        app:layout_constraintBottom_toBottomOf="@+id/mtChatroomGifts"
         tools:text="1000" />
 
     <com.google.android.material.textview.MaterialTextView
@@ -142,9 +143,9 @@
         android:drawableStart="@drawable/icon_chatroom_notice"
         android:drawableEnd="@drawable/icon_chatroom_notice_arrow_right"
         android:text="@string/chatroom_notice"
+        app:layout_constraintBottom_toBottomOf="@+id/mtChatroomGifts"
         app:layout_constraintStart_toEndOf="@+id/mtChatroomWatch"
         app:layout_constraintTop_toTopOf="@+id/mtChatroomGifts"
-        app:layout_constraintBottom_toBottomOf="@+id/mtChatroomGifts"
         tools:text="Notice" />
 
     <androidx.constraintlayout.widget.Guideline
@@ -169,7 +170,7 @@
         android:text="@string/chatroom_social_chat"
         android:textColor="@color/white"
         android:textSize="@dimen/sp_10"
-        app:layout_constraintTop_toTopOf="@+id/mtChatroomGifts"
         app:layout_constraintBottom_toBottomOf="@+id/mtChatroomGifts"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/mtChatroomGifts" />
 </androidx.constraintlayout.widget.ConstraintLayout>

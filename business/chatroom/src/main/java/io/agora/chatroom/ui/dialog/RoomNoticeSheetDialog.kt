@@ -50,8 +50,6 @@ class RoomNoticeSheetDialog constructor(
                 mbConfirm.isVisible = true
                 etInput.isVisible = true
                 mtContent.isVisible = false
-                etInput.requestFocus()
-                etInput.setSelection(etInput.text.length)
                 showKeyboard(etInput)
             }
             mtCancel.setOnClickListener {
@@ -71,6 +69,11 @@ class RoomNoticeSheetDialog constructor(
     }
 
     private fun showKeyboard(editText: EditText) {
+        editText.isFocusable = true;
+        editText.isFocusableInTouchMode = true;
+        editText.requestFocus()
+        editText.setSelection(editText.text.length)
+
         val imm = editText.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.showSoftInput(editText, 0)
     }

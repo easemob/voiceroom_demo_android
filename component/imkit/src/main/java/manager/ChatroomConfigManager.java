@@ -211,6 +211,8 @@ public class ChatroomConfigManager {
         default void receiveDeclineApply(String roomId,ChatMessageData message){}
         //用户加入房间 后面采用自定义消息
         default void userJoinedRoom(String roomId,String uid){}
+        //用户离开房间
+        default void onMemberExited(String roomId,String s1,String s2){}
         //聊天室公告更新
         default void announcementChanged(String roomId,String announcement){}
         //聊天室成员被踢出房间
@@ -247,7 +249,8 @@ public class ChatroomConfigManager {
 
         @Override
         public void onMemberExited(String s, String s1, String s2) {
-
+            if (ChatListener != null)
+                ChatListener.onMemberExited(s,s1,s2);
         }
 
         @Override
