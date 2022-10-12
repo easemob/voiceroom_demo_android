@@ -456,26 +456,27 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
                 } else {
                     binding.rvChatroom3dMicLayout.receiverAttributeMap(newMicMap)
                 }
+                binding.chatBottom.setEnableHand(roomObservableDelegate.isOnMic())
             }
         }
         // TODO: 是否在麦位上
-//         binding.chatBottom.setEnableHand(roomObservableDelegate.isOnMic())
-        for (entry in attributeMap!!.entries) {
-            try {
-                val json = attributeMap[entry.key]
-                Log.e("attributeMap", "key: $json");
-                val attribute = toBean(json, VRMicBean::class.java)
-                attribute.let {
-                    if (attribute!!.member.chat_uid.equals(ProfileManager.getInstance().profile.chat_uid)) {
-                        binding.chatBottom.setEnableHand(false)
-                    } else {
-                        binding.chatBottom.setEnableHand(true)
-                    }
-                }
-            } catch (e: JSONException) {
-                e.printStackTrace()
-            }
-        }
+
+//        for (entry in attributeMap!!.entries) {
+//            try {
+//                val json = attributeMap[entry.key]
+//                Log.e("attributeMap", "key: $json");
+//                val attribute = toBean(json, VRMicBean::class.java)
+//                attribute.let {
+//                    if (attribute!!.member.chat_uid.equals(ProfileManager.getInstance().profile.chat_uid)) {
+//                        binding.chatBottom.setEnableHand(false)
+//                    } else {
+//                        binding.chatBottom.setEnableHand(true)
+//                    }
+//                }
+//            } catch (e: JSONException) {
+//                e.printStackTrace()
+//            }
+//        }
     }
 
     //接收取消申请上麦
