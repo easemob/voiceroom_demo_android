@@ -142,6 +142,10 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
                     roomInfoBean = data
                     data?.let {
                         roomObservableDelegate.onRoomDetails(it)
+                        binding.chatBottom.showMicVisible(
+                            RtcRoomController.get().isLocalAudioEnable,
+                            roomObservableDelegate.isOnMic()
+                        )
                     }
                 }
             })
@@ -245,9 +249,14 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
                 },
             ).setUpMicInfoMap(RtcRoomController.get().isUseBot)
         }
+        binding.cTopView.setTitleMaxWidth(this)
         // 头部 如果是创建房间进来有详情
         roomInfoBean?.let {
             roomObservableDelegate.onRoomDetails(it)
+            binding.chatBottom.showMicVisible(
+                RtcRoomController.get().isLocalAudioEnable,
+                roomObservableDelegate.isOnMic()
+            )
         }
         roomObservableDelegate.onRoomViewDelegateListener = this
         binding.cTopView.setOnLiveTopClickListener(object : OnLiveTopClickListener {
@@ -293,10 +302,10 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
                     io.agora.secnceui.R.id.extend_item_mic -> {
                         if (RtcRoomController.get().isLocalAudioEnable) {
                             binding.chatBottom.setEnableMic(true)
-                            roomObservableDelegate.muteLocalAudio(true)
+                            roomObservableDelegate.muteLocalAudio(false)
                         } else {
                             binding.chatBottom.setEnableMic(false)
-                            roomObservableDelegate.muteLocalAudio(false)
+                            roomObservableDelegate.muteLocalAudio(true)
                         }
                     }
                     io.agora.secnceui.R.id.extend_item_hand_up -> {
@@ -371,6 +380,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
 
     override fun finish() {
         RtcRoomController.get().destroy()
+        ChatClient.getInstance().chatroomManager().leaveChatRoom(roomKitBean.chatroomId)
         roomViewModel.leaveRoom(this, roomKitBean.roomId)
         super.finish()
     }
@@ -468,6 +478,10 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
                 } else {
                     binding.rvChatroom3dMicLayout.receiverAttributeMap(newMicMap)
                 }
+                binding.chatBottom.showMicVisible(
+                    RtcRoomController.get().isLocalAudioEnable,
+                    roomObservableDelegate.isOnMic()
+                )
                 if (!isOwner) {
                     Log.e("liveActivity", "roomAttributesDidUpdated:  ${roomObservableDelegate.isOnMic()}")
                     binding.chatBottom.setEnableHand(roomObservableDelegate.isOnMic())
@@ -543,6 +557,21 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
     override fun onUserClickOnStage(micIndex: Int) {
         if (this@ChatroomLiveActivity::handsDelegate.isInitialized) {
             handsDelegate.onUserClickOnStage(micIndex)
+        }
+    }
+
+    override fun userJoinedRoom(roomId: String?, uid: String?) {
+        super.userJoinedRoom(roomId, uid)
+        if (this@ChatroomLiveActivity::roomObservableDelegate.isInitialized) {
+            roomObservableDelegate.onAddOrSubMemberCount(true)
+        }
+
+    }
+
+    override fun onMemberExited(roomId: String?, s1: String?, s2: String?) {
+        super.onMemberExited(roomId, s1, s2)
+        if (this@ChatroomLiveActivity::roomObservableDelegate.isInitialized) {
+            roomObservableDelegate.onAddOrSubMemberCount(false)
         }
     }
 

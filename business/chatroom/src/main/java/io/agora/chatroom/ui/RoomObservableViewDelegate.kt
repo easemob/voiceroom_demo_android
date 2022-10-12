@@ -357,10 +357,10 @@ class RoomObservableViewDelegate constructor(
             val micInfoList: List<MicInfoBean> =
                 RoomInfoConstructor.convertMicUiBean(micList, roomKitBean.roomType, ownerUid)
             micInfoList.forEach { micInfo ->
-                micInfo.userInfo?.let { userInfo->
+                micInfo.userInfo?.let { userInfo ->
                     val rtcUid = userInfo.rtcUid
                     val micIndex = micInfo.index
-                    if (rtcUid>0){
+                    if (rtcUid > 0) {
                         if (rtcUid == ProfileManager.getInstance().rtcUid()) {
                             myselfIndex = micIndex
                         }
@@ -754,6 +754,12 @@ class RoomObservableViewDelegate constructor(
                 }
             })
             .show(activity.supportFragmentManager, "CommonFragmentAlertDialog")
+    }
+
+    fun onAddOrSubMemberCount(add: Boolean) {
+        ThreadManager.getInstance().runOnMainThread {
+            iRoomTopView.addOrSubMemberCount(add)
+        }
     }
 
     var onRoomViewDelegateListener: OnRoomViewDelegateListener? = null

@@ -1,11 +1,17 @@
 package io.agora.secnceui.widget.top
 
+import android.app.Activity
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
+import android.view.ViewGroup
+import android.widget.FrameLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
+import androidx.core.view.updateLayoutParams
 import io.agora.buddy.tool.ResourcesTools
+import io.agora.buddy.tool.ScreenTools
+import io.agora.buddy.tool.dp
 import io.agora.config.ConfigConstants
 import io.agora.secnceui.R
 import io.agora.secnceui.annotation.ChatroomTopType
@@ -29,6 +35,8 @@ class RoomLiveTopView : ConstraintLayout, View.OnClickListener, IRoomLiveTopView
         init(context)
     }
 
+    private lateinit var roomInfo: RoomInfoBean
+
     private var onLiveTopClickListener: OnLiveTopClickListener? = null
 
     fun setOnLiveTopClickListener(onLiveTopClickListener: OnLiveTopClickListener) {
@@ -38,15 +46,22 @@ class RoomLiveTopView : ConstraintLayout, View.OnClickListener, IRoomLiveTopView
     private fun init(context: Context) {
         val root = View.inflate(context, R.layout.view_chatroom_live_top, this)
         binding = ViewChatroomLiveTopBinding.bind(root)
-
         binding.ivChatroomBack.setOnClickListener(this)
         binding.llChatroomMemberRank.setOnClickListener(this)
 //        binding.mtChatroomMembers.setOnClickListener(this)
         binding.mtChatroomNotice.setOnClickListener(this)
         binding.mtChatroomAgoraSound.setOnClickListener(this)
+
+    }
+
+    fun setTitleMaxWidth(activity: Activity) {
+        val layoutParams: ViewGroup.LayoutParams = binding.llTitle.layoutParams
+        layoutParams.width = ScreenTools.getScreenWidth(activity) - 220.dp.toInt()
+        binding.llTitle.layoutParams = layoutParams
     }
 
     override fun onChatroomInfo(chatroomInfo: RoomInfoBean) {
+        this.roomInfo = chatroomInfo
         binding.apply {
             mtChatroomOwnerName.text = chatroomInfo.owner?.username
             mtChatroomName.text = chatroomInfo.chatroomName
@@ -62,7 +77,7 @@ class RoomLiveTopView : ConstraintLayout, View.OnClickListener, IRoomLiveTopView
                     ConfigConstants.SoundSelection.Professional_Broadcaster -> root.context.getString(R.string.chatroom_professional_broadcaster)
                     else -> root.context.getString(R.string.chatroom_social_chat)
                 }
-            }else{
+            } else {
                 mtChatroomAgoraSound.isVisible = false
             }
 
@@ -173,6 +188,18 @@ class RoomLiveTopView : ConstraintLayout, View.OnClickListener, IRoomLiveTopView
             // 观看数
             ChatroomTopType.Watches -> binding.mtChatroomWatch.text = text
             else -> {}
+        }
+    }
+
+    override fun addOrSubMemberCount(add: Boolean) {
+        super.addOrSubMemberCount(add)
+        if (this::roomInfo.isInitialized) {
+            if (add) {
+                roomInfo.memberCount += 1
+            } else {
+                roomInfo.memberCount -= 1
+            }
+            binding.mtChatroomMembers.text = roomInfo.memberCount.toString()
         }
     }
 

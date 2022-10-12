@@ -338,12 +338,17 @@ public class ChatPrimaryMenuView extends RelativeLayout implements ExpressionVie
         });
     }
 
-    public void hideMic(boolean isHide){
+    public void showMicVisible(boolean muteLocal,boolean isVisible){
         ThreadManager.getInstance().runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 ImageView mic = menuLayout.findViewById(R.id.extend_item_mic);
-                if (isHide){
+                if (muteLocal) {
+                    mic.setImageResource(R.drawable.icon_close_mic);
+                } else {
+                    mic.setImageResource(R.drawable.icon_mic);
+                }
+                if (isVisible){
                     mic.setVisibility(VISIBLE);
                 }else {
                     mic.setVisibility(GONE);
