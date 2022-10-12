@@ -24,6 +24,11 @@ public enum CustomMsgType {
     CHATROOM_APPLY_SITE("chatroom_applySiteNotify"),
 
     /**
+     * 取消申请消息
+     */
+    CHATROOM_CANCEL_APPLY_SITE("chatroom_cancelApplySiteNotify"),
+
+    /**
      * 拒绝申请消息
      */
     CHATROOM_DECLINE_APPLY("chatroom_applyRefusedNotify"),
@@ -32,6 +37,11 @@ public enum CustomMsgType {
      * 邀请消息
      */
     CHATROOM_INVITE_SITE("chatroom_inviteSiteNotify"),
+
+    /**
+     * 拒绝邀请
+     */
+    CHATROOM_INVITE_REFUSED_SITE("chatroom_inviteRefusedNotify"),
 
     /**
      * 系统消息 成员加入

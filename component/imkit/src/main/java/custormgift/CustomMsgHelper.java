@@ -99,6 +99,41 @@ public class CustomMsgHelper implements MessageListener {
             if(message.getType() != ChatMessage.Type.CUSTOM) {
                 continue;
             }
+            CustomMessageBody body = (CustomMessageBody) message.getBody();
+            String event = body.event();
+            CustomMsgType msgType = getCustomMsgType(event);
+
+            if(msgType == null) {
+                continue;
+            }
+            switch (msgType) {
+                case CHATROOM_INVITE_SITE:
+                    if(listener != null) {
+                        listener.onReceiveInviteSite(ChatroomMsgHelper.getInstance().parseChatMessage(message));
+                    }
+                    break;
+                case CHATROOM_APPLY_SITE:
+                    if(listener != null) {
+                        listener.onReceiveApplySite(ChatroomMsgHelper.getInstance().parseChatMessage(message));
+                    }
+                    break;
+                case CHATROOM_CANCEL_APPLY_SITE:
+                    if(listener != null) {
+                        listener.onReceiveCancelApplySite(ChatroomMsgHelper.getInstance().parseChatMessage(message));
+                    }
+                    break;
+                case CHATROOM_INVITE_REFUSED_SITE:
+                    if(listener != null) {
+                        listener.onReceiveInviteRefusedSite(ChatroomMsgHelper.getInstance().parseChatMessage(message));
+                    }
+                    break;
+                case CHATROOM_DECLINE_APPLY:
+                    if(listener != null) {
+                        listener.onReceiveDeclineApply(ChatroomMsgHelper.getInstance().parseChatMessage(message));
+                    }
+                    break;
+
+            }
             // 再排除单聊
             if(message.getChatType() != ChatMessage.ChatType.GroupChat && message.getChatType() != ChatMessage.ChatType.ChatRoom) {
                 continue;
@@ -109,14 +144,8 @@ public class CustomMsgHelper implements MessageListener {
                 continue;
             }
             // 判断是否是自定消息，然后区分礼物，点赞及弹幕消息
-            CustomMessageBody body = (CustomMessageBody) message.getBody();
-            String event = body.event();
             // 如果event为空，则不处理
             if(TextUtils.isEmpty(event)) {
-                continue;
-            }
-            CustomMsgType msgType = getCustomMsgType(event);
-            if(msgType == null) {
                 continue;
             }
             // 最后返回各自的消息类型
@@ -130,21 +159,6 @@ public class CustomMsgHelper implements MessageListener {
                 case CHATROOM_PRAISE:
                     if(listener != null) {
                         listener.onReceivePraiseMsg(ChatroomMsgHelper.getInstance().parseChatMessage(message));
-                    }
-                    break;
-                case CHATROOM_APPLY_SITE:
-                    if(listener != null) {
-                        listener.onReceiveApplySite(ChatroomMsgHelper.getInstance().parseChatMessage(message));
-                    }
-                    break;
-                case CHATROOM_DECLINE_APPLY:
-                    if(listener != null) {
-                        listener.onReceiveDeclineApply(ChatroomMsgHelper.getInstance().parseChatMessage(message));
-                    }
-                    break;
-                case CHATROOM_INVITE_SITE:
-                    if(listener != null) {
-                        listener.onReceiveInviteSite(ChatroomMsgHelper.getInstance().parseChatMessage(message));
                     }
                     break;
                 case CHATROOM_SYSTEM:

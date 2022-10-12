@@ -98,6 +98,8 @@ public class ChatroomListActivity extends BaseActivity implements ChatroomTitleB
                 if(tab.getCustomView() != null) {
                     index = tab.getPosition();
                     title = tab.getCustomView().findViewById(R.id.tab_item_title);
+                    title.setTextColor(getResources().getColor(R.color.dark_grey_color_040925));
+                    title.setTypeface(null,Typeface.BOLD);
                 }
             }
 
@@ -107,6 +109,8 @@ public class ChatroomListActivity extends BaseActivity implements ChatroomTitleB
                     TextView title = tab.getCustomView().findViewById(R.id.tab_item_title);
                     title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
                     title.setText(titles[tab.getPosition()]);
+                    title.setTextColor(getResources().getColor(R.color.color_979CBB));
+                    setTextStyle(title,Typeface.NORMAL);
                 }
             }
 

@@ -113,6 +113,7 @@ public class ChatroomSoundSelectionActivity extends BaseActivity implements Chat
          parseResource(response, new OnResourceParseCallback<VRoomInfoBean>() {
             @Override
             public void onSuccess(@Nullable VRoomInfoBean data) {
+               Log.e("ChatroomSoundSelectionActivity","ChatroomSoundSelectionActivity1" + ChatClient.getInstance().isLoggedIn());
                if (null != data && null != data.getRoom()){
                   if (ChatClient.getInstance().isLoggedIn()){
                      joinRoom(data);
@@ -128,7 +129,8 @@ public class ChatroomSoundSelectionActivity extends BaseActivity implements Chat
 
                         @Override
                         public void onError(int code, String desc) {
-                           EMLog.e("ChatroomSoundSelectionActivity1", "Login Fail code: "+code + " desc: " + desc);
+                           Log.e("ChatroomSoundSelectionActivity","ChatroomSoundSelectionActivity1 getCurrentUser" + ChatClient.getInstance().getCurrentUser());
+                           EMLog.e("ChatroomSoundSelectionActivity2", "Login Fail code: "+code + " desc: " + desc);
                         }
                      });
                   }

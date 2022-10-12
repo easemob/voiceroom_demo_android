@@ -1,5 +1,6 @@
 package io.agora.chatroom.fragment;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
@@ -54,6 +55,7 @@ public class ChatroomHandsDialog extends BottomDialogFragment {
         super.initView(savedInstanceState);
         mTableLayout = findViewById(R.id.tab_layout);
         mViewPager = findViewById(R.id.vp_fragment);
+        mTableLayout.selectTab(mTableLayout.getTabAt(0));
         initFragment();
         setupWithViewPager();
     }
@@ -87,6 +89,7 @@ public class ChatroomHandsDialog extends BottomDialogFragment {
                     layoutParams.height = (int) DeviceUtils.dp2px(mContext, 26);
                     title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
                     title.setGravity(Gravity.CENTER);
+                    title.setTypeface(null,Typeface.BOLD);
                     String content = getString(titles[index]) + getString(R.string.room_tab_layout_count,String.valueOf(mCount));
                     title.setText(content);
                     title.setTextColor(getResources().getColor(R.color.dark_grey_color_040925));
@@ -100,6 +103,7 @@ public class ChatroomHandsDialog extends BottomDialogFragment {
                     MaterialTextView title = tab.getCustomView().findViewById(R.id.mtTabText);
                     title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
                     title.setText(titles[tab.getPosition()]);
+                    title.setTypeface(null,Typeface.NORMAL);
                     title.setTextColor(getResources().getColor(R.color.color_979CBB));
                 }
             }
@@ -108,6 +112,9 @@ public class ChatroomHandsDialog extends BottomDialogFragment {
             public void onTabReselected(TabLayout.Tab tab) {
                 Log.e("ChatroomHandsDialog","onTabReselected");
                 title = tab.getCustomView().findViewById(R.id.mtTabText);
+                title.setText(titles[tab.getPosition()]);
+                title.setTextColor(getResources().getColor(R.color.dark_grey_color_040925));
+                title.setTypeface(null,Typeface.BOLD);
             }
         });
         mViewPager.setCurrentItem(0);

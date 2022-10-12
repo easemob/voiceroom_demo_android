@@ -9,7 +9,7 @@
     android:layout_marginStart="15dp"
     android:paddingTop="8dp"
     android:paddingBottom="9dp"
-    android:paddingStart="12dp">
+    android:paddingStart="14dp">
 
     <TextView
         android:id="@+id/name"
@@ -17,7 +17,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:text="Stefano"
-        android:textSize="@dimen/text_size_13sp"
+        android:textStyle="bold"
+        android:textSize="@dimen/text_size_14sp"
         android:textColor="@color/color_8BB3FF"
         />
 
@@ -26,7 +27,8 @@
         android:layout_marginStart="4dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/text_size_13sp"
+        android:textSize="@dimen/text_size_14sp"
+        android:textStyle="bold"
         tools:text="Joined"
         android:textColor="@color/color_FCF0B3"
         />

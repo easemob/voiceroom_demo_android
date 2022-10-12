@@ -32,10 +32,22 @@ public interface OnCustomMsgReceiveListener {
     void onReceiveApplySite(ChatMessageData message);
 
     /**
+     * 接收取消申请消息
+     * @param message
+     */
+    void onReceiveCancelApplySite(ChatMessageData message);
+
+    /**
      * 接收邀请消息
      * @param message
      */
     void onReceiveInviteSite(ChatMessageData message);
+
+    /**
+     * 接收拒绝邀请消息
+     * @param message
+     */
+    void onReceiveInviteRefusedSite(ChatMessageData message);
 
     /**
      * 接收拒绝申请消息

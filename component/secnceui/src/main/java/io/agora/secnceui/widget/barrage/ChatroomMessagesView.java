@@ -392,7 +392,7 @@ public class ChatroomMessagesView extends RelativeLayout{
                     - b.getBounds().bottom / 2;
 
             canvas.save();
-            canvas.translate(x-4, transY);
+            canvas.translate(x-6, transY);
             b.draw(canvas);
             canvas.restore();
         }

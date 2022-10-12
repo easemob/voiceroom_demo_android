@@ -117,7 +117,7 @@
                 android:gravity="center"
                 android:text="@string/agora_chat_room_create"
                 android:textColor="@color/white"
-                android:textSize="@dimen/text_size_12sp"
+                android:textSize="@dimen/text_size_16sp"
                 />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

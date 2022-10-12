@@ -39,6 +39,7 @@ public class ExpressionView extends LinearLayoutCompat {
 
       gv.setVerticalSpacing((int) DeviceUtils.dp2px(getContext(), 20));
       gv.setNumColumns(mColumns);
+      gv.setVerticalSpacing(40);
 
       final ExpressionGridAdapter gridAdapter = new ExpressionGridAdapter(context, 1, Arrays.asList(DefaultExpressionData.getData()));
       gv.setAdapter(gridAdapter);

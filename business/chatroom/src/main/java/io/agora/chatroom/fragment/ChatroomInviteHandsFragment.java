@@ -104,6 +104,13 @@ public class ChatroomInviteHandsFragment extends BaseListFragment<VMemberBean> i
                             listener.getItemCount(total);
                         finishRefresh();
                         isRefreshing = false;
+                        if (adapter.getData() != null){
+                            for (VMemberBean datum : adapter.getData()) {
+                                if (map.containsKey(datum.getUid())){
+                                    adapter.setInvited(datum.getUid(), Boolean.TRUE.equals(map.get(datum.getUid())));
+                                }
+                            }
+                        }
                     }
                 }
             });
@@ -159,22 +166,38 @@ public class ChatroomInviteHandsFragment extends BaseListFragment<VMemberBean> i
     protected void initData() {
         super.initData();
         handsViewModel.getInviteList(getActivity(),roomId,pageSize,cursor);
-        for (VMemberBean vMemberBean : dataList) {
-            if (map.containsKey(vMemberBean.getUid())){
-                adapter.setInvited(vMemberBean.getUid(), Boolean.TRUE.equals(map.get(vMemberBean.getUid())));
-            }
-        }
     }
 
     @Override
-    protected RecyclerView initRecyclerView() {
-        return findViewById(R.id.list);
-    }
+    protected RecyclerView initRecyclerView() {return findViewById(R.id.list);}
 
     @Override
     protected RoomBaseRecyclerViewAdapter<VMemberBean> initAdapter() {
         RoomBaseRecyclerViewAdapter adapter = new ChatroomInviteAdapter();
         return adapter;
+    }
+
+    @Override
+    public void onItemClick(View view, int position) {
+
+    }
+
+    @Override
+    public void onRefresh() {
+        reset();
+        isRefreshing = true;
+        handsViewModel.getInviteList(getActivity(),roomId,pageSize,cursor);
+    }
+
+    protected void finishRefresh() {
+        if(refreshLayout != null && refreshLayout.isRefreshing()) {
+            refreshLayout.setRefreshing(false);
+        }
+    }
+
+    private void reset(){
+        adapter.clearData();
+        cursor = "";
     }
 
     @Override
@@ -199,35 +222,17 @@ public class ChatroomInviteHandsFragment extends BaseListFragment<VMemberBean> i
         });
     }
 
-    @Override
-    public void onRefresh() {
-        reset();
-        isRefreshing = true;
-        handsViewModel.getInviteList(getActivity(),roomId,pageSize,cursor);
-    }
-
-    @Override
-    public void onItemClick(View view, int position) {
-
-    }
-
-    protected void finishRefresh() {
-        if(refreshLayout != null && refreshLayout.isRefreshing()) {
-            refreshLayout.setRefreshing(false);
-        }
-    }
-
-    private void reset(){
-        adapter.clearData();
-        cursor = "";
-    }
-
-
     public interface itemCountListener{
         void getItemCount(int count);
     }
 
     public void setItemCountChangeListener(itemCountListener listener){
         this.listener = listener;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        map.clear();
     }
 }

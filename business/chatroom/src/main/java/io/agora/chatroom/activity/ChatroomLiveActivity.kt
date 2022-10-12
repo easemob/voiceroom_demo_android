@@ -478,6 +478,16 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
         }
     }
 
+    //接收取消申请上麦
+    override fun receiveCancelApplySite(roomId: String?, message: ChatMessageData?) {
+
+    }
+
+    //接收拒绝邀请消息
+    override fun receiveInviteRefusedSite(roomId: String?, message: ChatMessageData?) {
+
+    }
+
     private fun checkFocus(focus:Boolean){
         binding.likeView.isVisible = focus
     }
@@ -492,6 +502,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
             ChatClient.getInstance().deviceInfo.getString("deviceid"),
             ProfileManager.getInstance().profile.portrait, object : ValueCallBack<VRUserBean> {
                 override fun onSuccess(bean: VRUserBean?) {
+                    "onSuccess: chat_uid: ${bean?.chat_uid} im_token: ${bean?.im_token}".logE("onTokenWillExpire")
                     ChatroomConfigManager.getInstance().renewToken(bean!!.im_token)
                 }
 

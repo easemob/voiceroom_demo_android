@@ -97,13 +97,11 @@ public class ChatroomListFragment extends BaseChatroomListFragment<VRoomBean.Roo
                         if (TextUtils.isEmpty(Cursor)){
                             isEnd = true;
                         }
-                        Log.e("ListFragment1","getCursor: " + data.getCursor());
                         if (isRefreshing){
                             listAdapter.setData(data.getRooms());
                         }else {
                             listAdapter.addData(data.getRooms());
                         }
-                        Log.e("ListFragment1","getData: " + listAdapter.getData().size());
                         if (null != listener)
                             listener.getItemCount(data.getTotal());
                         finishRefresh();
