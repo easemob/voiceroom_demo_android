@@ -478,6 +478,16 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
         }
     }
 
+    //接收取消申请上麦
+    override fun receiveCancelApplySite(roomId: String?, message: ChatMessageData?) {
+
+    }
+
+    //接收拒绝邀请消息
+    override fun receiveInviteRefusedSite(roomId: String?, message: ChatMessageData?) {
+
+    }
+
     private fun checkFocus(focus:Boolean){
         binding.likeView.isVisible = focus
     }

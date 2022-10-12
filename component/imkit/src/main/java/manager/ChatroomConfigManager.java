@@ -4,29 +4,19 @@ import android.app.ActivityManager;
 import android.content.Context;
 import android.util.Log;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.List;
 import java.util.Map;
 
 import bean.ChatMessageData;
-import bean.ChatroomConstants;
-import custormgift.CustomMsgHelper;
 import custormgift.OnCustomMsgReceiveListener;
 import io.agora.CallBack;
 import io.agora.ChatRoomChangeListener;
 import io.agora.ConnectionListener;
 import io.agora.Error;
-import io.agora.MessageListener;
 import io.agora.ValueCallBack;
 import io.agora.chat.ChatClient;
-import io.agora.chat.ChatMessage;
 import io.agora.chat.ChatOptions;
 import io.agora.chat.ChatRoom;
-import io.agora.chat.ChatThreadManager;
-import io.agora.chat.CustomMessageBody;
-import io.agora.chat.GroupReadAck;
 import io.agora.util.EMLog;
 
 public class ChatroomConfigManager {
@@ -85,10 +75,24 @@ public class ChatroomConfigManager {
             }
 
             @Override
+            public void onReceiveCancelApplySite(ChatMessageData message) {
+                Log.e("setOnCustomMsgReceiveListener","onReceiveCancelApplySite");
+                if (ChatListener != null)
+                    ChatListener.receiveCancelApplySite(message.getConversationId(),message);
+            }
+
+            @Override
             public void onReceiveInviteSite(ChatMessageData message) {
                 Log.e("setOnCustomMsgReceiveListener","onReceiveApplySite");
                 if (ChatListener != null)
                 ChatListener.receiveInviteSite(message.getConversationId(),message);
+            }
+
+            @Override
+            public void onReceiveInviteRefusedSite(ChatMessageData message) {
+                Log.e("setOnCustomMsgReceiveListener","onReceiveInviteRefusedSite");
+                if (ChatListener != null)
+                    ChatListener.receiveInviteRefusedSite(message.getConversationId(),message);
             }
 
             @Override
@@ -212,8 +216,12 @@ public class ChatroomConfigManager {
         void receiveGift(String roomId, ChatMessageData message);
         //接收申请消息
         default void receiveApplySite(String roomId,ChatMessageData message){}
+        //接收取消申请消息
+        default void receiveCancelApplySite(String roomId,ChatMessageData message){}
         //接收邀请消息
         default void receiveInviteSite(String roomId,ChatMessageData message){}
+        //接收拒绝邀请消息
+        default void receiveInviteRefusedSite(String roomId,ChatMessageData message){}
         //接收拒绝申请消息
         default void receiveDeclineApply(String roomId,ChatMessageData message){}
         //用户加入房间 后面采用自定义消息
@@ -230,6 +238,8 @@ public class ChatroomConfigManager {
         default void onTokenWillExpire(){}
         //收到系统消息
         default void receiveSystem(String roomId, ChatMessageData message){}
+        //聊天室销毁
+        default void chatroomDestroyed(String roomId){}
     }
 
     public void setChatRoomListener(ChatroomListener listener){
@@ -239,8 +249,9 @@ public class ChatroomConfigManager {
     public ChatRoomChangeListener chatroomListener = new ChatRoomChangeListener(){
 
         @Override
-        public void onChatRoomDestroyed(String s, String s1) {
-
+        public void onChatRoomDestroyed(String roomId, String roomName) {
+            if (ChatListener != null)
+                ChatListener.chatroomDestroyed(roomId);
         }
 
         @Override
