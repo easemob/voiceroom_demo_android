@@ -448,8 +448,8 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
         if (isFinishing) return
         if (!TextUtils.equals(roomKitBean.chatroomId, roomId)) return
         attributeMap?.let {
+            val newMicMap = RoomInfoConstructor.convertAttrMicUiBean(it, roomKitBean.ownerId)
             ThreadManager.getInstance().runOnMainThread {
-                val newMicMap = RoomInfoConstructor.convertAttrMicUiBean(it, roomKitBean.ownerId)
                 roomObservableDelegate.onUpdateMicMap(newMicMap)
                 if (roomKitBean.roomType == ConfigConstants.RoomType.Common_Chatroom) { // 普通房间
                     binding.rvChatroom2dMicLayout.receiverAttributeMap(newMicMap)
@@ -459,7 +459,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
             }
         }
         // TODO: 是否在麦位上
-        // binding.chatBottom.setEnableHand(roomObservableDelegate.isOnMic())
+//         binding.chatBottom.setEnableHand(roomObservableDelegate.isOnMic())
         for (entry in attributeMap!!.entries) {
             try {
                 val json = attributeMap[entry.key]

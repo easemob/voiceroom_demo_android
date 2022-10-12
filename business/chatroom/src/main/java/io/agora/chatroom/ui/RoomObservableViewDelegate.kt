@@ -85,7 +85,6 @@ class RoomObservableViewDelegate constructor(
     }
 
     init {
-        if (roomKitBean.isOwner) myselfIndex = 0
         // 更新公告
         roomViewModel.roomNoticeObservable.observe(activity) { response: Resource<Boolean> ->
             parseResource(response, object : OnResourceParseCallback<Boolean>() {
@@ -354,15 +353,22 @@ class RoomObservableViewDelegate constructor(
         vRoomInfoBean.room?.let { vRoomInfo ->
             iRoomTopView.onChatroomInfo(RoomInfoConstructor.serverRoomInfo2UiRoomInfo(vRoomInfo))
         }
-        // 房主rtcUid
-        vRoomInfoBean.room?.owner?.rtc_uid?.let {
-            micMap[0] = it
-        }
         vRoomInfoBean.mic_info?.let { micList ->
-            iRoomMicView.onInitMic(
-                RoomInfoConstructor.convertMicUiBean(micList, roomKitBean.roomType, ownerUid),
-                vRoomInfoBean.room?.isUse_robot ?: false
-            )
+            val micInfoList: List<MicInfoBean> =
+                RoomInfoConstructor.convertMicUiBean(micList, roomKitBean.roomType, ownerUid)
+            micInfoList.forEach { micInfo ->
+                micInfo.userInfo?.let { userInfo->
+                    val rtcUid = userInfo.rtcUid
+                    val micIndex = micInfo.index
+                    if (rtcUid>0){
+                        if (rtcUid == ProfileManager.getInstance().rtcUid()) {
+                            myselfIndex = micIndex
+                        }
+                        micMap[micIndex] = rtcUid
+                    }
+                }
+            }
+            iRoomMicView.onInitMic(micInfoList, vRoomInfoBean.room?.isUse_robot ?: false)
         }
     }
 

@@ -98,6 +98,8 @@ object RoomInfoConstructor {
                 serverMicInfo.member?.let { roomUser ->
                     userInfo = serverUser2UiUser(roomUser)
                     ownerTag = !TextUtils.isEmpty(ownerUid) && TextUtils.equals(ownerUid, roomUser.uid)
+                    // 有人默认显示音量柱
+                    audioVolumeType = ConfigConstants.VolumeType.Volume_None
                 }
             }
             micInfo.micStatus = serverMicInfo.status

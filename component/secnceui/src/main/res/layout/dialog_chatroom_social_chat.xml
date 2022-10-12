@@ -6,7 +6,6 @@
     android:layout_height="wrap_content"
     android:background="@drawable/bg_rect_top_radius20_white">
 
-
     <View
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -38,7 +37,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="6dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="20dp"
         android:textColor="@color/color_3C4267"
         android:textSize="@dimen/sp_13"
@@ -56,6 +55,8 @@
         android:layout_marginEnd="20dp"
         android:background="@drawable/bg_rect_radius20_grey"
         android:paddingTop="10dp"
+        android:layout_marginBottom="34dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mtSocialChatContent">
@@ -64,7 +65,7 @@
             android:id="@+id/mtSocialChatCustomers"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="6dp"
             android:layout_marginEnd="20dp"
             android:text="@string/chatroom_social_chat_following_customers"
@@ -78,10 +79,10 @@
             android:id="@+id/llSocialChatCustomers"
             android:layout_width="0dp"
             android:layout_height="20dp"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="6dp"
             android:layout_marginEnd="20dp"
-            android:layout_marginBottom="15dp"
+            android:layout_marginBottom="10dp"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -94,6 +95,7 @@
         android:layout_marginStart="15dp"
         android:layout_marginTop="30dp"
         android:layout_marginEnd="15dp"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mlSoundSelectionContent" />
@@ -111,6 +113,7 @@
         android:text="@string/chatroom_social_chat_more"
         android:textColor="@color/main_color_156EF3"
         android:textSize="@dimen/sp_14"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

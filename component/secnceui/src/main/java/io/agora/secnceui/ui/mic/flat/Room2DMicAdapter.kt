@@ -114,20 +114,16 @@ class Room2DMicAdapter constructor(
         newMicMap.entries.forEach { entry ->
             val index = entry.key
             if (index >= 0 && index < dataList.size) {
-                dataList[index] = entry.value
+                dataList.set(index, entry.value)
                 needUpdate = true
-                if (onlyOneUpdate) {
-                    onlyUpdateItemIndex = index
-                }
+                if (onlyOneUpdate) onlyUpdateItemIndex = index
             }
         }
         if (needUpdate) {
-            ThreadManager.getInstance().runOnMainThread {
-                if (onlyUpdateItemIndex >= 0) {
-                    notifyItemChanged(onlyUpdateItemIndex)
-                } else {
-                    notifyItemRangeChanged(0, dataList.size)
-                }
+            if (onlyUpdateItemIndex >= 0) {
+                notifyItemChanged(onlyUpdateItemIndex)
+            } else {
+                notifyItemRangeChanged(0,dataList.size,true)
             }
         }
     }

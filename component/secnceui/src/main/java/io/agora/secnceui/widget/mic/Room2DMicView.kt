@@ -101,14 +101,20 @@ class Room2DMicView : ConstraintLayout ,IRoomMicBinding{
                             ivMicTag.setImageResource(R.drawable.icon_chatroom_mic_mute_tag)
                         }
                         else -> {
-                            ivMicTag.isVisible = false
+                            ivMicTag.isVisible = true
                         }
                     }
                 }
             }
             // 用户音量
             when (micInfo.audioVolumeType) {
-                ConfigConstants.VolumeType.Volume_None -> ivMicTag.isVisible = false
+                ConfigConstants.VolumeType.Volume_Unknown -> {
+                    ivMicTag.isVisible = false
+                }
+                ConfigConstants.VolumeType.Volume_None -> {
+                    ivMicTag.isVisible = true
+                    ivMicTag.setImageResource(R.drawable.icon_chatroom_mic_open0)
+                }
                 ConfigConstants.VolumeType.Volume_Low -> {
                     ivMicTag.isVisible = true
                     ivMicTag.setImageResource(R.drawable.icon_chatroom_mic_open1)
