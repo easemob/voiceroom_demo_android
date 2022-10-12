@@ -21,21 +21,17 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Exit the chatroom and recreate a new one?" />
 
-    <com.google.android.material.button.MaterialButton
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/mbSubmit"
-        android:layout_width="252dp"
-        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="14dp"
+        android:layout_width="0dp"
+        style="@style/chatroom_confirm_button_text_style"
+        android:gravity="center"
         android:layout_marginTop="28dp"
-        android:paddingHorizontal="22dp"
-        android:paddingVertical="12dp"
         android:text="@string/chatroom_confirm"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
-        android:textSize="@dimen/sp_14"
-        android:textStyle="bold"
-        app:backgroundTint="@color/main_color_156EF3"
-        app:cornerRadius="24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mtContent" />
+        app:layout_constraintTop_toBottomOf="@+id/mtContent"  />
 </androidx.constraintlayout.widget.ConstraintLayout>

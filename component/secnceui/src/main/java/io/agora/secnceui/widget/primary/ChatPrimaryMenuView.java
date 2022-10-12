@@ -313,7 +313,7 @@ public class ChatPrimaryMenuView extends RelativeLayout implements ExpressionVie
             @Override
             public void run() {
                 ImageView hand = menuLayout.findViewById(R.id.extend_item_hand_up);
-                if (!isEnable){
+                if (isEnable){
                     hand.setImageResource(R.drawable.icon_vector);
                     hand.setEnabled(false);
                 }else {

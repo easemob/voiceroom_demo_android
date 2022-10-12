@@ -51,8 +51,8 @@ abstract class BaseSheetDialog<B : ViewBinding?> : BottomSheetDialogFragment() {
 
     override fun onStart() {
         super.onStart()
-        var bottomSheetBehavior = BottomSheetBehavior.from(view?.parent as View) //dialog的高度
-        bottomSheetBehavior.isHideable = false
+//        var bottomSheetBehavior = BottomSheetBehavior.from(view?.parent as View) //dialog的高度
+//        bottomSheetBehavior.isHideable = false
     }
 
     override fun onDestroyView() {

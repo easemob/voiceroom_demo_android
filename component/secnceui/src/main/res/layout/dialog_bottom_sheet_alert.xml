@@ -35,22 +35,13 @@
         app:layout_constraintTop_toBottomOf="@+id/ivTitle"
         tools:text="Prompt" />
 
-    <com.google.android.material.button.MaterialButton
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/mbLeft"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/chatroom_cancel_button_text_style"
         android:layout_marginTop="40dp"
         android:layout_marginEnd="12dp"
         android:layout_marginBottom="30dp"
-        android:paddingHorizontal="32dp"
-        android:paddingVertical="10dp"
         android:text="@string/chatroom_cancel"
-        android:textAllCaps="false"
-        android:textColor="@color/dark_grey_color_040925"
-        android:textSize="@dimen/sp_14"
-        android:textStyle="bold"
-        app:backgroundTint="@color/dark_grey_color_EFF4FF"
-        app:cornerRadius="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/gl50"
         app:layout_constraintTop_toBottomOf="@+id/mtContent" />
@@ -62,23 +53,14 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.5" />
 
-    <com.google.android.material.button.MaterialButton
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/mbRight"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/chatroom_confirm_button_text_style"
         android:layout_marginStart="12dp"
-        android:layout_marginTop="40dp"
         android:layout_marginBottom="30dp"
-        android:paddingHorizontal="32dp"
-        android:paddingVertical="10dp"
         android:text="@string/chatroom_submit"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
-        android:textSize="@dimen/sp_14"
-        android:textStyle="bold"
-        app:backgroundTint="@color/main_color_156EF3"
-        app:cornerRadius="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/gl50"
-        app:layout_constraintTop_toBottomOf="@+id/mtContent" />
+        app:layout_constraintTop_toBottomOf="@+id/mtContent"
+        app:layout_constraintTop_toTopOf="@+id/mbLeft" />
 </androidx.constraintlayout.widget.ConstraintLayout>

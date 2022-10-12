@@ -252,9 +252,16 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
         roomObservableDelegate.onRoomViewDelegateListener = this
         binding.cTopView.setOnLiveTopClickListener(object : OnLiveTopClickListener {
             override fun onClickBack(view: View) {
-                roomObservableDelegate.onExitRoom(getString(R.string.chatroom_exit), finishBack = {
+
+                if (roomKitBean.isOwner){
+                    roomObservableDelegate.onExitRoom(
+                        getString(R.string.chatroom_end_live),
+                        getString(R.string.chatroom_end_live_tips), finishBack = {
+                        finish()
+                    })
+                }else{
                     finish()
-                })
+                }
             }
 
             override fun onClickRank(view: View) {
@@ -434,7 +441,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
     }
 
     override fun receiveApplySite(roomId: String?, message: ChatMessageData?) {
-        Log.e("liveActivity", "receiveApplySite")
+        Log.e("liveActivity", "receiveApplySite $isOwner")
         binding.chatBottom.setShowHandStatus(isOwner, true)
     }
 
@@ -453,32 +460,19 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
         if (isFinishing) return
         if (!TextUtils.equals(roomKitBean.chatroomId, roomId)) return
         attributeMap?.let {
+            val newMicMap = RoomInfoConstructor.convertAttrMicUiBean(it, roomKitBean.ownerId)
             ThreadManager.getInstance().runOnMainThread {
-                val newMicMap = RoomInfoConstructor.convertAttrMicUiBean(it, roomKitBean.ownerId)
                 roomObservableDelegate.onUpdateMicMap(newMicMap)
                 if (roomKitBean.roomType == ConfigConstants.RoomType.Common_Chatroom) { // 普通房间
                     binding.rvChatroom2dMicLayout.receiverAttributeMap(newMicMap)
                 } else {
                     binding.rvChatroom3dMicLayout.receiverAttributeMap(newMicMap)
                 }
-            }
-        }
-        for (entry in attributeMap!!.entries) {
-            try {
-                val json = attributeMap[entry.key]
-                Log.e("attributeMap", "key: $json");
-                val attribute = toBean(json, VRMicBean::class.java)
-                attribute.let {
-                    if (!isOwner){
-                        if (roomObservableDelegate.isOnMic() && attribute?.member?.chat_uid.equals(ProfileManager.getInstance().profile.chat_uid)) {
-                            binding.chatBottom.setEnableHand(false)
-                        } else {
-                            binding.chatBottom.setEnableHand(true)
-                        }
-                    }
+                if (!isOwner) {
+                    Log.e("liveActivity", "roomAttributesDidUpdated:  ${roomObservableDelegate.isOnMic()}")
+                    binding.chatBottom.setEnableHand(roomObservableDelegate.isOnMic())
+                    handsDelegate.resetRequest()
                 }
-            } catch (e: JSONException) {
-                e.printStackTrace()
             }
         }
     }

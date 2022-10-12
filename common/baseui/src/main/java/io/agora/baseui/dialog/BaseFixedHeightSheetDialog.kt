@@ -22,15 +22,15 @@ abstract class BaseFixedHeightSheetDialog<B : ViewBinding?> : BaseSheetDialog<B>
         super.onStart()
         dialog?.window?.setDimAmount(0f) //设置布局
         val h = (heightRadio * resources.displayMetrics.heightPixels).toInt()
-        val viewRoot: FrameLayout? = dialog?.findViewById(com.google.android.material.R.id.design_bottom_sheet)
-        viewRoot?.apply {
-            layoutParams.width = -1
-            layoutParams.height = h
-        }
+//        val viewRoot: FrameLayout? = dialog?.findViewById(com.google.android.material.R.id.design_bottom_sheet)
+//        viewRoot?.apply {
+//            layoutParams.width = -1
+//            layoutParams.height = h
+//        }
 
         var bottomSheetBehavior = BottomSheetBehavior.from(view?.parent as View) //dialog的高度
-        bottomSheetBehavior.isHideable = false
-        bottomSheetBehavior.peekHeight = h
+//        bottomSheetBehavior.isHideable = false
+//        bottomSheetBehavior.peekHeight = h
     }
 }
 

@@ -3,14 +3,11 @@ package io.agora.secnceui.ui.mic.flat
 import io.agora.baseui.adapter.BaseRecyclerViewAdapter
 import io.agora.baseui.adapter.OnItemChildClickListener
 import io.agora.baseui.adapter.OnItemClickListener
-import io.agora.buddy.tool.GsonTools
-import io.agora.buddy.tool.ThreadManager
 import io.agora.buddy.tool.dp
 import io.agora.buddy.tool.getDisplaySize
 import io.agora.config.ConfigConstants
 import io.agora.secnceui.annotation.MicStatus
 import io.agora.secnceui.bean.BotMicInfoBean
-import io.agora.secnceui.bean.ImAttrBean
 import io.agora.secnceui.bean.MicInfoBean
 import io.agora.secnceui.databinding.ItemChatroom2dBotMicBinding
 
@@ -41,8 +38,8 @@ class Room2DBotMicAdapter constructor(
         } else {
             dataList[0].blueBot.micStatus = MicStatus.BotInactive
             dataList[0].redBot.micStatus = MicStatus.BotInactive
-            dataList[0].blueBot.audioVolumeType = ConfigConstants.VolumeType.Volume_None
-            dataList[0].redBot.audioVolumeType = ConfigConstants.VolumeType.Volume_None
+            dataList[0].blueBot.audioVolumeType = ConfigConstants.VolumeType.Volume_Unknown
+            dataList[0].redBot.audioVolumeType = ConfigConstants.VolumeType.Volume_Unknown
         }
         notifyItemChanged(0)
     }
@@ -67,9 +64,7 @@ class Room2DBotMicAdapter constructor(
     fun receiverAttributeMap(newMicMap: Map<Int, MicInfoBean>) {
         if (newMicMap.containsKey(ConfigConstants.MicConstant.KeyIndex6)) {
             val value = newMicMap[ConfigConstants.MicConstant.KeyIndex6]
-            ThreadManager.getInstance().runOnMainThread {
-                activeBot(value?.micStatus == MicStatus.BotActivated)
-            }
+            activeBot(value?.micStatus == MicStatus.BotActivated)
         }
     }
 }

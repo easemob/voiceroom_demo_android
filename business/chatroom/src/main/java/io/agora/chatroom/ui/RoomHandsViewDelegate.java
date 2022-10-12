@@ -69,6 +69,10 @@ public class RoomHandsViewDelegate {
         }
     }
 
+    public void resetRequest(){
+        isRequest = false;
+    }
+
     public void showMemberHandsDialog(int micIndex){
        new CommonSheetAlertDialog()
                .contentText(isRequest? activity.getString(R.string.chatroom_cancel_request_speak):activity.getString(R.string.chatroom_request_speak))
@@ -96,6 +100,7 @@ public class RoomHandsViewDelegate {
                                @Override
                                public void onSuccess(Boolean var1) {
                                    ToastTools.show(activity,activity.getString(R.string.chatroom_mic_apply_success), Toast.LENGTH_SHORT);
+                                   chatPrimaryMenuView.setShowHandStatus(false,true);
                                    isRequest = true;
                                }
 

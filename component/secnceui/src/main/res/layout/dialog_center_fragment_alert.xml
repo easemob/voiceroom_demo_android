@@ -27,29 +27,21 @@
         android:layout_marginTop="20dp"
         android:paddingStart="25dp"
         android:paddingEnd="25dp"
-        android:textColor="@color/dark_grey_color_040925"
+        android:textColor="@color/dark_grey_color_6C7192"
         android:textSize="@dimen/sp_14"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mtTitle"
         tools:text="Exit the chatroom and recreate a new one?" />
 
-    <com.google.android.material.button.MaterialButton
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/mbLeft"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_marginStart="25dp"
         android:layout_marginTop="40dp"
         android:layout_marginEnd="10dp"
-        android:paddingHorizontal="22dp"
-        android:paddingVertical="12dp"
         android:text="@string/chatroom_cancel"
-        android:textAllCaps="false"
+        style="@style/chatroom_cancel_button_text_style"
         android:textColor="@color/dark_grey_color_040925"
-        android:textSize="@dimen/sp_14"
-        android:textStyle="bold"
-        app:backgroundTint="@color/dark_grey_color_EFF4FF"
-        app:cornerRadius="24dp"
         app:layout_constraintEnd_toStartOf="@+id/gl50"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mtContent" />
@@ -61,23 +53,16 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.5" />
 
-    <com.google.android.material.button.MaterialButton
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/mbRight"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="25dp"
-        android:paddingHorizontal="22dp"
-        android:paddingVertical="12dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="14dp"
+        style="@style/chatroom_confirm_button_text_style"
+        android:gravity="center"
         android:text="@string/chatroom_confirm"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
-        android:textSize="@dimen/sp_14"
-        android:textStyle="bold"
-        app:backgroundTint="@color/main_color_156EF3"
-        app:cornerRadius="24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/gl50"
-        app:layout_constraintTop_toBottomOf="@+id/mtContent" />
+        app:layout_constraintTop_toTopOf="@+id/mbLeft" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -125,7 +125,13 @@ class RoomMicManagerSheetDialog constructor(private val onItemClickListener: OnI
             }
             // 用户音量
             when (micInfo.audioVolumeType) {
-                ConfigConstants.VolumeType.Volume_None -> ivMicTag.isVisible = false
+                ConfigConstants.VolumeType.Volume_Unknown -> {
+                    ivMicTag.isVisible = false
+                }
+                ConfigConstants.VolumeType.Volume_None -> {
+                    ivMicTag.isVisible = true
+                    ivMicTag.setImageResource(R.drawable.icon_chatroom_mic_open0)
+                }
                 ConfigConstants.VolumeType.Volume_Low -> {
                     ivMicTag.isVisible = true
                     ivMicTag.setImageResource(R.drawable.icon_chatroom_mic_open1)
