@@ -194,21 +194,6 @@ public class ChatroomConfigManager {
         });
     }
 
-    public void joinRoom(String roomId,ValueCallBack<ChatRoom> callBack){
-        ChatClient.getInstance().chatroomManager().joinChatRoom(roomId, new ValueCallBack<ChatRoom>() {
-            @Override
-            public void onSuccess(ChatRoom chatRoom) {
-                Log.e("joinRoom","sdk join success");
-                callBack.onSuccess(chatRoom);
-            }
-
-            @Override
-            public void onError(int code, String desc) {
-                callBack.onError(code,desc);
-            }
-        });
-    }
-
     public interface ChatroomListener{
         //收到正常文本消息
         void receiveTextMessage(String roomId,ChatMessageData message);

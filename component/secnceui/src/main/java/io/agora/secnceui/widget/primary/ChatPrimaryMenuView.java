@@ -152,7 +152,7 @@ public class ChatPrimaryMenuView extends RelativeLayout implements ExpressionVie
                     //一般情况下，这是原始的窗口高度
                     mWindowHeight = height;
                     setViewLayoutParams(expressionView,rootWidth,0);
-                    System.out.println("SoftKeyboard height0 = " + 0);
+//                    System.out.println("SoftKeyboard height0 = " + 0);
                 } else {
                     if (softKeyHeight == 0){
                         softKeyHeight = 765;
@@ -162,7 +162,7 @@ public class ChatPrimaryMenuView extends RelativeLayout implements ExpressionVie
                         //两次窗口高度相减，就是软键盘高度
                         softKeyHeight = mWindowHeight - height;
                         isSoftShowing = true;
-                        System.out.println("SoftKeyboard height1 = " + softKeyHeight);
+//                        System.out.println("SoftKeyboard height1 = " + softKeyHeight);
                         setViewLayoutParams(expressionView,rootWidth,softKeyHeight);
                     }
                     else {
@@ -172,7 +172,7 @@ public class ChatPrimaryMenuView extends RelativeLayout implements ExpressionVie
                         }else {
                             setViewLayoutParams(expressionView,rootWidth,softKeyHeight);
                         }
-                        System.out.println("SoftKeyboard height2 = " + 0);
+//                        System.out.println("SoftKeyboard height2 = " + 0);
                     }
                 }
             }
@@ -309,23 +309,47 @@ public class ChatPrimaryMenuView extends RelativeLayout implements ExpressionVie
     }
 
     public void setEnableHand(boolean isEnable){
-        ImageView hand = menuLayout.findViewById(R.id.extend_item_hand_up);
-        if (!isEnable){
-            hand.setImageResource(R.drawable.icon_vector);
-            hand.setEnabled(false);
-        }else {
-            hand.setImageResource(R.drawable.icon_handuphard);
-            hand.setEnabled(true);
-        }
+        ThreadManager.getInstance().runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                ImageView hand = menuLayout.findViewById(R.id.extend_item_hand_up);
+                if (!isEnable){
+                    hand.setImageResource(R.drawable.icon_vector);
+                    hand.setEnabled(false);
+                }else {
+                    hand.setImageResource(R.drawable.icon_handuphard);
+                    hand.setEnabled(true);
+                }
+            }
+        });
     }
 
     public void setEnableMic(boolean isEnable){
-        ImageView mic = menuLayout.findViewById(R.id.extend_item_mic);
-        if (isEnable){
-            mic.setImageResource(R.drawable.icon_mic);
-        }else {
-            mic.setImageResource(R.drawable.icon_close_mic);
-        }
+        ThreadManager.getInstance().runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                ImageView mic = menuLayout.findViewById(R.id.extend_item_mic);
+                if (isEnable){
+                    mic.setImageResource(R.drawable.icon_mic);
+                }else {
+                    mic.setImageResource(R.drawable.icon_close_mic);
+                }
+            }
+        });
+    }
+
+    public void hideMic(boolean isHide){
+        ThreadManager.getInstance().runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                ImageView mic = menuLayout.findViewById(R.id.extend_item_mic);
+                if (isHide){
+                    mic.setVisibility(VISIBLE);
+                }else {
+                    mic.setVisibility(GONE);
+                }
+            }
+        });
     }
 
     /**

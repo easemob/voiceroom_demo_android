@@ -3,11 +3,21 @@ package io.agora.secnceui.widget.gift;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
+import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+
+import androidx.core.graphics.Insets;
+import androidx.core.view.OnApplyWindowInsetsListener;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+
+import java.util.Objects;
 
 import io.agora.baseui.BaseDialogFragment;
 import io.agora.secnceui.R;
@@ -61,4 +71,16 @@ public abstract class BottomDialogFragment extends BaseDialogFragment {
             });
         }
     }
+
+    public void setOnApplyWindowInsets(View view){
+        ViewCompat.setOnApplyWindowInsetsListener(view, new OnApplyWindowInsetsListener() {
+            @Override
+            public WindowInsetsCompat onApplyWindowInsets(View v, WindowInsetsCompat insets) {
+                Insets systemInset =  insets.getInsets(WindowInsetsCompat.Type.systemBars());
+                view.setPadding(0, 0, 0, systemInset.bottom);
+                return WindowInsetsCompat.CONSUMED;
+            }
+        });
+    }
+
 }

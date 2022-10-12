@@ -54,6 +54,12 @@ public class RoomHandsViewDelegate {
         chatPrimaryMenuView.setShowHandStatus(false, false);
     }
 
+    public void update(int index){
+        if (dialog != null){
+            dialog.update(index);
+        }
+    }
+
     // 用户点击上台
     public void onUserClickOnStage(int micIndex) {
         if (isRequest) {

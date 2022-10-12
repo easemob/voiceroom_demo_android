@@ -185,8 +185,6 @@ public class ChatroomInviteHandsFragment extends BaseListFragment<VMemberBean> i
     @Override
     public void onRefresh() {
         reset();
-        isRefreshing = true;
-        handsViewModel.getInviteList(getActivity(),roomId,pageSize,cursor);
     }
 
     protected void finishRefresh() {
@@ -195,9 +193,11 @@ public class ChatroomInviteHandsFragment extends BaseListFragment<VMemberBean> i
         }
     }
 
-    private void reset(){
+    public void reset(){
         adapter.clearData();
         cursor = "";
+        isRefreshing = true;
+        handsViewModel.getInviteList(getActivity(),roomId,pageSize,cursor);
     }
 
     @Override

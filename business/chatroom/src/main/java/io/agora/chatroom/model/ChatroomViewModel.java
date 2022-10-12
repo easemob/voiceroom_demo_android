@@ -2,6 +2,7 @@ package io.agora.chatroom.model;
 
 import android.app.Application;
 import android.content.Context;
+import android.os.Handler;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -44,6 +45,7 @@ public class ChatroomViewModel extends AndroidViewModel {
     private SingleSourceLiveData<Resource<Boolean>> roomNoticeObservable;
     private final AtomicBoolean joinRtcChannel = new AtomicBoolean(false);
     private final AtomicBoolean joinImRoom = new AtomicBoolean(false);
+    Handler handler = new Handler();
 
     public ChatroomViewModel(@NonNull Application application) {
         super(application);
@@ -108,7 +110,12 @@ public class ChatroomViewModel extends AndroidViewModel {
 
     public void joinRoom(Context context, String roomId, String password) {
         if (joinRtcChannel.get() && joinImRoom.get()) {
-            ThreadManager.getInstance().runOnMainThread(() -> joinObservable.setSource(mRepository.joinRoom(context, roomId, password)));
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    joinObservable.setSource(mRepository.joinRoom(context, roomId, password));
+                }
+            },200);
         }
     }
 

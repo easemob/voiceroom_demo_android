@@ -18,9 +18,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
-import io.agora.baseui.general.callback.OnResourceParseCallback;
-import io.agora.baseui.general.net.Resource;
-
 
 /**
  * 作为dialog fragment的基类
@@ -113,17 +110,6 @@ public abstract class BaseDialogFragment extends DialogFragment {
     }
 
 
-//    /**
-//     * 解析Resource<T>
-//     * @param response
-//     * @param callback
-//     * @param <T>
-//     */
-//    public <T> void parseResource(Resource<T> response, @NonNull OnResourceParseCallback<T> callback) {
-//        if(mContext != null) {
-//            mContext.parseResource(response, callback);
-//        }
-//    }
 
     /**
      * dialog宽度占满，高度自定义

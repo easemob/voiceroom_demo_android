@@ -33,6 +33,8 @@ public class ChatroomHandsDialog extends BottomDialogFragment {
     private int mCount;
     private String roomId;
     private Bundle bundle = new Bundle();
+    private ChatroomRaisedHandsFragment raisedHandsFragment;
+    private ChatroomInviteHandsFragment inviteHandsFragment;
 
     @Override
     public int getLayoutId() {
@@ -129,7 +131,8 @@ public class ChatroomHandsDialog extends BottomDialogFragment {
             @Override
             public Fragment createFragment(int position) {
                 if (fragments.get(position) instanceof ChatroomRaisedHandsFragment){
-                    ((ChatroomRaisedHandsFragment)fragments.get(position)).setItemCountChangeListener(new ChatroomRaisedHandsFragment.itemCountListener() {
+                    raisedHandsFragment = ((ChatroomRaisedHandsFragment)fragments.get(position));
+                    raisedHandsFragment.setItemCountChangeListener(new ChatroomRaisedHandsFragment.itemCountListener() {
                         @Override
                         public void getItemCount(int count) {
                             mCount = count;
@@ -139,7 +142,8 @@ public class ChatroomHandsDialog extends BottomDialogFragment {
                         }
                     });
                 }else if (fragments.get(position) instanceof ChatroomInviteHandsFragment){
-                    ((ChatroomInviteHandsFragment)fragments.get(position)).setItemCountChangeListener(new ChatroomInviteHandsFragment.itemCountListener() {
+                    inviteHandsFragment = ((ChatroomInviteHandsFragment)fragments.get(position));
+                    inviteHandsFragment.setItemCountChangeListener(new ChatroomInviteHandsFragment.itemCountListener() {
                         @Override
                         public void getItemCount(int count) {
                             mCount = count;
@@ -172,6 +176,19 @@ public class ChatroomHandsDialog extends BottomDialogFragment {
         });
         // setup with viewpager2
         mediator.attach();
+    }
+
+    public void update(int index){
+        switch (index){
+            case 0:
+                if (raisedHandsFragment != null)
+                    raisedHandsFragment.reset();
+                break;
+            case 1:
+                if (inviteHandsFragment != null)
+                    inviteHandsFragment.reset();
+                break;
+        }
     }
 
 }
