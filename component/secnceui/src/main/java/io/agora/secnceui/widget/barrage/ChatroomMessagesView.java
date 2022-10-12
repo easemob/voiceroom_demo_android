@@ -97,7 +97,7 @@ public class ChatroomMessagesView extends RelativeLayout{
         listview.addItemDecoration(itemDecoration);
         //设置item动画
         DefaultItemAnimator defaultItemAnimator = new DefaultItemAnimator();
-        defaultItemAnimator.setAddDuration(1000);
+//        defaultItemAnimator.setAddDuration(1000);
         defaultItemAnimator.setRemoveDuration(1000);
         defaultItemAnimator.setChangeDuration(1000);
         listview.setItemAnimator(defaultItemAnimator);

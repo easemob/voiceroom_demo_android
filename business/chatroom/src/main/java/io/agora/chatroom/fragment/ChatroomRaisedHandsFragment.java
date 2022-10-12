@@ -198,8 +198,6 @@ public class ChatroomRaisedHandsFragment extends BaseListFragment<VRMicListBean.
     @Override
     public void onRefresh() {
         reset();
-        isRefreshing = true;
-        handsViewModel.getRaisedList(getActivity(), roomId,pageSize,cursor);
     }
 
     protected void finishRefresh() {
@@ -208,9 +206,10 @@ public class ChatroomRaisedHandsFragment extends BaseListFragment<VRMicListBean.
         }
     }
 
-    private void reset(){
-        adapter.clearData();
+    public void reset(){
         cursor = "";
+        isRefreshing = true;
+        handsViewModel.getRaisedList(getActivity(), roomId,pageSize,cursor);
     }
 
     @Override

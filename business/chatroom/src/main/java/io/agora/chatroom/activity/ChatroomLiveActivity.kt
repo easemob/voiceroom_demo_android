@@ -84,7 +84,8 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
 
     /**房间基础*/
     private val roomKitBean = RoomKitBean()
-    private var password: String? = "";
+    private var password: String? = ""
+    private var isOwner: Boolean = false
 
     override fun getViewBinding(inflater: LayoutInflater): ActivityChatroomBinding {
         return ActivityChatroomBinding.inflate(inflater)
@@ -116,6 +117,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
                 roomKitBean.convertByRoomDetailInfo(roomDetail)
                 handsDelegate.onRoomDetails(roomDetail.room_id, roomDetail.owner.uid)
                 giftViewDelegate.onRoomDetails(roomDetail.room_id, roomDetail.owner.uid)
+                isOwner = (roomDetail.owner.uid == ProfileManager.getInstance().profile.uid)
             }
         } else {
             // 房间列表进入，需请求详情
@@ -124,6 +126,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
                 handsDelegate.onRoomDetails(roomBean.room_id, roomBean.ownerUid)
                 roomViewModel.getDetails(this, roomKitBean.roomId)
                 giftViewDelegate.onRoomDetails(roomBean.room_id, roomBean.owner.uid)
+                isOwner = (roomBean.ownerUid == ProfileManager.getInstance().profile.uid)
             }
         }
         ChatroomMsgHelper.getInstance().init(roomKitBean.chatroomId)
@@ -194,7 +197,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
         if (roomKitBean.roomType == ConfigConstants.RoomType.Common_Chatroom) { // 普通房间
             binding.likeView.likeView.setOnClickListener { binding.likeView.addFavor() }
             binding.chatroomGiftView.init(roomKitBean.chatroomId)
-            binding.messageView.init(roomKitBean.chatroomId, (roomKitBean.ownerId == ProfileManager.getInstance().profile.uid))
+            binding.messageView.init(roomKitBean.chatroomId, isOwner)
             binding.rvChatroom2dMicLayout.isVisible = true
             binding.rvChatroom3dMicLayout.isVisible = false
             roomObservableDelegate =
@@ -332,8 +335,10 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
                 ChatroomMsgHelper.getInstance().sendTxtMsg(content,
                     ProfileManager.getInstance().profile.name, object : OnMsgCallBack() {
                         override fun onSuccess(message: ChatMessageData?) {
-                            binding.messageView.refreshSelectLast()
-                            binding.likeView.isVisible = true
+                            ThreadManager.getInstance().runOnMainThread {
+                                binding.messageView.refreshSelectLast()
+                                binding.likeView.isVisible = true
+                            }
                         }
 
                         override fun onError(messageId: String?, code: Int, error: String?) {
@@ -436,8 +441,8 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
     }
 
     override fun receiveApplySite(roomId: String?, message: ChatMessageData?) {
-        Log.e("liveActivity", "receiveApplySite")
-        binding.chatBottom.setShowHandStatus(handsDelegate.isOwner, true)
+        Log.e("liveActivity", "receiveApplySite $isOwner")
+        binding.chatBottom.setShowHandStatus(isOwner, true)
     }
 
     override fun announcementChanged(roomId: String?, announcement: String?) {
@@ -463,37 +468,25 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
                 } else {
                     binding.rvChatroom3dMicLayout.receiverAttributeMap(newMicMap)
                 }
-                binding.chatBottom.setEnableHand(roomObservableDelegate.isOnMic())
+                if (!isOwner) {
+                    Log.e("liveActivity", "roomAttributesDidUpdated:  ${roomObservableDelegate.isOnMic()}")
+                    binding.chatBottom.setEnableHand(roomObservableDelegate.isOnMic())
+                    handsDelegate.resetRequest()
+                }
             }
         }
-        // TODO: 是否在麦位上
-
-//        for (entry in attributeMap!!.entries) {
-//            try {
-//                val json = attributeMap[entry.key]
-//                Log.e("attributeMap", "key: $json");
-//                val attribute = toBean(json, VRMicBean::class.java)
-//                attribute.let {
-//                    if (attribute!!.member.chat_uid.equals(ProfileManager.getInstance().profile.chat_uid)) {
-//                        binding.chatBottom.setEnableHand(false)
-//                    } else {
-//                        binding.chatBottom.setEnableHand(true)
-//                    }
-//                }
-//            } catch (e: JSONException) {
-//                e.printStackTrace()
-//            }
-//        }
     }
 
     //接收取消申请上麦
     override fun receiveCancelApplySite(roomId: String?, message: ChatMessageData?) {
-
+        Log.e("ChatroomLiveActivity","receiveCancelApplySite" + message.toString())
+        //刷新 owner 申请列表
+//        handsDelegate.update(0)
     }
 
     //接收拒绝邀请消息
     override fun receiveInviteRefusedSite(roomId: String?, message: ChatMessageData?) {
-
+        Log.e("ChatroomLiveActivity","receiveInviteRefusedSite" + message.toString())
     }
 
     private fun checkFocus(focus:Boolean){

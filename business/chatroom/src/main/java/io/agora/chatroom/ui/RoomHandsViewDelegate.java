@@ -54,6 +54,12 @@ public class RoomHandsViewDelegate {
         chatPrimaryMenuView.setShowHandStatus(false, false);
     }
 
+    public void update(int index){
+        if (dialog != null){
+            dialog.update(index);
+        }
+    }
+
     // 用户点击上台
     public void onUserClickOnStage(int micIndex) {
         if (isRequest) {
@@ -61,6 +67,10 @@ public class RoomHandsViewDelegate {
         }else {
             showMemberHandsDialog(micIndex);
         }
+    }
+
+    public void resetRequest(){
+        isRequest = false;
     }
 
     public void showMemberHandsDialog(int micIndex){
@@ -90,6 +100,7 @@ public class RoomHandsViewDelegate {
                                @Override
                                public void onSuccess(Boolean var1) {
                                    ToastTools.show(activity,activity.getString(R.string.chatroom_mic_apply_success), Toast.LENGTH_SHORT);
+                                   chatPrimaryMenuView.setShowHandStatus(false,true);
                                    isRequest = true;
                                }
 
