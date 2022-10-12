@@ -275,7 +275,7 @@ public class ChatPrimaryMenuView extends RelativeLayout implements ExpressionVie
                         RelativeLayout.LayoutParams.WRAP_CONTENT,
                         RelativeLayout.LayoutParams.WRAP_CONTENT);
                 imgLayout.addRule(RelativeLayout.ALIGN_PARENT_TOP | ALIGN_PARENT_RIGHT);
-                imgLayout.setMargins(0,15,15,0);
+                imgLayout.setMargins(0,18,18,0);
                 relativeLayout.addView(imageView, marginLayoutParams);
                 relativeLayout.addView(status, imgLayout);
                 menuLayout.addView(relativeLayout);
