@@ -73,6 +73,7 @@ dependencies {
     api dep["recyclerview"]
     api dep["material"]
     api project(':SVGAPlayer')
+    api dep["bugly"]
 
     testImplementation dep["junit"]
     androidTestImplementation dep["junit-android"]

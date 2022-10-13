@@ -102,7 +102,6 @@ class RoomObservableViewDelegate constructor(
         roomViewModel.openBotObservable.observe(activity) { response: Resource<Boolean> ->
             parseResource(response, object : OnResourceParseCallback<Boolean>() {
                 override fun onSuccess(data: Boolean?) {
-                    ToastTools.show(activity, "open bot onSuccess：$data")
                     if (data != true) return
                     // 创建房间，第⼀次启动机器⼈后播放音效：
                     if (RtcRoomController.get().firstActiveBot) {
@@ -686,10 +685,11 @@ class RoomObservableViewDelegate constructor(
      */
     fun muteLocalAudio(mute: Boolean, index: Int = -1) {
         RtcRoomController.get().enableLocalAudio(mute)
+        val micIndex = if (index < 0) myselfIndex else index
         if (mute) {
-            micViewModel.closeMic(activity, roomKitBean.roomId, index)
+            micViewModel.closeMic(activity, roomKitBean.roomId, micIndex)
         } else {
-            micViewModel.cancelCloseMic(activity, roomKitBean.roomId, index)
+            micViewModel.cancelCloseMic(activity, roomKitBean.roomId, micIndex)
         }
     }
 
