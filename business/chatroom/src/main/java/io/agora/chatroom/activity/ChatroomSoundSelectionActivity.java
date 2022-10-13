@@ -19,15 +19,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.alibaba.android.arouter.launcher.ARouter;
 
 import java.util.List;
-import java.util.Objects;
-
 import io.agora.CallBack;
-import io.agora.ValueCallBack;
 import io.agora.baseui.BaseActivity;
 import io.agora.baseui.general.callback.OnResourceParseCallback;
 import io.agora.buddy.tool.ToastTools;
 import io.agora.chat.ChatClient;
-import io.agora.chat.ChatRoom;
 import io.agora.chatroom.ChatroomApplication;
 import io.agora.chatroom.R;
 import io.agora.chatroom.adapter.ChatroomSoundSelectionAdapter;
@@ -150,7 +146,6 @@ public class ChatroomSoundSelectionActivity extends BaseActivity implements Chat
    }
 
    public void createNormalRoom(boolean allow_free_join_mic,String sound_effect){
-      showLoading(false);
       if (isPublic){
          chatroomViewModel.createNormalRoom(this,roomName,false,allow_free_join_mic,sound_effect);
       }else {
@@ -163,7 +158,6 @@ public class ChatroomSoundSelectionActivity extends BaseActivity implements Chat
    }
 
    public void createSpatialRoom(){
-      showLoading(false);
       if (isPublic){
          chatroomViewModel.createSpatial(this,roomName,false);
       }else {
@@ -176,7 +170,6 @@ public class ChatroomSoundSelectionActivity extends BaseActivity implements Chat
    }
 
    public void joinRoom(VRoomInfoBean data){
-      dismissLoading();
       ARouter.getInstance()
               .build(RouterPath.ChatroomPath)
               .withSerializable(RouterParams.KEY_CHATROOM_DETAILS_INFO, data)

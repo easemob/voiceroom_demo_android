@@ -158,7 +158,6 @@ public class ChatroomProfileActivity extends BaseActivity implements View.OnClic
             VRUserBean bean = ProfileManager.getInstance().getProfile();
             bean.setName(nickName.getText().toString());
             updateProfile(bean);
-            showLoading(false);
             break;
          case EditorInfo.IME_ACTION_NEXT:
             // next stuff
@@ -216,7 +215,6 @@ public class ChatroomProfileActivity extends BaseActivity implements View.OnClic
                  ChatClient.getInstance().getDeviceInfo().getString("deviceid"), bean.getAvatarName(), new ValueCallBack<VRUserBean>() {
                     @Override
                     public void onSuccess(VRUserBean var1) {
-                       dismissLoading();
                        ProfileManager.getInstance().setProfile(var1);
                     }
 
@@ -237,7 +235,6 @@ public class ChatroomProfileActivity extends BaseActivity implements View.OnClic
                  ChatClient.getInstance().getDeviceInfo().getString("deviceid"),bean.getPortrait(), new ValueCallBack<VRUserBean>() {
                     @Override
                     public void onSuccess(VRUserBean var1) {
-                       dismissLoading();
                        ProfileManager.getInstance().setProfile(var1);
                     }
 

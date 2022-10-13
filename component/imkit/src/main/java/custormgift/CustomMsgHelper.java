@@ -474,7 +474,7 @@ public class CustomMsgHelper implements MessageListener {
     }
 
     /**
-     * 获取自定义消息中的参数
+     * 获取自定义消息中的ext参数
      * @param message
      * @return
      */
