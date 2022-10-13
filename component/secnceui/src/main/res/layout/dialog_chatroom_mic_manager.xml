@@ -51,7 +51,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/icon_chatroom_mic_mute_tag"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/ivMicInfo"
         app:layout_constraintEnd_toEndOf="@id/ivMicInfo" />
 

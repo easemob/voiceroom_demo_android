@@ -96,8 +96,8 @@ class RoomMicManagerSheetDialog constructor(private val onItemClickListener: OnI
                     }
                     MicStatus.LockForceMute -> {
                         ivMicInnerIcon.setImageResource(R.drawable.icon_chatroom_mic_close)
-                        ivMicTag.isVisible = true
-                        ivMicTag.setImageResource(R.drawable.icon_chatroom_mic_mute_tag)
+//                        ivMicTag.isVisible = true
+//                        ivMicTag.setImageResource(R.drawable.icon_chatroom_mic_mute_tag)
                     }
                     else -> {
                         ivMicTag.isVisible = false
@@ -112,46 +112,46 @@ class RoomMicManagerSheetDialog constructor(private val onItemClickListener: OnI
                 )
                 mtMicUsername.text = micInfo.userInfo?.username ?: ""
                 mtChatroomMicTag.isVisible = micInfo.ownerTag
-                when (micInfo.micStatus) {
-                    MicStatus.Mute,
-                    MicStatus.ForceMute -> {
-                        ivMicTag.isVisible = true
-                        ivMicTag.setImageResource(R.drawable.icon_chatroom_mic_mute_tag)
-                    }
-                    else -> {
-                        ivMicTag.isVisible = false
-                    }
-                }
+//                when (micInfo.micStatus) {
+//                    MicStatus.Mute,
+//                    MicStatus.ForceMute -> {
+//                        ivMicTag.isVisible = true
+//                        ivMicTag.setImageResource(R.drawable.icon_chatroom_mic_mute_tag)
+//                    }
+//                    else -> {
+//                        ivMicTag.isVisible = false
+//                    }
+//                }
             }
             // 用户音量
-            when (micInfo.audioVolumeType) {
-                ConfigConstants.VolumeType.Volume_Unknown -> {
-                    ivMicTag.isVisible = false
-                }
-                ConfigConstants.VolumeType.Volume_None -> {
-                    ivMicTag.isVisible = true
-                    ivMicTag.setImageResource(R.drawable.icon_chatroom_mic_open0)
-                }
-                ConfigConstants.VolumeType.Volume_Low -> {
-                    ivMicTag.isVisible = true
-                    ivMicTag.setImageResource(R.drawable.icon_chatroom_mic_open1)
-                }
-                ConfigConstants.VolumeType.Volume_Medium -> {
-                    ivMicTag.isVisible = true
-                    ivMicTag.setImageResource(R.drawable.icon_chatroom_mic_open2)
-                }
-                ConfigConstants.VolumeType.Volume_High -> {
-                    ivMicTag.isVisible = true
-                    ivMicTag.setImageResource(R.drawable.icon_chatroom_mic_open3)
-                }
-                ConfigConstants.VolumeType.Volume_Max -> {
-                    ivMicTag.isVisible = true
-                    ivMicTag.setImageResource(R.drawable.icon_chatroom_mic_open4)
-                }
-                else -> {
-
-                }
-            }
+//            when (micInfo.audioVolumeType) {
+//                ConfigConstants.VolumeType.Volume_Unknown -> {
+//                    ivMicTag.isVisible = false
+//                }
+//                ConfigConstants.VolumeType.Volume_None -> {
+//                    ivMicTag.isVisible = true
+//                    ivMicTag.setImageResource(R.drawable.icon_chatroom_mic_open0)
+//                }
+//                ConfigConstants.VolumeType.Volume_Low -> {
+//                    ivMicTag.isVisible = true
+//                    ivMicTag.setImageResource(R.drawable.icon_chatroom_mic_open1)
+//                }
+//                ConfigConstants.VolumeType.Volume_Medium -> {
+//                    ivMicTag.isVisible = true
+//                    ivMicTag.setImageResource(R.drawable.icon_chatroom_mic_open2)
+//                }
+//                ConfigConstants.VolumeType.Volume_High -> {
+//                    ivMicTag.isVisible = true
+//                    ivMicTag.setImageResource(R.drawable.icon_chatroom_mic_open3)
+//                }
+//                ConfigConstants.VolumeType.Volume_Max -> {
+//                    ivMicTag.isVisible = true
+//                    ivMicTag.setImageResource(R.drawable.icon_chatroom_mic_open4)
+//                }
+//                else -> {
+//
+//                }
+//            }
         }
     }
 }

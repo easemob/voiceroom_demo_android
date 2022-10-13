@@ -35,6 +35,7 @@ import io.agora.secnceui.ui.mic.IRoomMicView
 import io.agora.secnceui.ui.micmanger.RoomMicManagerSheetDialog
 import io.agora.chatroom.ui.dialog.RoomContributionAndAudienceSheetDialog
 import io.agora.chatroom.ui.dialog.RoomNoticeSheetDialog
+import io.agora.secnceui.annotation.ChatroomTopType
 import io.agora.secnceui.ui.soundselection.RoomSocialChatSheetDialog
 import io.agora.secnceui.ui.soundselection.RoomSoundSelectionConstructor
 import io.agora.secnceui.ui.soundselection.RoomSoundSelectionSheetDialog
@@ -164,11 +165,6 @@ class RoomObservableViewDelegate constructor(
             parseResource(response, object : OnResourceParseCallback<Pair<Int, Boolean>>() {
                 override fun onSuccess(data: Pair<Int, Boolean>?) {
                     "close mic：$data".logE()
-                    data?.let {
-                        if (it.second) {
-                            ToastTools.show(activity, "close mic:${it.first}")
-                        }
-                    }
                 }
             })
         }
@@ -177,11 +173,6 @@ class RoomObservableViewDelegate constructor(
             parseResource(response, object : OnResourceParseCallback<Pair<Int, Boolean>>() {
                 override fun onSuccess(data: Pair<Int, Boolean>?) {
                     "cancel close mic：$data".logE()
-                    data?.let {
-                        if (it.second) {
-                            ToastTools.show(activity, "cancel close mic:${it.first}")
-                        }
-                    }
                 }
             })
         }
@@ -360,8 +351,10 @@ class RoomObservableViewDelegate constructor(
                     val rtcUid = userInfo.rtcUid
                     val micIndex = micInfo.index
                     if (rtcUid > 0) {
+                        // 自己
                         if (rtcUid == ProfileManager.getInstance().rtcUid()) {
                             myselfIndex = micIndex
+                            RtcRoomController.get().isLocalAudioEnable = micInfo.micStatus != MicStatus.Normal
                         }
                         micMap[micIndex] = rtcUid
                     }
@@ -756,10 +749,32 @@ class RoomObservableViewDelegate constructor(
             .show(activity.supportFragmentManager, "CommonFragmentAlertDialog")
     }
 
-    fun onAddOrSubMemberCount(add: Boolean) {
+    fun subMemberCount() {
         ThreadManager.getInstance().runOnMainThread {
-            iRoomTopView.addOrSubMemberCount(add)
+            iRoomTopView.subMemberCount()
         }
+    }
+
+    /**接受系统消息*/
+    fun receiveSystem(ext: MutableMap<String, String>) {
+        ThreadManager.getInstance().runOnMainThread {
+            if (ext.containsKey("click_count")){
+               ext["click_count"]?.let {
+                   iRoomTopView.onUpdateWatchCount(  it.toIntOrNull() ?: -1)
+                }
+            }
+            if (ext.containsKey("member_count")){
+                ext["member_count"]?.let {
+                    iRoomTopView.onUpdateMemberCount(  it.toIntOrNull() ?: -1)
+                }
+            }
+            if (ext.containsKey("gift_amount")){
+                ext["gift_amount"]?.let {
+                    iRoomTopView.onUpdateGiftCount(it.toIntOrNull() ?: -1)
+                }
+            }
+        }
+
     }
 
     var onRoomViewDelegateListener: OnRoomViewDelegateListener? = null

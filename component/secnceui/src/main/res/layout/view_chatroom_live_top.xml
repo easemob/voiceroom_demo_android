@@ -65,15 +65,17 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/mtChatroomMembers"
-            android:layout_width="26dp"
+            android:layout_width="wrap_content"
             android:layout_height="26dp"
+            android:minWidth="26dp"
             android:layout_gravity="end"
             android:layout_marginEnd="16dp"
-            android:background="@drawable/bg_oval_black20"
+            android:background="@drawable/bg_rect_radius13_black20"
             android:gravity="center"
+            android:paddingHorizontal="2dp"
             android:textColor="@color/white"
             android:textSize="@dimen/sp_10"
-            tools:text="1.5k" />
+            tools:text="9k" />
 
         <LinearLayout
             android:id="@+id/llChatroomMemberRank"

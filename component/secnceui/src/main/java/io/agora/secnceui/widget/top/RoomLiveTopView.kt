@@ -5,16 +5,14 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
-import androidx.core.view.updateLayoutParams
 import io.agora.buddy.tool.ResourcesTools
 import io.agora.buddy.tool.ScreenTools
 import io.agora.buddy.tool.dp
+import io.agora.buddy.tool.number2K
 import io.agora.config.ConfigConstants
 import io.agora.secnceui.R
-import io.agora.secnceui.annotation.ChatroomTopType
 import io.agora.secnceui.bean.RoomInfoBean
 import io.agora.secnceui.bean.RoomRankUserBean
 import io.agora.secnceui.constants.ScenesConstant
@@ -65,9 +63,12 @@ class RoomLiveTopView : ConstraintLayout, View.OnClickListener, IRoomLiveTopView
         binding.apply {
             mtChatroomOwnerName.text = chatroomInfo.owner?.username
             mtChatroomName.text = chatroomInfo.chatroomName
-            mtChatroomMembers.text = chatroomInfo.memberCount.toString()
-            mtChatroomGifts.text = chatroomInfo.giftCount.toString()
-            mtChatroomWatch.text = chatroomInfo.watchCount.toString()
+            val memberText = roomInfo.memberCount.number2K()
+            mtChatroomMembers.text = memberText
+            val giftText = roomInfo.giftCount.number2K()
+            mtChatroomGifts.text = giftText
+            val watchText = roomInfo.watchCount.number2K()
+            mtChatroomWatch.text = watchText
             // 普通房间显示 最佳音效
             if (chatroomInfo.roomType == ConfigConstants.RoomType.Common_Chatroom) {
                 mtChatroomAgoraSound.isVisible = true
@@ -147,59 +148,41 @@ class RoomLiveTopView : ConstraintLayout, View.OnClickListener, IRoomLiveTopView
         }
     }
 
-    /**设置头像*/
-    override fun onImageUpdate(@ChatroomTopType type: Int, avatar: String) {
-        val avatarRes = ResourcesTools.getDrawableId(binding.ivChatroomOwner.context, avatar)
-        when (type) {
-            ChatroomTopType.Owner -> {
-                // 房主头像
-                binding.ivChatroomOwner.setImageResource(avatarRes)
-            }
-            ChatroomTopType.RankNo1 -> {
-                binding.llChatroomMemberRank.isVisible = true
-                binding.ivChatroomMember1.isVisible = true
-                binding.ivChatroomMember1.setImageResource(avatarRes)
-            }
-            ChatroomTopType.RankNo2 -> {
-                binding.llChatroomMemberRank.isVisible = true
-                binding.ivChatroomMember2.isVisible = true
-                binding.ivChatroomMember2.setImageResource(avatarRes)
-            }
-            ChatroomTopType.RankNo3 -> {
-                binding.llChatroomMemberRank.isVisible = true
-                binding.ivChatroomMember3.isVisible = true
-                binding.ivChatroomMember3.setImageResource(avatarRes)
-            }
-            else -> {}
-        }
-    }
-
-    /**设置文本*/
-    override fun onTextUpdate(@ChatroomTopType type: Int, text: String) {
-        when (type) {
-            // 房主名称
-            ChatroomTopType.Owner -> binding.mtChatroomOwnerName.text = text
-            // 聊天室名称
-            ChatroomTopType.ChatroomName -> binding.mtChatroomName.text = text
-            // 观众人数
-            ChatroomTopType.Members -> binding.mtChatroomMembers.text = text
-            // 礼物数
-            ChatroomTopType.Gifts -> binding.mtChatroomGifts.text = text
-            // 观看数
-            ChatroomTopType.Watches -> binding.mtChatroomWatch.text = text
-            else -> {}
-        }
-    }
-
-    override fun addOrSubMemberCount(add: Boolean) {
-        super.addOrSubMemberCount(add)
+    override fun subMemberCount() {
         if (this::roomInfo.isInitialized) {
-            if (add) {
-                roomInfo.memberCount += 1
-            } else {
-                roomInfo.memberCount -= 1
-            }
-            binding.mtChatroomMembers.text = roomInfo.memberCount.toString()
+            roomInfo.memberCount -= 1
+            val text = roomInfo.memberCount.number2K()
+            binding.mtChatroomMembers.text = text
+        }
+    }
+
+    override fun onUpdateMemberCount(count: Int) {
+        super.onUpdateMemberCount(count)
+        if (count < 0) return
+        if (this::roomInfo.isInitialized) {
+            roomInfo.memberCount = count
+            val text = roomInfo.memberCount.number2K()
+            binding.mtChatroomMembers.text = text
+        }
+    }
+
+    override fun onUpdateWatchCount(count: Int) {
+        super.onUpdateWatchCount(count)
+        if (count < 0) return
+        if (this::roomInfo.isInitialized) {
+            roomInfo.watchCount = count
+            val text = roomInfo.watchCount.number2K()
+            binding.mtChatroomWatch.text = text
+        }
+    }
+
+    override fun onUpdateGiftCount(count: Int) {
+        super.onUpdateGiftCount(count)
+        if (count < 0) return
+        if (this::roomInfo.isInitialized) {
+            roomInfo.giftCount = count
+            val text = roomInfo.giftCount.number2K()
+            binding.mtChatroomGifts.text = text
         }
     }
 

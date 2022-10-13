@@ -543,7 +543,10 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
     override fun receiveSystem(roomId: String?, message: ChatMessageData?) {
         super.receiveSystem(roomId, message)
         val ext: MutableMap<String, String>? = CustomMsgHelper.getInstance().getCustomMsgParams(message)
-        "ext: $ext".logE("receiveSystem")
+        "ext: $ext ${Thread.currentThread()}".logE("receiveSystem")
+        ext?.let {
+            roomObservableDelegate.receiveSystem(ext)
+        }
         binding.messageView.refreshSelectLast()
     }
 
@@ -560,18 +563,10 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
         }
     }
 
-    override fun userJoinedRoom(roomId: String?, uid: String?) {
-        super.userJoinedRoom(roomId, uid)
-        if (this@ChatroomLiveActivity::roomObservableDelegate.isInitialized) {
-            roomObservableDelegate.onAddOrSubMemberCount(true)
-        }
-
-    }
-
     override fun onMemberExited(roomId: String?, s1: String?, s2: String?) {
         super.onMemberExited(roomId, s1, s2)
         if (this@ChatroomLiveActivity::roomObservableDelegate.isInitialized) {
-            roomObservableDelegate.onAddOrSubMemberCount(false)
+            roomObservableDelegate.subMemberCount()
         }
     }
 

@@ -44,9 +44,11 @@ class RoomAudioSettingsSheetDialog constructor(private val audioSettingsListener
             if (audioSettingsInfo.enable) {
                 mcbAgoraBot.alpha = ENABLE_ALPHA
                 pbAgoraBotVolume.alpha = ENABLE_ALPHA
+                mtAgoraBotVolumeValue.alpha = ENABLE_ALPHA
             } else {
                 mcbAgoraBot.alpha = DISABLE_ALPHA
                 pbAgoraBotVolume.alpha = DISABLE_ALPHA
+                mtAgoraBotVolumeValue.alpha = DISABLE_ALPHA
             }
             mcbAgoraBot.isEnabled = audioSettingsInfo.enable
             pbAgoraBotVolume.isEnabled = audioSettingsInfo.enable
