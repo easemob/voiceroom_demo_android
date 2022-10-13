@@ -52,6 +52,7 @@ public class ChatroomProfileActivity extends BaseActivity implements View.OnClic
    private ConstraintLayout disclaimer;
    private LinearLayoutCompat content;
    private String nick;
+   private String oldNick;
 
    @Override
    protected int getLayoutId() {
@@ -109,6 +110,7 @@ public class ChatroomProfileActivity extends BaseActivity implements View.OnClic
             }
          }
          nickName.setText(name);
+         oldNick = name;
          number.setText("ID: " + ID);
       }
 
@@ -218,7 +220,8 @@ public class ChatroomProfileActivity extends BaseActivity implements View.OnClic
 
                     @Override
                     public void onError(int var1, String var2) {
-                       ToastTools.show(ChatroomProfileActivity.this, var2, Toast.LENGTH_SHORT);
+                       ToastTools.show(ChatroomProfileActivity.this, getString(R.string.room_profile_update_name) + ": " + var2, Toast.LENGTH_SHORT);
+                       onFail();
                     }
                  });
       } catch (JSONException e) {
@@ -237,7 +240,8 @@ public class ChatroomProfileActivity extends BaseActivity implements View.OnClic
 
                     @Override
                     public void onError(int var1, String var2) {
-                       ToastTools.show(ChatroomProfileActivity.this, var2, Toast.LENGTH_SHORT);
+                       ToastTools.show(ChatroomProfileActivity.this, getString(R.string.room_profile_update_name)+ ": " + var2, Toast.LENGTH_SHORT);
+                       onFail();
                     }
                  });
       } catch (JSONException e) {
@@ -245,4 +249,10 @@ public class ChatroomProfileActivity extends BaseActivity implements View.OnClic
       }
    }
 
+   private void onFail(){
+      VRUserBean bean = ProfileManager.getInstance().getProfile();
+      bean.setName(oldNick);
+      ProfileManager.getInstance().setProfile(bean);
+      nickName.setText(oldNick);
+   }
 }
