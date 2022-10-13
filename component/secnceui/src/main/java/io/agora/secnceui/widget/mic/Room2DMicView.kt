@@ -106,6 +106,9 @@ class Room2DMicView : ConstraintLayout ,IRoomMicBinding{
                     }
                 }
             }
+            if (micInfo.micStatus != MicStatus.Normal) {
+                return
+            }
             // 用户音量
             when (micInfo.audioVolumeType) {
                 ConfigConstants.VolumeType.Volume_Unknown -> {
