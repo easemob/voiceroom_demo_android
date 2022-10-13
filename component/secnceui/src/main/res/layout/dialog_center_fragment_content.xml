@@ -2,11 +2,10 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@drawable/bg_rect_radius20_white"
-    android:paddingTop="30dp"
-    android:paddingBottom="30dp">
+    android:layout_gravity="center"
+    android:background="@drawable/bg_rect_radius20_white">
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/mtContent"
@@ -14,6 +13,7 @@
         android:layout_height="wrap_content"
         android:paddingStart="25dp"
         android:paddingEnd="25dp"
+        android:layout_marginTop="30dp"
         android:textColor="@color/dark_grey_color_040925"
         android:textSize="@dimen/sp_14"
         app:layout_constraintEnd_toEndOf="parent"
@@ -23,15 +23,16 @@
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/mbSubmit"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="14dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginBottom="30dp"
         android:layout_width="0dp"
         style="@style/chatroom_confirm_button_text_style"
         android:gravity="center"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="34dp"
         android:text="@string/chatroom_confirm"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mtContent"  />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -10,10 +10,12 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentActivity
 import io.agora.baseui.dialog.BaseSheetDialog
 import io.agora.buddy.tool.ToastTools
+import io.agora.buddy.tool.logE
 import io.agora.chatroom.R
 import io.agora.chatroom.bean.RoomKitBean
 import io.agora.chatroom.databinding.DialogChatroomNoticeBinding
@@ -39,31 +41,31 @@ class RoomNoticeSheetDialog constructor(
         super.onViewCreated(view, savedInstanceState)
         binding?.apply {
             setOnApplyWindowInsets(root)
-            mbEdit.isVisible = roomKitBean.isOwner
+            mbEdit.isInvisible = !roomKitBean.isOwner
             mtContent.text = contentText
             etInput.setText(contentText)
             val filters = arrayOf<InputFilter>(NameLengthFilter())
             mbEdit.filters = filters
             mbEdit.setOnClickListener {
-                mbEdit.isVisible = false
+                mbEdit.isInvisible = true
                 mtCancel.isVisible = true
                 mbConfirm.isVisible = true
-                etInput.isVisible = true
+                textInputLayout.isVisible = true
                 mtContent.isVisible = false
                 showKeyboard(etInput)
             }
             mtCancel.setOnClickListener {
-                mbEdit.isVisible = true
+                mbEdit.isInvisible = false
                 mtCancel.isVisible = false
                 mbConfirm.isVisible = false
-                etInput.isVisible = false
+                textInputLayout.isVisible = false
                 mtContent.isVisible = true
-                hideKeyboard()
+                hideKeyboard(etInput)
             }
             mbConfirm.setOnClickListener {
                 confirmCallback.invoke(etInput.text.toString().trim())
-                hideKeyboard()
                 dismiss()
+                hideKeyboard(etInput)
             }
         }
     }
@@ -78,10 +80,11 @@ class RoomNoticeSheetDialog constructor(
         imm.showSoftInput(editText, 0)
     }
 
-    private fun hideKeyboard() {
+    private fun hideKeyboard(editText: EditText) {
         val imm = fragmentActivity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
         if (imm != null && fragmentActivity.window.attributes.softInputMode != WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN) {
-            imm.hideSoftInputFromWindow(fragmentActivity.currentFocus?.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+//            imm.hideSoftInputFromWindow(fragmentActivity.currentFocus?.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+            imm.hideSoftInputFromWindow(editText.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
         }
     }
 
@@ -99,8 +102,8 @@ class RoomNoticeSheetDialog constructor(
         ): CharSequence {
             val destCount = (dest.toString().length + getChineseCount(dest.toString()))
             val sourceCount = (source.toString().length + getChineseCount(source.toString()))
+            "NameLengthFilter $destCount $sourceCount".logE("NameLengthFilter")
             return if (destCount + sourceCount > maxEn) {
-                hideKeyboard()
                 ToastTools.show(fragmentActivity, fragmentActivity.getString(R.string.chatroom_notice_edit_limit))
                 ""
             } else {

@@ -99,7 +99,7 @@
     <string name="chatroom_edit">Edit</string>
     <string name="chatroom_notice_edit_limit">140 character limit.</string>
     <string name="chatroom_notice_post">Post</string>
-    <string name="chatroom_notice_posted">Posted</string>
+    <string name="chatroom_notice_posted">Notice Posted</string>
     <string name="chatroom_notice_posted_error">Post Failed</string>
     <string name="chatroom_join_room_success">Joined Success</string>
     <string name="chatroom_join_room_failed">Joined Failed</string>

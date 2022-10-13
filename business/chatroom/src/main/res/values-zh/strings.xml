@@ -98,8 +98,8 @@
     <string name="chatroom_edit">编辑</string>
     <string name="chatroom_notice_edit_limit">最多140个字符。</string>
     <string name="chatroom_notice_post">发布</string>
-    <string name="chatroom_notice_posted">公告已发布</string>
-    <string name="chatroom_notice_posted_error">公告发布失败</string>
+    <string name="chatroom_notice_posted">发布成功</string>
+    <string name="chatroom_notice_posted_error">发布失败</string>
     <string name="chatroom_join_room_success">已加入语聊房</string>
     <string name="chatroom_join_room_failed">加入语聊房失败</string>
 

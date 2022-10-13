@@ -2,11 +2,11 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@drawable/bg_rect_radius20_white"
+    android:layout_gravity="center"
     android:paddingTop="30dp"
-    android:paddingBottom="30dp">
+    android:background="@drawable/bg_rect_radius20_white">
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/mtTitle"
@@ -15,6 +15,7 @@
         android:textColor="@color/dark_grey_color_040925"
         android:textSize="@dimen/sp_16"
         android:textStyle="bold"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -22,13 +23,16 @@
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/mtContent"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:paddingStart="25dp"
-        android:paddingEnd="25dp"
         android:textColor="@color/dark_grey_color_6C7192"
         android:textSize="@dimen/sp_14"
+        android:gravity="center"
+        app:layout_goneMarginTop="0dp"
+        android:layout_marginStart="27dp"
+        android:layout_marginEnd="27dp"
+        android:lineSpacingExtra="2dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mtTitle"
@@ -37,32 +41,32 @@
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/mbLeft"
         android:layout_marginStart="25dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="10dp"
         android:text="@string/chatroom_cancel"
+        android:layout_width="115dp"
         style="@style/chatroom_cancel_button_text_style"
         android:textColor="@color/dark_grey_color_040925"
-        app:layout_constraintEnd_toStartOf="@+id/gl50"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mtContent" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/gl50"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.5" />
+<!--    <androidx.constraintlayout.widget.Guideline-->
+<!--        android:id="@+id/gl50"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="0dp"-->
+<!--        android:orientation="vertical"-->
+<!--        app:layout_constraintGuide_percent="0.5" />-->
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/mbRight"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="20dp"
-        android:layout_marginBottom="14dp"
+        android:layout_marginBottom="30dp"
+        android:layout_width="115dp"
         style="@style/chatroom_confirm_button_text_style"
         android:gravity="center"
         android:text="@string/chatroom_confirm"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/gl50"
         app:layout_constraintTop_toTopOf="@+id/mbLeft" />
 </androidx.constraintlayout.widget.ConstraintLayout>
