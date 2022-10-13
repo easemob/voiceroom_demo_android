@@ -1,5 +1,6 @@
 package io.agora.baseui;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -24,6 +25,7 @@ import io.agora.baseui.utils.StatusBarCompat;
 
 public class BaseActivity extends AppCompatActivity implements IParserSource {
     public BaseActivity mContext;
+    private AlertDialog loadingDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,6 +43,25 @@ public class BaseActivity extends AppCompatActivity implements IParserSource {
         initListener();
         initData();
     }
+
+    public void showLoading(boolean cancelable){
+        if (loadingDialog == null) {
+            loadingDialog = new AlertDialog.Builder(this).setView(R.layout.view_base_loading).create();
+
+            if ( mContext.getWindow() != null){
+                View view = mContext.getWindow().getDecorView();
+                view.setBackgroundColor(Color.TRANSPARENT);
+            }
+            loadingDialog.setCancelable(cancelable);
+            loadingDialog.show();
+        }
+    }
+
+    public void dismissLoading(){
+        if (loadingDialog != null)
+            loadingDialog.dismiss();
+    }
+
 
     protected void initSystemFit() {
         setFitSystemForTheme(true);

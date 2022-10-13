@@ -150,6 +150,7 @@ public class ChatroomSoundSelectionActivity extends BaseActivity implements Chat
    }
 
    public void createNormalRoom(boolean allow_free_join_mic,String sound_effect){
+      showLoading(false);
       if (isPublic){
          chatroomViewModel.createNormalRoom(this,roomName,false,allow_free_join_mic,sound_effect);
       }else {
@@ -162,6 +163,7 @@ public class ChatroomSoundSelectionActivity extends BaseActivity implements Chat
    }
 
    public void createSpatialRoom(){
+      showLoading(false);
       if (isPublic){
          chatroomViewModel.createSpatial(this,roomName,false);
       }else {
@@ -174,6 +176,7 @@ public class ChatroomSoundSelectionActivity extends BaseActivity implements Chat
    }
 
    public void joinRoom(VRoomInfoBean data){
+      dismissLoading();
       ARouter.getInstance()
               .build(RouterPath.ChatroomPath)
               .withSerializable(RouterParams.KEY_CHATROOM_DETAILS_INFO, data)
