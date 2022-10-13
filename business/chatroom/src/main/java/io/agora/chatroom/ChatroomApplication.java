@@ -6,6 +6,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.opensource.svgaplayer.SVGAParser;
 import com.opensource.svgaplayer.SVGASoundManager;
 import com.opensource.svgaplayer.utils.log.SVGALogger;
+import com.tencent.bugly.crashreport.CrashReport;
 
 import io.agora.chatroom.general.interfaceOrImplement.UserActivityLifecycleCallbacks;
 import manager.ChatroomConfigManager;
@@ -24,6 +25,7 @@ public class ChatroomApplication extends Application {
         SVGAParser.Companion.shareParser().init(this);
         SVGALogger.INSTANCE.setLogEnabled(true);
         SVGASoundManager.INSTANCE.init();
+        CrashReport.initCrashReport(this, "baed12f146", false);
     }
 
     private void registerActivityLifecycleCallbacks() {

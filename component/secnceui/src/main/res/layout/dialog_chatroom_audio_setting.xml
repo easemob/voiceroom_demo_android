@@ -95,6 +95,7 @@
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/mtAgoraBotVolumeValue"
             style="@style/chatroom_bottom_sheet_right_text_style"
+            android:paddingStart="5dp"
             app:layout_constraintBottom_toBottomOf="@+id/mtAgoraBotVolume"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/mtAgoraBotVolume"

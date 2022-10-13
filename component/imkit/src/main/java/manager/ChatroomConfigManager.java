@@ -243,14 +243,16 @@ public class ChatroomConfigManager {
 
         @Override
         public void onMemberJoined(String s, String s1) {
+            Log.e("ChatroomConfigManager", "onMemberJoined:" + s + "  " + s1);
             if (ChatListener != null)
             ChatListener.userJoinedRoom(s,s1);
         }
 
         @Override
         public void onMemberExited(String s, String s1, String s2) {
+            Log.e("ChatroomConfigManager", "onMemberExited:" + s + "  " + s1 + "  " + s2);
             if (ChatListener != null)
-                ChatListener.onMemberExited(s,s1,s2);
+                ChatListener.onMemberExited(s, s1, s2);
         }
 
         @Override

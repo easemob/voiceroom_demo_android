@@ -45,6 +45,10 @@ object RoomInfoConstructor {
             chatroomName = roomDetail.name ?: ""
             owner = serverUser2UiUser(roomDetail.owner)
             memberCount = roomDetail.member_count
+            // 普通观众 memberCount +1
+            if (owner?.rtcUid != ProfileManager.getInstance().rtcUid()){
+                memberCount +=1
+            }
             giftCount = roomDetail.gift_amount
             watchCount = roomDetail.click_count
             soundSelection = roomDetail.soundSelection

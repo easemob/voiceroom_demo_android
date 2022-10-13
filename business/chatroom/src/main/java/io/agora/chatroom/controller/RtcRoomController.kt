@@ -43,7 +43,7 @@ class RtcRoomController : IRtcKitListener {
     var broadcaster = true
 
     /**local mute*/
-    var isLocalAudioEnable = true
+    var isLocalAudioEnable = false
 
     /**第一次启动机器，播放*/
     var firstActiveBot = true
