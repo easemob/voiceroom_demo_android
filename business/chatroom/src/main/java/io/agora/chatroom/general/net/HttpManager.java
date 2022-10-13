@@ -431,7 +431,17 @@ public class HttpManager {
                     @Override
                     public void onSuccess(String result) {
                         LogToolsKt.logE("checkPassword success: " + result, TAG);
-                        callBack.onSuccess(true);
+                        try {
+                            JSONObject jsonObject = new JSONObject(result);
+                            if (jsonObject.has("result")){
+                                boolean isCheck =  jsonObject.getBoolean("result");
+                                callBack.onSuccess(isCheck);
+                            }else {
+                                callBack.onSuccess(false);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
 
                     @Override

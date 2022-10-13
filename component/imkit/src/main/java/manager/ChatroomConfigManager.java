@@ -194,6 +194,20 @@ public class ChatroomConfigManager {
         });
     }
 
+    public void logout(boolean unbind,CallBack callBack){
+        ChatClient.getInstance().logout(unbind, new CallBack() {
+            @Override
+            public void onSuccess() {
+                callBack.onSuccess();
+            }
+
+            @Override
+            public void onError(int i, String s) {
+                callBack.onError(i,s);
+            }
+        });
+    }
+
     public interface ChatroomListener{
         //收到正常文本消息
         void receiveTextMessage(String roomId,ChatMessageData message);

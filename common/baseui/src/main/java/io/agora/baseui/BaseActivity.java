@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,14 +15,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.ColorRes;
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
-import io.agora.baseui.general.callback.OnResourceParseCallback;
-import io.agora.baseui.general.enums.Status;
-import io.agora.baseui.general.net.Resource;
 import io.agora.baseui.interfaces.IParserSource;
 import io.agora.baseui.utils.StatusBarCompat;
 

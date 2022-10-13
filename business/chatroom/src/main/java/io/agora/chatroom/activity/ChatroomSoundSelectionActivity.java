@@ -113,29 +113,37 @@ public class ChatroomSoundSelectionActivity extends BaseActivity implements Chat
          parseResource(response, new OnResourceParseCallback<VRoomInfoBean>() {
             @Override
             public void onSuccess(@Nullable VRoomInfoBean data) {
-               Log.e("ChatroomSoundSelectionActivity","ChatroomSoundSelectionActivity1" + ChatClient.getInstance().isLoggedIn());
                if (null != data && null != data.getRoom()){
-                  if (ChatClient.getInstance().isLoggedIn()){
-                     joinRoom(data);
-                  }else {
-                     VRUserBean userinfo = ProfileManager.getInstance().getProfile();
-                     Log.d("ChatroomCreateActivity1","chat_uid: " + userinfo.getChat_uid());
-                     Log.d("ChatroomCreateActivity1","im_token: " + userinfo.getIm_token());
-                     ChatroomConfigManager.getInstance().login(userinfo.getChat_uid(), userinfo.getIm_token(), new CallBack() {
-                        @Override
-                        public void onSuccess() {
-                           joinRoom(data);
-                        }
+                     if (ChatClient.getInstance().getCurrentUser().equals(ProfileManager.getInstance().getProfile().getChat_uid())){
+                        EMLog.e("ChatroomSoundSelectionActivity","getCurrentUser: " + ChatClient.getInstance().getCurrentUser());
+                        ChatroomConfigManager.getInstance().logout(false, new CallBack() {
+                           @Override
+                           public void onSuccess() {
+                              VRUserBean userinfo = ProfileManager.getInstance().getProfile();
+                              Log.d("ChatroomSoundSelectionActivity","chat_uid: " + userinfo.getChat_uid());
+                              Log.d("ChatroomSoundSelectionActivity","im_token: " + userinfo.getIm_token());
+                              ChatroomConfigManager.getInstance().login(userinfo.getChat_uid(), userinfo.getIm_token(), new CallBack() {
+                                 @Override
+                                 public void onSuccess() {
+                                    joinRoom(data);
+                                 }
 
-                        @Override
-                        public void onError(int code, String desc) {
-                           Log.e("ChatroomSoundSelectionActivity","ChatroomSoundSelectionActivity1 getCurrentUser" + ChatClient.getInstance().getCurrentUser());
-                           EMLog.e("ChatroomSoundSelectionActivity2", "Login Fail code: "+code + " desc: " + desc);
-                        }
-                     });
+                                 @Override
+                                 public void onError(int code, String desc) {
+                                    EMLog.e("ChatroomSoundSelectionActivity", "Login Fail code: "+code + " desc: " + desc);
+                                 }
+                              });
+                           }
+
+                           @Override
+                           public void onError(int i, String s) {
+
+                           }
+                        });
+                     }else {
+                        joinRoom(data);
+                     }
                   }
-
-               }
             }
          });
       });

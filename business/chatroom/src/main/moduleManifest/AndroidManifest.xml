@@ -41,7 +41,7 @@
 
         <activity android:name=".activity.ChatroomListActivity"
             android:exported="false"
-            android:launchMode="singleInstance"
+            android:launchMode="singleTask"
             android:windowSoftInputMode="adjustPan"/>
 
         <activity android:name=".activity.ChatroomCreateActivity"
