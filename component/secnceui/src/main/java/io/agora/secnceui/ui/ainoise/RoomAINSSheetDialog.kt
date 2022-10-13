@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -13,6 +14,7 @@ import io.agora.baseui.adapter.OnItemChildClickListener
 import io.agora.baseui.dialog.BaseFixedHeightSheetDialog
 import io.agora.buddy.tool.ToastTools
 import io.agora.buddy.tool.ResourcesTools
+import io.agora.buddy.tool.dp
 import io.agora.config.ConfigConstants
 import io.agora.secnceui.R
 import io.agora.secnceui.bean.AINSModeBean
@@ -89,6 +91,9 @@ class RoomAINSSheetDialog constructor(
                 }
             }
         }, RoomAINSModeViewHolder::class.java)
+        val anisIntroduceGap1Adapter = BaseRecyclerViewAdapter(
+            mutableListOf(""), ChatroomAINSGapViewHolder::class.java
+        )
         val anisIntroduceHeaderAdapter = BaseRecyclerViewAdapter(
             mutableListOf(getString(R.string.chatroom_agora_ains)),
             ChatroomAINSTitleViewHolder::class.java
@@ -97,6 +102,9 @@ class RoomAINSSheetDialog constructor(
             mutableListOf(
                 getString(R.string.chatroom_ains_introduce)
             ), ChatroomAINSContentViewHolder::class.java
+        )
+        val anisIntroduceGap2Adapter = BaseRecyclerViewAdapter(
+            mutableListOf(""), ChatroomAINSGapViewHolder::class.java
         )
         val anisSoundsHeaderAdapter = BaseRecyclerViewAdapter(
             mutableListOf(getString(R.string.chatroom_agora_ains_supports_sounds)),
@@ -138,14 +146,19 @@ class RoomAINSSheetDialog constructor(
         val concatAdapter = ConcatAdapter(
             config,
             anisModeHeaderAdapter, anisModeAdapter,
+            anisIntroduceGap1Adapter,
             anisIntroduceHeaderAdapter, anisIntroduceContentAdapter,
+            anisIntroduceGap2Adapter,
             anisSoundsHeaderAdapter, anisSoundsAdapter,
         )
         recyclerView.layoutManager = LinearLayoutManager(context)
         context?.let {
             recyclerView.addItemDecoration(
-                MaterialDividerItemDecoration(it, MaterialDividerItemDecoration.HORIZONTAL).apply {
+                MaterialDividerItemDecoration(it, MaterialDividerItemDecoration.VERTICAL).apply {
                     dividerColor = ResourcesTools.getColor(it.resources, R.color.divider_color_F6F6F6)
+                    dividerThickness = 1.dp.toInt()
+                    dividerInsetStart = 15.dp.toInt()
+                    dividerInsetEnd = 15.dp.toInt()
                 }
             )
         }

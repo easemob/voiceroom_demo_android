@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import io.agora.baseui.dialog.BaseFragmentDialog
 import io.agora.buddy.tool.dp
@@ -25,10 +26,15 @@ class CommonFragmentAlertDialog constructor() : BaseFragmentDialog<DialogCenterF
         dialog?.setCanceledOnTouchOutside(false)
         mBinding?.apply {
 //            addMargin(view)
+            setDialogSize(view)
             if (!TextUtils.isEmpty(titleText)) {
                 mtTitle.text = titleText
             } else {
                 mtTitle.isVisible = false
+                // 更改间距
+                val layoutParams: ConstraintLayout.LayoutParams = mbLeft.layoutParams as ConstraintLayout.LayoutParams
+                layoutParams.setMargins(layoutParams.marginStart, 34.dp.toInt(), layoutParams.marginEnd, layoutParams.bottomMargin)
+                mbLeft.layoutParams = layoutParams
             }
             if (!TextUtils.isEmpty(contentText)) {
                 mtContent.text = contentText
@@ -50,11 +56,9 @@ class CommonFragmentAlertDialog constructor() : BaseFragmentDialog<DialogCenterF
         }
     }
 
-    private fun addMargin(view: View) {
+    private fun setDialogSize(view: View) {
         val layoutParams: FrameLayout.LayoutParams = view.layoutParams as FrameLayout.LayoutParams
-        val marginHorizontal = 38.dp.toInt()
-        val marginVertical = 24.dp.toInt()
-        layoutParams.setMargins(marginHorizontal, 0, marginHorizontal, marginVertical)
+        layoutParams.width = 300.dp.toInt()
         view.layoutParams = layoutParams
     }
 

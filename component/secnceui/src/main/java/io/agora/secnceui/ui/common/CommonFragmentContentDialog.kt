@@ -23,6 +23,7 @@ class CommonFragmentContentDialog constructor() : BaseFragmentDialog<DialogCente
         super.onViewCreated(view, savedInstanceState)
         dialog?.setCanceledOnTouchOutside(false)
         mBinding?.apply {
+            setDialogSize(view)
             if (!TextUtils.isEmpty(contentText)) {
                 mtContent.text = contentText
             }
@@ -36,11 +37,9 @@ class CommonFragmentContentDialog constructor() : BaseFragmentDialog<DialogCente
         }
     }
 
-    private fun addMargin(view: View) {
+    private fun setDialogSize(view: View) {
         val layoutParams: FrameLayout.LayoutParams = view.layoutParams as FrameLayout.LayoutParams
-        val marginHorizontal = 38.dp.toInt()
-        val marginVertical = 24.dp.toInt()
-        layoutParams.setMargins(marginHorizontal, 0, marginHorizontal, marginVertical)
+        layoutParams.width = 300.dp.toInt()
         view.layoutParams = layoutParams
     }
 

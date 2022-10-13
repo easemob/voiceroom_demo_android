@@ -9,10 +9,7 @@ import io.agora.config.ConfigConstants
 import io.agora.secnceui.R
 import io.agora.secnceui.bean.AINSModeBean
 import io.agora.secnceui.bean.AINSSoundsBean
-import io.agora.secnceui.databinding.ItemChatroomAgoraAinsBinding
-import io.agora.secnceui.databinding.ItemChatroomAinsAuditionBinding
-import io.agora.secnceui.databinding.ItemChatroomAnisContentBinding
-import io.agora.secnceui.databinding.ItemChatroomAnisTitleBinding
+import io.agora.secnceui.databinding.*
 
 class RoomAINSModeViewHolder(binding: ItemChatroomAgoraAinsBinding) :
     BaseRecyclerViewAdapter.BaseViewHolder<ItemChatroomAgoraAinsBinding, AINSModeBean>(binding) {
@@ -123,5 +120,11 @@ class ChatroomAINSContentViewHolder(binding: ItemChatroomAnisContentBinding) :
         data?.let {
             mBinding.mtChatroomAinsContent.text = it
         }
+    }
+}
+
+class ChatroomAINSGapViewHolder(binding: ItemChatroomAnisGap10Binding) :
+    BaseRecyclerViewAdapter.BaseViewHolder<ItemChatroomAnisGap10Binding, String>(binding) {
+    override fun binding(data: String?, selectedIndex: Int) {
     }
 }
