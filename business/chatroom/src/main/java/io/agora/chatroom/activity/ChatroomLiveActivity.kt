@@ -23,7 +23,6 @@ import io.agora.baseui.adapter.OnItemClickListener
 import io.agora.baseui.general.callback.OnResourceParseCallback
 import io.agora.baseui.general.net.Resource
 import io.agora.baseui.utils.StatusBarCompat
-import io.agora.buddy.tool.GsonTools.toBean
 import io.agora.buddy.tool.ThreadManager
 import io.agora.buddy.tool.ToastTools
 import io.agora.buddy.tool.logE
@@ -50,15 +49,14 @@ import io.agora.secnceui.widget.primary.MenuItemClickListener
 import io.agora.secnceui.widget.top.OnLiveTopClickListener
 import manager.ChatroomConfigManager
 import manager.ChatroomMsgHelper
-import org.json.JSONException
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
 import pub.devrel.easypermissions.PermissionRequest
 import tools.ValueCallBack
-import tools.bean.VRMicBean
 import tools.bean.VRUserBean
 import tools.bean.VRoomBean
 import tools.bean.VRoomInfoBean
+import java.util.*
 
 @Route(path = RouterPath.ChatroomPath)
 class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPermissions.PermissionCallbacks,
@@ -544,6 +542,8 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
 
     override fun receiveSystem(roomId: String?, message: ChatMessageData?) {
         super.receiveSystem(roomId, message)
+        val ext: MutableMap<String, String>? = CustomMsgHelper.getInstance().getCustomMsgParams(message)
+        "ext: $ext".logE("receiveSystem")
         binding.messageView.refreshSelectLast()
     }
 

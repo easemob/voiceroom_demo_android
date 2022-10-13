@@ -30,7 +30,6 @@ import io.agora.secnceui.widget.encryption.ChatroomEncryptionInputDialog;
 import manager.ChatroomConfigManager;
 import tools.bean.VRUserBean;
 import tools.bean.VRoomBean;
-import tools.bean.VRoomInfoBean;
 
 public class ChatroomListFragment extends BaseChatroomListFragment<VRoomBean.RoomsBean> {
     private ChatroomListAdapter listAdapter;
@@ -73,10 +72,9 @@ public class ChatroomListFragment extends BaseChatroomListFragment<VRoomBean.Roo
     @Override
     public void onResume() {
         super.onResume();
-        reset();
         if (null != getArguments())
             position = getArguments().getInt("position",0);
-        chatroomViewModel.getDataList(getActivity(),pageSize,position-1,"");
+        reset();
     }
 
     @Override
@@ -114,14 +112,18 @@ public class ChatroomListFragment extends BaseChatroomListFragment<VRoomBean.Roo
         chatroomViewModel.getCheckPasswordObservable().observe(this,response -> {
             parseResource(response, new OnResourceParseCallback<Boolean>() {
                 @Override
-                public void onSuccess(@Nullable Boolean data) {
-                    goChatroomPage(roomBean,mPassWord);
+                public void onSuccess(@Nullable Boolean isCheck) {
+                    if (Boolean.TRUE.equals(isCheck)){
+                        goChatroomPage(roomBean,mPassWord);
+                    }else {
+                        ToastTools.show(requireActivity(),"check password failed", Toast.LENGTH_SHORT);
+                    }
                 }
 
                 @Override
                 public void onError(int code, String message) {
                     super.onError(code, message);
-                    ToastTools.show(getActivity(),"check password failed", Toast.LENGTH_SHORT);
+                    ToastTools.show(requireActivity(),"check password failed", Toast.LENGTH_SHORT);
                 }
             });
         });
@@ -258,7 +260,6 @@ public class ChatroomListFragment extends BaseChatroomListFragment<VRoomBean.Roo
         super.onRefresh();
         reset();
         Log.e("ChatroomListFragment","onRefresh" + listAdapter.getItemCount());
-        chatroomViewModel.getDataList(getActivity(),pageSize,position-1,Cursor);
     }
 
     @Override
@@ -277,6 +278,7 @@ public class ChatroomListFragment extends BaseChatroomListFragment<VRoomBean.Roo
     private void reset(){
         isRefreshing = true;
         Cursor = "";
+        chatroomViewModel.getDataList(getActivity(),pageSize,position-1,Cursor);
     }
 
     static class BottomOffsetDecoration extends RecyclerView.ItemDecoration {

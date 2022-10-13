@@ -6,8 +6,10 @@ import android.util.Log;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import bean.ChatMessageData;
+import custormgift.CustomMsgHelper;
 import custormgift.OnCustomMsgReceiveListener;
 import io.agora.CallBack;
 import io.agora.ChatRoomChangeListener;
@@ -190,6 +192,20 @@ public class ChatroomConfigManager {
             @Override
             public void onError(int code, String msg) {
                 Log.e("ChatroomConfigManager", "Login onError code:" + code + " desc: " + msg);
+            }
+        });
+    }
+
+    public void logout(boolean unbind,CallBack callBack){
+        ChatClient.getInstance().logout(unbind, new CallBack() {
+            @Override
+            public void onSuccess() {
+                callBack.onSuccess();
+            }
+
+            @Override
+            public void onError(int i, String s) {
+                callBack.onError(i,s);
             }
         });
     }

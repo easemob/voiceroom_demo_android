@@ -474,6 +474,21 @@ public class CustomMsgHelper implements MessageListener {
     }
 
     /**
+     * 获取自定义消息中的ext参数
+     * @param message
+     * @return
+     */
+    public Map<String, Object> getCustomMsgExt(ChatMessageData message) {
+        if(message == null) {
+            return null;
+        }
+        if(!message.getType().equals("custom")) {
+            return null;
+        }
+        return message.getExt();
+    }
+
+    /**
      * 获取自定义消息类型
      * @param event
      * @return

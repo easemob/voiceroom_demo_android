@@ -61,45 +61,44 @@ public class RoomGiftViewDelegate {
          @Override
          public void SendGift(View view, Object bean) {
             GiftBean giftBean = (GiftBean) bean;
-            CustomMsgHelper.getInstance().sendGiftMsg(
-                    ProfileManager.getInstance().getProfile().getName(),
-                    ProfileManager.getInstance().getProfile().getPortrait(),
-                    giftBean.getId(), giftBean.getNum(),giftBean.getPrice(),giftBean.getName(),
-                    new OnMsgCallBack() {
-               @Override
-               public void onSuccess(ChatMessageData message) {
-                  Log.e("MenuItemClick",  "item_gift_onSuccess");
-                  giftView.refresh();
-                  if (view instanceof TextView){
-                     send = ((TextView) view);
-                     send.setText(time +"s");
-                     send.setEnabled(false);
-                     startTask();
-                  }
-                  if (giftBean.getId().equals("VoiceRoomGift9")){
-                     showGiftAction();
-                     dialog.dismiss();
-                  }
-                  HttpManager.getInstance(activity).sendGift(roomId,
-                          giftBean.getId(), giftBean.getNum(), 0, new ValueCallBack<Boolean>() {
-                             @Override
-                             public void onSuccess(Boolean var1) {
-                               Log.e("sendGift","Successfully reported");
-                             }
+            HttpManager.getInstance(activity).sendGift(roomId,
+                    giftBean.getId(), giftBean.getNum(), 0, new ValueCallBack<Boolean>() {
+                       @Override
+                       public void onSuccess(Boolean var1) {
+                          Log.e("sendGift","Successfully reported");
+                          CustomMsgHelper.getInstance().sendGiftMsg(
+                                  ProfileManager.getInstance().getProfile().getName(),
+                                  ProfileManager.getInstance().getProfile().getPortrait(),
+                                  giftBean.getId(), giftBean.getNum(),giftBean.getPrice(),giftBean.getName(),
+                                  new OnMsgCallBack() {
+                                     @Override
+                                     public void onSuccess(ChatMessageData message) {
+                                        Log.e("MenuItemClick",  "item_gift_onSuccess");
+                                        giftView.refresh();
+                                        if (view instanceof TextView){
+                                           send = ((TextView) view);
+                                           send.setText(time +"s");
+                                           send.setEnabled(false);
+                                           startTask();
+                                        }
+                                        if (giftBean.getId().equals("VoiceRoomGift9")){
+                                           showGiftAction();
+                                           dialog.dismiss();
+                                        }
+                                     }
+                                     @Override
+                                     public void onError(String messageId, int code, String error) {
+                                        super.onError(messageId, code, error);
+                                        dialog.dismiss();
+                                     }
+                                  });
+                       }
 
-                             @Override
-                             public void onError(int code, String desc) {
-                                Log.e("sendGift","Reporting failed: " + code + " "+ desc);
-                             }
-                          });
-               }
-
-               @Override
-               public void onError(String messageId, int code, String error) {
-                  super.onError(messageId, code, error);
-                  dialog.dismiss();
-               }
-            });
+                       @Override
+                       public void onError(int code, String desc) {
+                          Log.e("sendGift","Reporting failed: " + code + " "+ desc);
+                       }
+                    });
          }
       });
    }
