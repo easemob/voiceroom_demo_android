@@ -498,6 +498,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
     //接收拒绝邀请消息
     override fun receiveInviteRefusedSite(roomId: String?, message: ChatMessageData?) {
         Log.e("ChatroomLiveActivity","receiveInviteRefusedSite" + message.toString())
+        ToastTools.show(this, getString(R.string.chatroom_mic_audience_rejected_invitation, ""))
     }
 
     private fun checkFocus(focus:Boolean){
@@ -528,6 +529,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
     //接收拒绝申请消息
     override fun receiveDeclineApply(roomId: String?, message: ChatMessageData?) {
         super.receiveDeclineApply(roomId, message)
+        Log.e("ChatroomLiveActivity","receiveDeclineApply" + message.toString())
         // TODO: 用户拒绝申请,房主提示
         ToastTools.show(this, getString(R.string.chatroom_mic_audience_rejected_invitation, ""))
     }

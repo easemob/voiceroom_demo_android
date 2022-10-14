@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -16,6 +18,7 @@ import android.widget.TextView;
 
 import androidx.annotation.ColorRes;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
@@ -24,6 +27,7 @@ import io.agora.baseui.utils.StatusBarCompat;
 
 public class BaseActivity extends AppCompatActivity implements IParserSource {
     public BaseActivity mContext;
+    private AlertDialog loadingDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -60,6 +64,34 @@ public class BaseActivity extends AppCompatActivity implements IParserSource {
             super.onBackPressed();
         }
 
+    }
+
+    public void showLoading(boolean cancelable){
+        if (loadingDialog == null) {
+            loadingDialog = new AlertDialog.Builder(this).setView(R.layout.view_base_loading).create();
+            if (loadingDialog.getWindow() != null){
+                loadingDialog.getWindow().getDecorView().setBackgroundColor(Color.TRANSPARENT);
+                DisplayMetrics dm = new DisplayMetrics();
+                if (mContext != null) {
+                    WindowManager windowManager = mContext.getWindowManager();
+                    if (windowManager != null) {
+                        windowManager.getDefaultDisplay().getMetrics(dm);
+                        WindowManager.LayoutParams params = loadingDialog.getWindow().getAttributes();
+                        params.gravity = Gravity.CENTER;
+                        params.width = ViewGroup.LayoutParams.WRAP_CONTENT;
+                        params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+                        loadingDialog.getWindow().setAttributes(params);
+                    }
+                }
+            }
+            loadingDialog.setCancelable(cancelable);
+            loadingDialog.show();
+        }
+    }
+
+    public void dismissLoading(){
+        if (loadingDialog != null)
+            loadingDialog.dismiss();
     }
 
     /**
