@@ -110,7 +110,7 @@
     <style name="chatroom_bottom_sheet_divider_style">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">1dp</item>
-        <item name="dividerColor">@color/divider_color_F6F6F6</item>
+        <item name="dividerColor">@color/divider_color_1F979797</item>
     </style>
 
     <declare-styleable name="chatroom_encryption_input_style">

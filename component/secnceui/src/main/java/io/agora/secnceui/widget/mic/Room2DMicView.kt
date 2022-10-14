@@ -12,7 +12,6 @@ import io.agora.secnceui.R
 import io.agora.secnceui.annotation.MicStatus
 import io.agora.secnceui.bean.MicInfoBean
 import io.agora.secnceui.databinding.ViewChatroom2dMicBinding
-import io.agora.secnceui.ui.mic.IRoomMicView
 
 /**
  * @author create by zhangwei03

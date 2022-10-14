@@ -5,6 +5,15 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
+    <View
+        android:id="@+id/micRotOutBg"
+        android:layout_width="0dp"
+        android:layout_height="66dp"
+        android:background="@drawable/bg_rect_stoke32_white20"
+        app:layout_constraintEnd_toEndOf="@+id/micBlueRed"
+        app:layout_constraintStart_toStartOf="@+id/micBlueBot"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <io.agora.secnceui.widget.mic.Room2DMicView
         android:id="@+id/micBlueBot"
         android:layout_width="wrap_content"
@@ -39,12 +48,5 @@
         app:layout_constraintStart_toEndOf="@+id/glVertical50"
         app:layout_constraintTop_toTopOf="@+id/micRotOutBg" />
 
-    <View
-        android:id="@+id/micRotOutBg"
-        android:layout_width="0dp"
-        android:layout_height="66dp"
-        android:background="@drawable/bg_rect_stoke32_white20"
-        app:layout_constraintEnd_toEndOf="@+id/micBlueRed"
-        app:layout_constraintStart_toStartOf="@+id/micBlueBot"
-        app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

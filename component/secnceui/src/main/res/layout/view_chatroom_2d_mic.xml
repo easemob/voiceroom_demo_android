@@ -42,8 +42,8 @@
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/mtMicRotActive"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="44dp"
+        android:layout_height="18dp"
         android:layout_marginTop="-13dp"
         android:background="@drawable/bg_rect_radius11_gradient_blue"
         android:gravity="center"

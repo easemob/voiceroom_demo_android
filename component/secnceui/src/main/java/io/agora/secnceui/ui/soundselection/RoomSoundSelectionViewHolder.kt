@@ -35,7 +35,7 @@ class RoomSoundSelectionViewHolder(binding: ItemChatroomSoundSelectionBinding) :
                 mBinding.mtSoundSelectionCurrentName.isVisible = bindingAdapterPosition == 1
                 mBinding.llSoundSelectionTips.isVisible = bindingAdapterPosition == 1
                 mBinding.mcvSoundSelectionContent.strokeColor =
-                    ResourcesTools.getColor(context.resources, R.color.divider_color_EFF4FF)
+                    ResourcesTools.getColor(context.resources, R.color.dark_grey_color_EFF4FF)
                 mBinding.ivSoundSelectionToggle.setImageResource(R.drawable.icon_chatroom_sound_toggle)
                 mBinding.ivSoundSelected.isVisible = false
             }

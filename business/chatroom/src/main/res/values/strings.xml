@@ -76,7 +76,8 @@
     <string name="chatroom_exchange_mic">Exchange seat?</string>
     <string name="chatroom_exchange_mic_success">Exchange seat success</string>
     <string name="chatroom_exchange_mic_fail">Exchange seat error:%1$s</string>
-    <string name="chatroom_mic_close_by_host">Mic close by host</string>
+    <string name="chatroom_mic_close_by_host">Mic closed by host</string>
+    <string name="chatroom_mic_muted_by_host">The current seat has been banned by the host</string>
     <string name="chatroom_mic_kicked_out">Kicked Out</string>
     <string name="chatroom_mic_kicked_off">Kicked Off</string>
     <string name="chatroom_mic_unblocked">Mic Unblocked</string>

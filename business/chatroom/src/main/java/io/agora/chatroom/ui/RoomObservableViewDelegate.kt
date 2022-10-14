@@ -600,7 +600,11 @@ class RoomObservableViewDelegate constructor(
                         }
                         MicClickAction.ForceUnMute -> {
                             // 房主取消禁言其他座位
-                            micViewModel.cancelMuteMic(activity, roomKitBean.roomId, micInfo.index)
+                            if (data.enable){
+                                micViewModel.cancelMuteMic(activity, roomKitBean.roomId, micInfo.index)
+                            }else{
+                                ToastTools.show(activity, activity.getString(R.string.chatroom_mic_close_by_host))
+                            }
                         }
                         MicClickAction.Mute -> {
                             //自己禁言

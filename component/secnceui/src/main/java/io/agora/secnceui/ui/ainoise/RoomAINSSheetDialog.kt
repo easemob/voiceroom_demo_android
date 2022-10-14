@@ -155,7 +155,7 @@ class RoomAINSSheetDialog constructor(
         context?.let {
             recyclerView.addItemDecoration(
                 MaterialDividerItemDecoration(it, MaterialDividerItemDecoration.VERTICAL).apply {
-                    dividerColor = ResourcesTools.getColor(it.resources, R.color.divider_color_F6F6F6)
+                    dividerColor = ResourcesTools.getColor(it.resources, R.color.divider_color_1F979797)
                     dividerThickness = 1.dp.toInt()
                     dividerInsetStart = 15.dp.toInt()
                     dividerInsetEnd = 15.dp.toInt()

@@ -119,7 +119,7 @@ class RoomContributionRankingFragment : BaseUiFragment<FragmentChatroomContribut
                     dividerThickness = 1.dp.toInt()
                     dividerInsetStart = 15.dp.toInt()
                     dividerInsetEnd = 15.dp.toInt()
-                    dividerColor = ResourcesTools.getColor(it.resources, R.color.divider_color_F8F5FA)
+                    dividerColor = ResourcesTools.getColor(it.resources, R.color.divider_color_1F979797)
                 }
             )
         }

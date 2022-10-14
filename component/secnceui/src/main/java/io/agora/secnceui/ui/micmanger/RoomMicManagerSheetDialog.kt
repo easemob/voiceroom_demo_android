@@ -69,7 +69,7 @@ class RoomMicManagerSheetDialog constructor(private val onItemClickListener: OnI
             setOnApplyWindowInsets(root)
             val itemDecoration =
                 MaterialDividerItemDecoration(root.context, MaterialDividerItemDecoration.HORIZONTAL).apply {
-                    dividerColor = ResourcesCompat.getColor(root.context.resources, R.color.divider_color_F6F6F6, null)
+                    dividerColor = ResourcesCompat.getColor(root.context.resources, R.color.divider_color_1F979797, null)
                     dividerThickness = 1.dp.toInt()
                 }
             rvChatroomMicManager.addItemDecoration(itemDecoration)
