@@ -10,6 +10,7 @@ import androidx.annotation.IntDef
 @Target(AnnotationTarget.CLASS, AnnotationTarget.PROPERTY, AnnotationTarget.VALUE_PARAMETER, AnnotationTarget.TYPE)
 @kotlin.annotation.Retention(AnnotationRetention.SOURCE)
 @IntDef(
+    MicStatus.Unknown,
     MicStatus.Idle,
     MicStatus.Normal,
     MicStatus.Mute,
@@ -21,6 +22,7 @@ import androidx.annotation.IntDef
 )
 annotation class MicStatus {
     companion object {
+        const val Unknown = -100
         const val Idle = -1
         const val Normal = 0
         const val Mute = 1

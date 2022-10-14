@@ -78,7 +78,7 @@
     <string name="chatroom_mic_close_by_host">当前座位已被房主关闭</string>
     <string name="chatroom_mic_muted_by_host">当前座位已被房主禁麦</string>
     <string name="chatroom_mic_kicked_out">Kicked Out</string>
-    <string name="chatroom_mic_kicked_off">Kicked Off</string>
+    <string name="chatroom_mic_kicked_off">已踢下麦</string>
     <string name="chatroom_mic_unblocked">已取消锁麦</string>
     <string name="chatroom_mic_blocked">已锁麦</string>
     <string name="chatroom_mic_muted">已禁麦</string>

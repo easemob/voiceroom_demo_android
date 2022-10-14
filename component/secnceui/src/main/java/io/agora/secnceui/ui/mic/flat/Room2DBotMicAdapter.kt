@@ -38,8 +38,8 @@ class Room2DBotMicAdapter constructor(
         } else {
             dataList[0].blueBot.micStatus = MicStatus.BotInactive
             dataList[0].redBot.micStatus = MicStatus.BotInactive
-            dataList[0].blueBot.audioVolumeType = ConfigConstants.VolumeType.Volume_Unknown
-            dataList[0].redBot.audioVolumeType = ConfigConstants.VolumeType.Volume_Unknown
+            dataList[0].blueBot.audioVolumeType = ConfigConstants.VolumeType.Volume_None
+            dataList[0].redBot.audioVolumeType = ConfigConstants.VolumeType.Volume_None
         }
         notifyItemChanged(0)
     }

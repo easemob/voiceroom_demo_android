@@ -35,7 +35,6 @@ import io.agora.secnceui.ui.mic.IRoomMicView
 import io.agora.secnceui.ui.micmanger.RoomMicManagerSheetDialog
 import io.agora.chatroom.ui.dialog.RoomContributionAndAudienceSheetDialog
 import io.agora.chatroom.ui.dialog.RoomNoticeSheetDialog
-import io.agora.secnceui.annotation.ChatroomTopType
 import io.agora.secnceui.ui.soundselection.RoomSocialChatSheetDialog
 import io.agora.secnceui.ui.soundselection.RoomSoundSelectionConstructor
 import io.agora.secnceui.ui.soundselection.RoomSoundSelectionSheetDialog
@@ -78,11 +77,18 @@ class RoomObservableViewDelegate constructor(
     /**麦位信息，index,rtcUid*/
     private val micMap = mutableMapOf<Int, Int>()
 
-    /**当前用户位置*/
-    private var myselfIndex: Int = -1
+    private var myselfMicInfo: MicInfoBean? = null
 
     fun isOnMic(): Boolean {
-        return myselfIndex >= 0
+        return mySelfIndex() >= 0
+    }
+
+    private fun mySelfIndex(): Int {
+        return myselfMicInfo?.index ?: -1
+    }
+
+    fun mySelfMicStatus(): Int {
+        return myselfMicInfo?.micStatus ?: MicStatus.Unknown
     }
 
     init {
@@ -148,8 +154,9 @@ class RoomObservableViewDelegate constructor(
             override fun onUserVolume(rtcUid: Int, volume: Int) {
                 "onAudioVolumeIndication uid:${rtcUid},volume:${volume}".logD("onUserVolume")
                 if (rtcUid == 0) {
-                    // 自己
-                    if (myselfIndex >= 0) {
+                    // 自己,没有关麦
+                    val myselfIndex = mySelfIndex()
+                    if (myselfIndex >= 0 && !RtcRoomController.get().isLocalAudioMute) {
                         iRoomMicView.updateVolume(myselfIndex, volume)
                     }
                 } else {
@@ -307,16 +314,17 @@ class RoomObservableViewDelegate constructor(
                 micMap[index] = rtcUid
                 // 当前用户在麦位上
                 if (rtcUid == ProfileManager.getInstance().rtcUid()) {
-                    myselfIndex = index
+                    myselfMicInfo = micInfo
                 }
             } else {
                 val removeRtcUid = micMap.remove(index)
                 // 当前用户从麦位移除
                 if (removeRtcUid == ProfileManager.getInstance().rtcUid()) {
-                    myselfIndex = -1
+                    myselfMicInfo = null
                 }
             }
         }
+        val myselfIndex = myselfMicInfo?.index ?: -1
         RtcRoomController.get().switchRole(myselfIndex >= 0)
     }
 
@@ -353,8 +361,8 @@ class RoomObservableViewDelegate constructor(
                     if (rtcUid > 0) {
                         // 自己
                         if (rtcUid == ProfileManager.getInstance().rtcUid()) {
-                            myselfIndex = micIndex
-                            RtcRoomController.get().isLocalAudioEnable = micInfo.micStatus != MicStatus.Normal
+                            myselfMicInfo = micInfo
+                            RtcRoomController.get().isLocalAudioMute = micInfo.micStatus != MicStatus.Normal
                         }
                         micMap[micIndex] = rtcUid
                     }
@@ -550,39 +558,7 @@ class RoomObservableViewDelegate constructor(
      * 点击麦位
      */
     fun onUserMicClick(micInfo: MicInfoBean) {
-        if (micInfo.micStatus == MicStatus.Idle && !roomKitBean.isOwner) {
-            val mineMicIndex = iRoomMicView.findMicByUid(ProfileManager.getInstance().myUid())
-            if (mineMicIndex > 0)
-                showAlertDialog(activity.getString(R.string.chatroom_exchange_mic),
-                    object : CommonSheetAlertDialog.OnClickBottomListener {
-                        override fun onConfirmClick() {
-                            HttpManager.getInstance(activity)
-                                .exChangeMic(
-                                    roomKitBean.roomId,
-                                    mineMicIndex,
-                                    micInfo.index,
-                                    object : ValueCallBack<Boolean?> {
-                                        override fun onSuccess(var1: Boolean?) {
-                                            ToastTools.show(
-                                                activity,
-                                                activity.getString(R.string.chatroom_mic_exchange_mic_success),
-                                            )
-                                        }
-
-                                        override fun onError(code: Int, desc: String) {
-                                            ToastTools.show(
-                                                activity,
-                                                activity.getString(R.string.chatroom_mic_exchange_mic_failed, desc),
-                                            )
-                                        }
-                                    })
-                        }
-                    })
-            else
-                onRoomViewDelegateListener?.onUserClickOnStage(micInfo.index)
-        } else if (roomKitBean.isOwner || ProfileManager.getInstance()
-                .isMyself(micInfo.userInfo?.userId)
-        ) { // 房主或者自己
+        if (roomKitBean.isOwner || ProfileManager.getInstance().isMyself(micInfo.userInfo?.userId)) { // 房主或者自己
             RoomMicManagerSheetDialog(object : OnItemClickListener<MicManagerBean> {
                 override fun onItemClick(data: MicManagerBean, view: View, position: Int, viewType: Long) {
                     when (data.micClickAction) {
@@ -600,9 +576,9 @@ class RoomObservableViewDelegate constructor(
                         }
                         MicClickAction.ForceUnMute -> {
                             // 房主取消禁言其他座位
-                            if (data.enable){
+                            if (data.enable) {
                                 micViewModel.cancelMuteMic(activity, roomKitBean.roomId, micInfo.index)
-                            }else{
+                            } else {
                                 ToastTools.show(activity, activity.getString(R.string.chatroom_mic_close_by_host))
                             }
                         }
@@ -644,6 +620,39 @@ class RoomObservableViewDelegate constructor(
                     )
                 }
             }.show(activity.supportFragmentManager, "RoomMicManagerSheetDialog")
+        } else if (micInfo.micStatus == MicStatus.Lock || micInfo.micStatus == MicStatus.LockForceMute) {
+            // 座位被锁麦
+            ToastTools.show(activity, activity.getString(R.string.chatroom_mic_close_by_host))
+        } else if ((micInfo.micStatus == MicStatus.Idle || micInfo.micStatus == MicStatus.ForceMute) && micInfo.userInfo == null) {
+            val mineMicIndex = iRoomMicView.findMicByUid(ProfileManager.getInstance().myUid())
+            if (mineMicIndex > 0)
+                showAlertDialog(activity.getString(R.string.chatroom_exchange_mic),
+                    object : CommonSheetAlertDialog.OnClickBottomListener {
+                        override fun onConfirmClick() {
+                            HttpManager.getInstance(activity)
+                                .exChangeMic(
+                                    roomKitBean.roomId,
+                                    mineMicIndex,
+                                    micInfo.index,
+                                    object : ValueCallBack<Boolean?> {
+                                        override fun onSuccess(var1: Boolean?) {
+                                            ToastTools.show(
+                                                activity,
+                                                activity.getString(R.string.chatroom_mic_exchange_mic_success),
+                                            )
+                                        }
+
+                                        override fun onError(code: Int, desc: String) {
+                                            ToastTools.show(
+                                                activity,
+                                                activity.getString(R.string.chatroom_mic_exchange_mic_failed, desc),
+                                            )
+                                        }
+                                    })
+                        }
+                    })
+            else
+                onRoomViewDelegateListener?.onUserClickOnStage(micInfo.index)
         }
     }
 
@@ -682,7 +691,7 @@ class RoomObservableViewDelegate constructor(
      */
     fun muteLocalAudio(mute: Boolean, index: Int = -1) {
         RtcRoomController.get().enableLocalAudio(mute)
-        val micIndex = if (index < 0) myselfIndex else index
+        val micIndex = if (index < 0) mySelfIndex() else index
         if (mute) {
             micViewModel.closeMic(activity, roomKitBean.roomId, micIndex)
         } else {
@@ -719,6 +728,7 @@ class RoomObservableViewDelegate constructor(
         ThreadManager.getInstance().runOnMainThreadDelay(updateRankRunnable, longDelay)
     }
 
+    /**收到邀请上麦消息*/
     fun receiveInviteSite(roomId: String, micIndex: Int) {
         CommonFragmentAlertDialog()
             .contentText(activity.getString(R.string.chatroom_mic_anchor_invited_you_on_stage))
@@ -762,17 +772,17 @@ class RoomObservableViewDelegate constructor(
     /**接受系统消息*/
     fun receiveSystem(ext: MutableMap<String, String>) {
         ThreadManager.getInstance().runOnMainThread {
-            if (ext.containsKey("click_count")){
-               ext["click_count"]?.let {
-                   iRoomTopView.onUpdateWatchCount(  it.toIntOrNull() ?: -1)
+            if (ext.containsKey("click_count")) {
+                ext["click_count"]?.let {
+                    iRoomTopView.onUpdateWatchCount(it.toIntOrNull() ?: -1)
                 }
             }
-            if (ext.containsKey("member_count")){
+            if (ext.containsKey("member_count")) {
                 ext["member_count"]?.let {
-                    iRoomTopView.onUpdateMemberCount(  it.toIntOrNull() ?: -1)
+                    iRoomTopView.onUpdateMemberCount(it.toIntOrNull() ?: -1)
                 }
             }
-            if (ext.containsKey("gift_amount")){
+            if (ext.containsKey("gift_amount")) {
                 ext["gift_amount"]?.let {
                     iRoomTopView.onUpdateGiftCount(it.toIntOrNull() ?: -1)
                 }
