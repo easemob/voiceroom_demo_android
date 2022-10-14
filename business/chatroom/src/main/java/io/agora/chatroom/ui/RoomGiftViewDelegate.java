@@ -60,6 +60,7 @@ public class RoomGiftViewDelegate {
       dialog.setOnConfirmClickListener(new OnSendClickListener() {
          @Override
          public void SendGift(View view, Object bean) {
+            dialog.setSendEnable(false);
             GiftBean giftBean = (GiftBean) bean;
             HttpManager.getInstance(activity).sendGift(roomId,
                     giftBean.getId(), giftBean.getNum(), 0, new ValueCallBack<Boolean>() {
@@ -133,6 +134,7 @@ public class RoomGiftViewDelegate {
          handler.removeCallbacks(task);
          task = null;
          time = 2;
+         dialog.setSendEnable(true);
       }
    }
 

@@ -7,6 +7,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import bean.ChatMessageData;
@@ -14,6 +15,7 @@ import custormgift.CustomMsgHelper;
 import custormgift.OnCustomMsgReceiveListener;
 import custormgift.OnMsgCallBack;
 import io.agora.CallBack;
+import io.agora.ChatRoomChangeListener;
 import io.agora.chat.ChatClient;
 import io.agora.chat.ChatMessage;
 import io.agora.chat.Conversation;
@@ -21,11 +23,12 @@ import io.agora.chat.CustomMessageBody;
 import io.agora.chat.TextMessageBody;
 import io.agora.util.EMLog;
 
-public class ChatroomMsgHelper {
+public class ChatroomMsgHelper implements ChatRoomChangeListener {
     private static ChatroomMsgHelper instance;
     private ChatroomMsgHelper(){}
     private String chatroomId;
     private ArrayList<ChatMessageData> data = new ArrayList<>();
+    public OnChatroomEventReceiveListener chatroomListener;
 
     public static ChatroomMsgHelper getInstance() {
         if(instance == null) {
@@ -45,6 +48,7 @@ public class ChatroomMsgHelper {
     public void init(String chatroomId) {
         this.chatroomId = chatroomId;
         setCustomMsgListener();
+        setChatRoomChangeListener();
         //设置相关的房间信息
         CustomMsgHelper.getInstance().setChatRoomInfo(chatroomId);
 
@@ -60,6 +64,18 @@ public class ChatroomMsgHelper {
      */
     public void setCustomMsgListener() {
         CustomMsgHelper.getInstance().init();
+    }
+
+    public void setChatRoomChangeListener(){
+        ChatClient.getInstance().chatroomManager().addChatRoomChangeListener(this);
+    }
+
+    public void removeChatRoomChangeListener(){
+        ChatClient.getInstance().chatroomManager().removeChatRoomListener(this);
+    }
+
+    public void setChatRoomListener(OnChatroomEventReceiveListener listener){
+        this.chatroomListener = listener;
     }
 
     /**
@@ -263,4 +279,85 @@ public class ChatroomMsgHelper {
     }
 
 
+    @Override
+    public void onChatRoomDestroyed(String s, String s1) {
+        if (chatroomListener != null)
+            chatroomListener.onRoomDestroyed(s);
+    }
+
+    @Override
+    public void onMemberJoined(String s, String s1) {
+        if (chatroomListener != null)
+            chatroomListener.onMemberJoined(s,s1);
+    }
+
+    @Override
+    public void onMemberExited(String s, String s1, String s2) {
+        if (chatroomListener != null)
+            chatroomListener.onMemberExited(s,s1,s2);
+    }
+
+    @Override
+    public void onRemovedFromChatRoom(int i, String roomId, String s1, String s2) {
+        if (chatroomListener != null)
+            chatroomListener.onKicked(roomId,i);
+    }
+
+    @Override
+    public void onMuteListAdded(String s, List<String> list, long l) {
+
+    }
+
+    @Override
+    public void onMuteListRemoved(String s, List<String> list) {
+
+    }
+
+    @Override
+    public void onWhiteListAdded(String s, List<String> list) {
+
+    }
+
+    @Override
+    public void onWhiteListRemoved(String s, List<String> list) {
+
+    }
+
+    @Override
+    public void onAllMemberMuteStateChanged(String s, boolean b) {
+
+    }
+
+    @Override
+    public void onAdminAdded(String s, String s1) {
+
+    }
+
+    @Override
+    public void onAdminRemoved(String s, String s1) {
+
+    }
+
+    @Override
+    public void onOwnerChanged(String s, String s1, String s2) {
+
+    }
+
+    @Override
+    public void onAnnouncementChanged(String s, String s1) {
+        if (chatroomListener != null)
+            chatroomListener.onAnnouncementChanged(s,s1);
+    }
+
+    @Override
+    public void onAttributesUpdate(String roomId, Map<String, String> attributeMap, String from) {
+        if (chatroomListener != null)
+            chatroomListener.onAttributesUpdate(roomId,attributeMap,from);
+    }
+
+    @Override
+    public void onAttributesRemoved(String roomId, List<String> keyList, String from) {
+        if (chatroomListener != null)
+            chatroomListener.onAttributesRemoved(roomId,keyList,from);
+    }
 }

@@ -11,6 +11,6 @@ class App: Application() {
         ARouter.openDebug()
         ARouter.openLog()
         ARouter.init(this)
-        ChatroomConfigManager.getInstance().initRoomConfig(this)
+//        ChatroomConfigManager.getInstance().initRoomConfig(this)
     }
 }

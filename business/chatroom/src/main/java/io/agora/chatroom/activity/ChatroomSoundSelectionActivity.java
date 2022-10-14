@@ -22,6 +22,7 @@ import java.util.List;
 import io.agora.CallBack;
 import io.agora.baseui.BaseActivity;
 import io.agora.baseui.general.callback.OnResourceParseCallback;
+import io.agora.buddy.tool.ThreadManager;
 import io.agora.buddy.tool.ToastTools;
 import io.agora.chat.ChatClient;
 import io.agora.chatroom.ChatroomApplication;
@@ -146,36 +147,46 @@ public class ChatroomSoundSelectionActivity extends BaseActivity implements Chat
    }
 
    public void createNormalRoom(boolean allow_free_join_mic,String sound_effect){
+      goLive.setEnabled(false);
       if (isPublic){
          chatroomViewModel.createNormalRoom(this,roomName,false,allow_free_join_mic,sound_effect);
       }else {
          if (!TextUtils.isEmpty(encryption) && encryption.length() == 4){
             chatroomViewModel.createNormalRoom(this,roomName,true,encryption,allow_free_join_mic,sound_effect);
          }else {
+            goLive.setEnabled(true);
             ToastTools.show(this,"4 Digit Password Required", Toast.LENGTH_LONG);
          }
       }
    }
 
    public void createSpatialRoom(){
+      goLive.setEnabled(false);
       if (isPublic){
          chatroomViewModel.createSpatial(this,roomName,false);
       }else {
          if (!TextUtils.isEmpty(encryption) && encryption.length() == 4){
             chatroomViewModel.createSpatial(this,roomName,true,encryption);
          }else {
+            goLive.setEnabled(true);
             ToastTools.show(this,"4 Digit Password Required", Toast.LENGTH_LONG);
          }
       }
    }
 
    public void joinRoom(VRoomInfoBean data){
-      ARouter.getInstance()
-              .build(RouterPath.ChatroomPath)
-              .withSerializable(RouterParams.KEY_CHATROOM_DETAILS_INFO, data)
-              .navigation();
-      finishCreateActivity();
-      finish();
+      ThreadManager.getInstance().runOnMainThread(new Runnable() {
+         @Override
+         public void run() {
+            goLive.setEnabled(true);
+            ARouter.getInstance()
+                    .build(RouterPath.ChatroomPath)
+                    .withSerializable(RouterParams.KEY_CHATROOM_DETAILS_INFO, data)
+                    .navigation();
+            finishCreateActivity();
+            finish();
+         }
+      });
    }
 
 
