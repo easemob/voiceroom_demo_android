@@ -112,7 +112,8 @@ public class GiftBottomDialog extends BottomDialogFragment implements View.OnCli
             public void onFirstData(GiftBean bean) {
                 giftBean = bean;
                 check(bean.getPrice());
-                total_count.setText(getString(R.string.dialog_gift_total_count,bean.getPrice()));
+                if (getActivity() != null && isAdded())
+                total_count.setText(getActivity().getString(R.string.dialog_gift_total_count,bean.getPrice()));
                 count.setText("1");
             }
         });
