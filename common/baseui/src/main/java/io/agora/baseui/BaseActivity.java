@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import androidx.annotation.ColorRes;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
@@ -214,4 +215,23 @@ public class BaseActivity extends AppCompatActivity implements IParserSource {
             view.setTypeface(null,type);
     }
 
+    private AlertDialog loadingDialog;
+
+    public void showLoading(boolean cancelable) {
+        if (loadingDialog == null) {
+            loadingDialog = new AlertDialog.Builder(this).setView(R.layout.view_base_loading).create();
+            Window window = getWindow();
+            if (window!=null){
+                window.getDecorView().setBackgroundColor(Color.TRANSPARENT);
+            }
+        }
+        loadingDialog.setCancelable(cancelable);
+        loadingDialog.show();
+    }
+
+    public void dismissLoading() {
+        if (loadingDialog!=null){
+            loadingDialog.dismiss();
+        }
+    }
 }
