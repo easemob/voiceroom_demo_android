@@ -55,7 +55,8 @@
             app:layout_constraintTop_toTopOf="parent"
             android:textSize="@dimen/text_size_14sp"
             android:textColor="#3C4267"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:padding="5dp"
             android:hint="Random Name"
             android:textColorHint="#3C4267"
             android:layout_width="wrap_content"
@@ -67,18 +68,19 @@
             app:layout_constraintRight_toRightOf="parent"
             android:textSize="@dimen/text_size_14sp"
             android:textColor="#3C4267"
-            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp"
             android:hint="Random"
+            android:padding="5dp"
             android:textColorHint="#3C4267"
             android:layout_width="wrap_content"
-            android:layout_height="20dp"/>
+            android:layout_height="wrap_content"/>
 
         <ImageView
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintRight_toLeftOf="@+id/random"
             android:src="@drawable/icons_refresh"
-            android:layout_marginRight="3dp"
-            android:layout_marginTop="3dp"
+            android:layout_marginEnd="3dp"
+            android:layout_marginTop="8dp"
             android:layout_width="14dp"
             android:layout_height="14dp"/>
 
@@ -116,10 +118,10 @@
         android:id="@+id/group_layout"
         app:layout_constraintTop_toBottomOf="@+id/encryption"
         app:layout_constraintLeft_toLeftOf="@+id/ed_area"
-        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="12dp"
-        android:layout_width="202dp"
-        android:layout_height="20dp">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
         <RadioGroup
             android:id="@+id/radioGroup_gender"
@@ -134,6 +136,8 @@
                 android:textSize="@dimen/text_size_14sp"
                 android:textColor="#3C4267"
                 android:stateListAnimator="@null"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 style="@style/radio_style"
                 android:text="@string/room_create_public"/>
 
@@ -145,6 +149,8 @@
                 android:textSize="@dimen/text_size_14sp"
                 android:textColor="#3C4267"
                 android:stateListAnimator="@null"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 style="@style/radio_style"
                 android:text="@string/room_create_private" />
 

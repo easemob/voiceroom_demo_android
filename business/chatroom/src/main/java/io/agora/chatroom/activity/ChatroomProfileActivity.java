@@ -25,6 +25,7 @@ import org.json.JSONException;
 
 import io.agora.baseui.BaseActivity;
 import io.agora.baseui.popupwindow.CommonPopupWindow;
+import io.agora.buddy.tool.ThreadManager;
 import io.agora.buddy.tool.ToastTools;
 import io.agora.chat.ChatClient;
 import io.agora.chatroom.R;
@@ -151,9 +152,6 @@ public class ChatroomProfileActivity extends BaseActivity implements View.OnClic
          case EditorInfo.IME_ACTION_DONE:
             // done stuff
             nick = nickName.getText().toString().trim();
-            nickName.setEnabled(false);
-            nickName.setFocusable(false);
-            nickName.setFocusableInTouchMode(false);
             VRUserBean bean = ProfileManager.getInstance().getProfile();
             bean.setName(nickName.getText().toString());
             updateProfile(bean);
@@ -214,12 +212,14 @@ public class ChatroomProfileActivity extends BaseActivity implements View.OnClic
                  ChatClient.getInstance().getDeviceInfo().getString("deviceid"), bean.getAvatarName(), new ValueCallBack<VRUserBean>() {
                     @Override
                     public void onSuccess(VRUserBean var1) {
+                       hideKey();
                        ProfileManager.getInstance().setProfile(var1);
+                       ToastTools.show(ChatroomProfileActivity.this, getString(R.string.room_profile_update_name_suc) , Toast.LENGTH_SHORT);
                     }
 
                     @Override
                     public void onError(int var1, String var2) {
-                       ToastTools.show(ChatroomProfileActivity.this, getString(R.string.room_profile_update_name) + ": " + var2, Toast.LENGTH_SHORT);
+                       ToastTools.show(ChatroomProfileActivity.this, getString(R.string.room_profile_update_name_fail) + ": " + var2, Toast.LENGTH_SHORT);
                        onFail();
                     }
                  });
@@ -234,12 +234,14 @@ public class ChatroomProfileActivity extends BaseActivity implements View.OnClic
                  ChatClient.getInstance().getDeviceInfo().getString("deviceid"),bean.getPortrait(), new ValueCallBack<VRUserBean>() {
                     @Override
                     public void onSuccess(VRUserBean var1) {
+                       hideKey();
                        ProfileManager.getInstance().setProfile(var1);
+                       ToastTools.show(ChatroomProfileActivity.this, getString(R.string.room_profile_update_name_suc) , Toast.LENGTH_SHORT);
                     }
 
                     @Override
                     public void onError(int var1, String var2) {
-                       ToastTools.show(ChatroomProfileActivity.this, getString(R.string.room_profile_update_name)+ ": " + var2, Toast.LENGTH_SHORT);
+                       ToastTools.show(ChatroomProfileActivity.this, getString(R.string.room_profile_update_name_fail)+ ": " + var2, Toast.LENGTH_SHORT);
                        onFail();
                     }
                  });
@@ -253,5 +255,17 @@ public class ChatroomProfileActivity extends BaseActivity implements View.OnClic
       bean.setName(oldNick);
       ProfileManager.getInstance().setProfile(bean);
       nickName.setText(oldNick);
+   }
+
+   private void hideKey(){
+      ThreadManager.getInstance().runOnMainThread(new Runnable() {
+         @Override
+         public void run() {
+            hideKeyboard();
+            nickName.setEnabled(false);
+            nickName.setFocusable(false);
+            nickName.setFocusableInTouchMode(false);
+         }
+      });
    }
 }

@@ -70,7 +70,7 @@
                 android:textColorHint="#040925"
                 android:hint="Username"
                 android:layout_marginEnd="5dp"
-                android:maxLines="1"
+                android:inputType="text"
                 android:maxLength="16"
                 android:ellipsize="end"
                 android:singleLine="true"

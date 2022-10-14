@@ -31,7 +31,8 @@
     <string name="room_list_title_official">Official</string>
     <string name="room_list_count">%1$s</string>
     <string name="room_tab_layout_count">(%1$s)</string>
-    <string name="room_profile_update_name">修改昵称失败</string>
+    <string name="room_profile_update_name_fail">修改昵称失败</string>
+    <string name="room_profile_update_name_suc">修改昵称成功</string>
 
     <string name="empty_invite_hands">No audience yet</string>
     <string name="empty_raised_hands">No one raised hands yet</string>
