@@ -128,7 +128,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
             }
         }
         ChatroomMsgHelper.getInstance().init(roomKitBean.chatroomId)
-
+        ChatroomConfigManager.getInstance().setChatRoomListener(this)
     }
 
     private fun initListeners() {
@@ -354,7 +354,6 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
                     })
             }
         })
-        ChatroomConfigManager.getInstance().setChatRoomListener(this)
     }
 
     private fun hideKeyboard() {
@@ -377,9 +376,9 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
     }
 
     override fun finish() {
+        roomViewModel.leaveRoom(this, roomKitBean.roomId)
         RtcRoomController.get().destroy()
         ChatClient.getInstance().chatroomManager().leaveChatRoom(roomKitBean.chatroomId)
-        roomViewModel.leaveRoom(this, roomKitBean.roomId)
         super.finish()
     }
 
@@ -573,5 +572,6 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
     override fun onDestroy() {
         super.onDestroy()
         binding.chatroomGiftView.clear()
+        ChatroomConfigManager.getInstance().removeChatRoomListener(this)
     }
 }

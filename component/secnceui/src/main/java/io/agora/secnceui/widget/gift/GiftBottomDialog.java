@@ -236,4 +236,8 @@ public class GiftBottomDialog extends BottomDialogFragment implements View.OnCli
            countLayout.setEnabled(false);
        }
    }
+
+   public void setSendEnable(boolean enable){
+       send.setEnabled(enable);
+   }
 }

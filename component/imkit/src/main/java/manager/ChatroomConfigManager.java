@@ -6,26 +6,23 @@ import android.util.Log;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import bean.ChatMessageData;
 import custormgift.CustomMsgHelper;
 import custormgift.OnCustomMsgReceiveListener;
 import io.agora.CallBack;
-import io.agora.ChatRoomChangeListener;
 import io.agora.ConnectionListener;
 import io.agora.Error;
-import io.agora.ValueCallBack;
 import io.agora.chat.ChatClient;
 import io.agora.chat.ChatOptions;
-import io.agora.chat.ChatRoom;
 import io.agora.util.EMLog;
 
 public class ChatroomConfigManager {
     private static final String TAG = ChatroomConfigManager.class.getSimpleName();
     private static ChatroomConfigManager mInstance;
     private Context mContext;
-    public ChatroomListener ChatListener;
+    private List<ChatroomListener> messageListeners = new CopyOnWriteArrayList();
 
     ChatroomConfigManager(){}
 
@@ -49,13 +46,17 @@ public class ChatroomConfigManager {
         }
         ChatClient.getInstance().init(context,options);
         ChatClient.getInstance().addConnectionListener(connectionListener);
-        ChatClient.getInstance().chatroomManager().addChatRoomChangeListener(chatroomListener);
 
         ChatroomMsgHelper.getInstance().setOnCustomMsgReceiveListener(new OnCustomMsgReceiveListener() {
             @Override
             public void onReceiveGiftMsg(ChatMessageData message) {
-                if (ChatListener != null)
-                ChatListener.receiveGift(message.getConversationId(),message);
+                try {
+                    for (ChatroomListener listener : ChatroomConfigManager.this.messageListeners) {
+                        listener.receiveGift(message.getConversationId(), message);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
@@ -65,49 +66,163 @@ public class ChatroomConfigManager {
 
             @Override
             public void onReceiveNormalMsg(ChatMessageData message) {
-                if (ChatListener != null)
-                ChatListener.receiveTextMessage(message.getConversationId(),message);
+                try {
+                    for (ChatroomListener listener : ChatroomConfigManager.this.messageListeners) {
+                        listener.receiveTextMessage(message.getConversationId(), message);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
             public void onReceiveApplySite(ChatMessageData message) {
                 Log.e("setOnCustomMsgReceiveListener","onReceiveApplySite");
-                if (ChatListener != null)
-                ChatListener.receiveApplySite(message.getConversationId(),message);
+                try {
+                    for (ChatroomListener listener : ChatroomConfigManager.this.messageListeners) {
+                        listener.receiveApplySite(message.getConversationId(), message);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
             public void onReceiveCancelApplySite(ChatMessageData message) {
                 Log.e("setOnCustomMsgReceiveListener","onReceiveCancelApplySite");
-                if (ChatListener != null)
-                    ChatListener.receiveCancelApplySite(message.getConversationId(),message);
+                try {
+                    for (ChatroomListener listener : ChatroomConfigManager.this.messageListeners) {
+                        listener.receiveCancelApplySite(message.getConversationId(), message);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
             public void onReceiveInviteSite(ChatMessageData message) {
                 Log.e("setOnCustomMsgReceiveListener","onReceiveApplySite");
-                if (ChatListener != null)
-                ChatListener.receiveInviteSite(message.getConversationId(),message);
+                try {
+                    for (ChatroomListener listener : ChatroomConfigManager.this.messageListeners) {
+                        listener.receiveInviteSite(message.getConversationId(), message);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
             public void onReceiveInviteRefusedSite(ChatMessageData message) {
                 Log.e("setOnCustomMsgReceiveListener","onReceiveInviteRefusedSite");
-                if (ChatListener != null)
-                    ChatListener.receiveInviteRefusedSite(message.getConversationId(),message);
+                try {
+                    for (ChatroomListener listener : ChatroomConfigManager.this.messageListeners) {
+                        listener.receiveInviteRefusedSite(message.getConversationId(), message);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
             public void onReceiveDeclineApply(ChatMessageData message) {
                 Log.e("setOnCustomMsgReceiveListener","onReceiveApplySite");
-                if (ChatListener != null)
-                ChatListener.receiveDeclineApply(message.getConversationId(),message);
+                try {
+                    for (ChatroomListener listener : ChatroomConfigManager.this.messageListeners) {
+                        listener.receiveDeclineApply(message.getConversationId(), message);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
             public void onReceiveSystem(ChatMessageData message) {
-                if (ChatListener != null)
-                ChatListener.receiveSystem(message.getConversationId(),message);
+                try {
+                    for (ChatroomListener listener : ChatroomConfigManager.this.messageListeners) {
+                        listener.receiveSystem(message.getConversationId(), message);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        ChatroomMsgHelper.getInstance().setChatRoomListener(new OnChatroomEventReceiveListener() {
+            @Override
+            public void onRoomDestroyed(String roomId) {
+                try {
+                    for (ChatroomListener listener : ChatroomConfigManager.this.messageListeners) {
+                        listener.chatroomDestroyed(roomId);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onMemberJoined(String roomId, String name) {
+                try {
+                    for (ChatroomListener listener : ChatroomConfigManager.this.messageListeners) {
+                        listener.userJoinedRoom(roomId,name);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onMemberExited(String roomId, String name, String reason) {
+                try {
+                    for (ChatroomListener listener : ChatroomConfigManager.this.messageListeners) {
+                        listener.onMemberExited(roomId, name, reason);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onKicked(String roomId, int reason) {
+                try {
+                    for (ChatroomListener listener : ChatroomConfigManager.this.messageListeners) {
+                        listener.userBeKicked(roomId,reason);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onAnnouncementChanged(String roomId, String announcement) {
+                try {
+                    for (ChatroomListener listener : ChatroomConfigManager.this.messageListeners) {
+                        listener.announcementChanged(roomId,announcement);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onAttributesUpdate(String roomId, Map<String, String> attributeMap, String from) {
+                try {
+                    for (ChatroomListener listener : ChatroomConfigManager.this.messageListeners) {
+                        listener.roomAttributesDidUpdated(roomId,attributeMap,from);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onAttributesRemoved(String roomId, List<String> keyList, String from) {
+                try {
+                    for (ChatroomListener listener : ChatroomConfigManager.this.messageListeners) {
+                        listener.roomAttributesDidRemoved(roomId,keyList,from);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
@@ -160,8 +275,13 @@ public class ChatroomConfigManager {
 
         @Override
         public void onTokenWillExpire() {
-            if (ChatListener != null)
-                ChatListener.onTokenWillExpire();
+            try {
+                for (ChatroomListener listener : ChatroomConfigManager.this.messageListeners) {
+                    listener.onTokenWillExpire();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     };
 
@@ -246,95 +366,23 @@ public class ChatroomConfigManager {
     }
 
     public void setChatRoomListener(ChatroomListener listener){
-        this.ChatListener = listener;
+        if (listener == null) {
+            EMLog.d("ChatroomConfigManager", "setChatRoomListener: listener is null");
+        } else {
+            if (!this.messageListeners.contains(listener)) {
+                EMLog.d("ChatroomConfigManager", "add message listener: " + listener);
+                this.messageListeners.add(listener);
+            }
+        }
     }
 
-    public ChatRoomChangeListener chatroomListener = new ChatRoomChangeListener(){
-
-        @Override
-        public void onChatRoomDestroyed(String roomId, String roomName) {
-            if (ChatListener != null)
-                ChatListener.chatroomDestroyed(roomId);
+    public void removeChatRoomListener(ChatroomListener listener){
+        if (listener != null) {
+            this.messageListeners.remove(listener);
+            ChatroomMsgHelper.getInstance().removeChatRoomChangeListener();
+            CustomMsgHelper.getInstance().removeListener();
         }
-
-        @Override
-        public void onMemberJoined(String s, String s1) {
-            Log.e("ChatroomConfigManager", "onMemberJoined:" + s + "  " + s1);
-            if (ChatListener != null)
-            ChatListener.userJoinedRoom(s,s1);
-        }
-
-        @Override
-        public void onMemberExited(String s, String s1, String s2) {
-            Log.e("ChatroomConfigManager", "onMemberExited:" + s + "  " + s1 + "  " + s2);
-            if (ChatListener != null)
-                ChatListener.onMemberExited(s, s1, s2);
-        }
-
-        @Override
-        public void onRemovedFromChatRoom(final int reason, final String roomId, final String roomName, final String participant) {
-            if (ChatListener != null)
-            ChatListener.userBeKicked(roomId,reason);
-        }
-
-        @Override
-        public void onMuteListAdded(String s, List<String> list, long l) {
-
-        }
-
-        @Override
-        public void onMuteListRemoved(String s, List<String> list) {
-
-        }
-
-        @Override
-        public void onWhiteListAdded(String s, List<String> list) {
-
-        }
-
-        @Override
-        public void onWhiteListRemoved(String s, List<String> list) {
-
-        }
-
-        @Override
-        public void onAllMemberMuteStateChanged(String s, boolean b) {
-
-        }
-
-        @Override
-        public void onAdminAdded(String s, String s1) {
-
-        }
-
-        @Override
-        public void onAdminRemoved(String s, String s1) {
-
-        }
-
-        @Override
-        public void onOwnerChanged(String s, String s1, String s2) {
-
-        }
-
-        @Override
-        public void onAnnouncementChanged(String s, String s1) {
-            if (ChatListener != null)
-            ChatListener.announcementChanged(s,s1);
-        }
-
-        @Override
-        public void onAttributesUpdate(String chatRoomId, Map<String, String> attributeMap, String from) {
-            if (ChatListener != null)
-            ChatListener.roomAttributesDidUpdated(chatRoomId,attributeMap,from);
-        }
-
-        @Override
-        public void onAttributesRemoved(String chatRoomId, List<String> keyList, String from) {
-            if (ChatListener != null)
-            ChatListener.roomAttributesDidRemoved(chatRoomId,keyList,from);
-        }
-    };
+    }
 
     public void renewToken(String newToken){
         ChatClient.getInstance().renewToken(newToken);

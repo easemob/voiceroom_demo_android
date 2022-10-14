@@ -36,7 +36,6 @@ import io.agora.chatroom.general.repositories.ProfileManager;
 import io.agora.config.RouterPath;
 import io.agora.secnceui.utils.DeviceUtils;
 import io.agora.secnceui.widget.titlebar.ChatroomTitleBar;
-import manager.ChatroomConfigManager;
 import tools.ValueCallBack;
 import tools.bean.VRUserBean;
 
