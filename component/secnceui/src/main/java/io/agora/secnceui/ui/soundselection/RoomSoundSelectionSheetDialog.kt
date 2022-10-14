@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import io.agora.baseui.adapter.BaseRecyclerViewAdapter
 import io.agora.baseui.adapter.OnItemChildClickListener
+import io.agora.baseui.adapter.OnItemClickListener
 import io.agora.baseui.dialog.BaseFixedHeightSheetDialog
 import io.agora.secnceui.R
 import io.agora.secnceui.bean.SoundSelectionBean
@@ -57,20 +58,12 @@ class RoomSoundSelectionSheetDialog constructor(
 
     private fun initAdapter(recyclerView: RecyclerView) {
         soundSelectionAdapter =
-            BaseRecyclerViewAdapter(soundSelectionList, null, object : OnItemChildClickListener<SoundSelectionBean> {
-                override fun onItemChildClick(
-                    data: SoundSelectionBean?,
-                    extData: Any?,
-                    view: View,
-                    position: Int,
-                    itemViewType: Long
-                ) {
+            BaseRecyclerViewAdapter(soundSelectionList, object : OnItemClickListener<SoundSelectionBean> {
+
+                override fun onItemClick(data: SoundSelectionBean, view: View, position: Int, viewType: Long) {
+                    super.onItemClick(data, view, position, viewType)
                     if (isEnable) {
-                        if (extData is Boolean) {
-                            data?.let {
-                                soundSelectionListener.onSoundEffect(it, extData)
-                            }
-                        }
+                        soundSelectionListener.onSoundEffect(data, data.isCurrentUsing)
                     } else {
                         Toast.makeText(
                             view.context,
