@@ -184,7 +184,7 @@
             android:textStyle="bold"
             android:textSize="@dimen/text_size_12sp"
             android:gravity="center"
-            android:hint="Enter"
+            android:text="@string/room_list_item_enter"
             android:textColorHint="@color/white"
             android:layout_width="56dp"
             android:layout_height="24dp"/>

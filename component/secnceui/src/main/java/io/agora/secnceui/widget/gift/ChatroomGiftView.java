@@ -2,6 +2,7 @@ package io.agora.secnceui.widget.gift;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Handler;
 import android.text.SpannableString;
@@ -24,6 +25,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.imageview.ShapeableImageView;
+import com.google.android.material.textview.MaterialTextView;
 
 import java.util.ArrayList;
 
@@ -165,7 +167,11 @@ public class ChatroomGiftView extends LinearLayout {
       public void onBindViewHolder(@NonNull GiftViewHolder holder, int position) {
          final ChatMessageData message = messages.get(position);
          show(holder.avatar,holder.icon,holder.name,message);
-         holder.icon_count.setText("X"+CustomMsgHelper.getInstance().getMsgGiftNum(message));
+         if (mContext != null) {
+            Typeface fromAsset = Typeface.createFromAsset(mContext.getAssets(), "fonts/RobotoNembersVF.ttf");//根据路径得到Typeface
+            holder.icon_count.setTypeface(fromAsset);
+         }
+         holder.icon_count.setText("x"+CustomMsgHelper.getInstance().getMsgGiftNum(message));
       }
 
       public void show(ShapeableImageView avatar,ImageView icon,TextView name,ChatMessageData message){
@@ -230,7 +236,7 @@ public class ChatroomGiftView extends LinearLayout {
    public static class GiftViewHolder extends RecyclerView.ViewHolder{
       TextView name;
       ImageView icon;
-      TextView icon_count;
+      MaterialTextView icon_count;
       ShapeableImageView avatar;
 
       public GiftViewHolder(View itemView) {

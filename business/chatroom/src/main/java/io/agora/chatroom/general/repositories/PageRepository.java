@@ -37,12 +37,6 @@ public class PageRepository extends BaseRepository {
         bean1.setRoom_name(mContext.getString(R.string.room_create_3d_room));
         bean1.setRoom_desc(mContext.getString(R.string.room_create_3d_room_desc));
         data.add(bean1);
-//        PageBean bean2 = new PageBean();
-//        bean2.setRoom_type(2);
-//        bean2.setTab_title(mContext.getString(R.string.tab_layout_karaoke_room));
-//        bean2.setRoom_name(mContext.getString(R.string.room_create_ktv_room));
-//        bean2.setRoom_desc(mContext.getString(R.string.room_create_ktv_room_desc));
-//        data.add(bean2);
         return data;
     }
 

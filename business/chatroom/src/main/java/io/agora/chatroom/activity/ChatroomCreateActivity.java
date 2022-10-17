@@ -28,10 +28,10 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-
+import java.util.Date;
 import io.agora.CallBack;
-import io.agora.ValueCallBack;
 import io.agora.baseui.BaseActivity;
 import io.agora.baseui.general.callback.OnResourceParseCallback;
 import io.agora.buddy.tool.ToastTools;
@@ -239,11 +239,6 @@ public class ChatroomCreateActivity extends BaseActivity implements RadioGroup.O
                   holder.mTitle.setText(getString(R.string.room_create_3d_room));
                   holder.mContent.setText(getString(R.string.room_create_3d_room_desc));
                }
-//               else if (data.get(position).getRoom_type() == 2){
-//                  holder.mLayout.setBackgroundResource(R.drawable.icon_create_ktv_room);
-//                  holder.mTitle.setText(getString(R.string.room_create_ktv_room));
-//                  holder.mContent.setText(getString(R.string.room_create_ktv_room_desc));
-//               }
          }
 
          @Override
@@ -344,10 +339,14 @@ public class ChatroomCreateActivity extends BaseActivity implements RadioGroup.O
 
    public String randomName(){
       String roomName = "";
+      SimpleDateFormat m = new SimpleDateFormat("MM");//获取月份
+      SimpleDateFormat d = new SimpleDateFormat("dd");//获取分钟
+      String month = m.format(new Date());
+      String day = d.format(new Date());
       if (roomType == 0){
-         roomName = getString(R.string.room_create_chat_room)+" "+Math.round((Math.random()*999)+1);
+         roomName = getString(R.string.room_create_chat_room)+"-"+month+day+"-"+Math.round((Math.random()*999)+1);
       }else {
-         roomName = getString(R.string.room_create_chat_3d_room)+" "+Math.round((Math.random()*999)+1);
+         roomName = getString(R.string.room_create_chat_3d_room)+"-"+month+day+"-"+Math.round((Math.random()*999)+1);
       }
       return roomName;
    }
