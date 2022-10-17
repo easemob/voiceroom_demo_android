@@ -106,7 +106,7 @@ class RtcRoomController : IRtcKitListener {
     fun deNoise(anisModeBean: AINSModeBean) {
         val event = when (anisModeBean.anisMode) {
             ConfigConstants.AINSMode.AINS_Off -> RtcDeNoiseEvent.CloseEvent()
-            ConfigConstants.AINSMode.AINS_High -> RtcDeNoiseEvent.HeightEvent()
+            ConfigConstants.AINSMode.AINS_High -> RtcDeNoiseEvent.HighEvent()
             else -> RtcDeNoiseEvent.MediumEvent()
         }
         rtcManger?.operateDeNoise(event)
@@ -180,7 +180,7 @@ class RtcRoomController : IRtcKitListener {
         // 默认开启降噪
         val event = when (anisMode) {
             ConfigConstants.AINSMode.AINS_Off -> RtcDeNoiseEvent.CloseEvent()
-            ConfigConstants.AINSMode.AINS_High -> RtcDeNoiseEvent.HeightEvent()
+            ConfigConstants.AINSMode.AINS_High -> RtcDeNoiseEvent.HighEvent()
             else -> RtcDeNoiseEvent.MediumEvent()
         }
         rtcManger?.operateDeNoise(event)

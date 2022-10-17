@@ -71,7 +71,7 @@ class RtcMiddleServiceImpl constructor(
             val result = when (deNoiseEvent) {
                 is RtcDeNoiseEvent.CloseEvent -> closeDeNoise()
                 is RtcDeNoiseEvent.MediumEvent -> openMediumDeNoise()
-                is RtcDeNoiseEvent.HeightEvent -> openHeightDeNoise()
+                is RtcDeNoiseEvent.HighEvent -> openHeightDeNoise()
             }
             callback?.onSuccess(result)
         }

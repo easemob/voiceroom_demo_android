@@ -124,7 +124,6 @@ class RoomObservableViewDelegate constructor(
         roomViewModel.closeBotObservable.observe(activity) { response: Resource<Boolean> ->
             parseResource(response, object : OnResourceParseCallback<Boolean>() {
                 override fun onSuccess(data: Boolean?) {
-                    ToastTools.show(activity, "close bot onSuccess：$data")
                     if (data != true) return
                     // 关闭机器人，暂停所有音效播放
                     RtcRoomController.get().stopAllEffect()
@@ -136,7 +135,6 @@ class RoomObservableViewDelegate constructor(
             parseResource(response, object : OnResourceParseCallback<Boolean>() {
                 override fun onSuccess(data: Boolean?) {
                     if (data != true) return
-                    ToastTools.show(activity, "change robot volume：$data")
                 }
             })
         }
