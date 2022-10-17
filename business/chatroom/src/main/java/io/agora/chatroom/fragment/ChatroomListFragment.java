@@ -116,14 +116,14 @@ public class ChatroomListFragment extends BaseChatroomListFragment<VRoomBean.Roo
                     if (Boolean.TRUE.equals(isCheck)){
                         goChatroomPage(roomBean,mPassWord);
                     }else {
-                        ToastTools.show(requireActivity(),"check password failed", Toast.LENGTH_SHORT);
+                        ToastTools.show(requireActivity(),getString(R.string.room_check_password), Toast.LENGTH_SHORT);
                     }
                 }
 
                 @Override
                 public void onError(int code, String message) {
                     super.onError(code, message);
-                    ToastTools.show(requireActivity(),"check password failed", Toast.LENGTH_SHORT);
+                    ToastTools.show(requireActivity(),getString(R.string.room_check_password), Toast.LENGTH_SHORT);
                 }
             });
         });
@@ -200,7 +200,6 @@ public class ChatroomListFragment extends BaseChatroomListFragment<VRoomBean.Roo
                 @Override
                 public void onError(int code, String msg) {
                     Log.e("ChatroomListFragment", "Login onError code:" + code + " desc: " + msg);
-                    // TODO: 2022/9/16  202
                     checkPrivate();
                 }
             });

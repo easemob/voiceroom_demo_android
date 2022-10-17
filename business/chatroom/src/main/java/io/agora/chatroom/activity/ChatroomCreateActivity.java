@@ -300,18 +300,12 @@ public class ChatroomCreateActivity extends BaseActivity implements RadioGroup.O
 
    private void check(){
       if (TextUtils.isEmpty(roomName)){
-         ToastTools.show(this,"roomName can be not empty",Toast.LENGTH_LONG);
+         ToastTools.show(this,getString(R.string.room_create_empty_name),Toast.LENGTH_LONG);
          return;
       }
-      if (!isPublic && TextUtils.isEmpty(encryption)){
-         mTip.setVisibility(View.VISIBLE);
-         ToastTools.show(this,"private room PassWord can be not empty",Toast.LENGTH_LONG);
-         return;
-      }
-
       if (!isPublic && encryption.length() != 4){
          mTip.setVisibility(View.VISIBLE);
-         ToastTools.show(this,"4 Digit Password Required",Toast.LENGTH_LONG);
+         ToastTools.show(this,getString(R.string.room_create_tips),Toast.LENGTH_LONG);
          return;
       }
       mTip.setVisibility(View.GONE);

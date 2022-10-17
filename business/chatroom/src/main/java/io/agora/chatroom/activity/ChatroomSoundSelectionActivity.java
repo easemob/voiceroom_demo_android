@@ -155,7 +155,7 @@ public class ChatroomSoundSelectionActivity extends BaseActivity implements Chat
             chatroomViewModel.createNormalRoom(this,roomName,true,encryption,allow_free_join_mic,sound_effect);
          }else {
             goLive.setEnabled(true);
-            ToastTools.show(this,"4 Digit Password Required", Toast.LENGTH_LONG);
+            ToastTools.show(this,getString(R.string.room_create_tips), Toast.LENGTH_LONG);
          }
       }
    }
@@ -169,7 +169,7 @@ public class ChatroomSoundSelectionActivity extends BaseActivity implements Chat
             chatroomViewModel.createSpatial(this,roomName,true,encryption);
          }else {
             goLive.setEnabled(true);
-            ToastTools.show(this,"4 Digit Password Required", Toast.LENGTH_LONG);
+            ToastTools.show(this,getString(R.string.room_create_tips), Toast.LENGTH_LONG);
          }
       }
    }
