@@ -42,6 +42,7 @@
 
     <string name="empty_invite_hands">暂无听众</string>
     <string name="empty_raised_hands">暂无上麦请求</string>
+    <string name="room_profile">个人信息</string>
 
     <!-- gift -->
     <string name="gift_default_name_1">甜心</string>
