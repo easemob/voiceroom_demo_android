@@ -42,8 +42,8 @@ class RtcRoomController : IRtcKitListener {
     /**是否是主播*/
     var broadcaster = true
 
-    /**local mute*/
-    var isLocalAudioEnable = false
+    /**本地audio 是否mute*/
+    var isLocalAudioMute = false
 
     /**第一次启动机器，播放*/
     var firstActiveBot = true
@@ -160,7 +160,7 @@ class RtcRoomController : IRtcKitListener {
      * 本地mute/unmute
      */
     fun enableLocalAudio(mute: Boolean) {
-        isLocalAudioEnable = mute
+        isLocalAudioMute = mute
         rtcManger?.operateAudio(RtcAudioEvent.AudioMuteLocal(mute))
     }
 

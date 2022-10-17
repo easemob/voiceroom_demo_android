@@ -32,6 +32,11 @@ android {
         }
         buildConfigField "String", "agora_app_id", "${AGORA_APP_ID}"
         buildConfigField "String", "agora_app_token", "${AGORA_APP_TOKEN}"
+
+        ndk {
+            // 设置支持的SO库架构
+            abiFilters 'arm64-v8a' //, 'x86', 'armeabi-v7a', 'x86_64', 'arm64-v8a'
+        }
     }
     sourceSets {
         main {

@@ -48,7 +48,6 @@ object ConfigConstants {
 
     //--------音量大小 start--------
     object VolumeType {
-        const val Volume_Unknown = -1
         const val Volume_None = 0
         const val Volume_Low = 1
         const val Volume_Medium = 2

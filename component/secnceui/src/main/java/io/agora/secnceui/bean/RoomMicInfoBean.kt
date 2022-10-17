@@ -8,7 +8,7 @@ data class MicInfoBean constructor(
     var userInfo: RoomUserInfoBean? = null,
     var ownerTag: Boolean = false,
     @MicStatus var micStatus: Int = MicStatus.Idle,
-    var audioVolumeType: Int = ConfigConstants.VolumeType.Volume_Unknown,
+    var audioVolumeType: Int = ConfigConstants.VolumeType.Volume_None,
 ) : BaseRoomBean
 
 data class BotMicInfoBean constructor(

@@ -43,6 +43,7 @@ import io.agora.chatroom.ui.RoomObservableViewDelegate
 import io.agora.config.ConfigConstants
 import io.agora.config.RouterParams
 import io.agora.config.RouterPath
+import io.agora.secnceui.annotation.MicStatus
 import io.agora.secnceui.bean.MicInfoBean
 import io.agora.secnceui.widget.barrage.ChatroomMessagesView
 import io.agora.secnceui.widget.primary.MenuItemClickListener
@@ -56,7 +57,6 @@ import tools.ValueCallBack
 import tools.bean.VRUserBean
 import tools.bean.VRoomBean
 import tools.bean.VRoomInfoBean
-import java.util.*
 
 @Route(path = RouterPath.ChatroomPath)
 class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPermissions.PermissionCallbacks,
@@ -141,7 +141,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
                     data?.let {
                         roomObservableDelegate.onRoomDetails(it)
                         binding.chatBottom.showMicVisible(
-                            RtcRoomController.get().isLocalAudioEnable,
+                            RtcRoomController.get().isLocalAudioMute,
                             roomObservableDelegate.isOnMic()
                         )
                     }
@@ -252,7 +252,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
         roomInfoBean?.let {
             roomObservableDelegate.onRoomDetails(it)
             binding.chatBottom.showMicVisible(
-                RtcRoomController.get().isLocalAudioEnable,
+                RtcRoomController.get().isLocalAudioMute,
                 roomObservableDelegate.isOnMic()
             )
         }
@@ -298,7 +298,12 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
                         })
                     }
                     io.agora.secnceui.R.id.extend_item_mic -> {
-                        if (RtcRoomController.get().isLocalAudioEnable) {
+                        if (roomObservableDelegate.mySelfMicStatus() == MicStatus.ForceMute){
+                            // 被禁言
+                            ToastTools.show(this@ChatroomLiveActivity,getString(R.string.chatroom_mic_muted_by_host))
+                            return
+                        }
+                        if (RtcRoomController.get().isLocalAudioMute) {
                             binding.chatBottom.setEnableMic(true)
                             roomObservableDelegate.muteLocalAudio(false)
                         } else {
@@ -476,7 +481,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
                     binding.rvChatroom3dMicLayout.receiverAttributeMap(newMicMap)
                 }
                 binding.chatBottom.showMicVisible(
-                    RtcRoomController.get().isLocalAudioEnable,
+                    RtcRoomController.get().isLocalAudioMute,
                     roomObservableDelegate.isOnMic()
                 )
                 if (!isOwner) {

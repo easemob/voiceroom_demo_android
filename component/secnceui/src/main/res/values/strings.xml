@@ -71,7 +71,7 @@
     <string name="chatroom_unmute">Unmute</string>
     <string name="chatroom_off_stage">Off-Stage</string>
     <string name="chatroom_host">Host</string>
-    <string name="chatroom_active">Active</string>
+    <string name="chatroom_active">active</string>
     <string name="chatroom_ask_upstage">Ask Upstage</string>
     <string name="chatroom_submit">Submit</string>
     <string name="chatroom_confirm">Confirm</string>

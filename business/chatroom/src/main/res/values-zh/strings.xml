@@ -77,8 +77,9 @@
     <string name="chatroom_exchange_mic_success">更换麦位成功</string>
     <string name="chatroom_exchange_mic_fail">更换麦位失败:%1$s</string>
     <string name="chatroom_mic_close_by_host">当前座位已被房主关闭</string>
+    <string name="chatroom_mic_muted_by_host">当前座位已被房主禁麦</string>
     <string name="chatroom_mic_kicked_out">Kicked Out</string>
-    <string name="chatroom_mic_kicked_off">Kicked Off</string>
+    <string name="chatroom_mic_kicked_off">已踢下麦</string>
     <string name="chatroom_mic_unblocked">已取消锁麦</string>
     <string name="chatroom_mic_blocked">已锁麦</string>
     <string name="chatroom_mic_muted">已禁麦</string>

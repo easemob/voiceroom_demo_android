@@ -23,7 +23,7 @@ internal object RoomMicConstructor {
         val blueBot = MicInfoBean(
             index = 6,
             micStatus = if (isUserBot) MicStatus.BotActivated else MicStatus.BotInactive,
-            audioVolumeType = ConfigConstants.VolumeType.Volume_Unknown,
+            audioVolumeType = ConfigConstants.VolumeType.Volume_None,
             userInfo = RoomUserInfoBean().apply {
                 username = context.getString(R.string.chatroom_agora_blue)
                 userAvatar = "icon_chatroom_blue_robot"
@@ -32,7 +32,7 @@ internal object RoomMicConstructor {
         val redBot = MicInfoBean(
             index = 7,
             micStatus = if (isUserBot) MicStatus.BotActivated else MicStatus.BotInactive,
-            audioVolumeType = ConfigConstants.VolumeType.Volume_Unknown,
+            audioVolumeType = ConfigConstants.VolumeType.Volume_None,
             userInfo = RoomUserInfoBean().apply {
                 username = context.getString(R.string.chatroom_agora_red)
                 userAvatar = "icon_chatroom_red_robot"
@@ -52,7 +52,7 @@ internal object RoomMicConstructor {
             ConfigConstants.MicConstant.KeyIndex5 to MicInfoBean(
                 index = 2,
                 micStatus = if (isUserBot) MicStatus.BotActivated else MicStatus.BotInactive,
-                audioVolumeType = ConfigConstants.VolumeType.Volume_Unknown,
+                audioVolumeType = ConfigConstants.VolumeType.Volume_None,
                 userInfo = RoomUserInfoBean().apply {
                     username = context.getString(R.string.chatroom_agora_blue)
                     userAvatar = "icon_chatroom_blue_robot"
@@ -61,7 +61,7 @@ internal object RoomMicConstructor {
             ConfigConstants.MicConstant.KeyIndex6 to MicInfoBean(
                 index = 3,
                 micStatus = if (isUserBot) MicStatus.BotActivated else MicStatus.BotInactive,
-                audioVolumeType = ConfigConstants.VolumeType.Volume_Unknown,
+                audioVolumeType = ConfigConstants.VolumeType.Volume_None,
                 userInfo = RoomUserInfoBean().apply {
                     username = context.getString(R.string.chatroom_agora_red)
                     userAvatar = "icon_chatroom_red_robot"

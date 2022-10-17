@@ -12,7 +12,6 @@ import io.agora.secnceui.R
 import io.agora.secnceui.annotation.MicStatus
 import io.agora.secnceui.bean.MicInfoBean
 import io.agora.secnceui.databinding.ViewChatroom2dMicBinding
-import io.agora.secnceui.ui.mic.IRoomMicView
 
 /**
  * @author create by zhangwei03
@@ -43,6 +42,7 @@ class Room2DMicView : ConstraintLayout ,IRoomMicBinding{
     override fun binding(micInfo: MicInfoBean) {
         mBinding.apply {
             if (micInfo.micStatus == MicStatus.BotActivated || micInfo.micStatus == MicStatus.BotInactive) { // 机器人
+
                 ivMicInnerIcon.isVisible = false
                 ivMicInfo.setBackgroundResource(R.drawable.bg_oval_white)
                 ivMicInfo.setImageResource(
@@ -52,7 +52,7 @@ class Room2DMicView : ConstraintLayout ,IRoomMicBinding{
                 mtMicUsername.setCompoundDrawablesWithIntrinsicBounds(
                     R.drawable.icon_chatroom_mic_robot_tag, 0, 0, 0
                 )
-                ivMicTag.isVisible = false
+                ivMicTag.isVisible = micInfo.micStatus == MicStatus.BotActivated
                 mtMicRotActive.isGone = micInfo.micStatus == MicStatus.BotActivated
                 ivMicBotFloat.isGone = micInfo.micStatus == MicStatus.BotActivated
             } else {
@@ -75,13 +75,13 @@ class Room2DMicView : ConstraintLayout ,IRoomMicBinding{
                             ivMicTag.isVisible = true
                             ivMicTag.setImageResource(R.drawable.icon_chatroom_mic_mute_tag)
                         }
-
                         else -> {
                             ivMicTag.isVisible = false
                             ivMicInnerIcon.setImageResource(R.drawable.icon_chatroom_mic_add)
                         }
                     }
                 } else { // 有人
+                    ivMicTag.isVisible = true
                     ivMicInnerIcon.isVisible = false
                     ivMicInfo.setImageResource(
                         ResourcesTools.getDrawableId(ivMicInfo.context, micInfo.userInfo?.userAvatar ?: "")
@@ -97,48 +97,42 @@ class Room2DMicView : ConstraintLayout ,IRoomMicBinding{
                     when (micInfo.micStatus) {
                         MicStatus.Mute,
                         MicStatus.ForceMute -> {
-                            ivMicTag.isVisible = true
                             ivMicTag.setImageResource(R.drawable.icon_chatroom_mic_mute_tag)
                         }
                         else -> {
-                            ivMicTag.isVisible = true
+                            ivMicTag.setImageResource(R.drawable.icon_chatroom_mic_open0)
                         }
                     }
                 }
             }
-            if (micInfo.micStatus != MicStatus.Normal) {
-                return
-            }
-            // 用户音量
-            when (micInfo.audioVolumeType) {
-                ConfigConstants.VolumeType.Volume_Unknown -> {
-                    ivMicTag.isVisible = false
-                }
-                ConfigConstants.VolumeType.Volume_None -> {
-                    ivMicTag.isVisible = true
-                    ivMicTag.setImageResource(R.drawable.icon_chatroom_mic_open0)
-                }
-                ConfigConstants.VolumeType.Volume_Low -> {
-                    ivMicTag.isVisible = true
-                    ivMicTag.setImageResource(R.drawable.icon_chatroom_mic_open1)
-                }
-                ConfigConstants.VolumeType.Volume_Medium -> {
-                    ivMicTag.isVisible = true
-                    ivMicTag.setImageResource(R.drawable.icon_chatroom_mic_open2)
-                }
-                ConfigConstants.VolumeType.Volume_High -> {
-                    ivMicTag.isVisible = true
-                    ivMicTag.setImageResource(R.drawable.icon_chatroom_mic_open3)
-                }
-                ConfigConstants.VolumeType.Volume_Max -> {
-                    ivMicTag.isVisible = true
-                    ivMicTag.setImageResource(R.drawable.icon_chatroom_mic_open4)
-                }
-                else -> {
+            if (micInfo.micStatus == MicStatus.Normal || micInfo.micStatus == MicStatus.BotActivated) {
+                // 用户音量
+                when (micInfo.audioVolumeType) {
+                    ConfigConstants.VolumeType.Volume_None -> {
+                        ivMicTag.isVisible = true
+                        ivMicTag.setImageResource(R.drawable.icon_chatroom_mic_open0)
+                    }
+                    ConfigConstants.VolumeType.Volume_Low -> {
+                        ivMicTag.isVisible = true
+                        ivMicTag.setImageResource(R.drawable.icon_chatroom_mic_open1)
+                    }
+                    ConfigConstants.VolumeType.Volume_Medium -> {
+                        ivMicTag.isVisible = true
+                        ivMicTag.setImageResource(R.drawable.icon_chatroom_mic_open2)
+                    }
+                    ConfigConstants.VolumeType.Volume_High -> {
+                        ivMicTag.isVisible = true
+                        ivMicTag.setImageResource(R.drawable.icon_chatroom_mic_open3)
+                    }
+                    ConfigConstants.VolumeType.Volume_Max -> {
+                        ivMicTag.isVisible = true
+                        ivMicTag.setImageResource(R.drawable.icon_chatroom_mic_open4)
+                    }
+                    else -> {
 
+                    }
                 }
             }
-
         }
     }
 }
