@@ -136,7 +136,7 @@
             android:layout_height="wrap_content"
             android:textSize="@dimen/sp_14"
             android:textColor="@color/dark_grey_color_040925"
-            android:text="Disclaimer for demo"/>
+            android:text="@string/room_disclaimer"/>
 
         <ImageView
             android:layout_marginEnd="20dp"

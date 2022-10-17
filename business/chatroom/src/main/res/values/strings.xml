@@ -11,7 +11,7 @@
     <string name="tab_layout_karaoke_room">Karaoke</string>
 
     <string name="room_disclaimer">Disclaimer for demo</string>
-
+    <string name="room_sound_selection">Sound Selection</string>
 
     <string name="room_create_encrypt">Room Access?</string>
     <string name="room_create_private">Private</string>
@@ -21,8 +21,8 @@
     <string name="room_create_chat_room">Chat Room</string>
     <string name="room_create_chat_3d_room">Spatial Audio</string>
     <string name="room_create_chat_room_desc">Multi-audio chat scenario where anyone can unmute their mic and speak \nCo-Watch / Team Chat / Gaming Buddy Chat</string>
-    <string name="room_create_3d_room">Chat Room+Spatial Audio Mode Room</string>
-    <string name="room_create_3d_room_desc">Spatial audio chat room mode</string>
+    <string name="room_create_3d_room">Spatial Audio</string>
+    <string name="room_create_3d_room_desc">Power natural conversations that make people feel like "they're in the room" together</string>
     <string name="room_create_ktv_room">KTV</string>
     <string name="room_create_tips">Enter 4 Digit PassWord</string>
 

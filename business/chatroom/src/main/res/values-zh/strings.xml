@@ -11,6 +11,7 @@
     <string name="tab_layout_karaoke_room">KTV</string>
 
     <string name="room_disclaimer">免责声明</string>
+    <string name="room_sound_selection">最佳音效</string>
 
     <string name="room_create_encrypt">房间加密?</string>
     <string name="room_create_private">私密</string>
@@ -20,8 +21,8 @@
     <string name="room_create_chat_room">语聊房</string>
     <string name="room_create_chat_3d_room">空间音频房</string>
     <string name="room_create_chat_room_desc">多人语音互动场景，观众可以自由上麦进行语音交流 \n一起看 / 开黑 / 游戏陪玩</string>
-    <string name="room_create_3d_room">Chat Room+Spatial Audio Mode Room</string>
-    <string name="room_create_3d_room_desc">Spatial audio chat room mode</string>
+    <string name="room_create_3d_room">空间音频</string>
+    <string name="room_create_3d_room_desc">拟真且自然的对话，让人们感觉是在一个现实房间里交谈</string>
     <string name="room_create_ktv_room">KTV</string>
     <string name="room_create_tips">请输入4位数密码</string>
 

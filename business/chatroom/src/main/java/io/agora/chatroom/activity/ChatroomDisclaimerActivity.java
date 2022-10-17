@@ -57,7 +57,11 @@ public class ChatroomDisclaimerActivity extends BaseActivity implements Chatroom
         String c = getString(R.string.room_disclaimer_content_1);
         SpannableStringBuilder cBuilder = new SpannableStringBuilder(c);
         StyleSpan styleSpan = new StyleSpan(android.graphics.Typeface.BOLD);
-        cBuilder.setSpan(styleSpan,0,22, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        if (isZh(this)){
+            cBuilder.setSpan(styleSpan,0,10, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }else {
+            cBuilder.setSpan(styleSpan,0,22, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
         content.setText(cBuilder);
 
         end.setMovementMethod(LinkMovementMethod.getInstance());
