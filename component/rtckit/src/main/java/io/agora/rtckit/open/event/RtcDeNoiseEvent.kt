@@ -12,6 +12,6 @@ sealed class RtcDeNoiseEvent {
     // 中降噪
     class MediumEvent constructor(): RtcDeNoiseEvent()
     // 高降噪
-    class HeightEvent constructor(): RtcDeNoiseEvent()
+    class HighEvent constructor(): RtcDeNoiseEvent()
 
 }
