@@ -92,16 +92,16 @@
     <string name="chatroom_system_msg_member_add">加入</string>
 
     <!-- gift -->
-    <string name="gift_default_name_1">Sweet Heart</string>
-    <string name="gift_default_name_2">Flower</string>
-    <string name="gift_default_name_3">Crystal Box</string>
-    <string name="gift_default_name_4">Super Agora</string>
-    <string name="gift_default_name_5">Star</string>
-    <string name="gift_default_name_6">Lollipop</string>
-    <string name="gift_default_name_7">Diamond</string>
-    <string name="gift_default_name_8">Crown</string>
-    <string name="gift_default_name_9">Rocket</string>
-    <string name="dialog_gift_total_count">Contribution Total:%1$s</string>
+    <string name="gift_default_name_1">甜心</string>
+    <string name="gift_default_name_2">鲜花</string>
+    <string name="gift_default_name_3">水晶盒子</string>
+    <string name="gift_default_name_4">超A</string>
+    <string name="gift_default_name_5">星星</string>
+    <string name="gift_default_name_6">棒棒糖</string>
+    <string name="gift_default_name_7">钻石</string>
+    <string name="gift_default_name_8">皇冠</string>
+    <string name="gift_default_name_9">火箭</string>
+    <string name="dialog_gift_total_count">贡献总计:%1$s</string>
 
     <string name="room_create_tips">Enter 4 Digit PassWord</string>
 </resources>

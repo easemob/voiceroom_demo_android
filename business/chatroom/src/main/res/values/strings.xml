@@ -12,7 +12,12 @@
 
     <string name="room_disclaimer">Disclaimer for demo</string>
     <string name="room_sound_selection">Sound Selection</string>
+    <string name="room_current_customer_usage">Current Customer Usage</string>
 
+    <string name="room_create_empty_name">Please set a name</string>
+    <string name="room_create_room_name">Room Name</string>
+    <string name="room_create_hint_room_name">Set Room Name</string>
+    <string name="room_create_random_name">Random</string>
     <string name="room_create_encrypt">Room Access?</string>
     <string name="room_create_private">Private</string>
     <string name="room_create_public">Public</string>
@@ -25,6 +30,7 @@
     <string name="room_create_3d_room_desc">Power natural conversations that make people feel like "they're in the room" together</string>
     <string name="room_create_ktv_room">KTV</string>
     <string name="room_create_tips">Enter 4 Digit PassWord</string>
+    <string name="room_check_password">Incorrect Password</string>
 
     <string name="room_empty_data">No Chat Room Yet</string>
     <string name="room_list_title_private">Private</string>

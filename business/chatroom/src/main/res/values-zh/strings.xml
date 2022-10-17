@@ -12,7 +12,12 @@
 
     <string name="room_disclaimer">免责声明</string>
     <string name="room_sound_selection">最佳音效</string>
+    <string name="room_current_customer_usage">以下客户都在用</string>
 
+    <string name="room_create_empty_name">请输入房间名称</string>
+    <string name="room_create_room_name">房间名称</string>
+    <string name="room_create_hint_room_name">设置房间名称</string>
+    <string name="room_create_random_name">随机</string>
     <string name="room_create_encrypt">房间加密?</string>
     <string name="room_create_private">私密</string>
     <string name="room_create_public">公开</string>
@@ -25,6 +30,7 @@
     <string name="room_create_3d_room_desc">拟真且自然的对话，让人们感觉是在一个现实房间里交谈</string>
     <string name="room_create_ktv_room">KTV</string>
     <string name="room_create_tips">请输入4位数密码</string>
+    <string name="room_check_password">密码错误，请重试</string>
 
     <string name="room_empty_data">暂无房间</string>
     <string name="room_list_title_private">私密</string>

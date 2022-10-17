@@ -496,8 +496,10 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
     //接收取消申请上麦
     override fun receiveCancelApplySite(roomId: String?, message: ChatMessageData?) {
         Log.e("ChatroomLiveActivity","receiveCancelApplySite" + message.toString())
-        //刷新 owner 申请列表
-//        handsDelegate.update(0)
+        ThreadManager.getInstance().runOnMainThread{
+            //刷新 owner 申请列表
+            handsDelegate.update(0)
+        }
     }
 
     //接收拒绝邀请消息
@@ -531,11 +533,10 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
             })
     }
 
-    //接收拒绝申请消息
+    //接收拒绝申请消息(目前暂无拒绝申请)
     override fun receiveDeclineApply(roomId: String?, message: ChatMessageData?) {
         super.receiveDeclineApply(roomId, message)
         Log.e("ChatroomLiveActivity","receiveDeclineApply" + message.toString())
-        // TODO: 用户拒绝申请,房主提示
         ToastTools.show(this, getString(R.string.chatroom_mic_audience_rejected_invitation, ""))
     }
 
