@@ -208,9 +208,6 @@ public class ChatroomGiftView extends LinearLayout {
          ((Activity)context).runOnUiThread(new Runnable() {
             @Override
             public void run() {
-               for (int i = 0; i < messages.size(); i++) {
-                  notifyItemRemoved(i);
-               }
                notifyItemRangeRemoved(0,messages.size());
                messages.clear();
             }

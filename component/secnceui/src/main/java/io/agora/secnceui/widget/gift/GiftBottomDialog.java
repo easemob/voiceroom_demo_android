@@ -56,8 +56,6 @@ public class GiftBottomDialog extends BottomDialogFragment implements View.OnCli
         send = findViewById(R.id.send);
         adapter = new GiftFragmentAdapter(mContext);
         mViewPager.setAdapter(adapter);
-        //设置缓冲页数
-        mViewPager.setOffscreenPageLimit(1);
 
     }
 
