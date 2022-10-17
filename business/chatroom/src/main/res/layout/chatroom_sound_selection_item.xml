@@ -56,6 +56,15 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"/>
 
+            <View
+                app:layout_constraintTop_toBottomOf="@+id/sound_desc"
+                android:background="@color/color_F6F6F6"
+                android:layout_width="match_parent"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="6dp"
+                android:layout_height="1dp"/>
+
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/usage"
                 app:layout_constraintTop_toBottomOf="@+id/sound_desc"

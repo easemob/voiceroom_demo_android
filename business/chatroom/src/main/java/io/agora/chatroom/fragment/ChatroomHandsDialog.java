@@ -136,9 +136,11 @@ public class ChatroomHandsDialog extends BottomDialogFragment {
                         @Override
                         public void getItemCount(int count) {
                             mCount = count;
-                            String content = requireActivity().getString(titles[index]) + getString(R.string.room_tab_layout_count,String.valueOf(mCount));
-                            Log.e("getItemCount","content1: " + content);
-                            title.setText(content);
+                            if (getActivity() != null){
+                                String content = requireActivity().getString(titles[index]) + getString(R.string.room_tab_layout_count,String.valueOf(mCount));
+                                Log.e("getItemCount","content1: " + content);
+                                title.setText(content);
+                            }
                         }
                     });
                 }else if (fragments.get(position) instanceof ChatroomInviteHandsFragment){
@@ -147,9 +149,11 @@ public class ChatroomHandsDialog extends BottomDialogFragment {
                         @Override
                         public void getItemCount(int count) {
                             mCount = count;
-                            String content = requireActivity().getResources().getString(titles[index]) + getString(R.string.room_tab_layout_count,String.valueOf(mCount));
-                            Log.e("getItemCount","content2: " + content);
-                            title.setText(content);
+                            if (getActivity() != null){
+                                String content = requireActivity().getResources().getString(titles[index]) + getString(R.string.room_tab_layout_count,String.valueOf(mCount));
+                                Log.e("getItemCount","content2: " + content);
+                                title.setText(content);
+                            }
                         }
                     });
                 }

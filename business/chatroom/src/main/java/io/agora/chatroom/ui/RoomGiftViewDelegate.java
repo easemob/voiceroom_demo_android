@@ -52,56 +52,58 @@ public class RoomGiftViewDelegate {
 
 
    public void showGiftDialog() {
-      dialog = (GiftBottomDialog) activity.getSupportFragmentManager().findFragmentByTag("live_gift");
-      if(dialog == null) {
-         dialog = GiftBottomDialog.getNewInstance();
-      }
-      dialog.show(activity.getSupportFragmentManager(), "live_gift");
-      dialog.setOnConfirmClickListener(new OnSendClickListener() {
-         @Override
-         public void SendGift(View view, Object bean) {
-            dialog.setSendEnable(false);
-            GiftBean giftBean = (GiftBean) bean;
-            HttpManager.getInstance(activity).sendGift(roomId,
-                    giftBean.getId(), giftBean.getNum(), 0, new ValueCallBack<Boolean>() {
-                       @Override
-                       public void onSuccess(Boolean var1) {
-                          Log.e("sendGift","Successfully reported");
-                          CustomMsgHelper.getInstance().sendGiftMsg(
-                                  ProfileManager.getInstance().getProfile().getName(),
-                                  ProfileManager.getInstance().getProfile().getPortrait(),
-                                  giftBean.getId(), giftBean.getNum(),giftBean.getPrice(),giftBean.getName(),
-                                  new OnMsgCallBack() {
-                                     @Override
-                                     public void onSuccess(ChatMessageData message) {
-                                        Log.e("MenuItemClick",  "item_gift_onSuccess");
-                                        giftView.refresh();
-                                        if (view instanceof TextView){
-                                           send = ((TextView) view);
-                                           send.setText(time +"s");
-                                           send.setEnabled(false);
-                                           startTask();
+      if (activity != null){
+         dialog = (GiftBottomDialog) activity.getSupportFragmentManager().findFragmentByTag("live_gift");
+         if(dialog == null) {
+            dialog = GiftBottomDialog.getNewInstance();
+         }
+         dialog.show(activity.getSupportFragmentManager(), "live_gift");
+         dialog.setOnConfirmClickListener(new OnSendClickListener() {
+            @Override
+            public void SendGift(View view, Object bean) {
+               dialog.setSendEnable(false);
+               GiftBean giftBean = (GiftBean) bean;
+               HttpManager.getInstance(activity).sendGift(roomId,
+                       giftBean.getId(), giftBean.getNum(), 0, new ValueCallBack<Boolean>() {
+                          @Override
+                          public void onSuccess(Boolean var1) {
+                             Log.e("sendGift","Successfully reported");
+                             CustomMsgHelper.getInstance().sendGiftMsg(
+                                     ProfileManager.getInstance().getProfile().getName(),
+                                     ProfileManager.getInstance().getProfile().getPortrait(),
+                                     giftBean.getId(), giftBean.getNum(),giftBean.getPrice(),giftBean.getName(),
+                                     new OnMsgCallBack() {
+                                        @Override
+                                        public void onSuccess(ChatMessageData message) {
+                                           Log.e("MenuItemClick",  "item_gift_onSuccess");
+                                           giftView.refresh();
+                                           if (view instanceof TextView){
+                                              send = ((TextView) view);
+                                              send.setText(time +"s");
+                                              send.setEnabled(false);
+                                              startTask();
+                                           }
+                                           if (giftBean.getId().equals("VoiceRoomGift9")){
+                                              showGiftAction();
+                                              dialog.dismiss();
+                                           }
                                         }
-                                        if (giftBean.getId().equals("VoiceRoomGift9")){
-                                           showGiftAction();
+                                        @Override
+                                        public void onError(String messageId, int code, String error) {
+                                           super.onError(messageId, code, error);
                                            dialog.dismiss();
                                         }
-                                     }
-                                     @Override
-                                     public void onError(String messageId, int code, String error) {
-                                        super.onError(messageId, code, error);
-                                        dialog.dismiss();
-                                     }
-                                  });
-                       }
+                                     });
+                          }
 
-                       @Override
-                       public void onError(int code, String desc) {
-                          Log.e("sendGift","Reporting failed: " + code + " "+ desc);
-                       }
-                    });
-         }
-      });
+                          @Override
+                          public void onError(int code, String desc) {
+                             Log.e("sendGift","Reporting failed: " + code + " "+ desc);
+                          }
+                       });
+            }
+         });
+      }
    }
 
    private Handler handler = new Handler();
