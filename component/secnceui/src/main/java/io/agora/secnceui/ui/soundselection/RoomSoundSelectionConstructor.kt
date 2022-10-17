@@ -21,8 +21,10 @@ object RoomSoundSelectionConstructor {
                 soundIntroduce = context.getString(R.string.chatroom_social_chat_introduce),
                 isCurrentUsing = curSoundSelectionType == ConfigConstants.SoundSelection.Social_Chat,
                 customer = mutableListOf(
-                    CustomerUsageBean("ya", R.drawable.icon_chatroom_ya_launcher),
-                    CustomerUsageBean("soul", R.drawable.icon_chatroom_soul_launcher),
+                    CustomerUsageBean("netease", R.drawable.icon_chatroom_netease),
+                    CustomerUsageBean("momo", R.drawable.icon_chatroom_momo),
+                    CustomerUsageBean("yinyu", R.drawable.icon_chatroom_yinyu),
+                    CustomerUsageBean("pipi", R.drawable.icon_chatroom_pipi),
                 )
             ),
             SoundSelectionBean(
@@ -32,7 +34,13 @@ object RoomSoundSelectionConstructor {
                 soundIntroduce = context.getString(R.string.chatroom_karaoke_introduce),
                 isCurrentUsing = curSoundSelectionType ==  ConfigConstants.SoundSelection.Karaoke,
                 customer = mutableListOf(
-                    CustomerUsageBean("ya", R.drawable.icon_chatroom_ya_launcher),
+                    CustomerUsageBean("netease", R.drawable.icon_chatroom_netease),
+                    CustomerUsageBean("jiamian", R.drawable.icon_chatroom_jiamian),
+                    CustomerUsageBean("yinyu", R.drawable.icon_chatroom_yinyu),
+                    CustomerUsageBean("poaipai", R.drawable.icon_chatroom_poaipai),
+                    CustomerUsageBean("lets_play", R.drawable.icon_chatroom_lets_play),
+                    CustomerUsageBean("qingtian", R.drawable.icon_chatroom_qingtian),
+                    CustomerUsageBean("skr", R.drawable.icon_chatroom_skr),
                     CustomerUsageBean("soul", R.drawable.icon_chatroom_soul_launcher),
                 )
             ),
@@ -43,8 +51,8 @@ object RoomSoundSelectionConstructor {
                 soundIntroduce = context.getString(R.string.chatroom_gaming_buddy_introduce),
                 isCurrentUsing = curSoundSelectionType == ConfigConstants.SoundSelection.Gaming_Buddy,
                 customer = mutableListOf(
-                    CustomerUsageBean("ya", R.drawable.icon_chatroom_ya_launcher),
-                    CustomerUsageBean("soul", R.drawable.icon_chatroom_soul_launcher),
+                    CustomerUsageBean("yalla_ludo", R.drawable.icon_chatroom_yalla_ludo),
+                    CustomerUsageBean("jiamian", R.drawable.icon_chatroom_jiamian),
                 )
             ),
             SoundSelectionBean(
@@ -54,8 +62,10 @@ object RoomSoundSelectionConstructor {
                 soundIntroduce = context.getString(R.string.chatroom_professional_broadcaster_introduce),
                 isCurrentUsing = curSoundSelectionType == ConfigConstants.SoundSelection.Professional_Broadcaster,
                 customer = mutableListOf(
-                    CustomerUsageBean("ya", R.drawable.icon_chatroom_ya_launcher),
-                    CustomerUsageBean("soul", R.drawable.icon_chatroom_soul_launcher),
+                    CustomerUsageBean("qingmang", R.drawable.icon_chatroom_qingmang),
+                    CustomerUsageBean("calf", R.drawable.icon_chatroom_calf),
+                    CustomerUsageBean("yuwanxingqiu", R.drawable.icon_chatroom_yuwanxingqiu),
+                    CustomerUsageBean("yizhibo", R.drawable.icon_chatroom_yizhibo),
                 )
             )
         )
@@ -73,10 +83,7 @@ object RoomSoundSelectionConstructor {
             soundName = soundNameBySoundSelectionType(context, soundSelectionType),
             soundIntroduce = soundIntroduceBySoundSelectionType(context, soundSelectionType),
             isCurrentUsing = true,
-            customer = mutableListOf(
-                CustomerUsageBean("ya", R.drawable.icon_chatroom_ya_launcher),
-                CustomerUsageBean("soul", R.drawable.icon_chatroom_soul_launcher)
-            )
+            customer = soundSelectionCustomer(soundSelectionType),
         )
     }
 
@@ -110,6 +117,45 @@ object RoomSoundSelectionConstructor {
             }
             else -> {
                 context.getString(R.string.chatroom_social_chat_introduce)
+            }
+        }
+    }
+
+    private fun soundSelectionCustomer(soundSelectionType: Int): List<CustomerUsageBean> {
+        return  when (soundSelectionType) {
+            ConfigConstants.SoundSelection.Karaoke -> {
+                mutableListOf(
+                    CustomerUsageBean("netease", R.drawable.icon_chatroom_netease),
+                    CustomerUsageBean("jiamian", R.drawable.icon_chatroom_jiamian),
+                    CustomerUsageBean("yinyu", R.drawable.icon_chatroom_yinyu),
+                    CustomerUsageBean("poaipai", R.drawable.icon_chatroom_poaipai),
+                    CustomerUsageBean("lets_play", R.drawable.icon_chatroom_lets_play),
+                    CustomerUsageBean("qingtian", R.drawable.icon_chatroom_qingtian),
+                    CustomerUsageBean("skr", R.drawable.icon_chatroom_skr),
+                    CustomerUsageBean("soul", R.drawable.icon_chatroom_soul_launcher),
+                )
+            }
+            ConfigConstants.SoundSelection.Gaming_Buddy -> {
+                mutableListOf(
+                    CustomerUsageBean("yalla_ludo", R.drawable.icon_chatroom_yalla_ludo),
+                    CustomerUsageBean("jiamian", R.drawable.icon_chatroom_jiamian),
+                )
+            }
+            ConfigConstants.SoundSelection.Professional_Broadcaster -> {
+                mutableListOf(
+                    CustomerUsageBean("qingmang", R.drawable.icon_chatroom_qingmang),
+                    CustomerUsageBean("calf", R.drawable.icon_chatroom_calf),
+                    CustomerUsageBean("yuwanxingqiu", R.drawable.icon_chatroom_yuwanxingqiu),
+                    CustomerUsageBean("yizhibo", R.drawable.icon_chatroom_yizhibo),
+                )
+            }
+            else -> {
+                mutableListOf(
+                    CustomerUsageBean("netease", R.drawable.icon_chatroom_netease),
+                    CustomerUsageBean("momo", R.drawable.icon_chatroom_momo),
+                    CustomerUsageBean("yinyu", R.drawable.icon_chatroom_yinyu),
+                    CustomerUsageBean("pipi", R.drawable.icon_chatroom_pipi),
+                )
             }
         }
     }

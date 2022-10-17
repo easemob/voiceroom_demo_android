@@ -70,9 +70,10 @@ public class LiveGiftListFragment extends BaseInitFragment implements OnItemClic
     public void onResume() {
         super.onResume();
         adapter.setData(GiftRepository.getGiftsByPage(getContext(),position));
-        adapter.setSelectedPosition(0);
-        if (listener != null && adapter.getData() != null)
+        if (listener != null && adapter.getData() != null && adapter.mData.size() > 0){
+            adapter.setSelectedPosition(0);
             listener.onFirstItem(adapter.getItem(0));
+        }
     }
 
     @Override

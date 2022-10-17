@@ -14,6 +14,7 @@ import org.jetbrains.annotations.NotNull;
 import bean.ChatMessageData;
 import custormgift.CustomMsgHelper;
 import custormgift.OnMsgCallBack;
+import io.agora.buddy.tool.ThreadManager;
 import io.agora.chatroom.general.net.HttpManager;
 import io.agora.chatroom.general.repositories.ProfileManager;
 import io.agora.secnceui.bean.GiftBean;
@@ -76,17 +77,25 @@ public class RoomGiftViewDelegate {
                                         @Override
                                         public void onSuccess(ChatMessageData message) {
                                            Log.e("MenuItemClick",  "item_gift_onSuccess");
-                                           giftView.refresh();
-                                           if (view instanceof TextView){
-                                              send = ((TextView) view);
-                                              send.setText(time +"s");
-                                              send.setEnabled(false);
-                                              startTask();
-                                           }
-                                           if (giftBean.getId().equals("VoiceRoomGift9")){
-                                              showGiftAction();
-                                              dialog.dismiss();
-                                           }
+                                           ThreadManager.getInstance().runOnMainThread(new Runnable() {
+                                              @Override
+                                              public void run() {
+                                                 if (activity.isDestroyed()){
+                                                    return;
+                                                 }
+                                                 giftView.refresh();
+                                                 if (view instanceof TextView){
+                                                    send = ((TextView) view);
+                                                    send.setText(time +"s");
+                                                    send.setEnabled(false);
+                                                    startTask();
+                                                 }
+                                                 if (giftBean.getId().equals("VoiceRoomGift9")){
+                                                    showGiftAction();
+                                                    dialog.dismiss();
+                                                 }
+                                              }
+                                           });
                                         }
                                         @Override
                                         public void onError(String messageId, int code, String error) {
