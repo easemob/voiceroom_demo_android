@@ -25,12 +25,15 @@ class RoomSoundSelectionSheetDialog constructor(
 
     companion object {
         const val KEY_CURRENT_SELECTION = "current_selection"
+        const val KEY_IS_ENABLE = "is_enable"
     }
 
     private var soundSelectionAdapter: BaseRecyclerViewAdapter<ItemChatroomSoundSelectionBinding, SoundSelectionBean, RoomSoundSelectionViewHolder>? =
         null
 
     private val soundSelectionList = mutableListOf<SoundSelectionBean>()
+
+
 
     override fun getViewBinding(inflater: LayoutInflater, container: ViewGroup?): DialogChatroomSoundSelectionBinding {
         return DialogChatroomSoundSelectionBinding.inflate(inflater, container, false)
@@ -61,7 +64,6 @@ class RoomSoundSelectionSheetDialog constructor(
             BaseRecyclerViewAdapter(soundSelectionList, object : OnItemClickListener<SoundSelectionBean> {
 
                 override fun onItemClick(data: SoundSelectionBean, view: View, position: Int, viewType: Long) {
-                    super.onItemClick(data, view, position, viewType)
                     if (isEnable) {
                         soundSelectionListener.onSoundEffect(data, data.isCurrentUsing)
                     } else {

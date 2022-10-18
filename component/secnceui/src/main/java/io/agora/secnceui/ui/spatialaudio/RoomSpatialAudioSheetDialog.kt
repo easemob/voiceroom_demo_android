@@ -12,11 +12,15 @@ import io.agora.secnceui.constants.ScenesConstant.DISABLE_ALPHA
 import io.agora.secnceui.constants.ScenesConstant.ENABLE_ALPHA
 import io.agora.secnceui.databinding.DialogChatroomSpatialAudioBinding
 
-class RoomSpatialAudioSheetDialog constructor(private val isEnabled: Boolean = true) :
-    BaseFixedHeightSheetDialog<DialogChatroomSpatialAudioBinding>() {
+class RoomSpatialAudioSheetDialog constructor() : BaseFixedHeightSheetDialog<DialogChatroomSpatialAudioBinding>() {
 
     companion object {
         const val KEY_SPATIAL_OPEN = "key_spatial_open"
+        const val KEY_IS_ENABLED = "is_enabled"
+    }
+
+    private val isEnabled: Boolean by lazy {
+        arguments?.getBoolean(KEY_IS_ENABLED,true) ?:true
     }
 
     override fun getViewBinding(inflater: LayoutInflater, container: ViewGroup?): DialogChatroomSpatialAudioBinding {
