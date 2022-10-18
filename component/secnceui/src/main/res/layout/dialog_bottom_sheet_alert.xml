@@ -38,6 +38,7 @@
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/mbLeft"
         style="@style/chatroom_cancel_button_text_style"
+        android:layout_width="148dp"
         android:layout_marginTop="40dp"
         android:layout_marginEnd="12dp"
         android:layout_marginBottom="30dp"
@@ -56,6 +57,7 @@
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/mbRight"
         style="@style/chatroom_confirm_button_text_style"
+        android:layout_width="148dp"
         android:layout_marginStart="12dp"
         android:layout_marginBottom="30dp"
         android:text="@string/chatroom_submit"
