@@ -35,6 +35,7 @@ android {
 dependencies {
 
     api dep["core-ktx"]
+    api dep["kotlinx-coroutines"]
 
     compileOnly dep["gson"]
     // glide

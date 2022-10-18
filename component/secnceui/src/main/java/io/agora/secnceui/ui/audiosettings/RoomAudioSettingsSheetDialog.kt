@@ -6,8 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.CompoundButton
 import android.widget.SeekBar
+import android.widget.Toast
 import androidx.core.view.isVisible
 import io.agora.baseui.dialog.BaseSheetDialog
+import io.agora.buddy.tool.ToastTools
 import io.agora.buddy.tool.doOnProgressChanged
 import io.agora.config.ConfigConstants
 import io.agora.secnceui.R
@@ -46,10 +48,12 @@ class RoomAudioSettingsSheetDialog constructor() : BaseSheetDialog<DialogChatroo
                 mcbAgoraBot.alpha = ENABLE_ALPHA
                 pbAgoraBotVolume.alpha = ENABLE_ALPHA
                 mtAgoraBotVolumeValue.alpha = ENABLE_ALPHA
+                mcbAgoraBotDisable.isVisible = false
             } else {
                 mcbAgoraBot.alpha = DISABLE_ALPHA
                 pbAgoraBotVolume.alpha = DISABLE_ALPHA
                 mtAgoraBotVolumeValue.alpha = DISABLE_ALPHA
+                mcbAgoraBotDisable.isVisible = true
             }
             mcbAgoraBot.isEnabled = audioSettingsInfo.enable
             pbAgoraBotVolume.isEnabled = audioSettingsInfo.enable
@@ -65,6 +69,11 @@ class RoomAudioSettingsSheetDialog constructor() : BaseSheetDialog<DialogChatroo
 
             mcbAgoraBot.setOnCheckedChangeListener { button, isChecked ->
                 audioSettingsListener?.onBotCheckedChanged(button, isChecked)
+            }
+            mcbAgoraBotDisable.setOnClickListener {
+                activity?.let {
+                    ToastTools.show(it, getString(R.string.chatroom_only_host_can_change_robot))
+                }
             }
             mtBestSoundEffectArrow.setOnClickListener {
                 audioSettingsListener?.onSoundEffect(audioSettingsInfo.soundSelection, audioSettingsInfo.enable)
@@ -85,8 +94,8 @@ class RoomAudioSettingsSheetDialog constructor() : BaseSheetDialog<DialogChatroo
     /**
      * 更新机器人ui
      */
-    fun updateBoxCheckBoxView(openBot:Boolean){
-        if (audioSettingsInfo.botOpen==openBot) return
+    fun updateBoxCheckBoxView(openBot: Boolean) {
+        if (audioSettingsInfo.botOpen == openBot) return
         audioSettingsInfo.botOpen = openBot
         binding?.mcbAgoraBot?.isChecked = audioSettingsInfo.botOpen
     }

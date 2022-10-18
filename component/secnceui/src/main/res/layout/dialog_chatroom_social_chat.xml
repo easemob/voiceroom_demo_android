@@ -41,6 +41,7 @@
         android:layout_marginEnd="20dp"
         android:textColor="@color/color_3C4267"
         android:textSize="@dimen/sp_13"
+        android:lineSpacingExtra="3dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mtBottomSheetTitle"

@@ -151,8 +151,6 @@
     <style name="chatroom_cancel_button_text_style">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:paddingStart">28dp</item>
-        <item name="android:paddingEnd">28dp</item>
         <item name="android:paddingTop">10dp</item>
         <item name="android:paddingBottom">10dp</item>
         <item name="android:textColor">@color/color_756E98</item>
@@ -165,14 +163,13 @@
     <style name="chatroom_confirm_button_text_style">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:paddingStart">28dp</item>
-        <item name="android:paddingEnd">28dp</item>
         <item name="android:paddingTop">10dp</item>
         <item name="android:paddingBottom">10dp</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:textSize">@dimen/sp_16</item>
         <item name="android:gravity">center</item>
-        <item name="android:elevation">4dp</item>
+<!--        9.0 以下隐藏阴影 -->
+<!--        <item name="android:elevation">4dp</item>-->
         <item name="android:background">@drawable/bg_rect_radius24_gradient_blue</item>
     </style>
 </resources>

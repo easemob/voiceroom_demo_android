@@ -137,10 +137,13 @@ class RoomAINSSheetDialog constructor() : BaseFixedHeightSheetDialog<DialogChatr
 //                                    anisSoundsAdapter?.notifyItemChanged(position)
                                     anisSoundCallback?.invoke(position, anisSound)
                                 }
+                            } else {
+                               // nothing
                             }
-
                         } else {
-                            ToastTools.show(view.context, getString(R.string.chatroom_only_host_can_change_anis))
+                            activity?.let {
+                                ToastTools.show(it, getString(R.string.chatroom_only_host_can_change_anis))
+                            }
                         }
                     }
                 }
@@ -157,16 +160,16 @@ class RoomAINSSheetDialog constructor() : BaseFixedHeightSheetDialog<DialogChatr
             anisSoundsHeaderAdapter, anisSoundsAdapter,
         )
         recyclerView.layoutManager = LinearLayoutManager(context)
-        context?.let {
-            recyclerView.addItemDecoration(
-                MaterialDividerItemDecoration(it, MaterialDividerItemDecoration.VERTICAL).apply {
-                    dividerColor = ResourcesTools.getColor(it.resources, R.color.divider_color_1F979797)
-                    dividerThickness = 1.dp.toInt()
-                    dividerInsetStart = 15.dp.toInt()
-                    dividerInsetEnd = 15.dp.toInt()
-                }
-            )
-        }
+//        context?.let {
+//            recyclerView.addItemDecoration(
+//                MaterialDividerItemDecoration(it, MaterialDividerItemDecoration.VERTICAL).apply {
+//                    dividerColor = ResourcesTools.getColor(it.resources, R.color.divider_color_1F979797)
+//                    dividerThickness = 1.dp.toInt()
+//                    dividerInsetStart = 15.dp.toInt()
+//                    dividerInsetEnd = 15.dp.toInt()
+//                }
+//            )
+//        }
         recyclerView.adapter = concatAdapter
     }
 
@@ -178,7 +181,7 @@ class RoomAINSSheetDialog constructor() : BaseFixedHeightSheetDialog<DialogChatr
             anisSoundsAdapter?.notifyItemChanged(position)
         } else {
             anisSoundsAdapter?.selectedIndex = -1
-            anisSoundsList[position].soundMode =  ConfigConstants.AINSMode.AINS_Unknown
+            anisSoundsList[position].soundMode = ConfigConstants.AINSMode.AINS_Unknown
         }
     }
 }

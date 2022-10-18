@@ -72,6 +72,16 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/mtAgoraBot" />
 
+        <View
+            android:id="@+id/mcbAgoraBotDisable"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/mcbAgoraBot"
+            app:layout_constraintEnd_toEndOf="@+id/mcbAgoraBot"
+            app:layout_constraintStart_toStartOf="@+id/mcbAgoraBot"
+            app:layout_constraintTop_toTopOf="@+id/mcbAgoraBot" />
+
         <com.google.android.material.divider.MaterialDivider
             style="@style/chatroom_bottom_sheet_divider_style"
             android:layout_marginStart="20dp"
