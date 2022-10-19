@@ -493,6 +493,17 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
         if (!TextUtils.equals(roomKitBean.chatroomId, roomId)) return
         attributeMap?.let {
             val newMicMap = RoomInfoConstructor.convertAttrMicUiBean(it, roomKitBean.ownerId)
+            if (isOwner){
+                for (entry in attributeMap.entries) {
+                    val json = attributeMap[entry.key]
+                    Log.e("attributeMap", "key: $json");
+                    val attribute = GsonTools.toBean(json, VRMicBean::class.java)
+                    attribute?.let { it ->
+                        map.put(entry.key, it.member?.uid ?: "")
+                    }
+                }
+                handsDelegate.check(map)
+            }
             ThreadManager.getInstance().runOnMainThread {
                 roomObservableDelegate.onUpdateMicMap(newMicMap)
                 if (roomKitBean.roomType == ConfigConstants.RoomType.Common_Chatroom) { // 普通房间
@@ -508,20 +519,6 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
                     Log.e("liveActivity", "roomAttributesDidUpdated:  ${roomObservableDelegate.isOnMic()}")
                     binding.chatBottom.setEnableHand(roomObservableDelegate.isOnMic())
                     handsDelegate.resetRequest()
-                }else{
-                    for (entry in attributeMap.entries) {
-                        try {
-                            val json = attributeMap[entry.key]
-                            Log.e("attributeMap", "key: $json");
-                            val attribute = GsonTools.toBean(json, VRMicBean::class.java)
-                            attribute.let { it ->
-                                map.put(entry.key, it?.member?.uid ?: "")
-                            }
-                        } catch (e: JSONException) {
-                            e.printStackTrace()
-                        }
-                    }
-                    handsDelegate.check(map)
                 }
             }
         }
