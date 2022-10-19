@@ -66,7 +66,7 @@ class RoomSoundSelectionSheetDialog constructor(
                         soundSelectionListener.onSoundEffect(data, data.isCurrentUsing)
                     } else {
                         activity?.let {
-                            ToastTools.show(it, getString(R.string.chatroom_only_host_can_change_best_sound),)
+                            ToastTools.showTips(it, getString(R.string.chatroom_only_host_can_change_best_sound),)
                         }
 
                     }

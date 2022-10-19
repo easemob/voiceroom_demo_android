@@ -1,8 +1,8 @@
 package io.agora.buddy.tool
 
 import android.app.Activity
-import android.content.Context
 import android.widget.Toast
+import io.agora.buddy.tool.internal.InternalToast
 
 /**
  * @author create by zhangwei03
@@ -11,17 +11,29 @@ object ToastTools {
 
     @JvmStatic
     fun show(context: Activity, msg: String, duration: Int = Toast.LENGTH_SHORT) {
+        show(context, msg, InternalToast.COMMON, duration)
+    }
+
+    @JvmStatic
+    fun showTips(context: Activity, msg: String, duration: Int = Toast.LENGTH_SHORT) {
+        show(context, msg, InternalToast.TIPS, duration)
+    }
+
+    @JvmStatic
+    fun showError(context: Activity, msg: String, duration: Int = Toast.LENGTH_SHORT) {
+        show(context, msg, InternalToast.ERROR, duration)
+    }
+
+    @JvmStatic
+    private fun show(
+        context: Activity,
+        msg: String,
+        toastType: Int = InternalToast.COMMON,
+        duration: Int = Toast.LENGTH_SHORT
+    ) {
         CoroutineUtil.execMain {
-            // TODO:  add 系统window？
-//            CustomToast.makeText(context, msg, duration).show()
-            Toast.makeText(context, msg, duration).show()
+            InternalToast.init(context.application)
+            InternalToast.show(msg, toastType, duration)
         }
-//        if (ThreadManager.getInstance().isMainThread) {
-//            Toast.makeText(context, msg, duration).show()
-//        } else {
-//            ThreadManager.getInstance().runOnMainThread {
-//                Toast.makeText(context, msg, duration).show()
-//            }
-//        }
     }
 }

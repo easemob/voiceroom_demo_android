@@ -7,10 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
-import io.agora.buddy.tool.ResourcesTools
-import io.agora.buddy.tool.ScreenTools
-import io.agora.buddy.tool.dp
-import io.agora.buddy.tool.number2K
+import io.agora.buddy.tool.*
 import io.agora.config.ConfigConstants
 import io.agora.secnceui.R
 import io.agora.secnceui.bean.RoomInfoBean
@@ -52,9 +49,9 @@ class RoomLiveTopView : ConstraintLayout, View.OnClickListener, IRoomLiveTopView
 
     }
 
-    fun setTitleMaxWidth(activity: Activity) {
+    fun setTitleMaxWidth() {
         val layoutParams: ViewGroup.LayoutParams = binding.llTitle.layoutParams
-        layoutParams.width = ScreenTools.getScreenWidth(activity) - 220.dp.toInt()
+        layoutParams.width = getDisplaySize().width - 220.dp.toInt()
         binding.llTitle.layoutParams = layoutParams
     }
 

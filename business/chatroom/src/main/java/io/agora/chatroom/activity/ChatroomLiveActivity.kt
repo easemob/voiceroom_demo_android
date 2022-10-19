@@ -247,7 +247,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
                 },
             ).setUpMicInfoMap(RtcRoomController.get().isUseBot)
         }
-        binding.cTopView.setTitleMaxWidth(this)
+        binding.cTopView.setTitleMaxWidth()
         // 头部 如果是创建房间进来有详情
         roomInfoBean?.let {
             roomObservableDelegate.onRoomDetails(it)

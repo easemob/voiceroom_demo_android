@@ -142,7 +142,7 @@ class RoomAINSSheetDialog constructor() : BaseFixedHeightSheetDialog<DialogChatr
                             }
                         } else {
                             activity?.let {
-                                ToastTools.show(it, getString(R.string.chatroom_only_host_can_change_anis))
+                                ToastTools.showTips(it, getString(R.string.chatroom_only_host_can_change_anis))
                             }
                         }
                     }

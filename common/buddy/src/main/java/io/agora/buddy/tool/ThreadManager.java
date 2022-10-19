@@ -10,6 +10,8 @@ import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import io.agora.buddy.tool.internal.InternalThreadFactory;
+
 /**
  * Thread manager
  */
@@ -43,7 +45,7 @@ public class ThreadManager {
                 KEEP_ALIVE_TIME,
                 KEEP_ALIVE_TIME_UNIT,
                 taskQueue,
-                new BackgroundThreadFactory(Process.THREAD_PRIORITY_BACKGROUND));
+                new InternalThreadFactory(Process.THREAD_PRIORITY_BACKGROUND));
         mMainThreadHandler = new Handler(Looper.getMainLooper());
     }
 
