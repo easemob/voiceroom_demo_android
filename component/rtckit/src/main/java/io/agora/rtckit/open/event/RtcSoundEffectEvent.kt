@@ -11,8 +11,8 @@ sealed class RtcSoundEffectEvent {
     class PlayEffectEvent constructor(
         val soundId: Int,
         val filePath: String,
-        val loopCount: Int,
-        val publish: Boolean,
+        val loopback: Boolean,
+        val cycle: Int,
         val soundSpeaker: Int = ConfigConstants.BotSpeaker.BotBlue
     ) :
         RtcSoundEffectEvent()

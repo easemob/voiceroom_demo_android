@@ -13,15 +13,13 @@ import io.agora.baseui.adapter.OnItemClickListener
 import io.agora.baseui.dialog.BaseSheetDialog
 import io.agora.buddy.tool.ResourcesTools
 import io.agora.buddy.tool.dp
-import io.agora.config.ConfigConstants
 import io.agora.secnceui.R
 import io.agora.secnceui.annotation.MicStatus
 import io.agora.secnceui.bean.*
 import io.agora.secnceui.databinding.DialogChatroomMicManagerBinding
 import io.agora.secnceui.ui.mic.RoomMicConstructor
 
-class RoomMicManagerSheetDialog constructor(private val onItemClickListener: OnItemClickListener<MicManagerBean>) :
-    BaseSheetDialog<DialogChatroomMicManagerBinding>() {
+class RoomMicManagerSheetDialog constructor() : BaseSheetDialog<DialogChatroomMicManagerBinding>() {
 
     companion object {
         const val KEY_MIC_INFO = "mic_info"
@@ -43,6 +41,8 @@ class RoomMicManagerSheetDialog constructor(private val onItemClickListener: OnI
         arguments?.getBoolean(KEY_IS_MYSELF, false) ?: false
     }
 
+    var onItemClickListener: OnItemClickListener<MicManagerBean>?=null
+
     override fun getViewBinding(inflater: LayoutInflater, container: ViewGroup?): DialogChatroomMicManagerBinding {
         return DialogChatroomMicManagerBinding.inflate(inflater, container, false)
     }
@@ -61,7 +61,7 @@ class RoomMicManagerSheetDialog constructor(private val onItemClickListener: OnI
         }
         micManagerAdapter = RoomMicManagerAdapter(micManagerList, object : OnItemClickListener<MicManagerBean> {
             override fun onItemClick(data: MicManagerBean, view: View, position: Int, viewType: Long) {
-                onItemClickListener.onItemClick(data, view, position, viewType)
+                onItemClickListener?.onItemClick(data, view, position, viewType)
                 dismiss()
             }
         }, RoomMicManagerViewHolder::class.java)

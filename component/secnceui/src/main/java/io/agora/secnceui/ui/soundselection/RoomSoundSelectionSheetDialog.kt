@@ -4,14 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import io.agora.baseui.adapter.BaseRecyclerViewAdapter
-import io.agora.baseui.adapter.OnItemChildClickListener
 import io.agora.baseui.adapter.OnItemClickListener
 import io.agora.baseui.dialog.BaseFixedHeightSheetDialog
+import io.agora.buddy.tool.ToastTools
 import io.agora.secnceui.R
 import io.agora.secnceui.bean.SoundSelectionBean
 import io.agora.secnceui.databinding.DialogChatroomSoundSelectionBinding
@@ -25,12 +24,14 @@ class RoomSoundSelectionSheetDialog constructor(
 
     companion object {
         const val KEY_CURRENT_SELECTION = "current_selection"
+        const val KEY_IS_ENABLE = "is_enable"
     }
 
     private var soundSelectionAdapter: BaseRecyclerViewAdapter<ItemChatroomSoundSelectionBinding, SoundSelectionBean, RoomSoundSelectionViewHolder>? =
         null
 
     private val soundSelectionList = mutableListOf<SoundSelectionBean>()
+
 
     override fun getViewBinding(inflater: LayoutInflater, container: ViewGroup?): DialogChatroomSoundSelectionBinding {
         return DialogChatroomSoundSelectionBinding.inflate(inflater, container, false)
@@ -61,15 +62,13 @@ class RoomSoundSelectionSheetDialog constructor(
             BaseRecyclerViewAdapter(soundSelectionList, object : OnItemClickListener<SoundSelectionBean> {
 
                 override fun onItemClick(data: SoundSelectionBean, view: View, position: Int, viewType: Long) {
-                    super.onItemClick(data, view, position, viewType)
                     if (isEnable) {
                         soundSelectionListener.onSoundEffect(data, data.isCurrentUsing)
                     } else {
-                        Toast.makeText(
-                            view.context,
-                            getString(R.string.chatroom_only_host_can_change_best_sound),
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        activity?.let {
+                            ToastTools.showTips(it, getString(R.string.chatroom_only_host_can_change_best_sound),)
+                        }
+
                     }
                 }
             }, RoomSoundSelectionViewHolder::class.java)

@@ -11,8 +11,7 @@ import io.agora.buddy.tool.dp
 import io.agora.secnceui.bean.CustomerUsageBean
 import io.agora.secnceui.databinding.DialogChatroomSocialChatBinding
 
-class RoomSocialChatSheetDialog constructor(private val onClickSocialChatListener: OnClickSocialChatListener) :
-    BaseSheetDialog<DialogChatroomSocialChatBinding>() {
+class RoomSocialChatSheetDialog constructor() : BaseSheetDialog<DialogChatroomSocialChatBinding>() {
 
     override fun getViewBinding(inflater: LayoutInflater, container: ViewGroup?): DialogChatroomSocialChatBinding {
         return DialogChatroomSocialChatBinding.inflate(inflater, container, false)
@@ -23,7 +22,7 @@ class RoomSocialChatSheetDialog constructor(private val onClickSocialChatListene
         binding?.apply {
             setOnApplyWindowInsets(root)
             mtSocialChatMore.setOnClickListener {
-                onClickSocialChatListener.onMoreSound()
+                onClickSocialChatListener?.onMoreSound()
             }
             mtBottomSheetTitle.text = titleText
             mtSocialChatContent.text = contentText
@@ -46,6 +45,8 @@ class RoomSocialChatSheetDialog constructor(private val onClickSocialChatListene
     private var titleText: String = ""
     private var contentText: String = ""
     private var customers: List<CustomerUsageBean>? = null
+
+    var onClickSocialChatListener: OnClickSocialChatListener?=null
 
     fun titleText(titleText: String) = apply {
         this.titleText = titleText

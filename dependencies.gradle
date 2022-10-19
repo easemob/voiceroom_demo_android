@@ -19,6 +19,7 @@ rootProject.ext {
             "lifecycle-runtime-ktx"     : 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.0',
             "annotation"                : "androidx.annotation:annotation:1.4.0",
             "multidex"                  : "androidx.multidex:multidex:2.0.1",
+            "kotlinx-coroutines"                  : "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1",
 
             // test libraries
             "junit"                     : 'junit:junit:4.13.2',

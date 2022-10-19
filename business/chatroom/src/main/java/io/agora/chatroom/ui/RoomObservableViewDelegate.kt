@@ -110,6 +110,9 @@ class RoomObservableViewDelegate constructor(
             parseResource(response, object : OnResourceParseCallback<Boolean>() {
                 override fun onSuccess(data: Boolean?) {
                     if (data != true) return
+                    roomAudioSettingDialog?.let {
+                        it.updateBoxCheckBoxView(true)
+                    }
                     // 创建房间，第⼀次启动机器⼈后播放音效：
                     if (RtcRoomController.get().firstActiveBot) {
                         RtcRoomController.get().firstActiveBot = false
@@ -374,7 +377,13 @@ class RoomObservableViewDelegate constructor(
      * 排行榜
      */
     fun onClickRank(currentItem: Int = 0) {
-        RoomContributionAndAudienceSheetDialog(activity, roomKitBean, currentItem).show(
+        val dialog = RoomContributionAndAudienceSheetDialog().apply {
+            arguments = Bundle().apply {
+                putSerializable(RoomContributionAndAudienceSheetDialog.KEY_ROOM_KIT_BEAN, roomKitBean)
+                putInt(RoomContributionAndAudienceSheetDialog.KEY_CURRENT_ITEM, currentItem)
+            }
+        }
+        dialog.show(
             activity.supportFragmentManager, "ContributionAndAudienceSheetDialog"
         )
     }
@@ -383,11 +392,17 @@ class RoomObservableViewDelegate constructor(
      * 公告
      */
     fun onClickNotice(announcement: String) {
-        RoomNoticeSheetDialog(activity, roomKitBean, confirmCallback = { newNotice ->
-            roomViewModel.updateRoomNotice(activity, roomKitBean.roomId, newNotice)
-        })
+        val roomNoticeDialog = RoomNoticeSheetDialog()
             .contentText(announcement)
-            .show(activity.supportFragmentManager, "roomNoticeSheetDialog")
+            .apply {
+                arguments = Bundle().apply {
+                    putSerializable(RoomNoticeSheetDialog.KEY_ROOM_KIT_BEAN, roomKitBean)
+                }
+            }
+        roomNoticeDialog.confirmCallback = { newNotice ->
+            roomViewModel.updateRoomNotice(activity, roomKitBean.roomId, newNotice)
+        }
+        roomNoticeDialog.show(activity.supportFragmentManager, "roomNoticeSheetDialog")
     }
 
     /**
@@ -395,23 +410,41 @@ class RoomObservableViewDelegate constructor(
      */
     fun onClickSoundSocial(soundSelection: Int, finishBack: () -> Unit) {
         val curSoundSelection = RoomSoundSelectionConstructor.builderCurSoundSelection(activity, soundSelection)
-        RoomSocialChatSheetDialog(object :
+        val socialDialog = RoomSocialChatSheetDialog().titleText(curSoundSelection.soundName)
+            .contentText(curSoundSelection.soundIntroduce)
+            .customers(curSoundSelection.customer ?: mutableListOf())
+        socialDialog.onClickSocialChatListener = object :
             RoomSocialChatSheetDialog.OnClickSocialChatListener {
 
             override fun onMoreSound() {
                 onSoundSelectionDialog(RtcRoomController.get().soundEffect, finishBack)
             }
-        }).titleText(curSoundSelection.soundName)
-            .contentText(curSoundSelection.soundIntroduce)
-            .customers(curSoundSelection.customer ?: mutableListOf())
-            .show(activity.supportFragmentManager, "chatroomSocialChatSheetDialog")
+        }
+        socialDialog.show(activity.supportFragmentManager, "chatroomSocialChatSheetDialog")
     }
+
+    var roomAudioSettingDialog: RoomAudioSettingsSheetDialog? = null
 
     /**
      * 音效设置
      */
     fun onAudioSettingsDialog(finishBack: () -> Unit) {
-        RoomAudioSettingsSheetDialog(object :
+        roomAudioSettingDialog = RoomAudioSettingsSheetDialog().apply {
+            arguments = Bundle().apply {
+                val audioSettingsInfo = RoomAudioSettingsBean(
+                    enable = roomKitBean.isOwner,
+                    roomType = roomKitBean.roomType,
+                    botOpen = RtcRoomController.get().isUseBot,
+                    botVolume = RtcRoomController.get().botVolume,
+                    soundSelection = RtcRoomController.get().soundEffect,
+                    anisMode = RtcRoomController.get().anisMode,
+                    spatialOpen = false
+                )
+                putSerializable(RoomAudioSettingsSheetDialog.KEY_AUDIO_SETTINGS_INFO, audioSettingsInfo)
+            }
+        }
+
+        roomAudioSettingDialog?.audioSettingsListener = object :
             RoomAudioSettingsSheetDialog.OnClickAudioSettingsListener {
 
             override fun onBotCheckedChanged(buttonView: CompoundButton, isChecked: Boolean) {
@@ -434,20 +467,9 @@ class RoomObservableViewDelegate constructor(
                 onSpatialDialog()
             }
 
-        }).apply {
-            arguments = Bundle().apply {
-                val audioSettingsInfo = RoomAudioSettingsBean(
-                    enable = roomKitBean.isOwner,
-                    roomType = roomKitBean.roomType,
-                    botOpen = RtcRoomController.get().isUseBot,
-                    botVolume = RtcRoomController.get().botVolume,
-                    soundSelection = RtcRoomController.get().soundEffect,
-                    anisMode = RtcRoomController.get().anisMode,
-                    spatialOpen = false
-                )
-                putSerializable(RoomAudioSettingsSheetDialog.KEY_AUDIO_SETTINGS_INFO, audioSettingsInfo)
-            }
-        }.show(activity.supportFragmentManager, "mtAudioSettings")
+        }
+
+        roomAudioSettingDialog?.show(activity.supportFragmentManager, "mtAudioSettings")
     }
 
     /**
@@ -461,6 +483,7 @@ class RoomObservableViewDelegate constructor(
                         // 试听音效需要开启机器人
                         if (RtcRoomController.get().isUseBot) {
                             RoomSoundAudioConstructor.soundSelectionAudioMap[soundSelection.soundSelectionType]?.let {
+                                // 播放最佳音效说明
                                 RtcRoomController.get().playEffect(it)
                             }
                         } else {
@@ -487,51 +510,57 @@ class RoomObservableViewDelegate constructor(
      * AI降噪弹框
      */
     fun onAINSDialog(ainsMode: Int) {
-        RoomAINSSheetDialog(roomKitBean.isOwner,
-            anisModeCallback = {
-                RtcRoomController.get().anisMode = it.anisMode
-                RtcRoomController.get().deNoise(it)
-                "onAINSDialog anisModeCallback：$it".logE(TAG)
-                if (roomKitBean.isOwner && RtcRoomController.get().isUseBot && RtcRoomController.get().firstSwitchAnis) {
-                    RtcRoomController.get().firstSwitchAnis = false
-
-                    RoomSoundAudioConstructor.anisIntroduceAudioMap[it.anisMode]?.let { soundAudioList ->
-                        RtcRoomController.get().playEffect(soundAudioList)
-                    }
-                }
-            },
-            anisSoundCallback = { ainsSoundBean ->
-                "onAINSDialog anisSoundCallback：$ainsSoundBean".logE(TAG)
-                if (RtcRoomController.get().isUseBot) {
-                    RoomSoundAudioConstructor.AINSSoundMap[ainsSoundBean.soundType]?.let { soundAudioBean ->
-                        val audioUrl =
-                            if (ainsSoundBean.soundMode == ConfigConstants.AINSMode.AINS_High) soundAudioBean.audioUrlHigh else soundAudioBean.audioUrl
-                        // 试听降噪音效
-                        RtcRoomController.get()
-                            .playEffect(soundAudioBean.soundId, audioUrl, soundAudioBean.speakerType)
-                    }
-                } else {
-                    onBotMicClick(false, activity.getString(R.string.chatroom_open_bot_to_sound_effect))
-                }
-            }
-        ).apply {
+        val ainsDialog = RoomAINSSheetDialog().apply {
             arguments = Bundle().apply {
                 putInt(RoomAINSSheetDialog.KEY_AINS_MODE, ainsMode)
+                putBoolean(RoomAINSSheetDialog.KEY_IS_ENABLE, roomKitBean.isOwner)
             }
         }
-            .show(activity.supportFragmentManager, "mtAnis")
+        ainsDialog.anisModeCallback = {
+            RtcRoomController.get().anisMode = it.anisMode
+            RtcRoomController.get().deNoise(it)
+            "onAINSDialog anisModeCallback：$it".logE(TAG)
+            if (roomKitBean.isOwner && RtcRoomController.get().isUseBot && RtcRoomController.get().firstSwitchAnis) {
+                RtcRoomController.get().firstSwitchAnis = false
+
+                RoomSoundAudioConstructor.anisIntroduceAudioMap[it.anisMode]?.let { soundAudioList ->
+                    // 播放AI 降噪介绍
+                    RtcRoomController.get().playEffect(soundAudioList)
+                }
+            }
+        }
+        ainsDialog.anisSoundCallback = { position, ainsSoundBean ->
+            "onAINSDialog anisSoundCallback：$ainsSoundBean".logE(TAG)
+            if (RtcRoomController.get().isUseBot) {
+                ainsDialog.updateAnisSoundsAdapter(position, true)
+                RoomSoundAudioConstructor.AINSSoundMap[ainsSoundBean.soundType]?.let { soundAudioBean ->
+                    val audioUrl =
+                        if (ainsSoundBean.soundMode == ConfigConstants.AINSMode.AINS_High) soundAudioBean.audioUrlHigh else soundAudioBean.audioUrl
+                    // 试听降噪音效
+                    RtcRoomController.get()
+                        .playEffect(soundAudioBean.soundId, audioUrl, soundAudioBean.speakerType)
+                }
+            } else {
+                ainsDialog.updateAnisSoundsAdapter(position, false)
+                onBotMicClick(false, activity.getString(R.string.chatroom_open_bot_to_sound_effect))
+            }
+        }
+
+        ainsDialog.show(activity.supportFragmentManager, "mtAnis")
     }
 
     /**
      * 空间音频弹框
      */
     fun onSpatialDialog() {
-        RoomSpatialAudioSheetDialog(roomKitBean.isOwner).apply {
+        val spatialAudioSheetDialog = RoomSpatialAudioSheetDialog().apply {
             arguments = Bundle().apply {
                 putBoolean(RoomSpatialAudioSheetDialog.KEY_SPATIAL_OPEN, false)
+                putBoolean(RoomSpatialAudioSheetDialog.KEY_IS_ENABLED, roomKitBean.isOwner)
             }
-        }
-            .show(activity.supportFragmentManager, "mtSpatialAudio")
+        };
+
+        spatialAudioSheetDialog.show(activity.supportFragmentManager, "mtSpatialAudio")
     }
 
     /**
@@ -557,7 +586,17 @@ class RoomObservableViewDelegate constructor(
      */
     fun onUserMicClick(micInfo: MicInfoBean) {
         if (roomKitBean.isOwner || ProfileManager.getInstance().isMyself(micInfo.userInfo?.userId)) { // 房主或者自己
-            RoomMicManagerSheetDialog(object : OnItemClickListener<MicManagerBean> {
+            val roomMicMangerDialog = RoomMicManagerSheetDialog().apply {
+                arguments = Bundle().apply {
+                    putSerializable(RoomMicManagerSheetDialog.KEY_MIC_INFO, micInfo)
+                    putSerializable(RoomMicManagerSheetDialog.KEY_IS_OWNER, roomKitBean.isOwner)
+                    putSerializable(
+                        RoomMicManagerSheetDialog.KEY_IS_MYSELF,
+                        ProfileManager.getInstance().isMyself(micInfo.userInfo?.userId)
+                    )
+                }
+            }
+            roomMicMangerDialog.onItemClickListener = object : OnItemClickListener<MicManagerBean> {
                 override fun onItemClick(data: MicManagerBean, view: View, position: Int, viewType: Long) {
                     when (data.micClickAction) {
                         MicClickAction.Invite -> {
@@ -608,16 +647,8 @@ class RoomObservableViewDelegate constructor(
                         }
                     }
                 }
-            }).apply {
-                arguments = Bundle().apply {
-                    putSerializable(RoomMicManagerSheetDialog.KEY_MIC_INFO, micInfo)
-                    putSerializable(RoomMicManagerSheetDialog.KEY_IS_OWNER, roomKitBean.isOwner)
-                    putSerializable(
-                        RoomMicManagerSheetDialog.KEY_IS_MYSELF,
-                        ProfileManager.getInstance().isMyself(micInfo.userInfo?.userId)
-                    )
-                }
-            }.show(activity.supportFragmentManager, "RoomMicManagerSheetDialog")
+            }
+            roomMicMangerDialog.show(activity.supportFragmentManager, "RoomMicManagerSheetDialog")
         } else if (micInfo.micStatus == MicStatus.Lock || micInfo.micStatus == MicStatus.LockForceMute) {
             // 座位被锁麦
             ToastTools.show(activity, activity.getString(R.string.chatroom_mic_close_by_host))

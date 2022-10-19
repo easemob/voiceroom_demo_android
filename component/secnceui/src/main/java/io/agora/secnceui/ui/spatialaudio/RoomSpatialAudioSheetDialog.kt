@@ -6,17 +6,22 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import io.agora.baseui.dialog.BaseFixedHeightSheetDialog
+import io.agora.buddy.tool.ToastTools
 import io.agora.buddy.tool.doOnProgressChanged
 import io.agora.secnceui.R
 import io.agora.secnceui.constants.ScenesConstant.DISABLE_ALPHA
 import io.agora.secnceui.constants.ScenesConstant.ENABLE_ALPHA
 import io.agora.secnceui.databinding.DialogChatroomSpatialAudioBinding
 
-class RoomSpatialAudioSheetDialog constructor(private val isEnabled: Boolean = true) :
-    BaseFixedHeightSheetDialog<DialogChatroomSpatialAudioBinding>() {
+class RoomSpatialAudioSheetDialog constructor() : BaseFixedHeightSheetDialog<DialogChatroomSpatialAudioBinding>() {
 
     companion object {
         const val KEY_SPATIAL_OPEN = "key_spatial_open"
+        const val KEY_IS_ENABLED = "is_enabled"
+    }
+
+    private val isEnabled: Boolean by lazy {
+        arguments?.getBoolean(KEY_IS_ENABLED, true) ?: true
     }
 
     override fun getViewBinding(inflater: LayoutInflater, container: ViewGroup?): DialogChatroomSpatialAudioBinding {
@@ -64,11 +69,10 @@ class RoomSpatialAudioSheetDialog constructor(private val isEnabled: Boolean = t
             mcbRedBotAirAbsorb.isEnabled = isEnabled
             mcbRedBotVoiceBlur.isEnabled = isEnabled
 
-            mcbBlueBotSpatialAudio.setOnCheckedChangeListener { buttonView, isChecked ->
-                Toast.makeText(requireContext(), "setOnCheckedChangeListener", Toast.LENGTH_SHORT).show()
-            }
             mcbBlueBotSpatialAudio.setOnClickListener {
-                Toast.makeText(requireContext(), getString(R.string.chatroom_only_host_can_change_robot), Toast.LENGTH_SHORT).show()
+                activity?.let {
+                    ToastTools.showTips(it, getString(R.string.chatroom_only_host_can_change_robot))
+                }
             }
 
             pbBlueBotAttenuationFactor.doOnProgressChanged { _, progress, _ ->

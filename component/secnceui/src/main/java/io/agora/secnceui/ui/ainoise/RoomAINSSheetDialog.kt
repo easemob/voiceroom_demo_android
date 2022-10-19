@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -23,14 +22,11 @@ import io.agora.secnceui.databinding.DialogChatroomAinsBinding
 import io.agora.secnceui.databinding.ItemChatroomAgoraAinsBinding
 import io.agora.secnceui.databinding.ItemChatroomAinsAuditionBinding
 
-class RoomAINSSheetDialog constructor(
-    private val isEnable: Boolean = true,
-    private val anisModeCallback: (AINSModeBean) -> Unit,
-    private val anisSoundCallback: (AINSSoundsBean) -> Unit
-) : BaseFixedHeightSheetDialog<DialogChatroomAinsBinding>() {
+class RoomAINSSheetDialog constructor() : BaseFixedHeightSheetDialog<DialogChatroomAinsBinding>() {
 
     companion object {
         const val KEY_AINS_MODE = "ains_mode"
+        const val KEY_IS_ENABLE = "is_Enable"
     }
 
     private var anisModeAdapter: BaseRecyclerViewAdapter<ItemChatroomAgoraAinsBinding, AINSModeBean, RoomAINSModeViewHolder>? =
@@ -45,6 +41,14 @@ class RoomAINSSheetDialog constructor(
     private val anisMode by lazy {
         arguments?.getInt(KEY_AINS_MODE, ConfigConstants.AINSMode.AINS_Medium) ?: ConfigConstants.AINSMode.AINS_Medium
     }
+
+    private val isEnable by lazy {
+        arguments?.getBoolean(KEY_IS_ENABLE, true) ?: true
+    }
+
+    var anisModeCallback: ((ainsModeBean: AINSModeBean) -> Unit)? = null
+
+    var anisSoundCallback: ((position: Int, anisSoundBean: AINSSoundsBean) -> Unit)? = null
 
     override fun getViewBinding(
         inflater: LayoutInflater,
@@ -85,7 +89,7 @@ class RoomAINSSheetDialog constructor(
                         } else {
                             anisMode.anisMode = extData
                             anisModeAdapter?.notifyItemChanged(position)
-                            anisModeCallback.invoke(anisMode)
+                            anisModeCallback?.invoke(anisMode)
                         }
                     }
                 }
@@ -130,12 +134,16 @@ class RoomAINSSheetDialog constructor(
                                     }
                                     anisSoundsAdapter?.selectedIndex = position
                                     anisSound.soundMode = extData
-                                    anisSoundsAdapter?.notifyItemChanged(position)
-                                    anisSoundCallback.invoke(anisSound)
+//                                    anisSoundsAdapter?.notifyItemChanged(position)
+                                    anisSoundCallback?.invoke(position, anisSound)
                                 }
+                            } else {
+                               // nothing
                             }
                         } else {
-                            ToastTools.show(view.context, getString(R.string.chatroom_only_host_can_change_anis))
+                            activity?.let {
+                                ToastTools.showTips(it, getString(R.string.chatroom_only_host_can_change_anis))
+                            }
                         }
                     }
                 }
@@ -152,16 +160,28 @@ class RoomAINSSheetDialog constructor(
             anisSoundsHeaderAdapter, anisSoundsAdapter,
         )
         recyclerView.layoutManager = LinearLayoutManager(context)
-        context?.let {
-            recyclerView.addItemDecoration(
-                MaterialDividerItemDecoration(it, MaterialDividerItemDecoration.VERTICAL).apply {
-                    dividerColor = ResourcesTools.getColor(it.resources, R.color.divider_color_1F979797)
-                    dividerThickness = 1.dp.toInt()
-                    dividerInsetStart = 15.dp.toInt()
-                    dividerInsetEnd = 15.dp.toInt()
-                }
-            )
-        }
+//        context?.let {
+//            recyclerView.addItemDecoration(
+//                MaterialDividerItemDecoration(it, MaterialDividerItemDecoration.VERTICAL).apply {
+//                    dividerColor = ResourcesTools.getColor(it.resources, R.color.divider_color_1F979797)
+//                    dividerThickness = 1.dp.toInt()
+//                    dividerInsetStart = 15.dp.toInt()
+//                    dividerInsetEnd = 15.dp.toInt()
+//                }
+//            )
+//        }
         recyclerView.adapter = concatAdapter
+    }
+
+    /**
+     * 播放时候更新ui
+     */
+    fun updateAnisSoundsAdapter(position: Int, update: Boolean = true) {
+        if (update) {
+            anisSoundsAdapter?.notifyItemChanged(position)
+        } else {
+            anisSoundsAdapter?.selectedIndex = -1
+            anisSoundsList[position].soundMode = ConfigConstants.AINSMode.AINS_Unknown
+        }
     }
 }

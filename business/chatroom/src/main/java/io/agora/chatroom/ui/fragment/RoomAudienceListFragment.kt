@@ -168,7 +168,7 @@ class RoomAudienceListFragment : BaseUiFragment<FragmentChatroomAudienceListBind
                 HttpManager.getInstance(parentContext).invitationMic(roomId, uid, object : ValueCallBack<Boolean> {
                     override fun onSuccess(var1: Boolean?) {
                         if (var1 != true) return
-                        context?.let {
+                        activity?.let {
                             ToastTools.show(it, "invitationMic success")
                         }
                     }
@@ -182,13 +182,13 @@ class RoomAudienceListFragment : BaseUiFragment<FragmentChatroomAudienceListBind
                     .kickMic(roomId, uid, -1, object : ValueCallBack<Boolean> {
                         override fun onSuccess(var1: Boolean?) {
                             if (var1 != true) return
-                            context?.let {
+                            activity?.let {
                                 ToastTools.show(it, "kickMic success")
                             }
                         }
 
                         override fun onError(var1: Int, var2: String?) {
-                            context?.let {
+                            activity?.let {
                                 ToastTools.show(it, "kickMic onError $var1 $var2")
                             }
                         }

@@ -12,15 +12,15 @@ internal abstract class RtcBaseSoundEffectEngine<T> : RtcBaseEngine<T>() {
     /**
      * @param soundSpeakerType  机器人播放类型
      * @param soundId 唯一标识
-     * @param filePath String 文件路径
-     * @param loopCount 循环次数
-     * @param publish 是否将音效传到远端  true 传送 false 本地播放
+     * @param filePath String 需要进行混音的音乐文件路径。
+     * @param loopBack 是否只在本地客户端播放音乐文件
+     * @param cycle 音乐文件的播放次数。设为 -1 表示循环播放。
      */
     abstract fun playEffect(
         soundId: Int,
         filePath: String,
-        loopCount: Int,
-        publish: Boolean,
+        loopBack: Boolean,
+        cycle: Int,
         soundSpeakerType: Int = ConfigConstants.BotSpeaker.BotBlue,
     ): Boolean
 

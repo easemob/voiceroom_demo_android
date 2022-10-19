@@ -84,12 +84,29 @@ internal class AgoraRtcEventHandler(var rtcListener: IRtcClientListener?) : IRtc
     }
 
     /**
-     * 当音效文件播放结束后触发该回调
+     * 音乐文件的播放状态已改变回调。
+     * state
+     * 音乐文件播放状态。
+     * AUDIO_MIXING_STATE_PLAYING (710): 音乐文件正常播放。
+     * AUDIO_MIXING_STATE_PAUSED (711): 音乐文件暂停播放。
+     * AUDIO_MIXING_STATE_STOPPED (713): 音乐文件停止播放。
+     * AUDIO_MIXING_STATE_FAILED (714): 音乐文件报错。SDK 会在 errorCode 参数中返回具体的报错原因。
+     * reasonCode
+     * 错误码。
+     * AUDIO_MIXING_REASON_OK(0): 正常。
+     * AUDIO_MIXING_REASON_CAN_NOT_OPEN (701): 音乐文件打开出错。
+     * AUDIO_MIXING_REASON_TOO_FREQUENT_CALL (702): 音乐文件打开太频繁。
+     * AUDIO_MIXING_REASON_INTERRUPTED_EOF (703): 音乐文件播放异常中断。
+     * AUDIO_MIXING_REASON_ONE_LOOP_COMPLETED(721): 音乐文件完成一次循环播放。
+     * AUDIO_MIXING_REASON_ALL_LOOPS_COMPLETED(723): 音乐文件完成所有循环播放。
+     * AUDIO_MIXING_REASON_STOPPED_BY_USER(724): 成功调用 pauseAudioMixing 暂停播放音乐文件。
      */
-    override fun onAudioEffectFinished(soundId: Int) {
-        super.onAudioEffectFinished(soundId)
-        rtcListener?.onAudioEffectFinished(soundId)
-        "onAudioEffectFinished soundId:$soundId".logD(TAG)
+    override fun onAudioMixingStateChanged(state: Int, reasonCode: Int) {
+        super.onAudioMixingStateChanged(state, reasonCode)
+        if (state == Constants.AUDIO_MIXING_STATE_STOPPED && reasonCode == Constants.AUDIO_MIXING_REASON_ALL_LOOPS_COMPLETED) {
+            rtcListener?.onAudioMixingFinished()
+        }
+        "onAudioMixingStateChanged stat:$state,reasonCode:$reasonCode".logD(TAG)
     }
 
     override fun onLocalAudioStateChanged(state: Int, error: Int) {
@@ -156,7 +173,7 @@ internal class AgoraRtcEventHandler(var rtcListener: IRtcClientListener?) : IRtc
 
             speakers.forEachIndexed { index, audioVolumeInfo ->
                 speakerInfoList.add(
-                    RtcAudioVolumeInfo(uid = audioVolumeInfo.uid, volume = audioVolumeInfo.volume,)
+                    RtcAudioVolumeInfo(uid = audioVolumeInfo.uid, volume = audioVolumeInfo.volume)
                 )
                 "onAudioVolumeIndication uid:${audioVolumeInfo.uid},volume:${audioVolumeInfo.volume}".logD(TAG)
             }

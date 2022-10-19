@@ -1,16 +1,19 @@
-package io.agora.buddy.tool;
+package io.agora.buddy.tool.internal;
 
 import android.os.Process;
+
+import androidx.annotation.RestrictTo;
 
 import java.util.concurrent.ThreadFactory;
 
 /**
  * the factory to use when the executor creates a new thread
  */
-public class BackgroundThreadFactory implements ThreadFactory {
+@RestrictTo({RestrictTo.Scope.LIBRARY})
+public class InternalThreadFactory implements ThreadFactory {
     private final int mThreadPriority;
 
-    public BackgroundThreadFactory(int threadPriority) {
+    public InternalThreadFactory(int threadPriority) {
         mThreadPriority = threadPriority;
     }
 

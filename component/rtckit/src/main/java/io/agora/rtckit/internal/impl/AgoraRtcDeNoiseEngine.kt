@@ -12,7 +12,7 @@ internal class AgoraRtcDeNoiseEngine : RtcBaseDeNoiseEngine<RtcEngineEx>() {
 
     override fun closeDeNoise(): Boolean {
         engine?.apply {
-            setParameters("{\"che.audio.anis_mode\":0}")
+            setParameters("{\"che.audio.ains_mode\":0}")
             setParameters("{\"che.audio.nsng.lowerBound\":80}")
             setParameters("{\"che.audio.nsng.lowerMask\":50}")
             setParameters("{\"che.audio.nsng.statisticalbound\":5}")
@@ -24,7 +24,7 @@ internal class AgoraRtcDeNoiseEngine : RtcBaseDeNoiseEngine<RtcEngineEx>() {
 
     override fun openMediumDeNoise(): Boolean {
         engine?.apply {
-            setParameters("{\"che.audio.anis_mode\":2}")
+            setParameters("{\"che.audio.ains_mode\":2}")
             setParameters("{\"che.audio.nsng.lowerBound\":80}")
             setParameters("{\"che.audio.nsng.lowerMask\":50}")
             setParameters("{\"che.audio.nsng.statisticalbound\":5}")
@@ -36,7 +36,7 @@ internal class AgoraRtcDeNoiseEngine : RtcBaseDeNoiseEngine<RtcEngineEx>() {
 
     override fun openHeightDeNoise(): Boolean {
         engine?.apply {
-            setParameters("{\"che.audio.anis_mode\":2}")
+            setParameters("{\"che.audio.ains_mode\":2}")
             setParameters("{\"che.audio.nsng.lowerBound\":10}")
             setParameters("{\"che.audio.nsng.lowerMask\":10}")
             setParameters("{\"che.audio.nsng.statisticalbound\":0}")

@@ -49,10 +49,10 @@ internal class AgoraRtcClientEx : RtcBaseClientEx<RtcEngineEx>() {
             config.mContext = context
             config.mAppId = initConfig?.appId
             config.mEventHandler = eventHandler
-            config.mLogConfig = RtcEngineConfig.LogConfig().apply {
-                level = Constants.LogLevel.getValue(Constants.LogLevel.LOG_LEVEL_ERROR)
-            }
-
+//            config.mLogConfig = RtcEngineConfig.LogConfig().apply {
+//                level = Constants.LogLevel.getValue(Constants.LogLevel.LOG_LEVEL_ERROR)
+//            }
+            config.addExtension("agora_ai_noise_suppression_extension")
             try {
                 rtcEngine = RtcEngineEx.create(config) as RtcEngineEx?
             } catch (e: Exception) {

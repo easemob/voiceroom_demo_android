@@ -32,7 +32,11 @@ interface IRtcClientListener {
     fun onAudioStatus(audioChangeStatus: RtcAudioChangeStatus)
 
     /**当音效文件开始播放触发该回调*/
-    fun onAudioEffectFinished(soundId: Int, finished: Boolean = true, speakerType: Int = ConfigConstants.BotSpeaker.BotBoth)
+    fun onAudioMixingFinished(
+        soundId: Int = -1,
+        finished: Boolean = true,
+        speakerType: Int = ConfigConstants.BotSpeaker.BotBoth
+    )
 
     /**错误回调*/
     fun onError(rtcErrorStatus: RtcErrorStatus)
