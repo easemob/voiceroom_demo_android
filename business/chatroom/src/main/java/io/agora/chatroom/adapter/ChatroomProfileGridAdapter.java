@@ -6,26 +6,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-
 import androidx.constraintlayout.widget.ConstraintLayout;
-
 import com.google.android.material.imageview.ShapeableImageView;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import io.agora.chatroom.R;
 import io.agora.chatroom.bean.ProfileBean;
-import io.agora.chatroom.general.repositories.ProfileManager;
 
-public class ProfileGridAdapter extends BaseAdapter {
+public class ChatroomProfileGridAdapter extends BaseAdapter {
    private Context context;
    private LayoutInflater inflater;
    private List<ProfileBean> data = new ArrayList<>();
    private OnItemClickListener listener;
    private int selectedPosition = -1;
 
-   public ProfileGridAdapter(Context context){
+   public ChatroomProfileGridAdapter(Context context){
       this.context = context;
       this.inflater = LayoutInflater.from(context);
       getDefaultAvatar(context);

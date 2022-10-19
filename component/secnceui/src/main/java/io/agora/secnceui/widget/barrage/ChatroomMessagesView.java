@@ -5,7 +5,6 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PointF;
-import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
@@ -15,7 +14,6 @@ import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.ImageSpan;
-import android.text.style.LeadingMarginSpan;
 import android.text.style.StyleSpan;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
@@ -29,7 +27,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSmoothScroller;
@@ -39,14 +36,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 import bean.ChatMessageData;
-import bean.ChatroomConstants;
 import custormgift.CustomMsgHelper;
 import custormgift.CustomMsgType;
 import io.agora.buddy.tool.ThreadManager;
 import io.agora.secnceui.R;
 import io.agora.secnceui.utils.DeviceUtils;
 import io.agora.secnceui.widget.expression.SmileUtils;
-import manager.ChatroomMsgHelper;
+import manager.ChatroomHelper;
 
 /**
  * MessagesView
@@ -81,10 +77,10 @@ public class ChatroomMessagesView extends RelativeLayout{
         listview = (RecyclerView) findViewById(R.id.listview);
     }
 
-    public void init(String chatroomId,Boolean isOwner){
+    public void init(String chatroomId,boolean isOwner){
         this.chatroomId = chatroomId;
         this.isOwner = isOwner;
-        adapter = new ListAdapter(getContext(), ChatroomMsgHelper.getInstance().getMessageData(chatroomId));
+        adapter = new ListAdapter(getContext(), ChatroomHelper.getInstance().getMessageData(chatroomId));
         ScrollSpeedLinearLayoutManger scrollSpeedLinearLayoutManger = new ScrollSpeedLinearLayoutManger(getContext());
         //设置item滑动速度
         scrollSpeedLinearLayoutManger.setSpeedSlow();
@@ -96,11 +92,11 @@ public class ChatroomMessagesView extends RelativeLayout{
         itemDecoration.setDrawable(drawable);
         listview.addItemDecoration(itemDecoration);
         //设置item动画
-        DefaultItemAnimator defaultItemAnimator = new DefaultItemAnimator();
+//        DefaultItemAnimator defaultItemAnimator = new DefaultItemAnimator();
 //        defaultItemAnimator.setAddDuration(1000);
-        defaultItemAnimator.setRemoveDuration(1000);
-        defaultItemAnimator.setChangeDuration(1000);
-        listview.setItemAnimator(defaultItemAnimator);
+//        defaultItemAnimator.setRemoveDuration(1000);
+//        defaultItemAnimator.setChangeDuration(1000);
+//        listview.setItemAnimator(defaultItemAnimator);
         listview.setAdapter(adapter);
 
         listview.setOnTouchListener(new OnTouchListener() {
@@ -206,7 +202,7 @@ public class ChatroomMessagesView extends RelativeLayout{
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
             String from = "";
             final ChatMessageData message = messages.get(position);
-            from = ChatroomMsgHelper.getInstance().getUserName(message);
+            from = ChatroomHelper.getInstance().getUserName(message);
             String s = message.getContent();
             if (holder instanceof MyViewHolder){
                 if (isOwner){
@@ -216,7 +212,7 @@ public class ChatroomMessagesView extends RelativeLayout{
                 }
                 showText(((MyViewHolder) holder).content, from, s);
             }else if (holder instanceof SystemViewHolder){
-                from = ChatroomMsgHelper.getInstance().getSystemUserName(message);
+                from = ChatroomHelper.getInstance().getSystemUserName(message);
                 showSystemMsg(((SystemViewHolder) holder).name ,from,"");
             }
 

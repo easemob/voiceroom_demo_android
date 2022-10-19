@@ -61,4 +61,10 @@ public interface OnCustomMsgReceiveListener {
      */
     void onReceiveSystem(ChatMessageData message);
 
+    /**
+     *
+     * @param message
+     */
+    void voiceRoomUpdateRobotVolume(ChatMessageData message);
+
 }

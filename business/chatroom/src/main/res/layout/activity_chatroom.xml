@@ -23,14 +23,15 @@
         android:layout_marginTop="60dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/glHorizontal45"
         app:layout_constraintTop_toBottomOf="@+id/cTopView" />
 
-<!--    <androidx.constraintlayout.widget.Guideline-->
-<!--        android:id="@+id/glHorizontal60"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="0dp"-->
-<!--        android:orientation="horizontal"-->
-<!--        app:layout_constraintGuide_percent="0.48" />-->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/glHorizontal45"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.45" />
 
     <io.agora.secnceui.widget.gift.ChatroomGiftView
         android:id="@+id/chatroom_gift_view"
@@ -45,7 +46,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.63" />
+        app:layout_constraintGuide_percent="0.65" />
 
     <io.agora.secnceui.widget.barrage.ChatroomMessagesView
         android:id="@+id/message_view"

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 import androidx.fragment.app.FragmentActivity;
+import java.util.Map;
 import io.agora.buddy.tool.ToastTools;
 import io.agora.chatroom.R;
 import io.agora.chatroom.fragment.ChatroomHandsDialog;
@@ -118,6 +119,11 @@ public class RoomHandsViewDelegate {
                    }
                })
                .show(activity.getSupportFragmentManager(), "room_hands_apply");
+    }
+
+    public void check(Map<String,String> map){
+        if (dialog != null)
+        dialog.check(map);
     }
 
 }

@@ -2,7 +2,6 @@ package io.agora.chatroom.activity
 
 import android.os.Bundle
 import android.os.SystemClock
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import androidx.core.view.ViewCompat
@@ -17,7 +16,6 @@ import io.agora.chatroom.databinding.ActivityChatroomSplashBinding
 import io.agora.chatroom.general.repositories.ProfileManager
 import io.agora.chatroom.model.LoginViewModel
 import io.agora.config.RouterPath
-import manager.ChatroomConfigManager
 import tools.bean.VRUserBean
 
 class ChatroomSplashActivity : BaseUiActivity<ActivityChatroomSplashBinding>() {
@@ -40,10 +38,7 @@ class ChatroomSplashActivity : BaseUiActivity<ActivityChatroomSplashBinding>() {
         loginViewModel.loginObservable.observe(this) { response ->
             parseResource(response, object : OnResourceParseCallback<VRUserBean?>(true) {
                 override fun onSuccess(data: VRUserBean?) {
-                    Log.e("loginViewModel", "onSuccess")
                     ProfileManager.getInstance().profile = data
-                    ChatroomConfigManager.getInstance().login(data!!.chat_uid,data.im_token)
-
                     val interval = SystemClock.elapsedRealtime() - startTime
                     ThreadManager.getInstance().runOnMainThreadDelay({
                         initSplashPage()

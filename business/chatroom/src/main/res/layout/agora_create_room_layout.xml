@@ -23,7 +23,8 @@
         android:layout_height="wrap_content"
         app:tabIndicatorHeight="0dp"
         app:tabMode="scrollable"
-        android:paddingStart="15dp"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
         android:background="@color/transparent"
         app:tabRippleColor="@color/transparent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -33,13 +34,21 @@
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/vp_fragment"
         android:layout_width="0dp"
-        android:layout_height="200dp"
+        android:layout_height="0dp"
         android:clipChildren="false"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginTop="10dp"
         app:layout_constraintTop_toBottomOf="@id/agora_tab_layout"
+        app:layout_constraintBottom_toTopOf="@+id/glHorizontal60"
         />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/glHorizontal60"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.45" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/ed_area"
@@ -47,8 +56,10 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/vp_fragment"
         android:layout_marginTop="20dp"
-        android:layout_width="315dp"
-        android:layout_height="78dp">
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content">
 
         <TextView
             app:layout_constraintLeft_toLeftOf="parent"
@@ -62,30 +73,44 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
-        <TextView
-            android:id="@+id/random"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/random_layout"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            android:textSize="@dimen/text_size_14sp"
-            android:textColor="#3C4267"
             android:layout_marginEnd="10dp"
             android:padding="5dp"
-            android:text="@string/room_create_random_name"
-            android:textColorHint="#3C4267"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content">
 
-        <ImageView
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintRight_toLeftOf="@+id/random"
-            android:src="@drawable/icons_refresh"
-            android:layout_marginEnd="3dp"
-            android:layout_marginTop="8dp"
-            android:layout_width="14dp"
-            android:layout_height="14dp"/>
+            <TextView
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:id="@+id/random"
+                android:textSize="@dimen/text_size_14sp"
+                android:textColor="#3C4267"
+                android:text="@string/room_create_random_name"
+                android:textColorHint="#3C4267"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <ImageView
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/random"
+                android:src="@drawable/icons_refresh"
+                android:layout_marginTop="1dp"
+                android:layout_marginEnd="3dp"
+                android:layout_width="14dp"
+                android:layout_height="14dp"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
 
         <EditText
             android:id="@+id/ed_room_name"
+            app:layout_constraintTop_toBottomOf="@+id/random_layout"
             android:background="@drawable/room_create_input_bg"
             app:layout_constraintBottom_toBottomOf="parent"
             android:paddingStart="20dp"
@@ -109,7 +134,7 @@
         android:textSize="@dimen/text_size_14sp"
         android:textColor="@color/black"
         android:text="@string/room_create_encrypt"
-        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="30dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
@@ -200,13 +225,15 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginBottom="34dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
         android:gravity="center"
         android:textColor="@color/white"
         android:textSize="@dimen/text_size_16sp"
         android:textStyle="bold"
         android:text="@string/room_create_next"
         android:background="@drawable/bg_chatroom_bottom_button"
-        android:layout_width="315dp"
+        android:layout_width="0dp"
         android:layout_height="48dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

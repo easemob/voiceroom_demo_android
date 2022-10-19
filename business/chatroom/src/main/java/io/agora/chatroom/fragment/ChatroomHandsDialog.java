@@ -5,18 +5,17 @@ import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
+import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.android.material.textview.MaterialTextView;
 import java.util.ArrayList;
-import java.util.Objects;
+import java.util.Map;
 
 import io.agora.baseui.BaseInitFragment;
 import io.agora.chatroom.R;
@@ -57,7 +56,6 @@ public class ChatroomHandsDialog extends BottomDialogFragment {
         super.initView(savedInstanceState);
         mTableLayout = findViewById(R.id.tab_layout);
         mViewPager = findViewById(R.id.vp_fragment);
-        mTableLayout.selectTab(mTableLayout.getTabAt(0));
         initFragment();
         setupWithViewPager();
     }
@@ -87,6 +85,7 @@ public class ChatroomHandsDialog extends BottomDialogFragment {
                     Log.e("ChatroomHandsDialog","onTabSelected：" + mCount);
                     index = tab.getPosition();
                     title = tab.getCustomView().findViewById(R.id.mtTabText);
+                    ShapeableImageView tag_line = tab.getCustomView().findViewById(R.id.tab_bg);
                     ViewGroup.LayoutParams layoutParams = title.getLayoutParams();
                     layoutParams.height = (int) DeviceUtils.dp2px(mContext, 26);
                     title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
@@ -95,6 +94,7 @@ public class ChatroomHandsDialog extends BottomDialogFragment {
                     String content = getString(titles[index]) + getString(R.string.room_tab_layout_count,String.valueOf(mCount));
                     title.setText(content);
                     title.setTextColor(getResources().getColor(R.color.dark_grey_color_040925));
+                    tag_line.setBackgroundColor(getResources().getColor(R.color.color_156EF3));
                 }
             }
 
@@ -103,10 +103,12 @@ public class ChatroomHandsDialog extends BottomDialogFragment {
                 if(tab.getCustomView() != null) {
                     Log.e("ChatroomHandsDialog","onTabUnselected：" + mCount);
                     MaterialTextView title = tab.getCustomView().findViewById(R.id.mtTabText);
+                    ShapeableImageView tag_line = tab.getCustomView().findViewById(R.id.tab_bg);
                     title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
                     title.setText(titles[tab.getPosition()]);
                     title.setTypeface(null,Typeface.NORMAL);
                     title.setTextColor(getResources().getColor(R.color.color_979CBB));
+                    tag_line.setBackgroundColor(getResources().getColor(R.color.white));
                 }
             }
 
@@ -174,7 +176,7 @@ public class ChatroomHandsDialog extends BottomDialogFragment {
             @Override
             public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
                 tab.setCustomView(R.layout.chatroom_hands_tab_item);
-                MaterialTextView title = tab.getCustomView().findViewById(R.id.mtTabText);
+                title = tab.getCustomView().findViewById(R.id.mtTabText);
                 title.setText(titles[position]);
             }
         });
@@ -193,6 +195,11 @@ public class ChatroomHandsDialog extends BottomDialogFragment {
                     inviteHandsFragment.reset();
                 break;
         }
+    }
+
+    public void check(Map<String,String> map){
+        if (inviteHandsFragment != null)
+            inviteHandsFragment.MicChanged(map);
     }
 
 }

@@ -16,6 +16,7 @@ import custormgift.OnCustomMsgReceiveListener;
 import custormgift.OnMsgCallBack;
 import io.agora.CallBack;
 import io.agora.ChatRoomChangeListener;
+import io.agora.ConnectionListener;
 import io.agora.chat.ChatClient;
 import io.agora.chat.ChatMessage;
 import io.agora.chat.Conversation;
@@ -23,18 +24,20 @@ import io.agora.chat.CustomMessageBody;
 import io.agora.chat.TextMessageBody;
 import io.agora.util.EMLog;
 
-public class ChatroomMsgHelper implements ChatRoomChangeListener {
-    private static ChatroomMsgHelper instance;
-    private ChatroomMsgHelper(){}
+public class ChatroomHelper implements ChatRoomChangeListener, ConnectionListener {
+    private static ChatroomHelper instance;
+    private ChatroomHelper(){}
     private String chatroomId;
     private ArrayList<ChatMessageData> data = new ArrayList<>();
     public OnChatroomEventReceiveListener chatroomListener;
+    public OnChatroomConnectionListener chatroomConnectionListener;
+    private static final String TAG = "ChatroomHelper";
 
-    public static ChatroomMsgHelper getInstance() {
+    public static ChatroomHelper getInstance() {
         if(instance == null) {
-            synchronized (ChatroomMsgHelper.class) {
+            synchronized (ChatroomHelper.class) {
                 if(instance == null) {
-                    instance = new ChatroomMsgHelper();
+                    instance = new ChatroomHelper();
                 }
             }
         }
@@ -47,8 +50,12 @@ public class ChatroomMsgHelper implements ChatRoomChangeListener {
      */
     public void init(String chatroomId) {
         this.chatroomId = chatroomId;
+        //设置消息监听
         setCustomMsgListener();
+        //设置聊天室状态变化监听
         setChatRoomChangeListener();
+        //设置连接监听
+        setConnectionListener();
         //设置相关的房间信息
         CustomMsgHelper.getInstance().setChatRoomInfo(chatroomId);
 
@@ -74,8 +81,20 @@ public class ChatroomMsgHelper implements ChatRoomChangeListener {
         ChatClient.getInstance().chatroomManager().removeChatRoomListener(this);
     }
 
+    public void setConnectionListener(){
+        ChatClient.getInstance().addConnectionListener(this);
+    }
+
+    public void removeChatRoomConnectionListener(){
+        ChatClient.getInstance().removeConnectionListener(this);
+    }
+
     public void setChatRoomListener(OnChatroomEventReceiveListener listener){
         this.chatroomListener = listener;
+    }
+
+    public void setChatRoomConnectionListener(OnChatroomConnectionListener listener){
+        this.chatroomConnectionListener = listener;
     }
 
     /**
@@ -360,4 +379,92 @@ public class ChatroomMsgHelper implements ChatRoomChangeListener {
         if (chatroomListener != null)
             chatroomListener.onAttributesRemoved(roomId,keyList,from);
     }
+
+    @Override
+    public void onConnected() {
+        if (chatroomConnectionListener != null)
+            chatroomConnectionListener.onConnected();
+    }
+
+    @Override
+    public void onDisconnected(int code) {
+        if (chatroomConnectionListener != null)
+            chatroomConnectionListener.onDisconnected(code);
+    }
+
+    @Override
+    public void onTokenExpired() {
+        if (chatroomConnectionListener != null)
+            chatroomConnectionListener.onTokenExpired();
+    }
+
+    @Override
+    public void onTokenWillExpire() {
+        if (chatroomConnectionListener != null)
+            chatroomConnectionListener.onTokenWillExpire();
+    }
+
+    public void renewToken(String newToken){
+        ChatClient.getInstance().renewToken(newToken);
+    }
+
+    public void login(String uid,String token,CallBack callBack){
+        ChatClient.getInstance().loginWithAgoraToken(uid, token, new CallBack() {
+            @Override
+            public void onSuccess() {
+                callBack.onSuccess();
+                Log.d("ChatroomConfigManager","Login success");
+            }
+
+            @Override
+            public void onError(int code, String msg) {
+                Log.e("ChatroomConfigManager", "Login onError code:" + code + " desc: " + msg);
+                callBack.onError(code,msg);
+            }
+        });
+    }
+
+    public void login(String uid,String token){
+        ChatClient.getInstance().loginWithAgoraToken(uid, token, new CallBack() {
+            @Override
+            public void onSuccess() {
+                Log.d("ChatroomConfigManager","Login success");
+            }
+
+            @Override
+            public void onError(int code, String msg) {
+                Log.e("ChatroomConfigManager", "Login onError code:" + code + " desc: " + msg);
+            }
+        });
+    }
+
+    public void logout(boolean unbind,CallBack callBack){
+        ChatClient.getInstance().logout(unbind, new CallBack() {
+            @Override
+            public void onSuccess() {
+                callBack.onSuccess();
+            }
+
+            @Override
+            public void onError(int i, String s) {
+                callBack.onError(i,s);
+            }
+        });
+    }
+
+    public void logout(boolean unbind){
+        ChatClient.getInstance().logout(unbind, new CallBack() {
+            @Override
+            public void onSuccess() {
+                EMLog.d(TAG,"logout onSuccess");
+            }
+
+            @Override
+            public void onError(int code, String desc) {
+                EMLog.e(TAG,"logout onError code: " + code + "  " + desc);
+            }
+        });
+    }
+
+
 }

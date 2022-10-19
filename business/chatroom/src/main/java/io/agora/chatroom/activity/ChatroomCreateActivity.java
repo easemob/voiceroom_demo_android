@@ -35,7 +35,6 @@ import io.agora.CallBack;
 import io.agora.baseui.BaseActivity;
 import io.agora.baseui.general.callback.OnResourceParseCallback;
 import io.agora.buddy.tool.ToastTools;
-import io.agora.chat.ChatClient;
 import io.agora.chatroom.general.repositories.PageRepository;
 import io.agora.chatroom.R;
 import io.agora.chatroom.bean.PageBean;
@@ -46,7 +45,7 @@ import io.agora.config.RouterPath;
 import io.agora.secnceui.utils.DeviceUtils;
 import io.agora.secnceui.widget.encryption.ChatroomEncryptionInputView;
 import io.agora.secnceui.widget.titlebar.ChatroomTitleBar;
-import manager.ChatroomConfigManager;
+import manager.ChatroomHelper;
 import tools.bean.VRUserBean;
 import tools.bean.VRoomInfoBean;
 
@@ -69,6 +68,7 @@ public class ChatroomCreateActivity extends BaseActivity implements RadioGroup.O
    private int roomType;
    private String encryption;
    private String roomName;
+   private ConstraintLayout randomLayout;
 
    @Override
    protected int getLayoutId() {
@@ -88,6 +88,7 @@ public class ChatroomCreateActivity extends BaseActivity implements RadioGroup.O
       mTip = findViewById(R.id.input_tip);
       mNext = findViewById(R.id.bottom_next);
       baseLayout = findViewById(R.id.base_layout);
+      randomLayout = findViewById(R.id.random_layout);
       chickPrivate();
       data = PageRepository.getInstance().getDefaultPageData(this);
    }
@@ -99,7 +100,7 @@ public class ChatroomCreateActivity extends BaseActivity implements RadioGroup.O
       mRadioGroup.setOnCheckedChangeListener(this);
       mTitleBar.setOnBackPressListener(this);
       mNext.setOnClickListener(this);
-      mRandom.setOnClickListener(this);
+      randomLayout.setOnClickListener(this);
       mTableLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
          @Override
          public void onTabSelected(TabLayout.Tab tab) {
@@ -160,25 +161,20 @@ public class ChatroomCreateActivity extends BaseActivity implements RadioGroup.O
                  @Override
                  public void onSuccess(@Nullable VRoomInfoBean data) {
                     if (null != data && null != data.getRoom()){
-                       if (ChatClient.getInstance().isLoggedIn()){
-                           joinRoom(data);
-                       }else {
-                          VRUserBean userinfo = ProfileManager.getInstance().getProfile();
-                          Log.d("ChatroomCreateActivity","chat_uid: " + userinfo.getChat_uid());
-                          Log.d("ChatroomCreateActivity","im_token: " + userinfo.getIm_token());
-                          ChatroomConfigManager.getInstance().login(userinfo.getChat_uid(), userinfo.getIm_token(), new CallBack() {
-                             @Override
-                             public void onSuccess() {
-                                joinRoom(data);
-                             }
+                       VRUserBean userinfo = ProfileManager.getInstance().getProfile();
+                       Log.d("ChatroomCreateActivity","chat_uid: " + userinfo.getChat_uid());
+                       Log.d("ChatroomCreateActivity","im_token: " + userinfo.getIm_token());
+                       ChatroomHelper.getInstance().login(userinfo.getChat_uid(), userinfo.getIm_token(), new CallBack() {
+                          @Override
+                          public void onSuccess() {
+                             joinRoom(data);
+                          }
 
-                             @Override
-                             public void onError(int code, String desc) {
+                          @Override
+                          public void onError(int code, String desc) {
 
-                             }
-                          });
-                       }
-
+                          }
+                       });
                     }
                  }
               });
@@ -273,6 +269,10 @@ public class ChatroomCreateActivity extends BaseActivity implements RadioGroup.O
    private void chickPrivate(){
        if (isPublic){
           mEditText.setVisibility(View.GONE);
+          baseLayout.setFocusable(true);
+          baseLayout.setFocusableInTouchMode(true);
+          baseLayout.requestFocus();
+          hideKeyboard();
        }else {
           mEditText.setVisibility(View.VISIBLE);
           mEditText.setFocusable(true);
@@ -293,7 +293,7 @@ public class ChatroomCreateActivity extends BaseActivity implements RadioGroup.O
             encryption =  mEditText.getText().toString().trim();
             roomName = mEdRoomName.getText().toString().trim();
             check();
-      }else if (v.getId() == R.id.random){
+      }else if (v.getId() == R.id.random_layout){
          mEdRoomName.setText(randomName());
       }
    }

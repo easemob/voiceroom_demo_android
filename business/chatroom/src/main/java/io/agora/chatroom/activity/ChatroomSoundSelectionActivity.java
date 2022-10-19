@@ -24,7 +24,6 @@ import io.agora.baseui.BaseActivity;
 import io.agora.baseui.general.callback.OnResourceParseCallback;
 import io.agora.buddy.tool.ThreadManager;
 import io.agora.buddy.tool.ToastTools;
-import io.agora.chat.ChatClient;
 import io.agora.chatroom.ChatroomApplication;
 import io.agora.chatroom.R;
 import io.agora.chatroom.adapter.ChatroomSoundSelectionAdapter;
@@ -38,7 +37,7 @@ import io.agora.secnceui.bean.SoundSelectionBean;
 import io.agora.secnceui.ui.soundselection.RoomSoundSelectionConstructor;
 import io.agora.secnceui.widget.titlebar.ChatroomTitleBar;
 import io.agora.util.EMLog;
-import manager.ChatroomConfigManager;
+import manager.ChatroomHelper;
 import tools.bean.VRUserBean;
 import tools.bean.VRoomInfoBean;
 
@@ -111,36 +110,21 @@ public class ChatroomSoundSelectionActivity extends BaseActivity implements Chat
             @Override
             public void onSuccess(@Nullable VRoomInfoBean data) {
                if (null != data && null != data.getRoom()){
-                     if (ChatClient.getInstance().getCurrentUser().equals(ProfileManager.getInstance().getProfile().getChat_uid())){
-                        EMLog.e("ChatroomSoundSelectionActivity","getCurrentUser: " + ChatClient.getInstance().getCurrentUser());
-                        ChatroomConfigManager.getInstance().logout(false, new CallBack() {
-                           @Override
-                           public void onSuccess() {
-                              VRUserBean userinfo = ProfileManager.getInstance().getProfile();
-                              Log.d("ChatroomSoundSelectionActivity","chat_uid: " + userinfo.getChat_uid());
-                              Log.d("ChatroomSoundSelectionActivity","im_token: " + userinfo.getIm_token());
-                              ChatroomConfigManager.getInstance().login(userinfo.getChat_uid(), userinfo.getIm_token(), new CallBack() {
-                                 @Override
-                                 public void onSuccess() {
-                                    joinRoom(data);
-                                 }
-
-                                 @Override
-                                 public void onError(int code, String desc) {
-                                    EMLog.e("ChatroomSoundSelectionActivity", "Login Fail code: "+code + " desc: " + desc);
-                                 }
-                              });
-                           }
-
-                           @Override
-                           public void onError(int i, String s) {
-
-                           }
-                        });
-                     }else {
+                  VRUserBean userinfo = ProfileManager.getInstance().getProfile();
+                  Log.d("ChatroomSoundSelectionActivity","chat_uid: " + userinfo.getChat_uid());
+                  Log.d("ChatroomSoundSelectionActivity","im_token: " + userinfo.getIm_token());
+                  ChatroomHelper.getInstance().login(userinfo.getChat_uid(), userinfo.getIm_token(), new CallBack() {
+                     @Override
+                     public void onSuccess() {
                         joinRoom(data);
                      }
-                  }
+
+                     @Override
+                     public void onError(int code, String desc) {
+                        EMLog.e("ChatroomSoundSelectionActivity", "Login Fail code: "+code + " desc: " + desc);
+                     }
+                  });
+               }
             }
          });
       });
