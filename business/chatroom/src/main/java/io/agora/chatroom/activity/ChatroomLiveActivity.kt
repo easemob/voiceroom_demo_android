@@ -91,8 +91,6 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
     private var password: String? = ""
     private var isOwner: Boolean = false
 
-    private  val map: MutableMap<String, String> = java.util.HashMap()
-
     override fun getViewBinding(inflater: LayoutInflater): ActivityChatroomBinding {
         window.setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         return ActivityChatroomBinding.inflate(inflater)
@@ -492,17 +490,14 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
         if (isFinishing) return
         if (!TextUtils.equals(roomKitBean.chatroomId, roomId)) return
         attributeMap?.let {
-            val newMicMap = RoomInfoConstructor.convertAttrMicUiBean(it, roomKitBean.ownerId)
+            val micInfoMap = RoomInfoConstructor.convertAttr2MicInfoMap(it)
+            val newMicMap = RoomInfoConstructor.convertMicInfoMap2UiBean(micInfoMap, roomKitBean.ownerId)
             if (isOwner){
-                for (entry in attributeMap.entries) {
-                    val json = attributeMap[entry.key]
-                    Log.e("attributeMap", "key: $json");
-                    val attribute = GsonTools.toBean(json, VRMicBean::class.java)
-                    attribute?.let { it ->
-                        map.put(entry.key, it.member?.uid ?: "")
-                    }
+                val handsCheckMap = mutableMapOf<String,String>()
+                micInfoMap.forEach { (t, u) ->
+                    handsCheckMap[t] = u.member?.uid?:""
                 }
-                handsDelegate.check(map)
+                handsDelegate.check(handsCheckMap)
             }
             ThreadManager.getInstance().runOnMainThread {
                 roomObservableDelegate.onUpdateMicMap(newMicMap)
@@ -586,6 +581,14 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
             roomObservableDelegate.receiveSystem(ext)
         }
         binding.messageView.refreshSelectLast()
+    }
+
+    override fun voiceRoomUpdateRobotVolume(roomId: String?, volume: String?) {
+        super.voiceRoomUpdateRobotVolume(roomId, volume)
+        "voiceRoomUpdateRobotVolume roomId:$roomId,volume:$volume".logE()
+        if (TextUtils.equals(roomId,roomKitBean.chatroomId)){
+            RtcRoomController.get().botVolume = volume?.toInt() ?: ConfigConstants.RotDefaultVolume
+        }
     }
 
     override fun onInvitation() {

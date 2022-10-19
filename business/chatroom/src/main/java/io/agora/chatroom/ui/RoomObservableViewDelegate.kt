@@ -110,6 +110,7 @@ class RoomObservableViewDelegate constructor(
             parseResource(response, object : OnResourceParseCallback<Boolean>() {
                 override fun onSuccess(data: Boolean?) {
                     if (data != true) return
+                    RtcRoomController.get().isUseBot = true
                     roomAudioSettingDialog?.let {
                         it.updateBoxCheckBoxView(true)
                     }
@@ -129,15 +130,22 @@ class RoomObservableViewDelegate constructor(
                 override fun onSuccess(data: Boolean?) {
                     if (data != true) return
                     // 关闭机器人，暂停所有音效播放
+                    RtcRoomController.get().isUseBot = false
                     RtcRoomController.get().stopAllEffect()
                 }
             })
         }
         // 机器人音量
-        roomViewModel.robotVolumeObservable.observe(activity) { response: Resource<Boolean> ->
-            parseResource(response, object : OnResourceParseCallback<Boolean>() {
-                override fun onSuccess(data: Boolean?) {
-                    if (data != true) return
+        roomViewModel.robotVolumeObservable.observe(activity) { response: Resource<Pair<Int,Boolean>> ->
+            parseResource(response, object : OnResourceParseCallback<Pair<Int,Boolean>>() {
+                override fun onSuccess(data: Pair<Int,Boolean>?) {
+                    "robotVolume update：$data".logE()
+                    data?.let {
+                        if (it.second) {
+                            RtcRoomController.get().botVolume = it.first
+                            RtcRoomController.get().updateEffectVolume(it.first)
+                        }
+                    }
                 }
             })
         }
@@ -344,7 +352,7 @@ class RoomObservableViewDelegate constructor(
     fun onRoomDetails(vRoomInfoBean: VRoomInfoBean) {
         val isUseBot = vRoomInfoBean.room?.isUse_robot ?: false
         RtcRoomController.get().isUseBot = isUseBot
-        RtcRoomController.get().botVolume = vRoomInfoBean.room?.robot_volume ?: 50
+        RtcRoomController.get().botVolume = vRoomInfoBean.room?.robot_volume ?: ConfigConstants.RotDefaultVolume
         RtcRoomController.get().soundEffect =
             vRoomInfoBean.room?.soundSelection ?: ConfigConstants.SoundSelection.Social_Chat
 

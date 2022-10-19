@@ -31,4 +31,6 @@ internal abstract class RtcBaseSoundEffectEngine<T> : RtcBaseEngine<T>() {
     abstract fun resumeEffect(soundId: Int): Boolean
 
     abstract fun stopAllEffect(): Boolean
+
+    abstract fun updateEffectVolume(volume: Int): Boolean
 }

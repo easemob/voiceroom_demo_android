@@ -24,4 +24,5 @@ sealed class RtcSoundEffectEvent {
     class ResumeEffectEvent constructor(val soundId: Int) : RtcSoundEffectEvent()
 
     class StopAllEffectEvent constructor() : RtcSoundEffectEvent()
+    class UpdateAudioEffectEvent constructor(val volume: Int) : RtcSoundEffectEvent()
 }

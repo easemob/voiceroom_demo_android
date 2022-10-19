@@ -46,8 +46,8 @@ object RoomInfoConstructor {
             owner = serverUser2UiUser(roomDetail.owner)
             memberCount = roomDetail.member_count
             // 普通观众 memberCount +1
-            if (owner?.rtcUid != ProfileManager.getInstance().rtcUid()){
-                memberCount +=1
+            if (owner?.rtcUid != ProfileManager.getInstance().rtcUid()) {
+                memberCount += 1
             }
             giftCount = roomDetail.gift_amount
             watchCount = roomDetail.click_count
@@ -113,14 +113,28 @@ object RoomInfoConstructor {
     }
 
     /**
-     * im kv 属性转换ui bean
+     * im kv 属性转 micInfo
+     * key mic0 value micInfo
      */
-    fun convertAttrMicUiBean(attributeMap: Map<String, String>, ownerUid: String): Map<Int, MicInfoBean> {
-        val micInfoMap = mutableMapOf<Int, MicInfoBean>()
+    fun convertAttr2MicInfoMap(attributeMap: Map<String, String>): Map<String, VRMicBean> {
+        val micInfoMap = mutableMapOf<String, VRMicBean>()
         attributeMap.entries.forEach { entry ->
+            GsonTools.toBean<VRMicBean>(entry.value, object : TypeToken<VRMicBean>() {}.type)?.let { attrBean ->
+                micInfoMap[entry.key] = attrBean
+            }
+        }
+        return micInfoMap
+    }
+
+    /**
+     * micInfo map转换ui bean
+     */
+    fun convertMicInfoMap2UiBean(micInfoMap: Map<String, VRMicBean>, ownerUid: String): Map<Int, MicInfoBean> {
+        val micInfoBeanMap = mutableMapOf<Int, MicInfoBean>()
+        micInfoMap.entries.forEach { entry ->
             var index = ConfigConstants.MicConstant.micMap[entry.key]
             if (index == null) index = -1
-            GsonTools.toBean<VRMicBean>(entry.value, object : TypeToken<VRMicBean>() {}.type)?.let { attrBean ->
+            entry.value.let { attrBean ->
                 val micInfo = MicInfoBean().apply {
                     this.index = index
                     this.micStatus = attrBean.status
@@ -129,10 +143,10 @@ object RoomInfoConstructor {
                         ownerTag = !TextUtils.isEmpty(ownerUid) && TextUtils.equals(ownerUid, roomUser.uid)
                     }
                 }
-                micInfoMap[index] = micInfo
+                micInfoBeanMap[index] = micInfo
             }
         }
-        return micInfoMap
+        return micInfoBeanMap
     }
 
     fun convertServerRankToUiRank(rankList: List<VRankingMemberBean>): List<RoomRankUserBean> {
