@@ -54,8 +54,8 @@ class RtcMiddleServiceImpl constructor(
                 is RtcSoundEffectEvent.PlayEffectEvent -> playEffect(
                     soundEffect.soundId,
                     soundEffect.filePath,
-                    soundEffect.loopCount,
-                    soundEffect.publish,
+                    soundEffect.loopback,
+                    soundEffect.cycle,
                     soundEffect.soundSpeaker
                 )
                 is RtcSoundEffectEvent.StopEffectEvent -> stopEffect(soundEffect.soundId)

@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
 import android.content.res.Resources
+import android.os.Build
 import android.view.View
 import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
@@ -39,7 +40,11 @@ object ResourcesTools {
     }
 
     fun isZh(context: Context): Boolean {
-        val locale: Locale = context.resources.configuration.locale
+        val locale: Locale = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            context.resources.configuration.locales.get(0)
+        } else {
+            context.resources.configuration.locale
+        }
         val language: String = locale.language
         isZh = language.endsWith("zh")
         return isZh

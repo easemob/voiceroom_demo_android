@@ -51,8 +51,8 @@ class RtcKitManager {
                         rtcKitListener.onAudioStatus(audioChangeStatus)
                     }
 
-                    override fun onAudioEffectFinished(soundId: Int, finished: Boolean, speakerType: Int) {
-                        rtcKitListener.onAudioEffectFinished(soundId, finished, speakerType)
+                    override fun onAudioMixingFinished(soundId: Int, finished: Boolean, speakerType: Int) {
+                        rtcKitListener.onAudioMixingFinished(soundId, finished, speakerType)
                     }
 
                     override fun onError(rtcErrorStatus: RtcErrorStatus) {

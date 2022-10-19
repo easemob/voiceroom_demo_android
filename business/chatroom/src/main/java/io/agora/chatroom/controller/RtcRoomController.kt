@@ -131,7 +131,7 @@ class RtcRoomController : IRtcKitListener {
         // 取队列第一个播放
         soundAudioQueue.removeFirstOrNull()?.let {
             rtcManger?.operateSoundEffect(
-                RtcSoundEffectEvent.PlayEffectEvent(it.soundId, it.audioUrl, 0, true, it.speakerType)
+                RtcSoundEffectEvent.PlayEffectEvent(it.soundId, it.audioUrl, false, 1, it.speakerType)
             )
         }
     }
@@ -143,7 +143,7 @@ class RtcRoomController : IRtcKitListener {
         rtcManger?.let {
             // 暂停其他音效播放
             it.operateSoundEffect(RtcSoundEffectEvent.StopAllEffectEvent())
-            it.operateSoundEffect(RtcSoundEffectEvent.PlayEffectEvent(soundId, audioUrl, 0, true, speakerType))
+            it.operateSoundEffect(RtcSoundEffectEvent.PlayEffectEvent(soundId, audioUrl, false, 1, speakerType))
         }
 
     }
@@ -210,7 +210,7 @@ class RtcRoomController : IRtcKitListener {
 
     }
 
-    override fun onAudioEffectFinished(soundId: Int, finished: Boolean, speakerType: Int) {
+    override fun onAudioMixingFinished(soundId: Int, finished: Boolean, speakerType: Int) {
         if (finished) {
             // 结束播放回调--->>播放下一个，取队列第一个播放
             ThreadManager.getInstance().runOnMainThread {
@@ -218,7 +218,7 @@ class RtcRoomController : IRtcKitListener {
             }
             soundAudioQueue.removeFirstOrNull()?.let {
                 rtcManger?.operateSoundEffect(
-                    RtcSoundEffectEvent.PlayEffectEvent(it.soundId, it.audioUrl, 0, true, it.speakerType)
+                    RtcSoundEffectEvent.PlayEffectEvent(it.soundId, it.audioUrl, false, 1, it.speakerType)
                 )
             }
         } else {

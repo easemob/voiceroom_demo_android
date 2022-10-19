@@ -925,7 +925,6 @@ object RoomSoundAudioConstructor {
     }
 
     private fun getCreateCommonRoomUrl(audioPath: String): String {
-        val localPath = if (ResourcesTools.getIsZh()) CN else EN
         return BASE_URL + String.format(CreateCommonRoom, audioPath)
     }
 
