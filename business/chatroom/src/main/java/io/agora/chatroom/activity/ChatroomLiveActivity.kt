@@ -86,6 +86,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
     private var isOwner: Boolean = false
 
     override fun getViewBinding(inflater: LayoutInflater): ActivityChatroomBinding {
+        window.setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         return ActivityChatroomBinding.inflate(inflater)
     }
 
@@ -325,7 +326,13 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
                         }
                     }
                     io.agora.secnceui.R.id.extend_item_gift -> {
-                        giftViewDelegate.showGiftDialog()
+                        giftViewDelegate.showGiftDialog(object : OnMsgCallBack() {
+                            override fun onSuccess(message: ChatMessageData?) {
+                                if (this@ChatroomLiveActivity::roomObservableDelegate.isInitialized) {
+                                    roomObservableDelegate.receiveGift(roomKitBean.roomId)
+                                }
+                            }
+                        })
                     }
                 }
             }
@@ -449,7 +456,9 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
         if (CustomMsgHelper.getInstance().getMsgGiftId(message).equals("VoiceRoomGift9")) {
             giftViewDelegate.showGiftAction()
         }
-        roomObservableDelegate.receiveGift(roomKitBean.roomId)
+        if (this@ChatroomLiveActivity::roomObservableDelegate.isInitialized) {
+            roomObservableDelegate.receiveGift(roomKitBean.roomId)
+        }
     }
 
     override fun receiveApplySite(roomId: String?, message: ChatMessageData?) {

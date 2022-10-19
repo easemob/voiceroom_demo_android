@@ -52,7 +52,7 @@ public class RoomGiftViewDelegate {
    }
 
 
-   public void showGiftDialog() {
+   public void showGiftDialog(OnMsgCallBack msgCallBack) {
       if (activity != null){
          dialog = (GiftBottomDialog) activity.getSupportFragmentManager().findFragmentByTag("live_gift");
          if(dialog == null) {
@@ -96,11 +96,17 @@ public class RoomGiftViewDelegate {
                                                  }
                                               }
                                            });
+                                           if (msgCallBack != null) {
+                                              msgCallBack.onSuccess(message);
+                                           }
                                         }
                                         @Override
                                         public void onError(String messageId, int code, String error) {
                                            super.onError(messageId, code, error);
                                            dialog.dismiss();
+                                           if (msgCallBack != null) {
+                                              msgCallBack.onError(messageId, code, error);
+                                           }
                                         }
                                      });
                           }
