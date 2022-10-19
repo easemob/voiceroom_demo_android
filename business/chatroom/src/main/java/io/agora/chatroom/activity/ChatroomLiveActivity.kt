@@ -492,14 +492,14 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
         attributeMap?.let {
             val micInfoMap = RoomInfoConstructor.convertAttr2MicInfoMap(it)
             val newMicMap = RoomInfoConstructor.convertMicInfoMap2UiBean(micInfoMap, roomKitBean.ownerId)
-            if (isOwner){
-                val handsCheckMap = mutableMapOf<String,String>()
-                micInfoMap.forEach { (t, u) ->
-                    handsCheckMap[t] = u.member?.uid?:""
-                }
-                handsDelegate.check(handsCheckMap)
+            val handsCheckMap = mutableMapOf<String,String>()
+            micInfoMap.forEach { (t, u) ->
+                handsCheckMap[t] = u.member?.uid ?: ""
             }
             ThreadManager.getInstance().runOnMainThread {
+                if (isOwner){
+                    handsDelegate.check(handsCheckMap)
+                }
                 roomObservableDelegate.onUpdateMicMap(newMicMap)
                 if (roomKitBean.roomType == ConfigConstants.RoomType.Common_Chatroom) { // 普通房间
                     binding.rvChatroom2dMicLayout.receiverAttributeMap(newMicMap)
