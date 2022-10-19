@@ -483,6 +483,7 @@ class RoomObservableViewDelegate constructor(
                         // 试听音效需要开启机器人
                         if (RtcRoomController.get().isUseBot) {
                             RoomSoundAudioConstructor.soundSelectionAudioMap[soundSelection.soundSelectionType]?.let {
+                                // 播放最佳音效说明
                                 RtcRoomController.get().playEffect(it)
                             }
                         } else {
@@ -523,6 +524,7 @@ class RoomObservableViewDelegate constructor(
                 RtcRoomController.get().firstSwitchAnis = false
 
                 RoomSoundAudioConstructor.anisIntroduceAudioMap[it.anisMode]?.let { soundAudioList ->
+                    // 播放AI 降噪介绍
                     RtcRoomController.get().playEffect(soundAudioList)
                 }
             }

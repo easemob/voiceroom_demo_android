@@ -122,16 +122,16 @@ class RtcRoomController : IRtcKitListener {
      */
     fun playEffect(soundAudioList: List<SoundAudioBean>) {
         // 暂停其他音效播放
-        rtcManger?.operateSoundEffect(
-            RtcSoundEffectEvent.StopAllEffectEvent()
-        )
+        rtcManger?.operateSoundEffect(RtcSoundEffectEvent.StopAllEffectEvent())
         // 加入音效队列
         soundAudioQueue.clear()
         soundAudioQueue.addAll(soundAudioList)
         // 取队列第一个播放
         soundAudioQueue.removeFirstOrNull()?.let {
             rtcManger?.operateSoundEffect(
-                RtcSoundEffectEvent.PlayEffectEvent(it.soundId, it.audioUrl, false, 1, it.speakerType)
+                RtcSoundEffectEvent.PlayEffectEvent(
+                    it.soundId, it.audioUrl, false, 1, it.speakerType
+                )
             )
         }
     }
@@ -140,12 +140,9 @@ class RtcRoomController : IRtcKitListener {
      * 播放音效
      */
     fun playEffect(soundId: Int, audioUrl: String, speakerType: Int) {
-        rtcManger?.let {
-            // 暂停其他音效播放
-            it.operateSoundEffect(RtcSoundEffectEvent.StopAllEffectEvent())
-            it.operateSoundEffect(RtcSoundEffectEvent.PlayEffectEvent(soundId, audioUrl, false, 1, speakerType))
-        }
-
+        // 暂停其他音效播放
+        stopAllEffect()
+        rtcManger?.operateSoundEffect(RtcSoundEffectEvent.PlayEffectEvent(soundId, audioUrl, false, 1, speakerType))
     }
 
     /**
