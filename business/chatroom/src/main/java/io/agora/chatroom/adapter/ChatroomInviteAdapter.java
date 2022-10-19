@@ -7,14 +7,15 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.textview.MaterialTextView;
+import java.util.HashMap;
+import java.util.Map;
 import io.agora.baseui.adapter.RoomBaseRecyclerViewAdapter;
 import io.agora.chatroom.R;
 import tools.bean.VMemberBean;
 
 public class ChatroomInviteAdapter extends RoomBaseRecyclerViewAdapter<VMemberBean> {
     private onActionListener listener;
-    private boolean isInvited;
-    private String selectUid;
+    private Map<String,Boolean> checkMap = new HashMap<>();
 
     @Override
     public RoomBaseRecyclerViewAdapter.ViewHolder<VMemberBean> getViewHolder(ViewGroup parent, int viewType) {
@@ -49,19 +50,15 @@ public class ChatroomInviteAdapter extends RoomBaseRecyclerViewAdapter<VMemberBe
                         listener.onItemActionClick(view,position,item.getUid());
                 }
             });
-            action.setText(mContext.getString(R.string.chatroom_invite));
-            if (item.getUid().equals(selectUid)){
-                if (isInvited){
-                    action.setText(mContext.getString(R.string.chatroom_invited));
-                    action.setBackgroundResource(R.drawable.bg_rect_radius20_grey);
-                    action.setEnabled(false);
-                }else {
-                    action.setText(mContext.getString(R.string.chatroom_invite));
-                    action.setBackgroundResource(R.drawable.bg_rect_radius20_gradient_blue);
-                    action.setEnabled(true);
-                }
+            if (checkMap.containsKey(item.getUid())){
+                action.setText(mContext.getString(R.string.chatroom_invited));
+                action.setBackgroundResource(R.drawable.bg_rect_radius20_grey);
+                action.setEnabled(false);
+            }else {
+                action.setText(mContext.getString(R.string.chatroom_invite));
+                action.setBackgroundResource(R.drawable.bg_rect_radius20_gradient_blue);
+                action.setEnabled(true);
             }
-
         }
 
         @Override
@@ -81,9 +78,8 @@ public class ChatroomInviteAdapter extends RoomBaseRecyclerViewAdapter<VMemberBe
         void onItemActionClick(View view,int position,String uid);
     }
 
-    public void setInvited(String uid,boolean isInvited){
-        this.isInvited = isInvited;
-        this.selectUid = uid;
+    public void setInvited(Map<String,Boolean> inviteData){
+        this.checkMap = inviteData;
         notifyDataSetChanged();
     }
 

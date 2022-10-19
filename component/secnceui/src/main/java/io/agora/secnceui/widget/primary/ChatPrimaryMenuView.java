@@ -286,73 +286,61 @@ public class ChatPrimaryMenuView extends RelativeLayout implements ExpressionVie
     }
 
     public void setShowHandStatus(boolean isOwner,boolean isShowHandStatus){
-        ThreadManager.getInstance().runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                if (isOwner){
-                    ImageView handStatus = menuLayout.findViewById(R.id.extend_item_hand_up_status);
-                    if (isShowHandStatus){
-                        handStatus.setVisibility(VISIBLE);
-                    }else {
-                        handStatus.setVisibility(GONE);
-                    }
+        post(()-> {
+            if (isOwner){
+                ImageView handStatus = menuLayout.findViewById(R.id.extend_item_hand_up_status);
+                if (isShowHandStatus){
+                    handStatus.setVisibility(VISIBLE);
                 }else {
-                    ImageView hand = menuLayout.findViewById(R.id.extend_item_hand_up);
-                    if (isShowHandStatus){
-                        hand.setImageResource(R.drawable.icon_handup_dot);
-                    }else {
-                        hand.setImageResource(R.drawable.icon_handuphard);
-                    }
+                    handStatus.setVisibility(GONE);
+                }
+            }else {
+                ImageView hand = menuLayout.findViewById(R.id.extend_item_hand_up);
+                if (isShowHandStatus){
+                    hand.setImageResource(R.drawable.icon_handup_dot);
+                }else {
+                    hand.setImageResource(R.drawable.icon_handuphard);
                 }
             }
         });
     }
 
     public void setEnableHand(boolean isEnable){
-        ThreadManager.getInstance().runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                ImageView hand = menuLayout.findViewById(R.id.extend_item_hand_up);
-                if (isEnable){
-                    hand.setImageResource(R.drawable.icon_vector);
-                    hand.setEnabled(false);
-                }else {
-                    hand.setImageResource(R.drawable.icon_handuphard);
-                    hand.setEnabled(true);
-                }
+        post(()-> {
+            ImageView hand = menuLayout.findViewById(R.id.extend_item_hand_up);
+            if (isEnable){
+                hand.setImageResource(R.drawable.icon_vector);
+                hand.setEnabled(false);
+            }else {
+                hand.setImageResource(R.drawable.icon_handuphard);
+                hand.setEnabled(true);
             }
         });
     }
 
     public void setEnableMic(boolean isEnable){
-        ThreadManager.getInstance().runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                ImageView mic = menuLayout.findViewById(R.id.extend_item_mic);
-                if (isEnable){
-                    mic.setImageResource(R.drawable.icon_mic);
-                }else {
-                    mic.setImageResource(R.drawable.icon_close_mic);
-                }
+        post(()-> {
+            ImageView mic = menuLayout.findViewById(R.id.extend_item_mic);
+            if (isEnable){
+                mic.setImageResource(R.drawable.icon_mic);
+            }else {
+                mic.setImageResource(R.drawable.icon_close_mic);
             }
         });
     }
 
     public void showMicVisible(boolean muteLocal,boolean isVisible){
-        ThreadManager.getInstance().runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                ImageView mic = menuLayout.findViewById(R.id.extend_item_mic);
-                if (muteLocal) {
-                    mic.setImageResource(R.drawable.icon_close_mic);
-                } else {
-                    mic.setImageResource(R.drawable.icon_mic);
-                }
-                if (isVisible){
-                    mic.setVisibility(VISIBLE);
-                }else {
-                    mic.setVisibility(GONE);
-                }
+        post(()-> {
+            ImageView mic = menuLayout.findViewById(R.id.extend_item_mic);
+            if (muteLocal) {
+                mic.setImageResource(R.drawable.icon_close_mic);
+            } else {
+                mic.setImageResource(R.drawable.icon_mic);
+            }
+            if (isVisible){
+                mic.setVisibility(VISIBLE);
+            }else {
+                mic.setVisibility(GONE);
             }
         });
     }

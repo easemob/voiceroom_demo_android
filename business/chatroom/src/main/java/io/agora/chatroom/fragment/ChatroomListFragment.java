@@ -19,7 +19,6 @@ import io.agora.baseui.adapter.RoomBaseRecyclerViewAdapter;
 import io.agora.baseui.general.callback.OnResourceParseCallback;
 import io.agora.buddy.tool.ThreadManager;
 import io.agora.buddy.tool.ToastTools;
-import io.agora.chat.ChatClient;
 import io.agora.chatroom.R;
 import io.agora.chatroom.adapter.ChatroomListAdapter;
 import io.agora.chatroom.general.repositories.ProfileManager;
@@ -27,7 +26,7 @@ import io.agora.chatroom.model.ChatroomViewModel;
 import io.agora.config.RouterParams;
 import io.agora.config.RouterPath;
 import io.agora.secnceui.widget.encryption.ChatroomEncryptionInputDialog;
-import manager.ChatroomConfigManager;
+import manager.ChatroomHelper;
 import tools.bean.VRUserBean;
 import tools.bean.VRoomBean;
 
@@ -186,26 +185,21 @@ public class ChatroomListFragment extends BaseChatroomListFragment<VRoomBean.Roo
     public void onItemClick(View view, int position) {
         roomBean = listAdapter.getItem(position);
         Log.e("onItemClick","getOwnerUid: " + roomBean.getOwnerUid());
-        if (!ChatClient.getInstance().isLoggedIn()){
-            VRUserBean data = ProfileManager.getInstance().getProfile();
-            Log.d("ChatroomListFragment","chat_uid: " + data.getChat_uid());
-            Log.d("ChatroomListFragment","im_token: " + data.getIm_token());
-            ChatroomConfigManager.getInstance().login(data.getChat_uid(), data.getIm_token(), new CallBack() {
-                @Override
-                public void onSuccess() {
-                    Log.d("ChatroomListFragment","Login success");
-                    checkPrivate();
-                }
+        VRUserBean data = ProfileManager.getInstance().getProfile();
+        Log.d("ChatroomListFragment","chat_uid: " + data.getChat_uid());
+        Log.d("ChatroomListFragment","im_token: " + data.getIm_token());
+        ChatroomHelper.getInstance().login(data.getChat_uid(), data.getIm_token(), new CallBack() {
+            @Override
+            public void onSuccess() {
+                Log.d("ChatroomListFragment","Login success");
+                checkPrivate();
+            }
 
-                @Override
-                public void onError(int code, String msg) {
-                    Log.e("ChatroomListFragment", "Login onError code:" + code + " desc: " + msg);
-                    checkPrivate();
-                }
-            });
-        }else {
-            checkPrivate();
-        }
+            @Override
+            public void onError(int code, String msg) {
+                Log.e("ChatroomListFragment", "Login onError code:" + code + " desc: " + msg);
+            }
+        });
     }
 
     private void goChatroomPage(VRoomBean.RoomsBean roomBean) {

@@ -47,6 +47,11 @@ public enum CustomMsgType {
      * 系统消息 成员加入
      */
     CHATROOM_SYSTEM("chatroom_join"),
+
+    /**
+     * 机器人音量更新
+     */
+    CHATROOM_UPDATE_ROBOT_VOLUME("chatroom_updateRobotVolume"),
     ;
 
     private String name;

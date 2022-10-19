@@ -1,6 +1,8 @@
 package io.agora.chatroom.fragment;
 
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -92,22 +95,47 @@ public class ChatroomInviteHandsFragment extends BaseListFragment<VMemberBean> i
             parseResource(response, new OnResourceParseCallback<VRoomUserBean>() {
                 @Override
                 public void onSuccess(@Nullable VRoomUserBean data) {
+                    int total = 0;
                     if (data != null){
                         cursor = data.getCursor();
-                        int total = data.getTotal();
-                        if (isRefreshing){
-                            adapter.setData(data.getMembers());
+                        dataList.clear();
+
+                        if (adapter.getData() != null && adapter.getData().size() > 0){
+                            dataList.addAll(adapter.getData());
+                            total = dataList.size();
+                            Log.e("ChatroomInviteHandsFragment","total1: " + total);
+                            for (VMemberBean member : adapter.getData()) {
+                                if (member.getMic_index() != -1){
+                                    dataList.remove(member);
+                                    total = total -1;
+                                }
+                            }
                         }else {
-                            adapter.addData(data.getMembers());
+                            dataList.addAll(data.getMembers());
+                            total = dataList.size();
+                            Log.e("ChatroomInviteHandsFragment","total2: " + total);
+                            if (data.getMembers().size() > 0){
+                                for (VMemberBean member : data.getMembers()) {
+                                    if (member.getMic_index() != -1){
+                                        dataList.remove(member);
+                                        total = total -1;
+                                    }
+                                }
+                            }
+                        }
+                        if (isRefreshing){
+                            adapter.setData(dataList);
+                        }else {
+                            adapter.addData(dataList);
                         }
                         if (null != listener)
                             listener.getItemCount(total);
                         finishRefresh();
                         isRefreshing = false;
-                        if (adapter.getData() != null){
+                        if (adapter.getData() != null && adapter.getData().size() > 0){
                             for (VMemberBean datum : adapter.getData()) {
                                 if (map.containsKey(datum.getUid())){
-                                    adapter.setInvited(datum.getUid(), Boolean.TRUE.equals(map.get(datum.getUid())));
+                                    adapter.setInvited(map);
                                 }
                             }
                         }
@@ -143,7 +171,9 @@ public class ChatroomInviteHandsFragment extends BaseListFragment<VMemberBean> i
                             @Override
                             public void run() {
                                 isLoadingNextPage = true;
-                                pullData();
+                                if (!TextUtils.isEmpty(cursor)){
+                                    pullData();
+                                }
                             }
                         });
                     }
@@ -194,7 +224,6 @@ public class ChatroomInviteHandsFragment extends BaseListFragment<VMemberBean> i
     }
 
     public void reset(){
-        adapter.clearData();
         cursor = "";
         isRefreshing = true;
         handsViewModel.getInviteList(getActivity(),roomId,pageSize,cursor);
@@ -209,8 +238,8 @@ public class ChatroomInviteHandsFragment extends BaseListFragment<VMemberBean> i
                 ThreadManager.getInstance().runOnMainThread(new Runnable() {
                     @Override
                     public void run() {
-                        adapter.setInvited(uid,true);
                         map.put(uid,true);
+                        adapter.setInvited(map);
                     }
                 });
             }
@@ -234,5 +263,19 @@ public class ChatroomInviteHandsFragment extends BaseListFragment<VMemberBean> i
     public void onDestroy() {
         super.onDestroy();
         map.clear();
+    }
+
+    public void MicChanged(Map<String,String> data){
+        if (adapter.getData() != null && adapter.getData().size() > 0){
+            dataList.addAll(adapter.getData());
+            for (String key : data.keySet()) {
+                for (VMemberBean datum : adapter.getData()) {
+                    if (String.valueOf(data.get(key)).equals(datum.getUid())){
+                        reset();
+                        return;
+                    }
+                }
+            }
+        }
     }
 }

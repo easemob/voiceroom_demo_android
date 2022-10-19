@@ -11,7 +11,7 @@
         app:layout_constraintRight_toRightOf="parent"
         android:background="@drawable/icon_create_chat_room"
         android:layout_width="match_parent"
-        android:layout_height="200dp">
+        android:layout_height="match_parent">
         
         <TextView
             android:id="@+id/item_title"

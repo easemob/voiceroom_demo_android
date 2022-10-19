@@ -1,9 +1,11 @@
 package manager;
 
-import android.app.ActivityManager;
+import android.app.Application;
 import android.content.Context;
+import android.os.Build;
 import android.util.Log;
-
+import androidx.annotation.RequiresApi;
+import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -11,9 +13,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import bean.ChatMessageData;
 import custormgift.CustomMsgHelper;
 import custormgift.OnCustomMsgReceiveListener;
-import io.agora.CallBack;
-import io.agora.ConnectionListener;
-import io.agora.Error;
 import io.agora.chat.ChatClient;
 import io.agora.chat.ChatOptions;
 import io.agora.util.EMLog;
@@ -45,9 +44,38 @@ public class ChatroomConfigManager {
             return;
         }
         ChatClient.getInstance().init(context,options);
-        ChatClient.getInstance().addConnectionListener(connectionListener);
+        registerListener();
+    }
 
-        ChatroomMsgHelper.getInstance().setOnCustomMsgReceiveListener(new OnCustomMsgReceiveListener() {
+    private void registerListener(){
+        ChatroomHelper.getInstance().setChatRoomConnectionListener(new OnChatroomConnectionListener() {
+            @Override
+            public void onConnected() {
+                EMLog.i(TAG, "onConnected");
+            }
+
+            @Override
+            public void onDisconnected(int error) {
+                EMLog.i(TAG, "onDisconnected ="+error);
+            }
+
+            @Override
+            public void onTokenWillExpire() {
+                try {
+                    for (ChatroomListener listener : ChatroomConfigManager.this.messageListeners) {
+                        listener.onTokenWillExpire();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onTokenExpired() {
+
+            }
+        });
+        ChatroomHelper.getInstance().setOnCustomMsgReceiveListener(new OnCustomMsgReceiveListener() {
             @Override
             public void onReceiveGiftMsg(ChatMessageData message) {
                 try {
@@ -145,14 +173,25 @@ public class ChatroomConfigManager {
                     e.printStackTrace();
                 }
             }
+
+            @Override
+            public void voiceRoomUpdateRobotVolume(ChatMessageData message) {
+                try {
+                    for (ChatroomListener listener : ChatroomConfigManager.this.messageListeners) {
+                        listener.voiceRoomUpdateRobotVolume(message.getConversationId(),CustomMsgHelper.getInstance().getCustomVolume(message));
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         });
 
-        ChatroomMsgHelper.getInstance().setChatRoomListener(new OnChatroomEventReceiveListener() {
+        ChatroomHelper.getInstance().setChatRoomListener(new OnChatroomEventReceiveListener() {
             @Override
             public void onRoomDestroyed(String roomId) {
                 try {
                     for (ChatroomListener listener : ChatroomConfigManager.this.messageListeners) {
-                        listener.chatroomDestroyed(roomId);
+                        listener.onRoomDestroyed(roomId);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -240,129 +279,33 @@ public class ChatroomConfigManager {
     }
 
     private boolean isMainProcess(Context context) {
-        int pid = android.os.Process.myPid();
-        ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
-        for (ActivityManager.RunningAppProcessInfo appProcess : activityManager.getRunningAppProcesses()) {
-            if (appProcess.pid == pid) {
-                return context.getApplicationInfo().packageName.equals(appProcess.processName);
-            }
+        String processName;
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            processName = getProcessNameByApplication();
+        }else {
+            processName = getProcessNameByReflection();
         }
-        return false;
+        return context.getApplicationInfo().packageName.equals(processName);
     }
 
-    private ConnectionListener connectionListener = new ConnectionListener() {
-        @Override
-        public void onConnected() {
-            EMLog.i(TAG, "onConnected");
-        }
-
-        @Override
-        public void onDisconnected(int error) {
-            EMLog.i(TAG, "onDisconnected ="+error);
-            if (error == Error.USER_REMOVED
-                    || error == Error.USER_LOGIN_ANOTHER_DEVICE
-                    || error == Error.SERVER_SERVICE_RESTRICTED
-                    || error == Error.USER_KICKED_BY_CHANGE_PASSWORD
-                    || error == Error.USER_KICKED_BY_OTHER_DEVICE) {
-
-            }
-        }
-
-        @Override
-        public void onTokenExpired() {
-            int tokenExpired = Error.TOKEN_EXPIRED;
-        }
-
-        @Override
-        public void onTokenWillExpire() {
-            try {
-                for (ChatroomListener listener : ChatroomConfigManager.this.messageListeners) {
-                    listener.onTokenWillExpire();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    };
-
-
-    public void login(String uid,String token,CallBack callBack){
-        ChatClient.getInstance().loginWithAgoraToken(uid, token, new CallBack() {
-            @Override
-            public void onSuccess() {
-                callBack.onSuccess();
-                Log.d("ChatroomConfigManager","Login success");
-            }
-
-            @Override
-            public void onError(int code, String msg) {
-                Log.e("ChatroomConfigManager", "Login onError code:" + code + " desc: " + msg);
-                callBack.onError(code,msg);
-            }
-        });
+    @RequiresApi(api = Build.VERSION_CODES.P)
+    private String getProcessNameByApplication() {
+        return Application.getProcessName();
     }
 
-    public void login(String uid,String token){
-        ChatClient.getInstance().loginWithAgoraToken(uid, token, new CallBack() {
-            @Override
-            public void onSuccess() {
-                Log.d("ChatroomConfigManager","Login success");
+    private String getProcessNameByReflection() {
+        String processName = null;
+        try {
+            final Method declaredMethod = Class.forName("android.app.ActivityThread", false, Application.class.getClassLoader())
+                    .getDeclaredMethod("currentProcessName", (Class<?>[]) new Class[0]);
+            declaredMethod.setAccessible(true);
+            final Object invoke = declaredMethod.invoke(null, new Object[0]);
+            if (invoke instanceof String) {
+                processName = (String) invoke;
             }
-
-            @Override
-            public void onError(int code, String msg) {
-                Log.e("ChatroomConfigManager", "Login onError code:" + code + " desc: " + msg);
-            }
-        });
-    }
-
-    public void logout(boolean unbind,CallBack callBack){
-        ChatClient.getInstance().logout(unbind, new CallBack() {
-            @Override
-            public void onSuccess() {
-                callBack.onSuccess();
-            }
-
-            @Override
-            public void onError(int i, String s) {
-                callBack.onError(i,s);
-            }
-        });
-    }
-
-    public interface ChatroomListener{
-        //收到正常文本消息
-        void receiveTextMessage(String roomId,ChatMessageData message);
-        //收到礼物消息
-        void receiveGift(String roomId, ChatMessageData message);
-        //接收申请消息
-        default void receiveApplySite(String roomId,ChatMessageData message){}
-        //接收取消申请消息
-        default void receiveCancelApplySite(String roomId,ChatMessageData message){}
-        //接收邀请消息
-        default void receiveInviteSite(String roomId,ChatMessageData message){}
-        //接收拒绝邀请消息
-        default void receiveInviteRefusedSite(String roomId,ChatMessageData message){}
-        //接收拒绝申请消息
-        default void receiveDeclineApply(String roomId,ChatMessageData message){}
-        //用户加入房间 后面采用自定义消息
-        default void userJoinedRoom(String roomId,String uid){}
-        //用户离开房间
-        default void onMemberExited(String roomId,String s1,String s2){}
-        //聊天室公告更新
-        default void announcementChanged(String roomId,String announcement){}
-        //聊天室成员被踢出房间
-        default void userBeKicked(String roomId,int reason){}
-        //聊天室属性变更
-        default void roomAttributesDidUpdated(String roomId,Map<String, String> attributeMap,String fromId){}
-        //聊天室属性移除
-        default void roomAttributesDidRemoved(String roomId,List<String> keyList,String fromId){}
-        //token即将过期
-        default void onTokenWillExpire(){}
-        //收到系统消息
-        default void receiveSystem(String roomId, ChatMessageData message){}
-        //聊天室销毁
-        default void chatroomDestroyed(String roomId){}
+        } catch (Throwable e) {
+        }
+        return processName;
     }
 
     public void setChatRoomListener(ChatroomListener listener){
@@ -379,13 +322,10 @@ public class ChatroomConfigManager {
     public void removeChatRoomListener(ChatroomListener listener){
         if (listener != null) {
             this.messageListeners.remove(listener);
-            ChatroomMsgHelper.getInstance().removeChatRoomChangeListener();
+            ChatroomHelper.getInstance().removeChatRoomChangeListener();
+            ChatroomHelper.getInstance().removeChatRoomConnectionListener();
             CustomMsgHelper.getInstance().removeListener();
         }
-    }
-
-    public void renewToken(String newToken){
-        ChatClient.getInstance().renewToken(newToken);
     }
 
 }

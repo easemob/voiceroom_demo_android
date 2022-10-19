@@ -34,7 +34,7 @@ import custormgift.CustomMsgHelper;
 import io.agora.secnceui.R;
 import io.agora.secnceui.bean.GiftBean;
 import io.agora.secnceui.utils.DeviceUtils;
-import manager.ChatroomMsgHelper;
+import manager.ChatroomHelper;
 
 
 public class ChatroomGiftView extends LinearLayout {
@@ -71,7 +71,9 @@ public class ChatroomGiftView extends LinearLayout {
    }
 
    public void clear(){
-      removeCallbacks(task);
+      if (task != null){
+         removeCallbacks(task);
+      }
    }
 
 
@@ -177,8 +179,8 @@ public class ChatroomGiftView extends LinearLayout {
       public void show(ShapeableImageView avatar,ImageView icon,TextView name,ChatMessageData message){
          int resId = 0;
          String gift_id = CustomMsgHelper.getInstance().getMsgGiftId(message);
-         String userName = ChatroomMsgHelper.getInstance().getUserName(message);
-         String userPortrait = ChatroomMsgHelper.getInstance().getUserPortrait(message);
+         String userName = ChatroomHelper.getInstance().getUserName(message);
+         String userPortrait = ChatroomHelper.getInstance().getUserPortrait(message);
          GiftBean giftBean = GiftRepository.getGiftById(context,gift_id);
          try {
             resId = context.getResources().getIdentifier(userPortrait, "drawable", context.getPackageName());

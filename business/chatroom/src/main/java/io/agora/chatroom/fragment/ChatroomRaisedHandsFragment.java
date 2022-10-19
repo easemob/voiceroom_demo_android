@@ -3,7 +3,6 @@ package io.agora.chatroom.fragment;
 
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,9 +30,7 @@ import io.agora.chatroom.R;
 import io.agora.chatroom.adapter.ChatroomRaisedAdapter;
 import io.agora.chatroom.general.net.HttpManager;
 import io.agora.chatroom.model.ChatroomRaisedViewModel;
-import manager.ChatroomMsgHelper;
 import tools.ValueCallBack;
-import tools.bean.VMemberBean;
 import tools.bean.VRMicListBean;
 
 public class ChatroomRaisedHandsFragment extends BaseListFragment<VRMicListBean.ApplyListBean> implements ChatroomRaisedAdapter.onActionListener, SwipeRefreshLayout.OnRefreshListener {
