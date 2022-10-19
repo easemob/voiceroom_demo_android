@@ -14,22 +14,17 @@ public enum CustomMsgType {
     CHATROOM_PRAISE("chatroom_praise"),
 
     /**
-     * 普通消息
-     */
-    CHATROOM_NORMAL("chatroom_normal"),
-
-    /**
      * 申请消息
      */
     CHATROOM_APPLY_SITE("chatroom_applySiteNotify"),
 
     /**
-     * 取消申请消息
+     * 取消申请消息 （暂无用）
      */
     CHATROOM_CANCEL_APPLY_SITE("chatroom_cancelApplySiteNotify"),
 
     /**
-     * 拒绝申请消息
+     * 拒绝申请消息 （暂无此功能）
      */
     CHATROOM_DECLINE_APPLY("chatroom_applyRefusedNotify"),
 
