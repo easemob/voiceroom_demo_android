@@ -62,6 +62,7 @@ class RtcMiddleServiceImpl constructor(
                 is RtcSoundEffectEvent.PauseEffectEvent -> pauseEffect(soundEffect.soundId)
                 is RtcSoundEffectEvent.ResumeEffectEvent -> resumeEffect(soundEffect.soundId)
                 is RtcSoundEffectEvent.StopAllEffectEvent -> stopAllEffect()
+                is RtcSoundEffectEvent.UpdateAudioEffectEvent -> updateEffectVolume(soundEffect.volume)
             }
         }
     }

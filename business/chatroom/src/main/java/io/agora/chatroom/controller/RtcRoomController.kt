@@ -56,15 +56,9 @@ class RtcRoomController : IRtcKitListener {
 
     /**是否开启机器人*/
     var isUseBot: Boolean = false
-        set(value) {
-            field = value
-            if (!field) {
-                stopAllEffect()
-            }
-        }
 
     /**机器人音量*/
-    var botVolume: Int = 50
+    var botVolume: Int = ConfigConstants.RotDefaultVolume
 
     /**音效*/
     var soundEffect = ConfigConstants.SoundSelection.Social_Chat
@@ -153,6 +147,10 @@ class RtcRoomController : IRtcKitListener {
         rtcManger?.operateSoundEffect(RtcSoundEffectEvent.StopAllEffectEvent())
     }
 
+    fun updateEffectVolume(volume:Int){
+        rtcManger?.operateSoundEffect(RtcSoundEffectEvent.UpdateAudioEffectEvent(volume))
+    }
+
     /**
      * 本地mute/unmute
      */
@@ -167,7 +165,7 @@ class RtcRoomController : IRtcKitListener {
         firstSwitchAnis = true
         anisMode = ConfigConstants.AINSMode.AINS_Medium
         isUseBot = false
-        botVolume = 50
+        botVolume = ConfigConstants.RotDefaultVolume
         soundEffect = ConfigConstants.SoundSelection.Social_Chat
         rtcManger?.leaveChannel()
         rtcManger?.destroy()

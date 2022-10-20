@@ -24,6 +24,7 @@ import io.agora.chatroom.general.livedatas.SingleSourceLiveData;
 import io.agora.chatroom.general.repositories.ChatroomRepository;
 import io.agora.chatroom.general.repositories.NetworkOnlyResource;
 import io.agora.chatroom.general.repositories.ProfileManager;
+import kotlin.Pair;
 import tools.DefaultValueCallBack;
 import tools.bean.VRoomBean;
 import tools.bean.VRoomInfoBean;
@@ -40,7 +41,7 @@ public class ChatroomViewModel extends AndroidViewModel {
     private SingleSourceLiveData<Resource<Boolean>> leaveObservable;
     private SingleSourceLiveData<Resource<Boolean>> openBotObservable;
     private SingleSourceLiveData<Resource<Boolean>> closeBotObservable;
-    private SingleSourceLiveData<Resource<Boolean>> robotVolumeObservable;
+    private SingleSourceLiveData<Resource<Pair<Integer, Boolean>>> robotVolumeObservable;
     private SingleSourceLiveData<Resource<Boolean>> checkObservable;
     private SingleSourceLiveData<Resource<Boolean>> roomNoticeObservable;
     private final AtomicBoolean joinRtcChannel = new AtomicBoolean(false);
@@ -94,11 +95,13 @@ public class ChatroomViewModel extends AndroidViewModel {
         return closeBotObservable;
     }
 
-    public LiveData<Resource<Boolean>> getRobotVolumeObservable() {
+    public LiveData<Resource<Pair<Integer, Boolean>>> getRobotVolumeObservable() {
         return robotVolumeObservable;
     }
 
-    public LiveData<Resource<Boolean>> getCheckPasswordObservable(){ return checkObservable;}
+    public LiveData<Resource<Boolean>> getCheckPasswordObservable() {
+        return checkObservable;
+    }
 
     public void getDataList(Context context, int pageSize, int type, String cursor) {
         roomObservable.setSource(mRepository.getRoomList(context, pageSize, type, cursor));
@@ -115,7 +118,7 @@ public class ChatroomViewModel extends AndroidViewModel {
                 public void run() {
                     joinObservable.setSource(mRepository.joinRoom(context, roomId, password));
                 }
-            },200);
+            }, 200);
         }
     }
 
@@ -134,7 +137,7 @@ public class ChatroomViewModel extends AndroidViewModel {
                     public void onSuccess(Boolean value) {
                         LogToolsKt.logE("rtc  joinChannel onSuccess ", TAG);
                         joinRtcChannel.set(true);
-                        joinRoom(getApplication(), roomKitBean.getRoomId(),password);
+                        joinRoom(getApplication(), roomKitBean.getRoomId(), password);
                     }
 
                     @Override
@@ -154,7 +157,7 @@ public class ChatroomViewModel extends AndroidViewModel {
             public void onSuccess(ChatRoom value) {
                 LogToolsKt.logE("im  joinChatRoom onSuccess ", TAG);
                 joinImRoom.set(true);
-                joinRoom(getApplication(), roomKitBean.getRoomId(),password);
+                joinRoom(getApplication(), roomKitBean.getRoomId(), password);
             }
 
             @Override
@@ -178,7 +181,7 @@ public class ChatroomViewModel extends AndroidViewModel {
 
     public void createNormalRoom(Context context, String name, boolean is_private,
                                  boolean allow_free_join_mic, String sound_effect) {
-        Log.e("apex","创建房间开始2");
+        Log.e("apex", "创建房间开始2");
         createObservable.setSource(mRepository.createRoom(context, name, is_private, "", 0,
                 allow_free_join_mic, sound_effect));
     }
@@ -201,8 +204,8 @@ public class ChatroomViewModel extends AndroidViewModel {
         }
     }
 
-    public void checkPassword(Context context,String roomId,String password){
-        checkObservable.setSource(mRepository.checkPassword(context,roomId,password));
+    public void checkPassword(Context context, String roomId, String password) {
+        checkObservable.setSource(mRepository.checkPassword(context, roomId, password));
     }
 
 

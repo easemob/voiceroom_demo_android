@@ -265,22 +265,17 @@ public class ChatroomInviteHandsFragment extends BaseListFragment<VMemberBean> i
         map.clear();
     }
 
-    public void MicChanged(Map<String,String> data){
-        ThreadManager.getInstance().runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                if (adapter.getData() != null && adapter.getData().size() > 0){
-                    dataList.addAll(adapter.getData());
-                    for (String key : data.keySet()) {
-                        for (VMemberBean datum : adapter.getData()) {
-                            if (String.valueOf(data.get(key)).equals(datum.getUid())){
-                                reset();
-                                return;
-                            }
-                        }
+    public void MicChanged(Map<String, String> data) {
+        if (adapter.getData() != null && adapter.getData().size() > 0) {
+            dataList.addAll(adapter.getData());
+            for (String key : data.keySet()) {
+                for (VMemberBean datum : adapter.getData()) {
+                    if (String.valueOf(data.get(key)).equals(datum.getUid())) {
+                        reset();
+                        return;
                     }
                 }
             }
-        });
+        }
     }
 }

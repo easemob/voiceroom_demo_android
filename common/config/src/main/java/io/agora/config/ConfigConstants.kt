@@ -5,6 +5,7 @@ package io.agora.config
  */
 object ConfigConstants {
 
+    const val RotDefaultVolume = 50
     //--------房间类型 start--------
     object RoomType {
         const val Common_Chatroom = 0

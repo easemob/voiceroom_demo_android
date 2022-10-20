@@ -2,12 +2,13 @@ package io.agora.chatroom.general.repositories;
 
 
 import android.content.Context;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import io.agora.baseui.general.callback.ResultCallBack;
 import io.agora.baseui.general.net.Resource;
-import io.agora.chatroom.controller.RtcRoomController;
 import io.agora.chatroom.general.net.HttpManager;
+import kotlin.Pair;
 import tools.ValueCallBack;
 import tools.bean.VRoomBean;
 import tools.bean.VRoomInfoBean;
@@ -142,7 +143,6 @@ public class ChatroomRepository extends BaseRepository {
                         null, useRobot, null, null, new ValueCallBack<Boolean>() {
                             @Override
                             public void onSuccess(Boolean var1) {
-                                RtcRoomController.get().setUseBot(useRobot);
                                 callBack.onSuccess(createLiveData(var1));
                             }
 
@@ -155,16 +155,15 @@ public class ChatroomRepository extends BaseRepository {
         }.asLiveData();
     }
 
-    public LiveData<Resource<Boolean>> changeRobotVolume(Context context, String roomId, Integer robotVolume) {
-        return new NetworkOnlyResource<Boolean>() {
+    public LiveData<Resource<Pair<Integer, Boolean>>> changeRobotVolume(Context context, String roomId, Integer robotVolume) {
+        return new NetworkOnlyResource<Pair<Integer, Boolean>>() {
             @Override
-            protected void createCall(@NonNull ResultCallBack<LiveData<Boolean>> callBack) {
+            protected void createCall(@NonNull ResultCallBack<LiveData<Pair<Integer, Boolean>>> callBack) {
                 HttpManager.getInstance(context).updateRoomInfo(roomId, null, null, null,
                         null, null, null, robotVolume, new ValueCallBack<Boolean>() {
                             @Override
                             public void onSuccess(Boolean var1) {
-                                callBack.onSuccess(createLiveData(var1));
-                                RtcRoomController.get().setBotVolume(robotVolume);
+                                callBack.onSuccess(createLiveData(new Pair(robotVolume, var1)));
                             }
 
                             @Override

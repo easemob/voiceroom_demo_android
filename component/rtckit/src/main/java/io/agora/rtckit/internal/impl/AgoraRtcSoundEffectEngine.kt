@@ -43,4 +43,9 @@ internal class AgoraRtcSoundEffectEngine : RtcBaseSoundEffectEngine<RtcEngineEx>
         val result = engine?.stopAudioMixing()
         return result == IRtcEngineEventHandler.ErrorCode.ERR_OK
     }
+
+    override fun updateEffectVolume(volume: Int): Boolean {
+        val result = engine?.adjustAudioMixingVolume(volume)
+        return result == IRtcEngineEventHandler.ErrorCode.ERR_OK
+    }
 }
