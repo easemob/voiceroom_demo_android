@@ -16,13 +16,13 @@ import io.agora.baseui.adapter.OnItemChildClickListener
 import io.agora.baseui.general.callback.OnResourceParseCallback
 import io.agora.baseui.general.net.Resource
 import io.agora.buddy.tool.*
+import io.agora.chatroom.R
 import io.agora.chatroom.ui.adapter.RoomAudienceListViewHolder
 import io.agora.chatroom.bean.RoomKitBean
 import io.agora.chatroom.databinding.FragmentChatroomAudienceListBinding
 import io.agora.chatroom.databinding.ItemChatroomAudienceListBinding
 import io.agora.chatroom.general.net.HttpManager
 import io.agora.chatroom.model.RoomRankViewModel
-import io.agora.secnceui.R
 import io.agora.secnceui.annotation.MicClickAction
 import tools.ValueCallBack
 import tools.bean.VMemberBean
@@ -142,7 +142,7 @@ class RoomAudienceListFragment : BaseUiFragment<FragmentChatroomAudienceListBind
                     dividerThickness = 1.dp.toInt()
                     dividerInsetStart = 15.dp.toInt()
                     dividerInsetEnd = 15.dp.toInt()
-                    dividerColor = ResourcesTools.getColor(it.resources, R.color.divider_color_1F979797)
+                    dividerColor = ResourcesTools.getColor(it.resources, io.agora.secnceui.R.color.divider_color_1F979797)
                 }
             )
         }
@@ -168,8 +168,10 @@ class RoomAudienceListFragment : BaseUiFragment<FragmentChatroomAudienceListBind
                 HttpManager.getInstance(parentContext).invitationMic(roomId, uid, object : ValueCallBack<Boolean> {
                     override fun onSuccess(var1: Boolean?) {
                         if (var1 != true) return
-                        activity?.let {
-                            ToastTools.show(it, "invitationMic success")
+                        CoroutineUtil.execMain {
+                            activity?.let {
+                                ToastTools.show(it, it.getString(R.string.chatroom_host_invitation_sent))
+                            }
                         }
                     }
 

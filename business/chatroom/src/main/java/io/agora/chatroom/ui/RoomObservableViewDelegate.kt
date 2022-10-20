@@ -181,6 +181,11 @@ class RoomObservableViewDelegate constructor(
             parseResource(response, object : OnResourceParseCallback<Pair<Int, Boolean>>() {
                 override fun onSuccess(data: Pair<Int, Boolean>?) {
                     "close mic：$data".logE()
+                    data?.let {
+                        if (it.second) {
+                            ToastTools.show(activity, activity.getString(R.string.chatroom_mic_muted))
+                        }
+                    }
                 }
             })
         }
@@ -189,6 +194,11 @@ class RoomObservableViewDelegate constructor(
             parseResource(response, object : OnResourceParseCallback<Pair<Int, Boolean>>() {
                 override fun onSuccess(data: Pair<Int, Boolean>?) {
                     "cancel close mic：$data".logE()
+                    data?.let {
+                        if (it.second) {
+                            ToastTools.show(activity, activity.getString(R.string.chatroom_mic_unmuted))
+                        }
+                    }
                 }
             })
         }
@@ -210,7 +220,7 @@ class RoomObservableViewDelegate constructor(
         micViewModel.muteMicObservable().observe(activity) { response: Resource<Pair<Int, Boolean>> ->
             parseResource(response, object : OnResourceParseCallback<Pair<Int, Boolean>>() {
                 override fun onSuccess(data: Pair<Int, Boolean>?) {
-                    "mute mic：$data".logE()
+                    "force mute mic：$data".logE()
                     data?.let {
                         if (it.second) {
                             ToastTools.show(activity, activity.getString(R.string.chatroom_mic_muted))
@@ -223,7 +233,7 @@ class RoomObservableViewDelegate constructor(
         micViewModel.cancelMuteMicObservable().observe(activity) { response: Resource<Pair<Int, Boolean>> ->
             parseResource(response, object : OnResourceParseCallback<Pair<Int, Boolean>>() {
                 override fun onSuccess(data: Pair<Int, Boolean>?) {
-                    "cancel mute mic：$data".logE()
+                    "cancel force mute mic：$data".logE()
                     data?.let {
                         if (it.second) {
                             ToastTools.show(activity, activity.getString(R.string.chatroom_mic_unmuted))

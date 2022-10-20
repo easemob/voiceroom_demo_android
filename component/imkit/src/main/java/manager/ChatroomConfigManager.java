@@ -129,7 +129,7 @@ public class ChatroomConfigManager {
 
             @Override
             public void onReceiveInviteSite(ChatMessageData message) {
-                Log.e("setOnCustomMsgReceiveListener","onReceiveApplySite");
+                Log.e("setOnCustomMsgReceiveListener","onReceiveInviteSite");
                 try {
                     for (ChatroomListener listener : ChatroomConfigManager.this.messageListeners) {
                         listener.receiveInviteSite(message.getConversationId(), message);
@@ -153,7 +153,7 @@ public class ChatroomConfigManager {
 
             @Override
             public void onReceiveDeclineApply(ChatMessageData message) {
-                Log.e("setOnCustomMsgReceiveListener","onReceiveApplySite");
+                Log.e("setOnCustomMsgReceiveListener","onReceiveDeclineApply");
                 try {
                     for (ChatroomListener listener : ChatroomConfigManager.this.messageListeners) {
                         listener.receiveDeclineApply(message.getConversationId(), message);

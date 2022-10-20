@@ -1,5 +1,6 @@
 package io.agora.chatroom.fragment;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -8,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -27,6 +29,7 @@ import io.agora.baseui.adapter.RoomBaseRecyclerViewAdapter;
 import io.agora.baseui.general.callback.OnResourceParseCallback;
 import io.agora.buddy.tool.LogToolsKt;
 import io.agora.buddy.tool.ThreadManager;
+import io.agora.buddy.tool.ToastTools;
 import io.agora.chatroom.R;
 import io.agora.chatroom.adapter.ChatroomInviteAdapter;
 import io.agora.chatroom.general.net.HttpManager;
@@ -238,6 +241,10 @@ public class ChatroomInviteHandsFragment extends BaseListFragment<VMemberBean> i
                 ThreadManager.getInstance().runOnMainThread(new Runnable() {
                     @Override
                     public void run() {
+                        Activity activity = getActivity();
+                        if (activity != null) {
+                            ToastTools.show(activity, activity.getString(R.string.chatroom_host_invitation_sent), Toast.LENGTH_SHORT);
+                        }
                         map.put(uid,true);
                         adapter.setInvited(map);
                     }

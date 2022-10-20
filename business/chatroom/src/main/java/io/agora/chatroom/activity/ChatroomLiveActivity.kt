@@ -485,7 +485,6 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
     }
 
     override fun receiveApplySite(roomId: String?, message: ChatMessageData?) {
-        if (!TextUtils.equals(roomKitBean.chatroomId, roomId)) return
         Log.e("liveActivity", "receiveApplySite $isOwner")
         binding.chatBottom.setShowHandStatus(isOwner, true)
     }
@@ -537,7 +536,6 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
     //接收取消申请上麦
     override fun receiveCancelApplySite(roomId: String?, message: ChatMessageData?) {
         Log.e("ChatroomLiveActivity","receiveCancelApplySite" + message.toString())
-        if (!TextUtils.equals(roomKitBean.chatroomId, roomId)) return
         ThreadManager.getInstance().runOnMainThread{
             //刷新 owner 申请列表
             handsDelegate.update(0)
@@ -546,7 +544,6 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
 
     //接收拒绝邀请消息
     override fun receiveInviteRefusedSite(roomId: String?, message: ChatMessageData?) {
-        if (!TextUtils.equals(roomKitBean.chatroomId, roomId)) return
         Log.e("ChatroomLiveActivity","receiveInviteRefusedSite" + message.toString())
         ToastTools.show(this, getString(R.string.chatroom_mic_audience_rejected_invitation, ""))
     }
@@ -580,7 +577,6 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
     //接收拒绝申请消息(目前暂无拒绝申请)
     override fun receiveDeclineApply(roomId: String?, message: ChatMessageData?) {
         super.receiveDeclineApply(roomId, message)
-        if (!TextUtils.equals(roomKitBean.chatroomId, roomId)) return
         Log.e("ChatroomLiveActivity","receiveDeclineApply" + message.toString())
         ToastTools.show(this, getString(R.string.chatroom_mic_audience_rejected_invitation, ""))
     }
@@ -588,9 +584,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
     //接收邀请消息
     override fun receiveInviteSite(roomId: String?, message: ChatMessageData?) {
         super.receiveInviteSite(roomId, message)
-        if (!TextUtils.equals(roomKitBean.chatroomId, roomId)) return
-            roomObservableDelegate.receiveInviteSite(roomKitBean.roomId, -1)
-//            ToastTools.show(this,getString(R.string.chatroom_mic_audience_accepted_invitation,""))
+        roomObservableDelegate.receiveInviteSite(roomKitBean.roomId, -1)
     }
 
     override fun receiveSystem(roomId: String?, message: ChatMessageData?) {
