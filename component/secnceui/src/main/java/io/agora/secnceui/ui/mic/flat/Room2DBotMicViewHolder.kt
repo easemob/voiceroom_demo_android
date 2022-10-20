@@ -10,9 +10,6 @@ class Room2DBotMicViewHolder(binding: ItemChatroom2dBotMicBinding) :
         data?.let {
             mBinding.micBlueBot.binding(it.blueBot)
             mBinding.micBlueRed.binding(it.redBot)
-            mBinding.root.setOnClickListener { view ->
-                onItemChildClick(it.blueBot, view)
-            }
             mBinding.micBlueBot.setOnClickListener { view ->
                 onItemChildClick(it.blueBot, view)
             }

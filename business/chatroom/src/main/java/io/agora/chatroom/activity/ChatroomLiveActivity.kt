@@ -230,6 +230,13 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
                                 RtcRoomController.get().isUseBot,
                                 getString(R.string.chatroom_open_bot_prompt)
                             )
+                        }else{
+                            if (!RtcRoomController.get().isUseBot) {
+                                ToastTools.showTips(
+                                    this@ChatroomLiveActivity,
+                                    getString(io.agora.secnceui.R.string.chatroom_only_host_can_change_robot)
+                                )
+                            }
                         }
                     }
                 }

@@ -347,6 +347,10 @@ class RoomObservableViewDelegate constructor(
             // 其他状态
             RtcRoomController.get().enableLocalAudio(true)
         }
+        // 机器人麦位
+        updateMap[ConfigConstants.MicConstant.KeyIndex6]?.let {
+            RtcRoomController.get().isUseBot = it.micStatus == MicStatus.BotActivated
+        }
     }
 
     private fun findIndexByRtcUid(rtcUid: Int): Int {
