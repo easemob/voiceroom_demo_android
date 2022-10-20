@@ -26,6 +26,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -245,7 +246,7 @@ public class ChatroomMessagesView extends RelativeLayout{
             if (!TextUtils.isEmpty(builder.toString()) && SmileUtils.containsKey(builder.toString())){
                 Spannable span1 = SmileUtils.getSmiledText(context, builder.toString());
                 if (isOwner){
-                    span1.setSpan(new CenteredImageSpan(mContext, R.drawable.icon_owner),0,1,0);
+                    span1.setSpan(new CenteredImageSpan(mContext, R.drawable.icon_owner,0,10),0,1,0);
                     span1.setSpan(new ForegroundColorSpan(ContextCompat.getColor(getContext(), R.color.color_8BB3FF)),
                             0, nickName.length()+4, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                     span1.setSpan(new ForegroundColorSpan(ContextCompat.getColor(getContext(), R.color.white)),
@@ -263,7 +264,7 @@ public class ChatroomMessagesView extends RelativeLayout{
             }
             SpannableString span = new SpannableString(builder.toString());
             if (isOwner){
-                span.setSpan(new CenteredImageSpan(mContext, R.drawable.icon_owner),0,1,0);
+                span.setSpan(new CenteredImageSpan(mContext, R.drawable.icon_owner,0,10),0,1,0);
                 span.setSpan(new ForegroundColorSpan(ContextCompat.getColor(getContext(), R.color.color_8BB3FF)),
                         0, nickName.length()+4, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 span.setSpan(new StyleSpan(Typeface.BOLD),0,nickName.length()+4,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -371,9 +372,17 @@ public class ChatroomMessagesView extends RelativeLayout{
     }
 
     public static class CenteredImageSpan extends ImageSpan {
+        private int mMarginLeft;
+        private int mMarginRight;
 
         public CenteredImageSpan(Context context, final int drawableRes) {
             super(context, drawableRes);
+        }
+
+        public CenteredImageSpan(Context context,final int drawableRes, int marginLeft,int marginRight) {
+            super(context,drawableRes);
+            mMarginLeft = marginLeft;
+            mMarginRight = marginRight;
         }
 
         @Override
@@ -388,9 +397,14 @@ public class ChatroomMessagesView extends RelativeLayout{
                     - b.getBounds().bottom / 2;
 
             canvas.save();
-            canvas.translate(x-6, transY);
+            canvas.translate(x-2, transY);
             b.draw(canvas);
             canvas.restore();
+        }
+
+        @Override
+        public int getSize(@NonNull Paint paint, CharSequence text, int start, int end, @Nullable Paint.FontMetricsInt fm) {
+            return mMarginLeft + super.getSize(paint, text, start, end, fm) + mMarginRight;
         }
     }
 }

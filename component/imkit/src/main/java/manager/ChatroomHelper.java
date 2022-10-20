@@ -466,5 +466,14 @@ public class ChatroomHelper implements ChatRoomChangeListener, ConnectionListene
         });
     }
 
+    public void saveWelcomeMsg(String content,String nick){
+        ChatMessage message = ChatMessage.createSendMessage(ChatMessage.Type.TXT);
+        message.setChatType(ChatMessage.ChatType.ChatRoom);
+        message.setTo(chatroomId);
+        TextMessageBody textMessageBody = new TextMessageBody(content);
+        message.setBody(textMessageBody);
+        message.setAttribute("userName",nick);
+        ChatClient.getInstance().chatManager().saveMessage(message);
+    }
 
 }

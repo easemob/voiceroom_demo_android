@@ -135,6 +135,10 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
             }
         }
         ChatroomHelper.getInstance().init(roomKitBean.chatroomId)
+        if (isOwner){
+            ChatroomHelper.getInstance().saveWelcomeMsg(getString(R.string.room_welcome),ProfileManager.getInstance().profile.name)
+            binding.messageView.refreshSelectLast()
+        }
         ChatroomConfigManager.getInstance().setChatRoomListener(this)
     }
 
@@ -356,7 +360,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
             }
 
             override fun onSendMessage(content: String?) {
-                if (content!!.isNotEmpty())
+                if (!content.isNullOrEmpty())
                 ChatroomHelper.getInstance().sendTxtMsg(content,
                     ProfileManager.getInstance().profile.name, object : OnMsgCallBack() {
                         override fun onSuccess(message: ChatMessageData?) {
@@ -379,7 +383,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
         if (window.attributes.softInputMode != WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN) {
             if (currentFocus != null) {
                 imm.hideSoftInputFromWindow(
-                    currentFocus!!.windowToken,
+                    currentFocus?.windowToken,
                     InputMethodManager.HIDE_NOT_ALWAYS
                 )
             }
@@ -549,7 +553,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
             ProfileManager.getInstance().profile.portrait, object : ValueCallBack<VRUserBean> {
                 override fun onSuccess(bean: VRUserBean?) {
                     "onSuccess: chat_uid: ${bean?.chat_uid} im_token: ${bean?.im_token}".logE("onTokenWillExpire")
-                    ChatroomHelper.getInstance().renewToken(bean!!.im_token)
+                    ChatroomHelper.getInstance().renewToken(bean?.im_token)
                 }
 
                 override fun onError(code: Int, desc: String?) {
