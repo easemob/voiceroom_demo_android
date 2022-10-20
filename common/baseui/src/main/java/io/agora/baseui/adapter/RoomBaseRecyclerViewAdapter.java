@@ -1,7 +1,6 @@
 package io.agora.baseui.adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,7 +39,6 @@ public abstract class RoomBaseRecyclerViewAdapter<T> extends RoomBaseAdapter<Roo
     @NonNull
     @Override
     public ViewHolder<T> onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        Log.d("Adapter", "onCreateViewHolder()");
         mContext = parent.getContext();
         if(viewType == VIEW_TYPE_EMPTY) {
             return getEmptyViewHolder(parent);

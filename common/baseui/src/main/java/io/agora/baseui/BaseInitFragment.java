@@ -75,7 +75,6 @@ public abstract class BaseInitFragment extends Fragment implements IParserSource
      * @param savedInstanceState
      */
     protected void initView(Bundle savedInstanceState) {
-        Log.d("TAG", "fragment = "+this.getClass().getSimpleName());
     }
 
 

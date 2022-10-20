@@ -273,9 +273,7 @@ public class VRHttpClientManager {
             VRHttpClientController controller = null;
             try {
                 controller = build();
-                Log.e("apex","3-1");
                 HttpURLConnection connect = controller.connect();
-                Log.e("apex","3-2");
                 boolean isConnectionReset = false;
                 if(connect.getDoOutput()) {
                     DataOutputStream out = new DataOutputStream(connect.getOutputStream());

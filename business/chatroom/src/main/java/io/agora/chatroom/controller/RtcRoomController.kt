@@ -142,7 +142,7 @@ class RtcRoomController : IRtcKitListener {
         rtcManger?.operateSoundEffect(RtcSoundEffectEvent.StopAllEffectEvent())
     }
 
-    fun updateEffectVolume(volume:Int){
+    fun updateEffectVolume(volume: Int) {
         rtcManger?.operateSoundEffect(RtcSoundEffectEvent.UpdateAudioEffectEvent(volume))
     }
 
@@ -150,6 +150,7 @@ class RtcRoomController : IRtcKitListener {
      * 本地mute/unmute
      */
     fun enableLocalAudio(mute: Boolean) {
+        if (isLocalAudioMute == mute) return
         isLocalAudioMute = mute
         rtcManger?.operateAudio(RtcAudioEvent.AudioMuteLocal(mute))
     }

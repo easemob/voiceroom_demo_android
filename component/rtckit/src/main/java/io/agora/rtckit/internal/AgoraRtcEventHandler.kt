@@ -175,7 +175,7 @@ internal class AgoraRtcEventHandler(var rtcListener: IRtcClientListener?) : IRtc
                 speakerInfoList.add(
                     RtcAudioVolumeInfo(uid = audioVolumeInfo.uid, volume = audioVolumeInfo.volume)
                 )
-                "onAudioVolumeIndication uid:${audioVolumeInfo.uid},volume:${audioVolumeInfo.volume}".logD(TAG)
+//                "onAudioVolumeIndication uid:${audioVolumeInfo.uid},volume:${audioVolumeInfo.volume}".logD(TAG)
             }
             rtcListener?.onAudioVolumeIndication(RtcAudioVolumeIndicationStatus(speakerInfoList))
         }

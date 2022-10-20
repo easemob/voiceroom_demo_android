@@ -338,8 +338,15 @@ class RoomObservableViewDelegate constructor(
         kvLocalUser?.let {
             myselfMicInfo = it
         }
-        val myselfIndex = myselfMicInfo?.index ?: -1
-        RtcRoomController.get().switchRole(myselfIndex >= 0)
+        RtcRoomController.get().switchRole(mySelfIndex() >= 0)
+
+        if (mySelfMicStatus() == MicStatus.Normal) {
+            // 状态正常
+            RtcRoomController.get().enableLocalAudio(false)
+        } else {
+            // 其他状态
+            RtcRoomController.get().enableLocalAudio(true)
+        }
     }
 
     private fun findIndexByRtcUid(rtcUid: Int): Int {

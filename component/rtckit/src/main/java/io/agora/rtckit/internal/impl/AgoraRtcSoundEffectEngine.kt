@@ -16,6 +16,7 @@ internal class AgoraRtcSoundEffectEngine : RtcBaseSoundEffectEngine<RtcEngineEx>
     ): Boolean {
         "startAudioMixing soundId:$soundId, filePath:$filePath, loopBack:$loopBack, cycle:$cycle ".logE("AgoraRtcSoundEffectEngine")
 //        val result = engine?.playEffect(soundId, filePath, loopCount, 1.0, 0.0, 100.0, true)
+        engine?.stopAudioMixing()
         val result = engine?.startAudioMixing(filePath, loopBack, cycle)
         return (result == IRtcEngineEventHandler.ErrorCode.ERR_OK).also {
             if (it) {
