@@ -87,6 +87,7 @@ public class ChatroomProfileActivity extends BaseActivity implements View.OnClic
             baseLayout.setFocusable(true);
             baseLayout.setFocusableInTouchMode(true);
             baseLayout.requestFocus();
+            nickName.setText(oldNick);
             hideKeyboard();
             return false;
          }

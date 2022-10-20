@@ -46,6 +46,8 @@
     <string name="room_close">Room Closed</string>
     <string name="room_kick_member">Kicked Out</string>
 
+    <string name="room_welcome">Welcome to Agora Chat Room 2.0. I am the robot Agora Red. Can you see the robot assistant at the right coner? Click it and experience the new features.</string>
+
     <!-- gift -->
     <string name="gift_default_name_1">Sweet Heart</string>
     <string name="gift_default_name_2">Flower</string>
