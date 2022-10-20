@@ -51,7 +51,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:textColor="@color/white"
         android:gravity="center"
-        android:textSize="@dimen/text_size_18sp"
+        android:textSize="@dimen/text_size_12sp"
         android:id="@+id/gift_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>

@@ -31,12 +31,12 @@ public class PageRepository extends BaseRepository {
         bean.setRoom_name(mContext.getString(R.string.room_create_chat_room));
         bean.setRoom_desc(mContext.getString(R.string.room_create_chat_room_desc));
         data.add(bean);
-        PageBean bean1 = new PageBean();
-        bean1.setRoom_type(1);
-        bean1.setTab_title(mContext.getString(R.string.tab_layout_audio_room));
-        bean1.setRoom_name(mContext.getString(R.string.room_create_3d_room));
-        bean1.setRoom_desc(mContext.getString(R.string.room_create_3d_room_desc));
-        data.add(bean1);
+//        PageBean bean1 = new PageBean();
+//        bean1.setRoom_type(1);
+//        bean1.setTab_title(mContext.getString(R.string.tab_layout_audio_room));
+//        bean1.setRoom_name(mContext.getString(R.string.room_create_3d_room));
+//        bean1.setRoom_desc(mContext.getString(R.string.room_create_3d_room_desc));
+//        data.add(bean1);
         return data;
     }
 

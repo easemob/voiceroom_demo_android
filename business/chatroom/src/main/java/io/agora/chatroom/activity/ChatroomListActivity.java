@@ -41,7 +41,7 @@ public class ChatroomListActivity extends BaseActivity implements ChatroomTitleB
     private int mCount;
     private int index;
     private int resId = 0;
-    private int[] titles = {R.string.tab_layout_all,R.string.tab_layout_chat_room,R.string.tab_layout_audio_room};
+    private int[] titles = {R.string.tab_layout_all,R.string.tab_layout_chat_room};
 
     @Override
     protected int getLayoutId() {

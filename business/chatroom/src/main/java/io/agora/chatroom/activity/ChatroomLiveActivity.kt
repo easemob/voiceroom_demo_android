@@ -24,7 +24,6 @@ import io.agora.baseui.adapter.OnItemClickListener
 import io.agora.baseui.general.callback.OnResourceParseCallback
 import io.agora.baseui.general.net.Resource
 import io.agora.baseui.utils.StatusBarCompat
-import io.agora.buddy.tool.GsonTools
 import io.agora.buddy.tool.ThreadManager
 import io.agora.buddy.tool.ToastTools
 import io.agora.buddy.tool.logE
@@ -54,12 +53,10 @@ import io.agora.secnceui.widget.top.OnLiveTopClickListener
 import manager.ChatroomConfigManager
 import manager.ChatroomHelper
 import manager.ChatroomListener
-import org.json.JSONException
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
 import pub.devrel.easypermissions.PermissionRequest
 import tools.ValueCallBack
-import tools.bean.VRMicBean
 import tools.bean.VRUserBean
 import tools.bean.VRoomBean
 import tools.bean.VRoomInfoBean
@@ -461,10 +458,12 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
     }
 
     override fun receiveTextMessage(roomId: String?, message: ChatMessageData?) {
+        if (!TextUtils.equals(roomKitBean.chatroomId, roomId)) return
         binding.messageView.refreshSelectLast()
     }
 
     override fun receiveGift(roomId: String?, message: ChatMessageData?) {
+        if (!TextUtils.equals(roomKitBean.chatroomId, roomId)) return
         binding.chatroomGiftView.refresh()
         if (CustomMsgHelper.getInstance().getMsgGiftId(message).equals("VoiceRoomGift9")) {
             giftViewDelegate.showGiftAction()
@@ -475,6 +474,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
     }
 
     override fun receiveApplySite(roomId: String?, message: ChatMessageData?) {
+        if (!TextUtils.equals(roomKitBean.chatroomId, roomId)) return
         Log.e("liveActivity", "receiveApplySite $isOwner")
         binding.chatBottom.setShowHandStatus(isOwner, true)
     }
@@ -526,6 +526,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
     //接收取消申请上麦
     override fun receiveCancelApplySite(roomId: String?, message: ChatMessageData?) {
         Log.e("ChatroomLiveActivity","receiveCancelApplySite" + message.toString())
+        if (!TextUtils.equals(roomKitBean.chatroomId, roomId)) return
         ThreadManager.getInstance().runOnMainThread{
             //刷新 owner 申请列表
             handsDelegate.update(0)
@@ -534,6 +535,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
 
     //接收拒绝邀请消息
     override fun receiveInviteRefusedSite(roomId: String?, message: ChatMessageData?) {
+        if (!TextUtils.equals(roomKitBean.chatroomId, roomId)) return
         Log.e("ChatroomLiveActivity","receiveInviteRefusedSite" + message.toString())
         ToastTools.show(this, getString(R.string.chatroom_mic_audience_rejected_invitation, ""))
     }
@@ -544,6 +546,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
 
     override fun roomAttributesDidRemoved(roomId: String?, keyList: List<String>?, fromId: String?) {
         super.roomAttributesDidRemoved(roomId, keyList, fromId)
+        if (!TextUtils.equals(roomKitBean.chatroomId, roomId)) return
         "roomAttributesDidRemoved roomId:$roomId  fromId:$fromId keyList:$keyList".logE("roomAttributesDid")
     }
 
@@ -566,6 +569,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
     //接收拒绝申请消息(目前暂无拒绝申请)
     override fun receiveDeclineApply(roomId: String?, message: ChatMessageData?) {
         super.receiveDeclineApply(roomId, message)
+        if (!TextUtils.equals(roomKitBean.chatroomId, roomId)) return
         Log.e("ChatroomLiveActivity","receiveDeclineApply" + message.toString())
         ToastTools.show(this, getString(R.string.chatroom_mic_audience_rejected_invitation, ""))
     }
@@ -573,12 +577,14 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
     //接收邀请消息
     override fun receiveInviteSite(roomId: String?, message: ChatMessageData?) {
         super.receiveInviteSite(roomId, message)
+        if (!TextUtils.equals(roomKitBean.chatroomId, roomId)) return
             roomObservableDelegate.receiveInviteSite(roomKitBean.roomId, -1)
 //            ToastTools.show(this,getString(R.string.chatroom_mic_audience_accepted_invitation,""))
     }
 
     override fun receiveSystem(roomId: String?, message: ChatMessageData?) {
         super.receiveSystem(roomId, message)
+        if (!TextUtils.equals(roomKitBean.chatroomId, roomId)) return
         val ext: MutableMap<String, String>? = CustomMsgHelper.getInstance().getCustomMsgParams(message)
         "ext: $ext ${Thread.currentThread()}".logE("receiveSystem")
         ext?.let {
@@ -610,12 +616,14 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
 
     override fun onMemberExited(roomId: String?, s1: String?, s2: String?) {
         super.onMemberExited(roomId, s1, s2)
+        if (!TextUtils.equals(roomKitBean.chatroomId, roomId)) return
         if (this@ChatroomLiveActivity::roomObservableDelegate.isInitialized) {
             roomObservableDelegate.subMemberCount()
         }
     }
 
     override fun userBeKicked(roomId: String?, reason: Int) {
+        if (!TextUtils.equals(roomKitBean.chatroomId, roomId)) return
         Log.e("ChatroomLiveActivity", "userBeKicked: $reason")
         if(reason == EMAChatRoomManagerListener.DESTROYED) {
            ToastTools.show(this,getString(R.string.room_close), Toast.LENGTH_SHORT)
@@ -626,6 +634,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
     }
 
     override fun onRoomDestroyed(roomId: String?) {
+        if (!TextUtils.equals(roomKitBean.chatroomId, roomId)) return
         Log.e("ChatroomLiveActivity","onRoomDestroyed: ")
         ToastTools.show(this,getString(R.string.room_close), Toast.LENGTH_SHORT)
         finish()
