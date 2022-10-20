@@ -103,7 +103,6 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
         initData()
         initView()
         requestAudioPermission()
-        showLoading(false)
     }
 
     private fun initData() {
@@ -143,6 +142,11 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
         // 房间详情
         roomViewModel.roomDetailObservable.observe(this) { response: Resource<VRoomInfoBean> ->
             parseResource(response, object : OnResourceParseCallback<VRoomInfoBean>() {
+
+                override fun onLoading(data: VRoomInfoBean?) {
+                    super.onLoading(data)
+                    showLoading(false)
+                }
 
                 override fun onSuccess(data: VRoomInfoBean?) {
                     roomInfoBean = data
@@ -601,7 +605,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
         }
     }
 
-    override fun onInvitation() {
+    override fun onInvitation(micIndex: Int) {
         if (this@ChatroomLiveActivity::handsDelegate.isInitialized) {
             handsDelegate.showOwnerHandsDialog()
             binding.chatBottom.setShowHandStatus(true, false)

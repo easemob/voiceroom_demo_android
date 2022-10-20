@@ -152,8 +152,7 @@ public final class InternalToast {
                 //android 7.1.1 版本
                 InternalHookToast.hook(toast);
             }
-            toast.setGravity(gravity, 0, yOffset);
-            toast.setDuration(duration);
+
 //            toast.setMargin(0, 0);
             View rootView = LayoutInflater.from(context).inflate(R.layout.view_toast_custom, null);
             TextView textView = rootView.findViewById(R.id.tvContent);
@@ -172,7 +171,8 @@ public final class InternalToast {
             }
 
             toast.setView(rootView);
-
+            toast.setGravity(gravity, 0, yOffset);
+            toast.setDuration(duration);
             mToast = new SoftReference<>(toast);
             return toast;
         }

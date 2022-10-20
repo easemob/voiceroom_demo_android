@@ -23,8 +23,6 @@ class RtcRoomController : IRtcKitListener {
 
     companion object {
 
-        private const val TAG = "RtcRoomController"
-
         @JvmStatic
         fun get() = InstanceHelper.sSingle
     }
@@ -59,9 +57,6 @@ class RtcRoomController : IRtcKitListener {
 
     /**机器人音量*/
     var botVolume: Int = ConfigConstants.RotDefaultVolume
-
-    /**音效*/
-    var soundEffect = ConfigConstants.SoundSelection.Social_Chat
 
     private var micVolumeListener: RtcMicVolumeListener? = null
 
@@ -166,7 +161,6 @@ class RtcRoomController : IRtcKitListener {
         anisMode = ConfigConstants.AINSMode.AINS_Medium
         isUseBot = false
         botVolume = ConfigConstants.RotDefaultVolume
-        soundEffect = ConfigConstants.SoundSelection.Social_Chat
         rtcManger?.leaveChannel()
         rtcManger?.destroy()
     }

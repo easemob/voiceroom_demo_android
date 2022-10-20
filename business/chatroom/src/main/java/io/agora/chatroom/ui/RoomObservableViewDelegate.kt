@@ -136,9 +136,9 @@ class RoomObservableViewDelegate constructor(
             })
         }
         // 机器人音量
-        roomViewModel.robotVolumeObservable.observe(activity) { response: Resource<Pair<Int,Boolean>> ->
-            parseResource(response, object : OnResourceParseCallback<Pair<Int,Boolean>>() {
-                override fun onSuccess(data: Pair<Int,Boolean>?) {
+        roomViewModel.robotVolumeObservable.observe(activity) { response: Resource<Pair<Int, Boolean>> ->
+            parseResource(response, object : OnResourceParseCallback<Pair<Int, Boolean>>() {
+                override fun onSuccess(data: Pair<Int, Boolean>?) {
                     "robotVolume update：$data".logE()
                     data?.let {
                         if (it.second) {
@@ -317,13 +317,15 @@ class RoomObservableViewDelegate constructor(
      * 麦位index,rtcUid
      */
     fun onUpdateMicMap(updateMap: Map<Int, MicInfoBean>) {
+        //临时变量，防止交换麦位时候被移除
+        var kvLocalUser: MicInfoBean? = null
         updateMap.forEach { (index, micInfo) ->
             val rtcUid = micInfo.userInfo?.rtcUid ?: -1
             if (rtcUid > 0) {
                 micMap[index] = rtcUid
                 // 当前用户在麦位上
                 if (rtcUid == ProfileManager.getInstance().rtcUid()) {
-                    myselfMicInfo = micInfo
+                    kvLocalUser = micInfo
                 }
             } else {
                 val removeRtcUid = micMap.remove(index)
@@ -332,6 +334,9 @@ class RoomObservableViewDelegate constructor(
                     myselfMicInfo = null
                 }
             }
+        }
+        kvLocalUser?.let {
+            myselfMicInfo = it
         }
         val myselfIndex = myselfMicInfo?.index ?: -1
         RtcRoomController.get().switchRole(myselfIndex >= 0)
@@ -353,8 +358,6 @@ class RoomObservableViewDelegate constructor(
         val isUseBot = vRoomInfoBean.room?.isUse_robot ?: false
         RtcRoomController.get().isUseBot = isUseBot
         RtcRoomController.get().botVolume = vRoomInfoBean.room?.robot_volume ?: ConfigConstants.RotDefaultVolume
-        RtcRoomController.get().soundEffect =
-            vRoomInfoBean.room?.soundSelection ?: ConfigConstants.SoundSelection.Social_Chat
 
         val ownerUid = vRoomInfoBean.room?.owner?.uid ?: ""
         vRoomInfoBean.room?.let { vRoomInfo ->
@@ -425,7 +428,7 @@ class RoomObservableViewDelegate constructor(
             RoomSocialChatSheetDialog.OnClickSocialChatListener {
 
             override fun onMoreSound() {
-                onSoundSelectionDialog(RtcRoomController.get().soundEffect, finishBack)
+                onSoundSelectionDialog(roomKitBean.soundEffect, finishBack)
             }
         }
         socialDialog.show(activity.supportFragmentManager, "chatroomSocialChatSheetDialog")
@@ -444,7 +447,7 @@ class RoomObservableViewDelegate constructor(
                     roomType = roomKitBean.roomType,
                     botOpen = RtcRoomController.get().isUseBot,
                     botVolume = RtcRoomController.get().botVolume,
-                    soundSelection = RtcRoomController.get().soundEffect,
+                    soundSelection = roomKitBean.soundEffect,
                     anisMode = RtcRoomController.get().anisMode,
                     spatialOpen = false
                 )
@@ -610,7 +613,7 @@ class RoomObservableViewDelegate constructor(
                         MicClickAction.Invite -> {
                             // 房主邀请他人
                             if (data.enable) {
-                                onRoomViewDelegateListener?.onInvitation()
+                                onRoomViewDelegateListener?.onInvitation(position)
                             } else {
                                 ToastTools.show(activity, activity.getString(R.string.chatroom_mic_close_by_host))
                             }
@@ -832,7 +835,7 @@ class RoomObservableViewDelegate constructor(
 
     interface OnRoomViewDelegateListener {
 
-        fun onInvitation()
+        fun onInvitation(micIndex: Int)
 
         // 用户点击上台
         fun onUserClickOnStage(micIndex: Int)

@@ -79,5 +79,8 @@ class RoomSoundSelectionFooterViewHolder(binding: ItemChatroomSoundSelectionFoot
             mBinding.mtChatroomSoundSelectionMore.text =
                 Html.fromHtml(context.getString(R.string.chatroom_sound_selection_more))
         }
+        mBinding.mtChatroomSoundSelectionMore.setOnClickListener {
+            onItemChildClick("www.agora.io",it)
+        }
     }
 }

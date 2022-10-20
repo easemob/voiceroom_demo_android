@@ -21,6 +21,7 @@ object RoomInfoConstructor {
         ownerId = roomInfo.owner?.uid ?: ""
         roomType = roomInfo.type
         isOwner = curUserIsHost(roomInfo.owner?.uid)
+        soundEffect = roomInfo.soundSelection
     }
 
     fun RoomKitBean.convertByRoomDetailInfo(roomDetails: VRoomInfoBean.VRoomDetail) {
@@ -30,6 +31,7 @@ object RoomInfoConstructor {
         ownerId = roomDetails.owner?.uid ?: ""
         roomType = roomDetails.type
         isOwner = curUserIsHost(roomDetails.owner?.uid)
+        soundEffect = roomDetails.soundSelection
     }
 
     private fun curUserIsHost(ownerId: String?): Boolean {

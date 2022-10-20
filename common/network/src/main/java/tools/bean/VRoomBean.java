@@ -78,6 +78,7 @@ public class VRoomBean implements Serializable {
       private int member_count;
       private boolean use_robot;
       private String sound_effect;
+      private int robot_volume;
 
       @Override
       public boolean equals(Object o) {
@@ -180,18 +181,13 @@ public class VRoomBean implements Serializable {
            this.sound_effect = sound_effect;
        }
 
-       public int getSoundSelectionType() {
-           switch (sound_effect) {
-               case "Karaoke":
-                   return ConfigConstants.SoundSelection.Karaoke;
-               case "Gaming Buddy":
-                   return ConfigConstants.SoundSelection.Gaming_Buddy;
-               case "Professional bodcaster":
-                   return ConfigConstants.SoundSelection.Professional_Broadcaster;
-               default:
-                   return ConfigConstants.SoundSelection.Social_Chat;
-           }
-       }
+      public int getRobot_volume() {
+         return robot_volume;
+      }
+
+      public void setRobot_volume(int robot_volume) {
+         this.robot_volume = robot_volume;
+      }
 
       public static class OwnerBean implements Serializable {
          /**
@@ -229,9 +225,23 @@ public class VRoomBean implements Serializable {
          }
       }
 
-      public String getOwnerUid(){
-         if (owner==null) return null;
+      public String getOwnerUid() {
+         if (owner == null) return null;
          return owner.getUid();
+      }
+
+      public int getSoundSelection() {
+         if (sound_effect.equals(ConfigConstants.SoundSelectionText.Social_Chat)) {
+            return ConfigConstants.SoundSelection.Social_Chat;
+         } else if (sound_effect.equals(ConfigConstants.SoundSelectionText.Karaoke)) {
+            return ConfigConstants.SoundSelection.Karaoke;
+         } else if (sound_effect.equals(ConfigConstants.SoundSelectionText.Gaming_Buddy)) {
+            return ConfigConstants.SoundSelection.Gaming_Buddy;
+         } else if (sound_effect.equals(ConfigConstants.SoundSelectionText.Professional_Broadcaster)) {
+            return ConfigConstants.SoundSelection.Professional_Broadcaster;
+         } else {
+            return ConfigConstants.SoundSelection.Social_Chat;
+         }
       }
    }
 

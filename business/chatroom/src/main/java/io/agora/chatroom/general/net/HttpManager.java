@@ -390,13 +390,13 @@ public class HttpManager {
                 .asyncExecute(new VRHttpCallback() {
                     @Override
                     public void onSuccess(String result) {
-                        LogToolsKt.logE("joinRoom success: " + result, TAG);
+                        LogToolsKt.logE("joinRoom success roomId: " + roomId + " " + result, TAG);
                         callBack.onSuccess(true);
                     }
 
                     @Override
                     public void onError(int code, String msg) {
-                        LogToolsKt.logE("joinRoom onError " + msg, TAG);
+                        LogToolsKt.logE("joinRoom onError roomId:" + roomId + " "+ msg, TAG);
                         callBack.onError(code,msg);
                     }
                 });

@@ -2,6 +2,7 @@ package io.agora.rtckit.internal
 
 import android.content.Context
 import io.agora.buddy.tool.logE
+import io.agora.config.ConfigConstants
 import io.agora.rtc2.*
 import io.agora.rtckit.annotation.SoundSelection
 import io.agora.rtckit.internal.base.RtcBaseAudioEngine
@@ -82,11 +83,6 @@ internal class AgoraRtcClientEx : RtcBaseClientEx<RtcEngineEx>() {
                     setChannelProfile(Constants.CHANNEL_PROFILE_LIVE_BROADCASTING)
                     setAudioProfile(Constants.AUDIO_PROFILE_MUSIC_HIGH_QUALITY)
                     setAudioScenario(Constants.AUDIO_SCENARIO_GAME_STREAMING)
-                    if (config.broadcaster) {
-                        setClientRole(Constants.CLIENT_ROLE_BROADCASTER)
-                    } else {
-                        setClientRole(Constants.CLIENT_ROLE_AUDIENCE)
-                    }
                 }
                 SoundSelection.GamingBuddy -> { // 游戏陪玩
                     setChannelProfile(Constants.CHANNEL_PROFILE_COMMUNICATION)
@@ -101,7 +97,13 @@ internal class AgoraRtcClientEx : RtcBaseClientEx<RtcEngineEx>() {
                 }
             }
         }
-
+        if (config.broadcaster) {
+            // 音效默认50
+            rtcEngine?.adjustAudioMixingVolume(ConfigConstants.RotDefaultVolume)
+            rtcEngine?.setClientRole(Constants.CLIENT_ROLE_BROADCASTER)
+        } else {
+            rtcEngine?.setClientRole(Constants.CLIENT_ROLE_AUDIENCE)
+        }
         val status = rtcEngine?.joinChannel(config.appToken, config.roomId, "", config.userId)
         // 启用用户音量提示。
         rtcEngine?.enableAudioVolumeIndication(1000, 3, false)

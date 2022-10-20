@@ -78,16 +78,14 @@ class RoomNoticeSheetDialog constructor() :
         editText.isFocusableInTouchMode = true;
         editText.requestFocus()
         editText.setSelection(editText.text.length)
-
-        val imm = editText.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.showSoftInput(editText, 0)
+        val imm = editText.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
+        imm?.showSoftInput(editText, 0)
     }
 
     private fun hideKeyboard(editText: EditText) {
         activity?.let { fragmentActivity ->
             val imm = fragmentActivity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
             if (imm != null && fragmentActivity.window.attributes.softInputMode != WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN) {
-//            imm.hideSoftInputFromWindow(fragmentActivity.currentFocus?.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
                 imm.hideSoftInputFromWindow(editText.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
             }
         }
