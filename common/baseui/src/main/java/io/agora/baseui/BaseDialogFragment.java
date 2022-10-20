@@ -16,13 +16,14 @@ import android.view.WindowManager;
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
+
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 
 /**
  * 作为dialog fragment的基类
  */
-public abstract class BaseDialogFragment extends DialogFragment {
+public abstract class BaseDialogFragment extends BottomSheetDialogFragment {
     public BaseUiActivity mContext;
 
     @Override
