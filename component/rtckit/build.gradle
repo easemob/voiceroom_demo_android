@@ -40,6 +40,7 @@ android {
 dependencies {
     api fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
     api dep["core-ktx"]
+    api dep["agora-rtc"]
 
     compileOnly project(':common:buddy')
     compileOnly project(':common:config')

@@ -551,7 +551,6 @@ class RoomObservableViewDelegate constructor(
         ainsDialog.anisModeCallback = {
             RtcRoomController.get().anisMode = it.anisMode
             RtcRoomController.get().deNoise(it)
-            "onAINSDialog anisModeCallback：$it".logE(TAG)
             if (roomKitBean.isOwner && RtcRoomController.get().isUseBot && RtcRoomController.get().firstSwitchAnis) {
                 RtcRoomController.get().firstSwitchAnis = false
 
