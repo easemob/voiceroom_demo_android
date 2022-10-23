@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -53,6 +54,14 @@ public class ChatroomSoundSelectionActivity extends BaseActivity implements Chat
    private String soundEffect;
    private int roomType;
    private int sound_effect = ConfigConstants.SoundSelection.Social_Chat;
+
+   @Override
+   protected void onCreate(@Nullable Bundle savedInstanceState) {
+      WindowManager.LayoutParams layoutParams = getWindow().getAttributes();
+      layoutParams.flags = WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS ;
+      setNavAndStatusBarTransparent(this);
+      super.onCreate(savedInstanceState);
+   }
 
    @Override
    protected int getLayoutId() {
@@ -122,6 +131,7 @@ public class ChatroomSoundSelectionActivity extends BaseActivity implements Chat
                      @Override
                      public void onError(int code, String desc) {
                         EMLog.e("ChatroomSoundSelectionActivity", "Login Fail code: "+code + " desc: " + desc);
+                        goLive.setEnabled(true);
                      }
                   });
                }
@@ -163,6 +173,7 @@ public class ChatroomSoundSelectionActivity extends BaseActivity implements Chat
          @Override
          public void run() {
             dismissLoading();
+            goLive.setEnabled(true);
             ARouter.getInstance()
                     .build(RouterPath.ChatroomPath)
                     .withSerializable(RouterParams.KEY_CHATROOM_DETAILS_INFO, data)
@@ -195,6 +206,7 @@ public class ChatroomSoundSelectionActivity extends BaseActivity implements Chat
    @Override
    public void onClick(View view) {
       if (roomType == 0){
+         goLive.setEnabled(false);
          switch (sound_effect){
             case ConfigConstants.SoundSelection.Karaoke:
                soundEffect = ConfigConstants.SoundSelectionText.Karaoke;
@@ -210,9 +222,10 @@ public class ChatroomSoundSelectionActivity extends BaseActivity implements Chat
                break;
          }
          createNormalRoom(false,soundEffect);
-      }else {
-         createSpatialRoom();
       }
+//      else {
+//         createSpatialRoom();
+//      }
 
    }
 

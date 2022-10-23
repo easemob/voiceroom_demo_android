@@ -40,11 +40,11 @@
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginTop="10dp"
         app:layout_constraintTop_toBottomOf="@id/agora_tab_layout"
-        app:layout_constraintBottom_toTopOf="@+id/glHorizontal60"
+        app:layout_constraintBottom_toTopOf="@+id/glHorizontal45"
         />
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/glHorizontal60"
+            android:id="@+id/glHorizontal45"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:orientation="horizontal"
@@ -54,7 +54,7 @@
         android:id="@+id/ed_area"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/vp_fragment"
+        app:layout_constraintTop_toBottomOf="@+id/glHorizontal45"
         android:layout_marginTop="20dp"
         android:layout_marginStart="30dp"
         android:layout_marginEnd="30dp"
@@ -203,7 +203,9 @@
         app:checkedColor="@color/white"
         app:waitInputColor="@color/main_color_009FFF"
         android:layout_centerInParent="true"
-        android:layout_width="296dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_width="0dp"
         android:layout_height="48dp"/>
 
     <TextView

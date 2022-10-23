@@ -8,8 +8,10 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -46,6 +48,14 @@ public class ChatroomListActivity extends BaseActivity implements ChatroomTitleB
     @Override
     protected int getLayoutId() {
         return R.layout.agora_room_list_layout;
+    }
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        WindowManager.LayoutParams layoutParams = getWindow().getAttributes();
+        layoutParams.flags = WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS ;
+        setNavAndStatusBarTransparent(this);
+        super.onCreate(savedInstanceState);
     }
 
     @Override
