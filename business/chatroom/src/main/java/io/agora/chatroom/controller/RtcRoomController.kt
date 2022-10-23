@@ -8,9 +8,9 @@ import io.agora.rtckit.open.IRtcKitListener
 import io.agora.rtckit.open.RtcKitManager
 import io.agora.rtckit.open.config.RtcChannelConfig
 import io.agora.rtckit.open.config.RtcInitConfig
+import io.agora.rtckit.open.event.MediaPlayerEvent
 import io.agora.rtckit.open.event.RtcAudioEvent
 import io.agora.rtckit.open.event.RtcDeNoiseEvent
-import io.agora.rtckit.open.event.RtcSoundEffectEvent
 import io.agora.rtckit.open.status.*
 import io.agora.secnceui.bean.AINSModeBean
 import io.agora.secnceui.bean.SoundAudioBean
@@ -109,18 +109,16 @@ class RtcRoomController : IRtcKitListener {
     /**
      * 播放音效
      */
-    fun playEffect(soundAudioList: List<SoundAudioBean>) {
-        // 暂停其他音效播放
-        rtcManger?.operateSoundEffect(RtcSoundEffectEvent.StopAllEffectEvent())
+    fun playMusic(soundAudioList: List<SoundAudioBean>) {
+        // 复原其他
+        rtcManger?.operateMediaPlayer(MediaPlayerEvent.ResetEvent())
         // 加入音效队列
         soundAudioQueue.clear()
         soundAudioQueue.addAll(soundAudioList)
         // 取队列第一个播放
         soundAudioQueue.removeFirstOrNull()?.let {
-            rtcManger?.operateSoundEffect(
-                RtcSoundEffectEvent.PlayEffectEvent(
-                    it.soundId, it.audioUrl, false, 1, it.speakerType
-                )
+            rtcManger?.operateMediaPlayer(
+                MediaPlayerEvent.OpenEvent(it.audioUrl, 0, it.speakerType)
             )
         }
     }
@@ -128,22 +126,18 @@ class RtcRoomController : IRtcKitListener {
     /**
      * 播放音效
      */
-    fun playEffect(soundId: Int, audioUrl: String, speakerType: Int) {
-        // 暂停其他音效播放
-        stopAllEffect()
-        rtcManger?.operateSoundEffect(RtcSoundEffectEvent.PlayEffectEvent(soundId, audioUrl, false, 1, speakerType))
+    fun playMusic(soundId: Int, audioUrl: String, speakerType: Int) {
+        resetMediaPlayer()
+        rtcManger?.operateMediaPlayer(MediaPlayerEvent.OpenEvent(audioUrl, 0, speakerType))
     }
 
-    /**
-     * 暂停所有音效播放
-     */
-    fun stopAllEffect() {
+    fun resetMediaPlayer() {
         soundAudioQueue.clear()
-        rtcManger?.operateSoundEffect(RtcSoundEffectEvent.StopAllEffectEvent())
+        rtcManger?.operateMediaPlayer(MediaPlayerEvent.ResetEvent())
     }
 
     fun updateEffectVolume(volume: Int) {
-        rtcManger?.operateSoundEffect(RtcSoundEffectEvent.UpdateAudioEffectEvent(volume))
+        rtcManger?.operateMediaPlayer(MediaPlayerEvent.AdjustPlayoutVolumeEvent(volume))
     }
 
     /**
@@ -201,19 +195,40 @@ class RtcRoomController : IRtcKitListener {
     }
 
     override fun onAudioMixingFinished(soundId: Int, finished: Boolean, speakerType: Int) {
+//        if (finished) {
+//            // 结束播放回调--->>播放下一个，取队列第一个播放
+//            ThreadManager.getInstance().runOnMainThread {
+//                micVolumeListener?.onBotVolume(speakerType, true)
+//            }
+//            soundAudioQueue.removeFirstOrNull()?.let {
+//                rtcManger?.operateSoundEffect(
+//                    RtcSoundEffectEvent.PlayEffectEvent(it.soundId, it.audioUrl, false, 1, it.speakerType)
+//                )
+//            }
+//        } else {
+//            // 开始播放回调--->>
+//            ThreadManager.getInstance().runOnMainThread {
+//                micVolumeListener?.onBotVolume(speakerType, false)
+//            }
+//        }
+    }
+
+    override fun onMediaPlayerFinished(finished: Boolean, speakerType: Int) {
         if (finished) {
-            // 结束播放回调--->>播放下一个，取队列第一个播放
+            // 结束播放回调--->> 播放下一个，取队列第一个播放
             ThreadManager.getInstance().runOnMainThread {
                 micVolumeListener?.onBotVolume(speakerType, true)
+                soundAudioQueue.removeFirstOrNull()?.let {
+                    rtcManger?.operateMediaPlayer(
+                        MediaPlayerEvent.OpenEvent(it.audioUrl, 0, it.speakerType)
+                    )
+                }
             }
-            soundAudioQueue.removeFirstOrNull()?.let {
-                rtcManger?.operateSoundEffect(
-                    RtcSoundEffectEvent.PlayEffectEvent(it.soundId, it.audioUrl, false, 1, it.speakerType)
-                )
-            }
+
         } else {
             // 开始播放回调--->>
             ThreadManager.getInstance().runOnMainThread {
+                micVolumeListener?.onBotVolume(speakerType, false)
                 micVolumeListener?.onBotVolume(speakerType, false)
             }
         }

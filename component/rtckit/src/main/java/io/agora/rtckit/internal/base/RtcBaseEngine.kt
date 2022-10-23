@@ -11,7 +11,7 @@ import io.agora.rtckit.internal.IRtcClientListener
 internal abstract class RtcBaseEngine<T> {
 
     companion object{
-        const val TAG = "${RtcKitConstant.TAG_PREFIX} RtcEngine"
+        const val TAG = RtcKitConstant.RTC_TAG
     }
 
     protected var engine: T? = null
@@ -22,7 +22,7 @@ internal abstract class RtcBaseEngine<T> {
         this.listener = listener
     }
 
-    fun detach() {
+    open fun detach() {
         this.engine = null
         this.listener = null
     }

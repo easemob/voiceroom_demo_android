@@ -9,7 +9,7 @@ import io.agora.rtckit.open.config.RtcChannelConfig
 internal abstract class RtcBaseClientEx<T> {
 
     companion object {
-        const val TAG = "${RtcKitConstant.TAG_PREFIX} RtcBaseClientEx"
+        const val TAG = RtcKitConstant.RTC_TAG
     }
 
     protected var rtcEngine: T? = null
@@ -38,7 +38,10 @@ internal abstract class RtcBaseClientEx<T> {
     /**创建空间音频管理引擎*/
     abstract fun createSpatialAudioEngine(): RtcBaseSpatialAudioEngine<T>?
 
-    fun getRtcEngine1(): T? {
+    /**创建播放器管理引擎*/
+    abstract fun createMediaPlayerEngine(): BaseMediaPlayerEngine<T>?
+
+    fun getRtcEngineEx(): T? {
         return rtcEngine
     }
 
@@ -80,6 +83,16 @@ internal abstract class RtcBaseClientEx<T> {
             engineMap[RtcBaseSpatialAudioEngine::class.java] = engine
         }
         return engine as RtcBaseSpatialAudioEngine<T>?
+    }
+
+    fun getMediaPlayerEngine(): BaseMediaPlayerEngine<T>? {
+        var engine = engineMap[BaseMediaPlayerEngine::class.java]
+        if (engine == null) {
+            engine = createMediaPlayerEngine()
+            engine?.attach(rtcEngine, rtcListener)
+            engineMap[BaseMediaPlayerEngine::class.java] = engine
+        }
+        return engine as BaseMediaPlayerEngine<T>?
     }
 
     open fun destroy() {

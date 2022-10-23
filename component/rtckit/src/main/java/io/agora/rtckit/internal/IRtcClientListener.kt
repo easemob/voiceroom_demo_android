@@ -38,6 +38,9 @@ interface IRtcClientListener {
         speakerType: Int = ConfigConstants.BotSpeaker.BotBoth
     )
 
+    /**当播放器开始播放触发该回调*/
+    fun onMediaPlayerFinished(finished: Boolean = true, speakerType: Int = ConfigConstants.BotSpeaker.BotBoth)
+
     /**错误回调*/
     fun onError(rtcErrorStatus: RtcErrorStatus)
 
