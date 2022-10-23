@@ -1,13 +1,21 @@
 package io.agora.baseui;
 
+import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
+
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import io.agora.baseui.general.callback.OnResourceParseCallback;
 import io.agora.baseui.general.enums.Status;
@@ -17,6 +25,7 @@ import io.agora.baseui.interfaces.IParserSource;
 
 
 public abstract class BaseInitFragment extends Fragment implements IParserSource {
+    private AlertDialog loadingDialog;
 
     @Nullable
     @Override
@@ -92,6 +101,50 @@ public abstract class BaseInitFragment extends Fragment implements IParserSource
      * Initialize the data
      */
     protected void initData() {}
+
+    /**
+     * hide keyboard
+     */
+    protected void hideKeyboard() {
+        if (getActivity().getWindow().getAttributes().softInputMode != WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN) {
+            if (getActivity().getCurrentFocus() != null) {
+                InputMethodManager inputManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                if(inputManager == null) {
+                    return;
+                }
+                inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
+                        InputMethodManager.HIDE_NOT_ALWAYS);
+            }
+        }
+    }
+
+    public void showLoading(boolean cancelable){
+        if (loadingDialog == null && getActivity() != null) {
+            loadingDialog = new AlertDialog.Builder(getActivity()).setView(R.layout.view_base_loading).create();
+            if (loadingDialog.getWindow() != null){
+                loadingDialog.getWindow().getDecorView().setBackgroundColor(Color.TRANSPARENT);
+                DisplayMetrics dm = new DisplayMetrics();
+                if (getActivity() != null) {
+                    WindowManager windowManager = getActivity().getWindowManager();
+                    if (windowManager != null) {
+                        windowManager.getDefaultDisplay().getMetrics(dm);
+                        WindowManager.LayoutParams params = loadingDialog.getWindow().getAttributes();
+                        params.gravity = Gravity.CENTER;
+                        params.width = ViewGroup.LayoutParams.WRAP_CONTENT;
+                        params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+                        loadingDialog.getWindow().setAttributes(params);
+                    }
+                }
+            }
+            loadingDialog.setCancelable(cancelable);
+            loadingDialog.show();
+        }
+    }
+
+    public void dismissLoading(){
+        if (loadingDialog != null)
+            loadingDialog.dismiss();
+    }
 
     /**
      * Call it after {@link #onCreateView(LayoutInflater, ViewGroup, Bundle)}

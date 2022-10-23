@@ -131,10 +131,8 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
             }
         }
         ChatroomHelper.getInstance().init(roomKitBean.chatroomId)
-        if (isOwner){
-            ChatroomHelper.getInstance().saveWelcomeMsg(getString(R.string.room_welcome),ProfileManager.getInstance().profile.name)
-            binding.messageView.refreshSelectLast()
-        }
+        ChatroomHelper.getInstance().saveWelcomeMsg(getString(R.string.room_welcome),ProfileManager.getInstance().profile.name)
+        binding.messageView.refreshSelectLast()
         ChatroomConfigManager.getInstance().setChatRoomListener(this)
     }
 
@@ -631,11 +629,12 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
         if (!TextUtils.equals(roomKitBean.chatroomId, roomId)) return
         Log.e("ChatroomLiveActivity", "userBeKicked: $reason")
         if(reason == EMAChatRoomManagerListener.DESTROYED) {
-           ToastTools.show(this,getString(R.string.room_close), Toast.LENGTH_SHORT)
-        }else{
+            ToastTools.show(this,getString(R.string.room_close), Toast.LENGTH_SHORT)
+            finish()
+        }else if(reason == EMAChatRoomManagerListener.BE_KICKED){
             ToastTools.show(this,getString(R.string.room_kick_member), Toast.LENGTH_SHORT)
+            finish()
         }
-        finish()
     }
 
     override fun onRoomDestroyed(roomId: String?) {

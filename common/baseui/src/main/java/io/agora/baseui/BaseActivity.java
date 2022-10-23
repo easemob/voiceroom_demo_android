@@ -1,5 +1,6 @@
 package io.agora.baseui;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -32,13 +33,13 @@ public class BaseActivity extends AppCompatActivity implements IParserSource {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mContext = this;
         int layoutId = getLayoutId();
         if(layoutId != 0) {
             setContentView(layoutId);
         }else {
             setContentView(getContentView());
         }
+        mContext = this;
         initSystemFit();
         initIntent(getIntent());
         initView(savedInstanceState);
@@ -64,6 +65,43 @@ public class BaseActivity extends AppCompatActivity implements IParserSource {
             super.onBackPressed();
         }
 
+    }
+
+    public void setNavAndStatusBarTransparent(Activity activity) {
+        if (activity == null) {
+            return;
+        }
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                Window window = activity.getWindow();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    if (window != null) {
+                        View decorView = window.getDecorView();
+                        //两个 flag 要结合使用，表示让应用的主体内容占用系统状态栏的空间
+                        int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                                | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
+                        decorView.setSystemUiVisibility(option);
+                        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                        window.setStatusBarColor(Color.TRANSPARENT);
+                        //导航栏颜色也可以正常设置
+                        window.setNavigationBarColor(Color.TRANSPARENT);
+                    }
+                } else {
+                    if (window != null) {
+                        WindowManager.LayoutParams attributes = window.getAttributes();
+                        if (attributes != null) {
+                            int flagTranslucentStatus = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
+                            int flagTranslucentNavigation = WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION;
+                            attributes.flags |= flagTranslucentStatus;
+                            attributes.flags |= flagTranslucentNavigation;
+                            window.setAttributes(attributes);
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void showLoading(boolean cancelable){
