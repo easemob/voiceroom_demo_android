@@ -14,9 +14,11 @@ import android.text.style.StyleSpan;
 import android.text.style.UnderlineSpan;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.google.android.material.textview.MaterialTextView;
 
@@ -30,6 +32,14 @@ public class ChatroomDisclaimerActivity extends BaseActivity implements Chatroom
     private ChatroomTitleBar titleBar;
     private MaterialTextView content;
     private MaterialTextView end;
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        WindowManager.LayoutParams layoutParams = getWindow().getAttributes();
+        layoutParams.flags = WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS ;
+        setNavAndStatusBarTransparent(this);
+        super.onCreate(savedInstanceState);
+    }
 
     @Override
     protected int getLayoutId() {

@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -69,6 +70,21 @@ public class ChatroomCreateActivity extends BaseActivity implements RadioGroup.O
    private String encryption;
    private String roomName;
    private ConstraintLayout randomLayout;
+
+   @Override
+   protected void onCreate(@Nullable Bundle savedInstanceState) {
+      WindowManager.LayoutParams layoutParams = getWindow().getAttributes();
+      layoutParams.flags = WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS ;
+      setNavAndStatusBarTransparent(this);
+      super.onCreate(savedInstanceState);
+   }
+
+   @Override
+   protected void initSystemFit() {
+      setFitSystemForTheme(false, "#00000000");
+      setStatusBarTextColor(false);
+   }
+
 
    @Override
    protected int getLayoutId() {
@@ -143,9 +159,6 @@ public class ChatroomCreateActivity extends BaseActivity implements RadioGroup.O
       baseLayout.setOnTouchListener(new View.OnTouchListener() {
          @Override
          public boolean onTouch(View v, MotionEvent event) {
-            baseLayout.setFocusable(true);
-            baseLayout.setFocusableInTouchMode(true);
-            baseLayout.requestFocus();
             hideKeyboard();
             return false;
          }
@@ -172,7 +185,7 @@ public class ChatroomCreateActivity extends BaseActivity implements RadioGroup.O
 
                           @Override
                           public void onError(int code, String desc) {
-
+                             mNext.setEnabled(true);
                           }
                        });
                     }
@@ -186,12 +199,6 @@ public class ChatroomCreateActivity extends BaseActivity implements RadioGroup.O
    protected void onDestroy() {
       super.onDestroy();
       mEditText.rest();
-   }
-
-   @Override
-   protected void initSystemFit() {
-      setFitSystemForTheme(false, "#00000000");
-      setStatusBarTextColor(false);
    }
 
    @Override
@@ -258,6 +265,7 @@ public class ChatroomCreateActivity extends BaseActivity implements RadioGroup.O
    }
 
    public void joinRoom(VRoomInfoBean data){
+      mNext.setEnabled(true);
       Log.e("ChatroomCreateActivity","joinChatRoom onSuccess");
       ARouter.getInstance()
               .build(RouterPath.ChatroomPath)
@@ -269,10 +277,9 @@ public class ChatroomCreateActivity extends BaseActivity implements RadioGroup.O
    private void chickPrivate(){
        if (isPublic){
           mEditText.setVisibility(View.GONE);
-          baseLayout.setFocusable(true);
-          baseLayout.setFocusableInTouchMode(true);
           baseLayout.requestFocus();
           hideKeyboard();
+          mTip.setVisibility(View.GONE);
        }else {
           mEditText.setVisibility(View.VISIBLE);
           mEditText.setFocusable(true);
@@ -324,6 +331,7 @@ public class ChatroomCreateActivity extends BaseActivity implements RadioGroup.O
    }
 
    public void createSpatialRoom(){
+      mNext.setEnabled(false);
       if (isPublic){
          chatroomViewModel.createSpatial(this,roomName,false);
       }else {

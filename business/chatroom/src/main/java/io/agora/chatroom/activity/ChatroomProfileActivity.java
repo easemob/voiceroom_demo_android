@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import com.alibaba.android.arouter.facade.annotation.Route;
@@ -53,6 +54,14 @@ public class ChatroomProfileActivity extends BaseActivity implements View.OnClic
    private LinearLayoutCompat content;
    private String nick;
    private String oldNick;
+
+   @Override
+   protected void onCreate(@Nullable Bundle savedInstanceState) {
+      WindowManager.LayoutParams layoutParams = getWindow().getAttributes();
+      layoutParams.flags = WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS ;
+      setNavAndStatusBarTransparent(this);
+      super.onCreate(savedInstanceState);
+   }
 
    @Override
    protected int getLayoutId() {
