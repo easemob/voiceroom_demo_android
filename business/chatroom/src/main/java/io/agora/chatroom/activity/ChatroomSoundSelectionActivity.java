@@ -23,6 +23,7 @@ import java.util.List;
 import io.agora.CallBack;
 import io.agora.baseui.BaseActivity;
 import io.agora.baseui.general.callback.OnResourceParseCallback;
+import io.agora.buddy.tool.FastClickTools;
 import io.agora.buddy.tool.ThreadManager;
 import io.agora.buddy.tool.ToastTools;
 import io.agora.chatroom.ChatroomApplication;
@@ -131,7 +132,7 @@ public class ChatroomSoundSelectionActivity extends BaseActivity implements Chat
                      @Override
                      public void onError(int code, String desc) {
                         EMLog.e("ChatroomSoundSelectionActivity", "Login Fail code: "+code + " desc: " + desc);
-                        goLive.setEnabled(true);
+                        dismissLoading();
                      }
                   });
                }
@@ -148,7 +149,6 @@ public class ChatroomSoundSelectionActivity extends BaseActivity implements Chat
          if (!TextUtils.isEmpty(encryption) && encryption.length() == 4){
             chatroomViewModel.createNormalRoom(this,roomName,true,encryption,allow_free_join_mic,sound_effect);
          }else {
-            goLive.setEnabled(true);
             ToastTools.show(this,getString(R.string.room_create_tips), Toast.LENGTH_LONG);
          }
       }
@@ -162,7 +162,6 @@ public class ChatroomSoundSelectionActivity extends BaseActivity implements Chat
          if (!TextUtils.isEmpty(encryption) && encryption.length() == 4){
             chatroomViewModel.createSpatial(this,roomName,true,encryption);
          }else {
-            goLive.setEnabled(true);
             ToastTools.show(this,getString(R.string.room_create_tips), Toast.LENGTH_LONG);
          }
       }
@@ -173,7 +172,6 @@ public class ChatroomSoundSelectionActivity extends BaseActivity implements Chat
          @Override
          public void run() {
             dismissLoading();
-            goLive.setEnabled(true);
             ARouter.getInstance()
                     .build(RouterPath.ChatroomPath)
                     .withSerializable(RouterParams.KEY_CHATROOM_DETAILS_INFO, data)
@@ -206,7 +204,6 @@ public class ChatroomSoundSelectionActivity extends BaseActivity implements Chat
    @Override
    public void onClick(View view) {
       if (roomType == 0){
-         goLive.setEnabled(false);
          switch (sound_effect){
             case ConfigConstants.SoundSelection.Karaoke:
                soundEffect = ConfigConstants.SoundSelectionText.Karaoke;
@@ -221,7 +218,8 @@ public class ChatroomSoundSelectionActivity extends BaseActivity implements Chat
                soundEffect = ConfigConstants.SoundSelectionText.Social_Chat;
                break;
          }
-         createNormalRoom(false,soundEffect);
+         if (FastClickTools.isFastClick(view,1000))
+            createNormalRoom(false,soundEffect);
       }
 //      else {
 //         createSpatialRoom();
