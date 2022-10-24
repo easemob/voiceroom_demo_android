@@ -1,6 +1,7 @@
 package io.agora.rtckit.open
 
 import android.content.Context
+import io.agora.mediaplayer.IMediaPlayer
 import io.agora.rtckit.internal.IRtcClientListener
 import io.agora.rtckit.open.config.RtcInitConfig
 import io.agora.rtckit.open.event.*
@@ -55,6 +56,10 @@ class RtcKitManager {
                         rtcKitListener.onAudioMixingFinished(soundId, finished, speakerType)
                     }
 
+                    override fun onMediaPlayerFinished(finished: Boolean, speakerType: Int) {
+                        rtcKitListener.onMediaPlayerFinished(finished, speakerType)
+                    }
+
                     override fun onError(rtcErrorStatus: RtcErrorStatus) {
                         rtcKitListener.onError(rtcErrorStatus)
                     }
@@ -94,6 +99,10 @@ class RtcKitManager {
 
     fun operateSpatialAudio(spatialAudioEvent: RtcSpatialAudioEvent) {
         middleService?.onSpatialAudioEvent(spatialAudioEvent)
+    }
+
+    fun operateMediaPlayer(mediaPlayerEvent: MediaPlayerEvent){
+        middleService?.onMediaPlayer(mediaPlayerEvent)
     }
 
     fun destroy() {

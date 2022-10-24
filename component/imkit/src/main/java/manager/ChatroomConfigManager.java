@@ -36,14 +36,14 @@ public class ChatroomConfigManager {
         return mInstance;
     }
 
-    public void initRoomConfig(Context context){
+    public void initRoomConfig(Context context, String imKey) {
         this.mContext = context;
-        ChatOptions options = initChatOptions(context);
-        if (!isMainProcess(context)){
+        ChatOptions options = initChatOptions(context, imKey);
+        if (!isMainProcess(context)) {
             Log.e(TAG, "enter the service process!");
             return;
         }
-        ChatClient.getInstance().init(context,options);
+        ChatClient.getInstance().init(context, options);
         registerListener();
     }
 
@@ -270,10 +270,10 @@ public class ChatroomConfigManager {
         return mContext;
     }
 
-    private ChatOptions initChatOptions(Context context){
+    private ChatOptions initChatOptions(Context context,String imKey){
         ChatOptions options = new ChatOptions();
-//        options.setAppKey("52117440#955012");
-        options.setAppKey("81399972#1002901");
+//        options.setAppKey("81399972#1002901");
+        options.setAppKey(imKey);
         options.setAutoLogin(false);
         return options;
     }

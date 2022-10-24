@@ -1,5 +1,5 @@
 package io.agora.rtckit.constants
 
 object RtcKitConstant {
-    const val TAG_PREFIX = "Agora-RTC-Kit "
+    const val RTC_TAG = "Agora-RTC-Kit"
 }

@@ -1,6 +1,8 @@
 package io.agora.rtckit.middle
 
 import android.content.Context
+import io.agora.mediaplayer.IMediaPlayer
+import io.agora.rtc2.RtcEngineEx
 import io.agora.rtckit.open.config.RtcInitConfig
 import io.agora.rtckit.internal.RtcBaseClientEx
 import io.agora.rtckit.open.event.*
@@ -17,7 +19,7 @@ class RtcMiddleServiceImpl constructor(
     context: Context, config: RtcInitConfig, rtcClientListener: IRtcClientListener
 ) : IRtcMiddleService {
 
-    private val rtcClient: RtcBaseClientEx<*> by lazy {
+    private val rtcClient: RtcBaseClientEx<RtcEngineEx> by lazy {
         AgoraRtcClientEx()
     }
 
@@ -63,6 +65,24 @@ class RtcMiddleServiceImpl constructor(
                 is RtcSoundEffectEvent.ResumeEffectEvent -> resumeEffect(soundEffect.soundId)
                 is RtcSoundEffectEvent.StopAllEffectEvent -> stopAllEffect()
                 is RtcSoundEffectEvent.UpdateAudioEffectEvent -> updateEffectVolume(soundEffect.volume)
+            }
+        }
+    }
+
+    override fun onMediaPlayer(mediaPlayerEvent: MediaPlayerEvent) {
+        rtcClient.getMediaPlayerEngine()?.apply {
+            when (mediaPlayerEvent) {
+                is MediaPlayerEvent.OpenEvent -> open(
+                    mediaPlayerEvent.url,
+                    mediaPlayerEvent.startPos,
+                    mediaPlayerEvent.soundSpeaker
+                )
+                is MediaPlayerEvent.PlayEvent -> play()
+                is MediaPlayerEvent.PauseEvent -> pause()
+                is MediaPlayerEvent.StopEvent -> stop()
+                is MediaPlayerEvent.ResumeEvent -> resume()
+                is MediaPlayerEvent.ResetEvent -> reset()
+                is MediaPlayerEvent.AdjustPlayoutVolumeEvent -> adjustPlayoutVolume(mediaPlayerEvent.volume)
             }
         }
     }

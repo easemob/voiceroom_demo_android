@@ -12,7 +12,6 @@ import io.agora.baseui.general.net.Resource
 import io.agora.baseui.interfaces.IParserSource
 import io.agora.buddy.tool.ThreadManager
 import io.agora.buddy.tool.ToastTools
-import io.agora.buddy.tool.logD
 import io.agora.buddy.tool.logE
 import io.agora.chatroom.R
 import io.agora.chatroom.bean.RoomKitBean
@@ -117,8 +116,9 @@ class RoomObservableViewDelegate constructor(
                     // 创建房间，第⼀次启动机器⼈后播放音效：
                     if (RtcRoomController.get().firstActiveBot) {
                         RtcRoomController.get().firstActiveBot = false
+                        RtcRoomController.get().updateEffectVolume(RtcRoomController.get().botVolume)
                         RoomSoundAudioConstructor.createRoomSoundAudioMap[roomKitBean.roomType]?.let {
-                            RtcRoomController.get().playEffect(it)
+                            RtcRoomController.get().playMusic(it)
                         }
                     }
                 }
@@ -131,7 +131,7 @@ class RoomObservableViewDelegate constructor(
                     if (data != true) return
                     // 关闭机器人，暂停所有音效播放
                     RtcRoomController.get().isUseBot = false
-                    RtcRoomController.get().stopAllEffect()
+                    RtcRoomController.get().resetMediaPlayer()
                 }
             })
         }
@@ -161,7 +161,7 @@ class RoomObservableViewDelegate constructor(
             }
 
             override fun onUserVolume(rtcUid: Int, volume: Int) {
-                "onAudioVolumeIndication uid:${rtcUid},volume:${volume}".logD("onUserVolume")
+//                "onAudioVolumeIndication uid:${rtcUid},volume:${volume}".logD("onUserVolume")
                 if (rtcUid == 0) {
                     // 自己,没有关麦
                     val myselfIndex = mySelfIndex()
@@ -516,7 +516,7 @@ class RoomObservableViewDelegate constructor(
                         if (RtcRoomController.get().isUseBot) {
                             RoomSoundAudioConstructor.soundSelectionAudioMap[soundSelection.soundSelectionType]?.let {
                                 // 播放最佳音效说明
-                                RtcRoomController.get().playEffect(it)
+                                RtcRoomController.get().playMusic(it)
                             }
                         } else {
                             onBotMicClick(false, activity.getString(R.string.chatroom_open_bot_to_sound_effect))
@@ -556,7 +556,7 @@ class RoomObservableViewDelegate constructor(
 
                 RoomSoundAudioConstructor.anisIntroduceAudioMap[it.anisMode]?.let { soundAudioList ->
                     // 播放AI 降噪介绍
-                    RtcRoomController.get().playEffect(soundAudioList)
+                    RtcRoomController.get().playMusic(soundAudioList)
                 }
             }
         }
@@ -569,7 +569,7 @@ class RoomObservableViewDelegate constructor(
                         if (ainsSoundBean.soundMode == ConfigConstants.AINSMode.AINS_High) soundAudioBean.audioUrlHigh else soundAudioBean.audioUrl
                     // 试听降噪音效
                     RtcRoomController.get()
-                        .playEffect(soundAudioBean.soundId, audioUrl, soundAudioBean.speakerType)
+                        .playMusic(soundAudioBean.soundId, audioUrl, soundAudioBean.speakerType)
                 }
             } else {
                 ainsDialog.updateAnisSoundsAdapter(position, false)
