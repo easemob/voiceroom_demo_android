@@ -2,6 +2,7 @@ package io.agora.secnceui.widget.primary;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Rect;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -19,6 +20,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.constraintlayout.widget.ConstraintLayout;
+
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -159,6 +162,8 @@ public class ChatPrimaryMenuView extends RelativeLayout implements ExpressionVie
                     }
 //                    Log.e("onGlobalLayout","softKeyHeight: " + softKeyHeight);
                     if (mWindowHeight != height) {
+                        Log.e("ChatPrimaryMenuView","checkDeviceHasNavigationBar: " +  checkDeviceHasNavigationBar(activity));
+                        Log.e("ChatPrimaryMenuView","getNavigationBarHeight: " + getNavigationBarHeight(activity));
                         //两次窗口高度相减，就是软键盘高度
                         softKeyHeight = mWindowHeight - height;
                         isSoftShowing = true;
@@ -448,6 +453,53 @@ public class ChatPrimaryMenuView extends RelativeLayout implements ExpressionVie
     public static int sp2px(Context context, float spValue) {
         float fontScale = context.getResources().getDisplayMetrics().scaledDensity;
         return (int) (spValue * fontScale + 0.5f);
+    }
+
+    //获取是否存在NavigationBar
+    public static boolean checkDeviceHasNavigationBar(Context context) {
+        boolean hasNavigationBar = false;
+
+        Resources rs = context.getResources();
+
+        int id = rs.getIdentifier("config_showNavigationBar", "bool", "android");
+
+        if (id > 0) {
+            hasNavigationBar = rs.getBoolean(id);
+
+        }
+
+        try {
+            Class systemPropertiesClass = Class.forName("android.os.SystemProperties");
+
+            Method m = systemPropertiesClass.getMethod("get", String.class);
+
+            String navBarOverride = (String) m.invoke(systemPropertiesClass, "qemu.hw.mainkeys");
+
+            if ("1".equals(navBarOverride)) {
+                hasNavigationBar = false;
+
+            } else if ("0".equals(navBarOverride)) {
+                hasNavigationBar = true;
+
+            }
+
+        } catch (Exception e) {
+        }
+
+        return hasNavigationBar;
+
+    }
+
+    // 获取NavigationBar高度
+    public static int getNavigationBarHeight(Context context) {
+        Resources resources = context.getResources();
+
+        int resourceId = resources.getIdentifier("navigation_bar_height","dimen", "android");
+
+        int height = resources.getDimensionPixelSize(resourceId);
+
+        return height;
+
     }
 
 }
