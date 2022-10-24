@@ -229,7 +229,6 @@ class RtcRoomController : IRtcKitListener {
             // 开始播放回调--->>
             ThreadManager.getInstance().runOnMainThread {
                 micVolumeListener?.onBotVolume(speakerType, false)
-                micVolumeListener?.onBotVolume(speakerType, false)
             }
         }
     }
