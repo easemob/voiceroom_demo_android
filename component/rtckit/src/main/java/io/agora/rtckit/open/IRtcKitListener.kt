@@ -35,6 +35,9 @@ interface IRtcKitListener {
     /**错误回调*/
     fun onError(rtcErrorStatus: RtcErrorStatus)
 
+    /**当MPK播放开始/结束 后触发该回调*/
+    fun onMediaPlayerFinished( finished: Boolean, speakerType: Int)
+
     /**用户音量提示回调。*/
     fun onAudioVolumeIndication(volumeIndicationStatus: RtcAudioVolumeIndicationStatus)
 }

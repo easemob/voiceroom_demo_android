@@ -29,5 +29,8 @@ interface IRtcMiddleService {
     /**处理空间音频事件*/
     fun onSpatialAudioEvent(spatialAudioEvent: RtcSpatialAudioEvent)
 
+    /**处理Media 事件*/
+    fun onMediaPlayer(mediaPlayerEvent: MediaPlayerEvent)
+
     fun destroy()
 }

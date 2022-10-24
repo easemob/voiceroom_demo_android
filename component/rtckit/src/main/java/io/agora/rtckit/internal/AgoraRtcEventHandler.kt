@@ -20,7 +20,7 @@ import io.agora.rtckit.open.status.RtcErrorStatus
 internal class AgoraRtcEventHandler(var rtcListener: IRtcClientListener?) : IRtcEngineEventHandler() {
 
     companion object {
-        const val TAG = "${RtcKitConstant.TAG_PREFIX} EventHandler"
+        const val TAG = "${RtcKitConstant.RTC_TAG} AgoraRtcEventHandler"
     }
 
     private var handler = Handler(Looper.getMainLooper())

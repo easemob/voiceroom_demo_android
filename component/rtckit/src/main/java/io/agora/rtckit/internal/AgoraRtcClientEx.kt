@@ -5,11 +5,14 @@ import io.agora.buddy.tool.logE
 import io.agora.config.ConfigConstants
 import io.agora.rtc2.*
 import io.agora.rtckit.annotation.SoundSelection
+import io.agora.rtckit.internal.base.*
+import io.agora.rtckit.internal.base.BaseMediaPlayerEngine
 import io.agora.rtckit.internal.base.RtcBaseAudioEngine
 import io.agora.rtckit.internal.base.RtcBaseDeNoiseEngine
 import io.agora.rtckit.internal.base.RtcBaseSoundEffectEngine
 import io.agora.rtckit.internal.base.RtcBaseSpatialAudioEngine
 import io.agora.rtckit.internal.impl.AgoraAudioEngine
+import io.agora.rtckit.internal.impl.AgoraMediaPlayerEngine
 import io.agora.rtckit.internal.impl.AgoraRtcDeNoiseEngine
 import io.agora.rtckit.internal.impl.AgoraRtcSoundEffectEngine
 import io.agora.rtckit.internal.impl.AgoraRtcSpatialAudioEngine
@@ -132,16 +135,20 @@ internal class AgoraRtcClientEx : RtcBaseClientEx<RtcEngineEx>() {
         return AgoraAudioEngine()
     }
 
-    override fun createDeNoiseEngine(): RtcBaseDeNoiseEngine<RtcEngineEx>? {
+    override fun createDeNoiseEngine(): RtcBaseDeNoiseEngine<RtcEngineEx> {
         return AgoraRtcDeNoiseEngine()
     }
 
-    override fun createSoundEffectEngine(): RtcBaseSoundEffectEngine<RtcEngineEx>? {
+    override fun createSoundEffectEngine(): RtcBaseSoundEffectEngine<RtcEngineEx> {
         return AgoraRtcSoundEffectEngine()
     }
 
-    override fun createSpatialAudioEngine(): RtcBaseSpatialAudioEngine<RtcEngineEx>? {
+    override fun createSpatialAudioEngine(): RtcBaseSpatialAudioEngine<RtcEngineEx> {
         return AgoraRtcSpatialAudioEngine()
+    }
+
+    override fun createMediaPlayerEngine(): BaseMediaPlayerEngine<RtcEngineEx>? {
+        return AgoraMediaPlayerEngine()
     }
 
     override fun destroy() {
