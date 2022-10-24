@@ -20,7 +20,7 @@ public class ChatroomApplication extends Application {
         super.onCreate();
         instance = this;
         ARouter.init(this);
-        ChatroomConfigManager.getInstance().initRoomConfig(this);
+        ChatroomConfigManager.getInstance().initRoomConfig(this,BuildConfig.im_app_key);
         registerActivityLifecycleCallbacks();
         SVGAParser.Companion.shareParser().init(this);
         SVGALogger.INSTANCE.setLogEnabled(true);
