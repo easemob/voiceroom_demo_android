@@ -24,6 +24,7 @@ object FastClickTools {
                 isFastClick = true
             }
         }
+        lastClickViewId = view.id
         lastClickTime = currentClickTime
         return isFastClick
     }
