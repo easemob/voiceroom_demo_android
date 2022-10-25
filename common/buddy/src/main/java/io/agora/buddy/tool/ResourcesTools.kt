@@ -39,14 +39,14 @@ object ResourcesTools {
         return context.resources.getIdentifier(name, "drawable", context.packageName)
     }
 
+    @JvmStatic
     fun isZh(context: Context): Boolean {
         val locale: Locale = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             context.resources.configuration.locales.get(0)
         } else {
             context.resources.configuration.locale
         }
-        val language: String = locale.language
-        isZh = language.endsWith("zh")
+        isZh = locale.country == "CN"
         return isZh
     }
 }

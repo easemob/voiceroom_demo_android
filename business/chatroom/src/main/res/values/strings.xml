@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">AgoraChatroom</string>
+    <string name="app_name">Agora Chat room</string>
     <string name="app_agora_chatroom">Agora Chat Room</string>
     <string name="app_agora_chatroom_copy_right">Powered by Agora.io</string>
     <string name="agora_chat_room_create">Create Room</string>
