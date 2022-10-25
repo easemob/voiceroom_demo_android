@@ -25,6 +25,7 @@ import com.google.android.material.textview.MaterialTextView;
 import java.util.Locale;
 
 import io.agora.baseui.BaseActivity;
+import io.agora.buddy.tool.ResourcesTools;
 import io.agora.chatroom.R;
 import io.agora.secnceui.widget.titlebar.ChatroomTitleBar;
 
@@ -67,7 +68,7 @@ public class ChatroomDisclaimerActivity extends BaseActivity implements Chatroom
         String c = getString(R.string.room_disclaimer_content_1);
         SpannableStringBuilder cBuilder = new SpannableStringBuilder(c);
         StyleSpan styleSpan = new StyleSpan(android.graphics.Typeface.BOLD);
-        if (isZh(this)){
+        if (ResourcesTools.isZh(this)){
             cBuilder.setSpan(styleSpan,0,10, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         }else {
             cBuilder.setSpan(styleSpan,0,22, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -115,16 +116,6 @@ public class ChatroomDisclaimerActivity extends BaseActivity implements Chatroom
         //设置发送的内容
         email.putExtra(android.content.Intent.EXTRA_TEXT, "");
         //调用系统的邮件系统
-        startActivity(Intent.createChooser(email, isZh(this)?"请选择邮件发送软件":"Please select the mail sending software"));
-    }
-
-    public static boolean isZh(Context context) {
-        Locale locale = context.getResources().getConfiguration().locale;
-        String language = locale.getLanguage();
-        if (language.endsWith("zh")) {
-            return true;
-        } else {
-            return false;
-        }
+        startActivity(Intent.createChooser(email, ResourcesTools.isZh(this)?"请选择邮件发送软件":"Please select the mail sending software"));
     }
 }
