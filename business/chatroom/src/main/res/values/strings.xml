@@ -14,7 +14,7 @@
     <string name="room_sound_selection">Sound Selection</string>
     <string name="room_current_customer_usage">Current Customer Usage</string>
 
-    <string name="room_create_empty_name">Please set a name</string>
+    <string name="room_create_empty_name">No Room Name</string>
     <string name="room_create_room_name">Room Name</string>
     <string name="room_create_hint_room_name">Set Room Name</string>
     <string name="room_create_random_name">Random</string>
@@ -46,7 +46,7 @@
     <string name="room_close">Room Closed</string>
     <string name="room_kick_member">Kicked Out</string>
 
-    <string name="room_welcome">Welcome to Agora Chat Room 2.0. I am the robot Agora Red. Can you see the robot assistant at the right coner? Click it and experience the new features.</string>
+    <string name="room_welcome">Welcome to the voice chat room! Pornography, gambling or violence is strictly prohibited in the room.</string>
 
     <!-- gift -->
     <string name="gift_default_name_1">Sweet Heart</string>
@@ -59,6 +59,11 @@
     <string name="gift_default_name_8">Crown</string>
     <string name="gift_default_name_9">Rocket</string>
 
+    <string name="chatroom_send_gift_fail">Gift Sent Failed</string>
+
+    <string name="chatroom_agree_success">Agree success!</string>
+    <string name="chatroom_agree_fail">Agree failed!</string>
+    <string name="chatroom_send_invited_fail">Invited failed!</string>
     <string name="chatroom_raised_hands_title">Raised Hands</string>
     <string name="chatroom_invite_hands_title">Invite On-Stage</string>
     <string name="chatroom_invite">Invite</string>
@@ -71,10 +76,10 @@
     <string name="chatroom_prompt">Prompt</string>
     <string name="chatroom_confirm">Confirm</string>
     <string name="chatroom_cancel">Cancel</string>
-    <string name="chatroom_mic_apply_success">Your request has been sent, please wait for reply</string>
-    <string name="chatroom_mic_apply_fail">Fail apply for Mic:%1$s</string>
-    <string name="chatroom_mic_cancel_apply_success">Request Cancelled</string>
-    <string name="chatroom_mic_cancel_apply_fail">Fail Cancel apply for Mic:%1$s</string>
+    <string name="chatroom_mic_apply_success">Apply success!</string>
+    <string name="chatroom_mic_apply_fail">Apply failed!</string>
+    <string name="chatroom_mic_cancel_apply_success">Cancel apply success!</string>
+    <string name="chatroom_mic_cancel_apply_fail">Cancel apply failed!</string>
 
     <!-- mic -->
     <string name="chatroom_mic_submit_sent">Your request has been sent,%n please wait for reply</string>
@@ -114,7 +119,7 @@
     <string name="chatroom_notice_posted_error">Post Failed</string>
     <string name="chatroom_join_room_success">Joined Success</string>
     <string name="chatroom_join_room_failed">Joined Failed</string>
-    <string name="chatroom_host_invitation_sent">Invitation Sent</string>
+    <string name="chatroom_host_invitation_sent">Invitation sent!</string>
 
     <string name="room_disclaimer_content_1">[Agora Chat Room Demo] (this "Product") is a test product provided by Agora. This Product is available for our current and potential customers only, and for them to test the functionality and quality of this Product. This Product is provided neither for commercial nor for public use.
 Agora enjoys the copyright and ownership of this product. You shall not modify, consolidate, compile, adjust, reverse engineer, sub-license, transfer, sell this Product or infringe the legitimate interests of Agora in any way.</string>

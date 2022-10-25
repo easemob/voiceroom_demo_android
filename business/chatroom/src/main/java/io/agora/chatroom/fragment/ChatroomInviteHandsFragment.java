@@ -254,6 +254,10 @@ public class ChatroomInviteHandsFragment extends BaseListFragment<VMemberBean> i
             @Override
             public void onError(int code, String desc) {
                 LogToolsKt.logE("onActionClick Invite onError " + code + " "+ desc, TAG);
+                Activity activity = getActivity();
+                if (activity != null) {
+                    ToastTools.show(activity, activity.getString(R.string.chatroom_send_invited_fail), Toast.LENGTH_SHORT);
+                }
             }
         });
     }

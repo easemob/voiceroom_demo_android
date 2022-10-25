@@ -355,6 +355,10 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
                                     roomObservableDelegate.receiveGift(roomKitBean.roomId)
                                 }
                             }
+
+                            override fun onError(messageId: String?, code: Int, error: String?) {
+                                ToastTools.show(this@ChatroomLiveActivity,getString(R.string.chatroom_send_gift_fail))
+                            }
                         })
                     }
                 }
