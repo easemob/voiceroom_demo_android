@@ -22,6 +22,7 @@ import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import io.agora.baseui.BaseActivity;
+import io.agora.buddy.tool.FastClickTools;
 import io.agora.chatroom.R;
 import io.agora.chatroom.fragment.ChatroomListFragment;
 import io.agora.chatroom.general.repositories.ProfileManager;
@@ -202,7 +203,8 @@ public class ChatroomListActivity extends BaseActivity implements ChatroomTitleB
 
     @Override
     public void onClick(View v) {
-        startActivity(new Intent(ChatroomListActivity.this, ChatroomProfileActivity.class));
+        if (FastClickTools.isFastClick(v,1000))
+            startActivity(new Intent(ChatroomListActivity.this, ChatroomProfileActivity.class));
     }
 
 }

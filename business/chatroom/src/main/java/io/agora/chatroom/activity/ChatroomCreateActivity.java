@@ -186,6 +186,7 @@ public class ChatroomCreateActivity extends BaseActivity implements RadioGroup.O
                           @Override
                           public void onError(int code, String desc) {
                              mNext.setEnabled(true);
+                             dismissLoading();
                           }
                        });
                     }
@@ -266,6 +267,7 @@ public class ChatroomCreateActivity extends BaseActivity implements RadioGroup.O
 
    public void joinRoom(VRoomInfoBean data){
       mNext.setEnabled(true);
+      dismissLoading();
       Log.e("ChatroomCreateActivity","joinChatRoom onSuccess");
       ARouter.getInstance()
               .build(RouterPath.ChatroomPath)
@@ -297,9 +299,13 @@ public class ChatroomCreateActivity extends BaseActivity implements RadioGroup.O
    @Override
    public void onClick(View v) {
       if (v.getId() == R.id.bottom_next){
-            encryption =  mEditText.getText().toString().trim();
-            roomName = mEdRoomName.getText().toString().trim();
-            check();
+         if (roomType == 1){
+            mNext.setEnabled(false);
+            showLoading(false);
+         }
+         encryption =  mEditText.getText().toString().trim();
+         roomName = mEdRoomName.getText().toString().trim();
+         check();
       }else if (v.getId() == R.id.random_layout){
          mEdRoomName.setText(randomName());
       }
@@ -308,11 +314,15 @@ public class ChatroomCreateActivity extends BaseActivity implements RadioGroup.O
    private void check(){
       if (TextUtils.isEmpty(roomName)){
          ToastTools.show(this,getString(R.string.room_create_empty_name),Toast.LENGTH_LONG);
+         mNext.setEnabled(true);
+         dismissLoading();
          return;
       }
       if (!isPublic && encryption.length() != 4){
          mTip.setVisibility(View.VISIBLE);
          ToastTools.show(this,getString(R.string.room_create_tips),Toast.LENGTH_LONG);
+         mNext.setEnabled(true);
+         dismissLoading();
          return;
       }
       mTip.setVisibility(View.GONE);
@@ -331,7 +341,6 @@ public class ChatroomCreateActivity extends BaseActivity implements RadioGroup.O
    }
 
    public void createSpatialRoom(){
-      mNext.setEnabled(false);
       if (isPublic){
          chatroomViewModel.createSpatial(this,roomName,false);
       }else {
