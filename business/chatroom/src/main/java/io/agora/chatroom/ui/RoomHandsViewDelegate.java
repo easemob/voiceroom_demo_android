@@ -93,7 +93,7 @@ public class RoomHandsViewDelegate {
 
                                @Override
                                public void onError(int code, String desc) {
-                                   ToastTools.show(activity,activity.getString(R.string.chatroom_mic_cancel_apply_fail,desc), Toast.LENGTH_SHORT);
+                                   ToastTools.show(activity,activity.getString(R.string.chatroom_mic_cancel_apply_fail), Toast.LENGTH_SHORT);
                                }
                            });
                        }else {
@@ -107,7 +107,7 @@ public class RoomHandsViewDelegate {
 
                                @Override
                                public void onError(int code, String desc) {
-                                   ToastTools.show(activity,activity.getString(R.string.chatroom_mic_apply_fail,desc), Toast.LENGTH_SHORT);
+                                   ToastTools.show(activity,activity.getString(R.string.chatroom_mic_apply_fail), Toast.LENGTH_SHORT);
                                }
                            });
                        }

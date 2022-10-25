@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,6 +27,7 @@ import io.agora.baseui.adapter.RoomBaseRecyclerViewAdapter;
 import io.agora.baseui.general.callback.OnResourceParseCallback;
 import io.agora.buddy.tool.LogToolsKt;
 import io.agora.buddy.tool.ThreadManager;
+import io.agora.buddy.tool.ToastTools;
 import io.agora.chatroom.R;
 import io.agora.chatroom.adapter.ChatroomRaisedAdapter;
 import io.agora.chatroom.general.net.HttpManager;
@@ -220,6 +222,8 @@ public class ChatroomRaisedHandsFragment extends BaseListFragment<VRMicListBean.
                     public void run() {
                         adapter.setAccepted(uid,true);
                         map.put(uid,true);
+                        if (getActivity() != null)
+                        ToastTools.show(getActivity(),getString(R.string.chatroom_agree_success), Toast.LENGTH_SHORT);
                     }
                 });
             }
@@ -227,6 +231,8 @@ public class ChatroomRaisedHandsFragment extends BaseListFragment<VRMicListBean.
             @Override
             public void onError(int code, String desc) {
                 LogToolsKt.logE("onActionClick apply onError " + code + " "+ desc, TAG);
+                if (getActivity() != null)
+                ToastTools.show(getActivity(),getString(R.string.chatroom_agree_fail), Toast.LENGTH_SHORT);
             }
         });
     }

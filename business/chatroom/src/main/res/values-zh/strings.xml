@@ -14,7 +14,7 @@
     <string name="room_sound_selection">最佳音效</string>
     <string name="room_current_customer_usage">以下客户都在用</string>
 
-    <string name="room_create_empty_name">请输入房间名称</string>
+    <string name="room_create_empty_name">房间名不能为空</string>
     <string name="room_create_room_name">房间名称</string>
     <string name="room_create_hint_room_name">设置房间名称</string>
     <string name="room_create_random_name">随机</string>
@@ -46,7 +46,7 @@
     <string name="room_close">房间销毁</string>
     <string name="room_kick_member">已踢出房间</string>
 
-    <string name="room_welcome">Welcome to Agora Chat Room 2.0. I am the robot Agora Red. Can you see the robot assistant at the right coner? Click it and experience the new features.</string>
+    <string name="room_welcome">欢迎来到声网语聊房！房间内严禁色情、赌博或暴力内容。</string>
 
     <!-- gift -->
     <string name="gift_default_name_1">甜心</string>
@@ -59,6 +59,11 @@
     <string name="gift_default_name_8">皇冠</string>
     <string name="gift_default_name_9">火箭</string>
 
+    <string name="chatroom_send_gift_fail">礼物发送失败</string>
+
+    <string name="chatroom_agree_success">同意上麦成功!</string>
+    <string name="chatroom_agree_fail">同意上麦失败!</string>
+    <string name="chatroom_send_invited_fail">邀请失败!</string>
     <string name="chatroom_raised_hands_title">申请上麦</string>
     <string name="chatroom_invite_hands_title">邀请上麦</string>
     <string name="chatroom_invite">邀请</string>
@@ -71,10 +76,10 @@
     <string name="chatroom_prompt">提示</string>
     <string name="chatroom_confirm">确认</string>
     <string name="chatroom_cancel">取消</string>
-    <string name="chatroom_mic_apply_success">申请已发送</string>
-    <string name="chatroom_mic_apply_fail">申请上麦失败：%1$s</string>
-    <string name="chatroom_mic_cancel_apply_success">申请已撤回</string>
-    <string name="chatroom_mic_cancel_apply_fail">撤销上麦申请失败：%1$s</string>
+    <string name="chatroom_mic_apply_success">申请成功!</string>
+    <string name="chatroom_mic_apply_fail">申请失败!</string>
+    <string name="chatroom_mic_cancel_apply_success">取消申请成功!</string>
+    <string name="chatroom_mic_cancel_apply_fail">取消申请失败!</string>
 
     <!-- mic -->
     <string name="chatroom_mic_submit_sent">你的请求已提交,等待房主确认</string>
