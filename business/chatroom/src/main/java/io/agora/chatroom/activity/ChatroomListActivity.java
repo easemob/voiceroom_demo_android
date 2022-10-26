@@ -203,7 +203,7 @@ public class ChatroomListActivity extends BaseActivity implements ChatroomTitleB
 
     @Override
     public void onClick(View v) {
-        if (FastClickTools.isFastClick(v,1000))
+        if (!FastClickTools.isFastClick(v,1000))
             startActivity(new Intent(ChatroomListActivity.this, ChatroomProfileActivity.class));
     }
 

@@ -64,7 +64,7 @@ public class HttpManager {
 
     public String getRandomUserNick(){
         String userNick = "";
-        int index = (int) Math.round((Math.random()*18)+1);
+        int index = (int) Math.round((Math.random()*17)+1);
         String[] cn1 = {"李","王","张","刘","陈","杨","赵","黄","周","吴","徐","孙","胡","朱","高","林","何","郭","马","罗"};
         String[] cn2 = {"小明","小虎","小芳","小红","小雨","小雪","小鹏","小双","小彤","小晗","阿花","阿杰","阿鹏","阿飞","阿青","阿永","阿超","阿伟","阿信","阿华"};
         String[] en1 = {"James ","Robert ","Michael ","David ","William ","Richard ","Joseph ","Thomas ","Charles ","Mary ","Patricia ","Jennifer ","Linda ","Elizabeth ","Barbara ","Susan ","Jessica ","Sarah ","Karen "};
@@ -85,7 +85,7 @@ public class HttpManager {
       headers.put("Content-Type", "application/json");
       JSONObject requestBody = new JSONObject();
       if (TextUtils.isEmpty(portrait)){
-          portrait = "avatar"+ Math.round((Math.random()*18)+1);
+          portrait = "avatar"+ Math.round((Math.random()*17)+1);
       }
       VRUserBean bean = ProfileManager.getInstance().getProfile();
       if (null != bean && !TextUtils.isEmpty(bean.getName())){
