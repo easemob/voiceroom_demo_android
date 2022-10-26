@@ -60,6 +60,8 @@
     <string name="gift_default_name_9">Rocket</string>
 
     <string name="chatroom_send_gift_fail">Gift Sent Failed</string>
+    <string name="chatroom_create_tip1">This product is for testing only, not for commerce.</string>
+    <string name="chatroom_create_tip2">Every room will be maintained for 10 minutes.</string>
 
     <string name="chatroom_agree_success">Agree success!</string>
     <string name="chatroom_agree_fail">Agree failed!</string>

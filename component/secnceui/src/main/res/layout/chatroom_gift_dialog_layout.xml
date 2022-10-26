@@ -2,13 +2,14 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="295dp"
-    android:background="@drawable/bg_gift_top_layout"
+    android:background="@drawable/bg_gift_r20_white"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/top_layout"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_width="match_parent"
+        android:background="@drawable/bg_gift_top_layout"
         android:layout_height="59dp">
 
         <View

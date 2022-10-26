@@ -66,6 +66,7 @@ public class ChatroomCreateActivity extends BaseActivity implements RadioGroup.O
    private ChatroomEncryptionInputView mEditText;
    private ConstraintLayout baseLayout;
    private ChatroomViewModel chatroomViewModel;
+   private ConstraintLayout tipLayout;
    private int roomType;
    private String encryption;
    private String roomName;
@@ -105,6 +106,7 @@ public class ChatroomCreateActivity extends BaseActivity implements RadioGroup.O
       mNext = findViewById(R.id.bottom_next);
       baseLayout = findViewById(R.id.base_layout);
       randomLayout = findViewById(R.id.random_layout);
+      tipLayout = findViewById(R.id.tips_layout);
       chickPrivate();
       data = PageRepository.getInstance().getDefaultPageData(this);
    }
@@ -282,12 +284,14 @@ public class ChatroomCreateActivity extends BaseActivity implements RadioGroup.O
           baseLayout.requestFocus();
           hideKeyboard();
           mTip.setVisibility(View.GONE);
+          tipLayout.setVisibility(View.VISIBLE);
        }else {
           mEditText.setVisibility(View.VISIBLE);
           mEditText.setFocusable(true);
           mEditText.setFocusableInTouchMode(true);
           mEditText.requestFocus();
           showKeyboard(mEditText);
+          tipLayout.setVisibility(View.GONE);
        }
    }
 

@@ -218,7 +218,7 @@ public class ChatroomSoundSelectionActivity extends BaseActivity implements Chat
                soundEffect = ConfigConstants.SoundSelectionText.Social_Chat;
                break;
          }
-         if (FastClickTools.isFastClick(view,1000))
+         if (!FastClickTools.isFastClick(view,1000))
             createNormalRoom(false,soundEffect);
       }
 //      else {
