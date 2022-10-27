@@ -53,6 +53,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:tabIndicatorHeight="0dp"
+        android:visibility="gone"
         app:tabMode="scrollable"
         android:background="@color/transparent"
         app:tabRippleColor="@color/transparent"
