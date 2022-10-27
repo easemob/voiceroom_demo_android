@@ -187,48 +187,46 @@ public class ChatroomListFragment extends BaseChatroomListFragment<VRoomBean.Roo
 
     @Override
     public void onItemClick(View view, int position) {
-        if (!FastClickTools.isFastClick(view,1000)){
-            roomBean = listAdapter.getItem(position);
-            Log.e("onItemClick","getOwnerUid: " + roomBean.getOwnerUid());
-            VRUserBean data = ProfileManager.getInstance().getProfile();
-            Log.d("ChatroomListFragment","chat_uid: " + data.getChat_uid());
-            Log.d("ChatroomListFragment","im_token: " + data.getIm_token());
-            if (ChatClient.getInstance().isLoggedIn()){
-                checkPrivate();
-            }else {
-                showLoading(false);
-                ChatroomHelper.getInstance().login(data.getChat_uid(), data.getIm_token(), new CallBack() {
-                    @Override
-                    public void onSuccess() {
-                        Log.d("ChatroomListFragment","Login success");
-                        checkPrivate();
-                    }
+        roomBean = listAdapter.getItem(position);
+        Log.e("onItemClick","getOwnerUid: " + roomBean.getOwnerUid());
+        VRUserBean data = ProfileManager.getInstance().getProfile();
+        Log.d("ChatroomListFragment","chat_uid: " + data.getChat_uid());
+        Log.d("ChatroomListFragment","im_token: " + data.getIm_token());
+        if (ChatClient.getInstance().isLoggedIn()){
+            checkPrivate();
+        }else {
+            showLoading(false);
+            ChatroomHelper.getInstance().login(data.getChat_uid(), data.getIm_token(), new CallBack() {
+                @Override
+                public void onSuccess() {
+                    Log.d("ChatroomListFragment","Login success");
+                    checkPrivate();
+                }
 
-                    @Override
-                    public void onError(int code, String msg) {
-                        dismissLoading();
-                        Log.e("ChatroomListFragment", "Login onError code:" + code + " desc: " + msg);
-                    }
-                });
-            }
+                @Override
+                public void onError(int code, String msg) {
+                    dismissLoading();
+                    Log.e("ChatroomListFragment", "Login onError code:" + code + " desc: " + msg);
+                }
+            });
         }
     }
 
     private void goChatroomPage(VRoomBean.RoomsBean roomBean) {
-        dismissLoading();
         ARouter.getInstance()
                 .build(RouterPath.ChatroomPath)
                 .withSerializable(RouterParams.KEY_CHATROOM_INFO, roomBean)
                 .navigation();
+        dismissLoading();
     }
 
     private void goChatroomPage(VRoomBean.RoomsBean roomBean,String password) {
-        dismissLoading();
         ARouter.getInstance()
                 .build(RouterPath.ChatroomPath)
                 .withSerializable(RouterParams.KEY_CHATROOM_INFO, roomBean)
                 .withString(RouterParams.KEY_CHATROOM_JOIN_PASSWORD,password)
                 .navigation();
+        dismissLoading();
     }
 
     private void checkPrivate(){

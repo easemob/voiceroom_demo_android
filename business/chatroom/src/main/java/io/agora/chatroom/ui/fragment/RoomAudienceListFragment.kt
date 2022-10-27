@@ -21,7 +21,7 @@ import io.agora.chatroom.ui.adapter.RoomAudienceListViewHolder
 import io.agora.chatroom.bean.RoomKitBean
 import io.agora.chatroom.databinding.FragmentChatroomAudienceListBinding
 import io.agora.chatroom.databinding.ItemChatroomAudienceListBinding
-import io.agora.chatroom.general.net.HttpManager
+import io.agora.chatroom.general.net.ChatroomHttpManager
 import io.agora.chatroom.model.RoomRankViewModel
 import io.agora.secnceui.annotation.MicClickAction
 import tools.ValueCallBack
@@ -165,7 +165,7 @@ class RoomAudienceListFragment : BaseUiFragment<FragmentChatroomAudienceListBind
         if (roomId.isNullOrEmpty() || uid.isNullOrEmpty()) return
         context?.let { parentContext ->
             if (action == MicClickAction.Invite) {
-                HttpManager.getInstance(parentContext).invitationMic(roomId, uid, object : ValueCallBack<Boolean> {
+                ChatroomHttpManager.getInstance(parentContext).invitationMic(roomId, uid, object : ValueCallBack<Boolean> {
                     override fun onSuccess(var1: Boolean?) {
                         if (var1 != true) return
                         CoroutineUtil.execMain {
@@ -180,7 +180,7 @@ class RoomAudienceListFragment : BaseUiFragment<FragmentChatroomAudienceListBind
                     }
                 })
             } else if (action == MicClickAction.KickOff) {
-                HttpManager.getInstance(parentContext)
+                ChatroomHttpManager.getInstance(parentContext)
                     .kickMic(roomId, uid, -1, object : ValueCallBack<Boolean> {
                         override fun onSuccess(var1: Boolean?) {
                             if (var1 != true) return

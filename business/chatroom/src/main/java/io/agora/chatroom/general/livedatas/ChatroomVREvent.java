@@ -5,40 +5,40 @@ import java.io.Serializable;
 
 
 /**
- *
+ * 语聊房event
  */
-public class VREvent implements Serializable {
+public class ChatroomVREvent implements Serializable {
     public boolean refresh;
     public String event;
     public TYPE type;
     public String message;
 
-    public VREvent() {}
+    public ChatroomVREvent() {}
 
-    public VREvent(String event, TYPE type, boolean refresh) {
+    public ChatroomVREvent(String event, TYPE type, boolean refresh) {
         this.refresh = refresh;
         this.event = event;
         this.type = type;
     }
 
-    public VREvent(String event, TYPE type) {
+    public ChatroomVREvent(String event, TYPE type) {
         this.refresh = true;
         this.event = event;
         this.type = type;
     }
 
-    public static VREvent create(String event, TYPE type) {
-        return new VREvent(event, type);
+    public static ChatroomVREvent create(String event, TYPE type) {
+        return new ChatroomVREvent(event, type);
     }
 
-    public static VREvent create(String event, TYPE type, String message) {
-        VREvent easeEvent = new VREvent(event, type);
+    public static ChatroomVREvent create(String event, TYPE type, String message) {
+        ChatroomVREvent easeEvent = new ChatroomVREvent(event, type);
         easeEvent.message = message;
         return easeEvent;
     }
 
-    public static VREvent create(String event, TYPE type, boolean refresh) {
-        return new VREvent(event, type, refresh);
+    public static ChatroomVREvent create(String event, TYPE type, boolean refresh) {
+        return new ChatroomVREvent(event, type, refresh);
     }
 
     public boolean isMessageChange() {
@@ -58,6 +58,6 @@ public class VREvent implements Serializable {
     }
 
     public enum TYPE {
-       MESSAGE, NOTIFY, CHAT_ROOM, CHAT_ROOM_LEAVE,VR_DATA_CHANGE
+       MESSAGE, NOTIFY,CHAT_ROOM_LEAVE,VR_DATA_CHANGE
     }
 }

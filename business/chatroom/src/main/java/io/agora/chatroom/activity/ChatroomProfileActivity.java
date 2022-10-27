@@ -33,7 +33,7 @@ import io.agora.chatroom.R;
 import io.agora.chatroom.adapter.ChatroomProfileGridAdapter;
 import io.agora.chatroom.bean.ProfileBean;
 import io.agora.chatroom.databinding.ChatroomProfileAvatarBinding;
-import io.agora.chatroom.general.net.HttpManager;
+import io.agora.chatroom.general.net.ChatroomHttpManager;
 import io.agora.chatroom.general.repositories.ProfileManager;
 import io.agora.config.RouterPath;
 import io.agora.secnceui.utils.DeviceUtils;
@@ -218,7 +218,7 @@ public class ChatroomProfileActivity extends BaseActivity implements View.OnClic
 
    private void updateProfile(ProfileBean bean){
       try {
-         HttpManager.getInstance(ChatroomProfileActivity.this).loginWithToken(
+         ChatroomHttpManager.getInstance(ChatroomProfileActivity.this).loginWithToken(
                  ChatClient.getInstance().getDeviceInfo().getString("deviceid"), bean.getAvatarName(), new ValueCallBack<VRUserBean>() {
                     @Override
                     public void onSuccess(VRUserBean var1) {
@@ -240,7 +240,7 @@ public class ChatroomProfileActivity extends BaseActivity implements View.OnClic
 
    private void updateProfile(VRUserBean bean){
       try {
-         HttpManager.getInstance(ChatroomProfileActivity.this).loginWithToken(
+         ChatroomHttpManager.getInstance(ChatroomProfileActivity.this).loginWithToken(
                  ChatClient.getInstance().getDeviceInfo().getString("deviceid"),bean.getPortrait(), new ValueCallBack<VRUserBean>() {
                     @Override
                     public void onSuccess(VRUserBean var1) {

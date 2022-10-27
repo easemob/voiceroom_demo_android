@@ -6,8 +6,7 @@ import android.util.Log;
 public class VRRequestApi {
     VRRequestApi(){}
     public static VRRequestApi mInstance;
-    private final String BASE_URL = "http://ad-fulldemo-gateway-chat-staging.sh2.agoralab.co/";
-//    private final String BASE_URL = "https://gateway-fulldemo-staging.agoralab.co";
+    private String BASE_URL = "";
     private final String BASE_ROOM = "/voice/room/%1$s";
     private final String BASE_MEMBERS = "/voice/room/%1$s/members";
     private final String BASE_MIC = "/voice/room/%1$s/mic";
@@ -44,6 +43,9 @@ public class VRRequestApi {
             }
         }
         return mInstance;
+    }
+    public void setBaseUrl(String baseUrl){
+        BASE_URL = baseUrl;
     }
 
     public String login(){

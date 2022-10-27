@@ -36,7 +36,7 @@ import io.agora.chatroom.databinding.ActivityChatroomBinding
 import io.agora.chatroom.general.constructor.RoomInfoConstructor
 import io.agora.chatroom.general.constructor.RoomInfoConstructor.convertByRoomDetailInfo
 import io.agora.chatroom.general.constructor.RoomInfoConstructor.convertByRoomInfo
-import io.agora.chatroom.general.net.HttpManager
+import io.agora.chatroom.general.net.ChatroomHttpManager
 import io.agora.chatroom.general.repositories.ProfileManager
 import io.agora.chatroom.model.ChatroomViewModel
 import io.agora.chatroom.ui.RoomGiftViewDelegate
@@ -568,7 +568,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
     }
 
     override fun onTokenWillExpire() {
-        HttpManager.getInstance(this).loginWithToken(
+        ChatroomHttpManager.getInstance(this).loginWithToken(
             ChatClient.getInstance().deviceInfo.getString("deviceid"),
             ProfileManager.getInstance().profile.portrait, object : ValueCallBack<VRUserBean> {
                 override fun onSuccess(bean: VRUserBean?) {

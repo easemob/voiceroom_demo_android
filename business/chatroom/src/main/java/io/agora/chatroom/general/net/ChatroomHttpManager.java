@@ -12,7 +12,6 @@ import androidx.annotation.NonNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 import http.VRHttpCallback;
 import http.VRHttpClientManager;
@@ -30,18 +29,18 @@ import tools.bean.VRoomBean;
 import tools.bean.VRoomInfoBean;
 import tools.bean.VRoomUserBean;
 
-public class HttpManager {
+public class ChatroomHttpManager {
 
-    private static HttpManager mInstance;
+    private static ChatroomHttpManager mInstance;
     private static Context mContext;
 
     private static final String TAG = "HttpManager";
 
-    public static HttpManager getInstance(Context context) {
+    public static ChatroomHttpManager getInstance(Context context) {
         if (mInstance == null) {
-            synchronized (HttpManager.class) {
+            synchronized (ChatroomHttpManager.class) {
                 if (mInstance == null) {
-                    mInstance = new HttpManager();
+                    mInstance = new ChatroomHttpManager();
                 }
             }
         }

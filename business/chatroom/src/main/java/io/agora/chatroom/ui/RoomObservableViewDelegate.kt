@@ -18,7 +18,7 @@ import io.agora.chatroom.bean.RoomKitBean
 import io.agora.chatroom.controller.RtcMicVolumeListener
 import io.agora.chatroom.controller.RtcRoomController
 import io.agora.chatroom.general.constructor.RoomInfoConstructor
-import io.agora.chatroom.general.net.HttpManager
+import io.agora.chatroom.general.net.ChatroomHttpManager
 import io.agora.chatroom.general.repositories.ProfileManager
 import io.agora.chatroom.model.ChatroomViewModel
 import io.agora.chatroom.model.RoomMicViewModel
@@ -689,7 +689,7 @@ class RoomObservableViewDelegate constructor(
                 showAlertDialog(activity.getString(R.string.chatroom_exchange_mic),
                     object : CommonSheetAlertDialog.OnClickBottomListener {
                         override fun onConfirmClick() {
-                            HttpManager.getInstance(activity)
+                            ChatroomHttpManager.getInstance(activity)
                                 .exChangeMic(
                                     roomKitBean.roomId,
                                     mineMicIndex,
@@ -769,7 +769,7 @@ class RoomObservableViewDelegate constructor(
         val longDelay = Random.nextInt(1000, 10000)
         "receiveGift longDelay：$longDelay".logE(TAG)
         updateRankRunnable = Runnable {
-            HttpManager.getInstance(activity).getGiftList(roomId, object : ValueCallBack<VRGiftBean> {
+            ChatroomHttpManager.getInstance(activity).getGiftList(roomId, object : ValueCallBack<VRGiftBean> {
                 override fun onSuccess(var1: VRGiftBean?) {
                     var1?.ranking_list?.let {
                         val rankList = RoomInfoConstructor.convertServerRankToUiRank(it)
@@ -796,7 +796,7 @@ class RoomObservableViewDelegate constructor(
             .rightText(activity.getString(R.string.chatroom_accept))
             .setOnClickListener(object : CommonFragmentAlertDialog.OnClickBottomListener {
                 override fun onConfirmClick() {
-                    HttpManager.getInstance(activity)
+                    ChatroomHttpManager.getInstance(activity)
                         .agreeMicInvitation(roomId, micIndex, object : ValueCallBack<Boolean> {
                             override fun onSuccess(var1: Boolean?) {
 
@@ -809,7 +809,7 @@ class RoomObservableViewDelegate constructor(
                 }
 
                 override fun onCancelClick() {
-                    HttpManager.getInstance(activity).rejectMicInvitation(roomId, object : ValueCallBack<Boolean> {
+                    ChatroomHttpManager.getInstance(activity).rejectMicInvitation(roomId, object : ValueCallBack<Boolean> {
                         override fun onSuccess(var1: Boolean?) {
 
                         }

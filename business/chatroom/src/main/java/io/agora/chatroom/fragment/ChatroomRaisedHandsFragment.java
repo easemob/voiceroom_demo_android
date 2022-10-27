@@ -30,7 +30,7 @@ import io.agora.buddy.tool.ThreadManager;
 import io.agora.buddy.tool.ToastTools;
 import io.agora.chatroom.R;
 import io.agora.chatroom.adapter.ChatroomRaisedAdapter;
-import io.agora.chatroom.general.net.HttpManager;
+import io.agora.chatroom.general.net.ChatroomHttpManager;
 import io.agora.chatroom.model.ChatroomRaisedViewModel;
 import tools.ValueCallBack;
 import tools.bean.VRMicListBean;
@@ -78,6 +78,12 @@ public class ChatroomRaisedHandsFragment extends BaseListFragment<VRMicListBean.
         }else {
             adapter.setEmptyView(emptyView);
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        reset();
     }
 
     @Override
@@ -175,7 +181,6 @@ public class ChatroomRaisedHandsFragment extends BaseListFragment<VRMicListBean.
     @Override
     protected void initData() {
         super.initData();
-        handsViewModel.getRaisedList(getActivity(), roomId,pageSize,cursor);
     }
 
     @Override
@@ -213,7 +218,7 @@ public class ChatroomRaisedHandsFragment extends BaseListFragment<VRMicListBean.
 
     @Override
     public void onItemActionClick(View view,int index,String uid) {
-        HttpManager.getInstance(getActivity()).applySubmitMic(roomId, uid, index, new ValueCallBack<Boolean>() {
+        ChatroomHttpManager.getInstance(getActivity()).applySubmitMic(roomId, uid, index, new ValueCallBack<Boolean>() {
             @Override
             public void onSuccess(Boolean var1) {
                 LogToolsKt.logE("onActionClick apply onSuccess " + uid, TAG);

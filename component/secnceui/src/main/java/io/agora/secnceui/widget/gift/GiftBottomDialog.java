@@ -3,96 +3,95 @@ package io.agora.secnceui.widget.gift;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
-import androidx.appcompat.widget.AppCompatTextView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.LinearLayoutCompat;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.viewpager2.widget.ViewPager2;
 import java.util.List;
+
+import io.agora.baseui.dialog.BaseSheetDialog;
 import io.agora.baseui.popupwindow.CommonPopupWindow;
 import io.agora.secnceui.R;
 import io.agora.secnceui.bean.GiftBean;
+import io.agora.secnceui.databinding.ChatroomGiftDialogLayoutBinding;
 import io.agora.secnceui.databinding.ChatroomGiftPopupwindowLayoutBinding;
 import io.agora.secnceui.utils.DeviceUtils;
 
 
-public class GiftBottomDialog extends BottomDialogFragment implements View.OnClickListener {
+public class GiftBottomDialog extends BaseSheetDialog<ChatroomGiftDialogLayoutBinding> implements View.OnClickListener {
     private int currentIndex = 0;//当前页面,默认首页
-    private LinearLayoutCompat linearLayout;
-    private ViewPager2 mViewPager;
     private GiftFragmentAdapter adapter;
-    private AppCompatTextView send;
-    private AppCompatTextView count;
     private OnSendClickListener listener;
     private List<GiftBean> list;
-    private ConstraintLayout countLayout;
-    private AppCompatTextView total_count;
     private int GiftNum = 1;
     private GiftBean giftBean;
-    private ImageView icon;
+    private ChatroomGiftDialogLayoutBinding binding;
 
 
     public static GiftBottomDialog getNewInstance() {
         return new GiftBottomDialog();
     }
 
+    @Nullable
     @Override
-    public int getLayoutId() {
-        return R.layout.chatroom_gift_dialog_layout;
+    protected ChatroomGiftDialogLayoutBinding getViewBinding(@NonNull LayoutInflater inflater, @Nullable ViewGroup container) {
+        return ChatroomGiftDialogLayoutBinding.inflate(inflater, container, false);
     }
 
+
     @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        if (getBinding() != null)
+            binding = getBinding();
+        setOnApplyWindowInsets(binding.getRoot());
+        initView(savedInstanceState);
+        initListener();
+        initData();
+    }
+
     public void initView(Bundle savedInstanceState) {
-        super.initView(savedInstanceState);
-        linearLayout = findViewById(R.id.pager_dots);
-        mViewPager = findViewById(R.id.view_pager);
-        countLayout = findViewById(R.id.gift_count_layout);
-        count = findViewById(R.id.count);
-        total_count = findViewById(R.id.total_count);
-        icon = findViewById(R.id.icon);
-
-        send = findViewById(R.id.send);
-        adapter = new GiftFragmentAdapter(mContext);
-        mViewPager.setAdapter(adapter);
+        if (getActivity() != null)
+        adapter = new GiftFragmentAdapter(getActivity());
+        binding.viewPager.setAdapter(adapter);
 
     }
 
-    @Override
     public void initData() {
-        super.initData();
         list = GiftRepository.getDefaultGifts(getContext());
         initPoints();
     }
 
-    @Override
     public void initListener() {
-        super.initListener();
-        mViewPager.setOffscreenPageLimit(1);
-        mViewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+        binding.viewPager.setOffscreenPageLimit(1);
+        binding.viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
                 //当前页卡被选择时,position为当前页数
-                linearLayout.getChildAt(position).setEnabled(false);//不可点击
-                linearLayout.getChildAt(currentIndex).setEnabled(true);//恢复之前页面状态
+                binding.pagerDots.getChildAt(position).setEnabled(false);//不可点击
+                binding.pagerDots.getChildAt(currentIndex).setEnabled(true);//恢复之前页面状态
                 currentIndex = position;
                 if (currentIndex == 0){
-                    linearLayout.getChildAt(currentIndex).setEnabled(false);
+                    binding.pagerDots.getChildAt(currentIndex).setEnabled(false);
                 }else if (currentIndex == 1){
 
                 }
 
             }
         });
-        send.setOnClickListener(new View.OnClickListener() {
+        binding.send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (giftBean != null && listener != null)
                 listener.SendGift(v,giftBean);
             }
         });
-        countLayout.setOnClickListener(new View.OnClickListener() {
+        binding.giftCountLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showPop(v);
@@ -111,27 +110,27 @@ public class GiftBottomDialog extends BottomDialogFragment implements View.OnCli
                 giftBean = bean;
                 check(bean.getPrice());
                 if (getActivity() != null && isAdded())
-                total_count.setText(getActivity().getString(R.string.dialog_gift_total_count,bean.getPrice()));
-                count.setText("1");
+                    binding.totalCount.setText(getActivity().getString(R.string.dialog_gift_total_count,bean.getPrice()));
+                binding.count.setText("1");
             }
         });
     }
 
     private void isShowPop(boolean isShow){
         if (isShow){
-            icon.setImageResource(R.drawable.icon_arrow_down);
+            binding.icon.setImageResource(R.drawable.icon_arrow_down);
         }else {
-            icon.setImageResource(R.drawable.icon_arrow_up);
+            binding.icon.setImageResource(R.drawable.icon_arrow_up);
         }
     }
 
     @Override
     public void onClick(View v) {
-        mViewPager.setCurrentItem((int) v.getTag());
+        binding.viewPager.setCurrentItem((int) v.getTag());
     }
 
     private void initPoints() {
-        addViewPagerDots(linearLayout,Math.round((list.size()/4)+0.5f));
+        addViewPagerDots( binding.pagerDots,Math.round((list.size()/4)+0.5f));
     }
 
     /**
@@ -188,10 +187,10 @@ public class GiftBottomDialog extends BottomDialogFragment implements View.OnCli
                                public void OnItemClick(int position, String num) {
                                    GiftNum = Integer.parseInt(num);
                                    int total = GiftNum * Integer.parseInt(giftBean.getPrice());
-                                   total_count.setText(getString(R.string.dialog_gift_total_count,String.valueOf(total)));
+                                   if (getBinding() != null) getBinding().totalCount.setText(getString(R.string.dialog_gift_total_count,String.valueOf(total)));
                                    if (giftBean != null && GiftNum >= 1){
                                        giftBean.setNum(GiftNum);
-                                       count.setText(num);
+                                       getBinding().count.setText(num);
                                        //礼物金额大于100的 数量只能选1
                                        if (Integer.parseInt(giftBean.getPrice()) >= 100){
                                            reset();
@@ -217,26 +216,32 @@ public class GiftBottomDialog extends BottomDialogFragment implements View.OnCli
    }
 
    public void reset(){
-       count.setText("1");
-        if (null != giftBean){
-            giftBean.setNum(1);
-            total_count.setText(getString(R.string.dialog_gift_total_count,giftBean.getPrice()));
-        }
+       if (binding != null)
+           binding.count.setText("1");
+       if (null != giftBean){
+           giftBean.setNum(1);
+           binding.totalCount.setText(getString(R.string.dialog_gift_total_count,giftBean.getPrice()));
+       }
    }
 
    public void check(String price){
-       if (Integer.parseInt(price) < 100){
-           icon.setAlpha(1.0f);
-           count.setAlpha(1.0f);
-           countLayout.setEnabled(true);
+       if (Integer.parseInt(price) < 100 && binding != null){
+           binding.icon.setAlpha(1.0f);
+           binding.count.setAlpha(1.0f);
+           binding.giftCountLayout.setEnabled(true);
        }else {
-           icon.setAlpha(0.2f);
-           count.setAlpha(0.2f);
-           countLayout.setEnabled(false);
+           if (binding != null){
+               binding.icon.setAlpha(0.2f);
+               binding.count.setAlpha(0.2f);
+               binding.giftCountLayout.setEnabled(false);
+           }
        }
    }
 
    public void setSendEnable(boolean enable){
-       send.setEnabled(enable);
+        if (binding != null)
+            binding.send.setEnabled(enable);
    }
+
+
 }

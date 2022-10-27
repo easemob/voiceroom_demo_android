@@ -5,8 +5,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
@@ -18,13 +21,12 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import io.agora.baseui.BaseInitFragment;
+import io.agora.baseui.dialog.BaseSheetDialog;
 import io.agora.chatroom.R;
+import io.agora.chatroom.databinding.ChatroomHandLayoutBinding;
 import io.agora.secnceui.utils.DeviceUtils;
-import io.agora.secnceui.widget.gift.BottomDialogFragment;
 
-public class ChatroomHandsDialog extends BottomDialogFragment {
-    private ViewPager2 mViewPager;
-    private TabLayout mTableLayout;
+public class ChatroomHandsDialog extends BaseSheetDialog<ChatroomHandLayoutBinding> {
     private int[] titles ={R.string.chatroom_raised_hands_title,R.string.chatroom_invite_hands_title};
     private ArrayList<BaseInitFragment> fragments=new ArrayList();
     private MaterialTextView title;
@@ -34,51 +36,42 @@ public class ChatroomHandsDialog extends BottomDialogFragment {
     private Bundle bundle = new Bundle();
     private ChatroomRaisedHandsFragment raisedHandsFragment;
     private ChatroomInviteHandsFragment inviteHandsFragment;
+    private ChatroomHandLayoutBinding binding;
+
+    @Nullable
+    @Override
+    protected ChatroomHandLayoutBinding getViewBinding(@NonNull LayoutInflater inflater, @Nullable ViewGroup container) {
+        return ChatroomHandLayoutBinding.inflate(inflater, container, false);
+    }
 
     @Override
-    public int getLayoutId() {
-        return R.layout.chatroom_hand_layout;
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        if (getBinding() != null)
+            binding = getBinding();
+        setOnApplyWindowInsets(binding.getRoot());
+        initArgument();
+        initView(savedInstanceState);
+        initListener();
     }
 
     public static ChatroomHandsDialog getNewInstance() {
         return new ChatroomHandsDialog();
     }
 
-    @Override
     public void initArgument() {
-        super.initArgument();
         if (getArguments() != null && getArguments().containsKey("roomId"))
         roomId = getArguments().getString("roomId");
     }
 
-    @Override
     public void initView(Bundle savedInstanceState) {
-        super.initView(savedInstanceState);
-        mTableLayout = findViewById(R.id.tab_layout);
-        mViewPager = findViewById(R.id.vp_fragment);
-        initFragment();
+        fragments.add(new ChatroomRaisedHandsFragment());
+        fragments.add(new ChatroomInviteHandsFragment());
         setupWithViewPager();
     }
 
-    public void initFragment(){
-        fragments.add(new ChatroomRaisedHandsFragment());
-        fragments.add(new ChatroomInviteHandsFragment());
-    }
-
-    @Override
-    public void initViewModel() {
-        super.initViewModel();
-    }
-
-    @Override
-    public void initData() {
-        super.initData();
-    }
-
-    @Override
     public void initListener() {
-        super.initListener();
-        mTableLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+        binding.tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 if(tab.getCustomView() != null) {
@@ -87,7 +80,7 @@ public class ChatroomHandsDialog extends BottomDialogFragment {
                     title = tab.getCustomView().findViewById(R.id.mtTabText);
                     ShapeableImageView tag_line = tab.getCustomView().findViewById(R.id.tab_bg);
                     ViewGroup.LayoutParams layoutParams = title.getLayoutParams();
-                    layoutParams.height = (int) DeviceUtils.dp2px(mContext, 26);
+                    layoutParams.height = (int) DeviceUtils.dp2px(getActivity(), 26);
                     title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
                     title.setGravity(Gravity.CENTER);
                     title.setTypeface(null,Typeface.BOLD);
@@ -121,14 +114,14 @@ public class ChatroomHandsDialog extends BottomDialogFragment {
                 title.setTypeface(null,Typeface.BOLD);
             }
         });
-        mViewPager.setCurrentItem(0);
-        mTableLayout.selectTab(mTableLayout.getTabAt(0));
+        binding.vpFragment.setCurrentItem(0);
+        binding.tabLayout.selectTab(binding.tabLayout.getTabAt(0));
     }
 
     private void setupWithViewPager() {
-        mViewPager.setOffscreenPageLimit(ViewPager2.OFFSCREEN_PAGE_LIMIT_DEFAULT);
+        binding.vpFragment.setOffscreenPageLimit(ViewPager2.OFFSCREEN_PAGE_LIMIT_DEFAULT);
         // set adapter
-        mViewPager.setAdapter(new FragmentStateAdapter(getActivity().getSupportFragmentManager(), getLifecycle()) {
+        binding.vpFragment.setAdapter(new FragmentStateAdapter(getActivity().getSupportFragmentManager(), getLifecycle()) {
             @NonNull
             @Override
             public Fragment createFragment(int position) {
@@ -172,7 +165,7 @@ public class ChatroomHandsDialog extends BottomDialogFragment {
         });
 
         // set TabLayoutMediator
-        TabLayoutMediator mediator = new TabLayoutMediator(mTableLayout, mViewPager, new TabLayoutMediator.TabConfigurationStrategy() {
+        TabLayoutMediator mediator = new TabLayoutMediator(binding.tabLayout, binding.vpFragment, new TabLayoutMediator.TabConfigurationStrategy() {
             @Override
             public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
                 tab.setCustomView(R.layout.chatroom_hands_tab_item);

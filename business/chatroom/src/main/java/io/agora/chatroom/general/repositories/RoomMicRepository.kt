@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import io.agora.baseui.general.callback.ResultCallBack
 import io.agora.baseui.general.net.Resource
-import io.agora.chatroom.general.net.HttpManager
+import io.agora.chatroom.general.net.ChatroomHttpManager
 import tools.ValueCallBack
 import tools.bean.VRMicBean
 import tools.bean.VRMicListBean
@@ -23,7 +23,7 @@ class RoomMicRepository : BaseRepository() {
     ): LiveData<Resource<VRMicListBean>> {
         val resource = object : NetworkOnlyResource<VRMicListBean>() {
             override fun createCall(callBack: ResultCallBack<LiveData<VRMicListBean>>) {
-                HttpManager.getInstance(context)
+                ChatroomHttpManager.getInstance(context)
                     .getApplyMicList(roomId, limit, cursor, object : ValueCallBack<VRMicListBean> {
                         override fun onSuccess(data: VRMicListBean) {
                             callBack.onSuccess(createLiveData(data))
@@ -42,7 +42,7 @@ class RoomMicRepository : BaseRepository() {
     fun cancelSubmitMic(context: Context, roomId: String): LiveData<Resource<Boolean>> {
         val resource = object : NetworkOnlyResource<Boolean>() {
             override fun createCall(callBack: ResultCallBack<LiveData<Boolean>>) {
-                HttpManager.getInstance(context).cancelSubmitMic(roomId, object : ValueCallBack<Boolean> {
+                ChatroomHttpManager.getInstance(context).cancelSubmitMic(roomId, object : ValueCallBack<Boolean> {
                     override fun onSuccess(data: Boolean) {
                         callBack.onSuccess(createLiveData(data))
                     }
@@ -60,7 +60,7 @@ class RoomMicRepository : BaseRepository() {
     fun getMicInfo(context: Context, roomId: String): LiveData<Resource<VRMicBean>> {
         val resource = object : NetworkOnlyResource<VRMicBean>() {
             override fun createCall(callBack: ResultCallBack<LiveData<VRMicBean>>) {
-                HttpManager.getInstance(context).getMicInfo(roomId, object : ValueCallBack<VRMicBean> {
+                ChatroomHttpManager.getInstance(context).getMicInfo(roomId, object : ValueCallBack<VRMicBean> {
                     override fun onSuccess(data: VRMicBean) {
                         callBack.onSuccess(createLiveData(data))
                     }
@@ -78,7 +78,7 @@ class RoomMicRepository : BaseRepository() {
     fun closeMic(context: Context, roomId: String, micIndex: Int): LiveData<Resource<Pair<Int, Boolean>>> {
         val resource = object : NetworkOnlyResource<Pair<Int, Boolean>>() {
             override fun createCall(callBack: ResultCallBack<LiveData<Pair<Int, Boolean>>>) {
-                HttpManager.getInstance(context).closeMic(roomId, micIndex, object : ValueCallBack<Boolean> {
+                ChatroomHttpManager.getInstance(context).closeMic(roomId, micIndex, object : ValueCallBack<Boolean> {
                     override fun onSuccess(data: Boolean) {
                         callBack.onSuccess(createLiveData(Pair(micIndex, data)))
                     }
@@ -96,7 +96,7 @@ class RoomMicRepository : BaseRepository() {
     fun cancelCloseMic(context: Context, roomId: String, micIndex: Int): LiveData<Resource<Pair<Int, Boolean>>> {
         val resource = object : NetworkOnlyResource<Pair<Int, Boolean>>() {
             override fun createCall(callBack: ResultCallBack<LiveData<Pair<Int, Boolean>>>) {
-                HttpManager.getInstance(context).cancelCloseMic(roomId, micIndex, object : ValueCallBack<Boolean> {
+                ChatroomHttpManager.getInstance(context).cancelCloseMic(roomId, micIndex, object : ValueCallBack<Boolean> {
                     override fun onSuccess(data: Boolean) {
                         callBack.onSuccess(createLiveData(Pair(micIndex, data)))
                     }
@@ -114,7 +114,7 @@ class RoomMicRepository : BaseRepository() {
     fun leaveMicMic(context: Context, roomId: String, micIndex: Int): LiveData<Resource<Pair<Int, Boolean>>> {
         val resource = object : NetworkOnlyResource<Pair<Int, Boolean>>() {
             override fun createCall(callBack: ResultCallBack<LiveData<Pair<Int, Boolean>>>) {
-                HttpManager.getInstance(context).leaveMic(roomId, micIndex, object : ValueCallBack<Boolean> {
+                ChatroomHttpManager.getInstance(context).leaveMic(roomId, micIndex, object : ValueCallBack<Boolean> {
                     override fun onSuccess(data: Boolean) {
                         callBack.onSuccess(createLiveData(Pair(micIndex, data)))
                     }
@@ -132,7 +132,7 @@ class RoomMicRepository : BaseRepository() {
     fun muteMic(context: Context, roomId: String, micIndex: Int): LiveData<Resource<Pair<Int, Boolean>>> {
         val resource = object : NetworkOnlyResource<Pair<Int, Boolean>>() {
             override fun createCall(callBack: ResultCallBack<LiveData<Pair<Int, Boolean>>>) {
-                HttpManager.getInstance(context).muteMic(roomId, micIndex, object : ValueCallBack<Boolean> {
+                ChatroomHttpManager.getInstance(context).muteMic(roomId, micIndex, object : ValueCallBack<Boolean> {
                     override fun onSuccess(data: Boolean) {
                         callBack.onSuccess(createLiveData(Pair(micIndex, data)))
                     }
@@ -150,7 +150,7 @@ class RoomMicRepository : BaseRepository() {
     fun cancelMuteMic(context: Context, roomId: String, micIndex: Int): LiveData<Resource<Pair<Int, Boolean>>> {
         val resource = object : NetworkOnlyResource<Pair<Int, Boolean>>() {
             override fun createCall(callBack: ResultCallBack<LiveData<Pair<Int, Boolean>>>) {
-                HttpManager.getInstance(context).cancelMuteMic(roomId, micIndex, object : ValueCallBack<Boolean> {
+                ChatroomHttpManager.getInstance(context).cancelMuteMic(roomId, micIndex, object : ValueCallBack<Boolean> {
                     override fun onSuccess(data: Boolean) {
                         callBack.onSuccess(createLiveData(Pair(micIndex, data)))
                     }
@@ -173,7 +173,7 @@ class RoomMicRepository : BaseRepository() {
     ): LiveData<Resource<Pair<Int, Boolean>>> {
         val resource = object : NetworkOnlyResource<Pair<Int, Boolean>>() {
             override fun createCall(callBack: ResultCallBack<LiveData<Pair<Int, Boolean>>>) {
-                HttpManager.getInstance(context).kickMic(roomId, userId, micIndex, object : ValueCallBack<Boolean> {
+                ChatroomHttpManager.getInstance(context).kickMic(roomId, userId, micIndex, object : ValueCallBack<Boolean> {
                     override fun onSuccess(data: Boolean) {
                         callBack.onSuccess(createLiveData(Pair(micIndex, data)))
                     }
@@ -191,7 +191,7 @@ class RoomMicRepository : BaseRepository() {
     fun rejectMicInvitation(context: Context, roomId: String): LiveData<Resource<Boolean>> {
         val resource = object : NetworkOnlyResource<Boolean>() {
             override fun createCall(callBack: ResultCallBack<LiveData<Boolean>>) {
-                HttpManager.getInstance(context).rejectMicInvitation(roomId, object : ValueCallBack<Boolean> {
+                ChatroomHttpManager.getInstance(context).rejectMicInvitation(roomId, object : ValueCallBack<Boolean> {
                     override fun onSuccess(data: Boolean) {
                         callBack.onSuccess(createLiveData(data))
                     }
@@ -209,7 +209,7 @@ class RoomMicRepository : BaseRepository() {
     fun lockMic(context: Context, roomId: String, micIndex: Int): LiveData<Resource<Pair<Int, Boolean>>> {
         val resource = object : NetworkOnlyResource<Pair<Int, Boolean>>() {
             override fun createCall(callBack: ResultCallBack<LiveData<Pair<Int, Boolean>>>) {
-                HttpManager.getInstance(context).lockMic(roomId, micIndex, object : ValueCallBack<Boolean> {
+                ChatroomHttpManager.getInstance(context).lockMic(roomId, micIndex, object : ValueCallBack<Boolean> {
                     override fun onSuccess(data: Boolean) {
                         callBack.onSuccess(createLiveData(Pair(micIndex, data)))
                     }
@@ -227,7 +227,7 @@ class RoomMicRepository : BaseRepository() {
     fun cancelLockMic(context: Context, roomId: String, micIndex: Int): LiveData<Resource<Pair<Int, Boolean>>> {
         val resource = object : NetworkOnlyResource<Pair<Int, Boolean>>() {
             override fun createCall(callBack: ResultCallBack<LiveData<Pair<Int, Boolean>>>) {
-                HttpManager.getInstance(context).cancelLockMic(roomId, micIndex, object : ValueCallBack<Boolean> {
+                ChatroomHttpManager.getInstance(context).cancelLockMic(roomId, micIndex, object : ValueCallBack<Boolean> {
                     override fun onSuccess(data: Boolean) {
                         callBack.onSuccess(createLiveData(Pair(micIndex, data)))
                     }
@@ -245,7 +245,7 @@ class RoomMicRepository : BaseRepository() {
     fun invitationMic(context: Context, roomId: String, uid: String): LiveData<Resource<Boolean>> {
         val resource = object : NetworkOnlyResource<Boolean>() {
             override fun createCall(callBack: ResultCallBack<LiveData<Boolean>>) {
-                HttpManager.getInstance(context).invitationMic(roomId, uid, object : ValueCallBack<Boolean> {
+                ChatroomHttpManager.getInstance(context).invitationMic(roomId, uid, object : ValueCallBack<Boolean> {
                     override fun onSuccess(data: Boolean) {
                         callBack.onSuccess(createLiveData(data))
                     }
@@ -263,7 +263,7 @@ class RoomMicRepository : BaseRepository() {
     fun applySubmitMic(context: Context, roomId: String, uid: String, micIndex: Int): LiveData<Resource<Boolean>> {
         val resource = object : NetworkOnlyResource<Boolean>() {
             override fun createCall(callBack: ResultCallBack<LiveData<Boolean>>) {
-                HttpManager.getInstance(context).applySubmitMic(roomId, uid, micIndex, object : ValueCallBack<Boolean> {
+                ChatroomHttpManager.getInstance(context).applySubmitMic(roomId, uid, micIndex, object : ValueCallBack<Boolean> {
                     override fun onSuccess(data: Boolean) {
                         callBack.onSuccess(createLiveData(data))
                     }
@@ -281,7 +281,7 @@ class RoomMicRepository : BaseRepository() {
     fun rejectSubmitMic(context: Context, roomId: String, uid: String): LiveData<Resource<Boolean>> {
         val resource = object : NetworkOnlyResource<Boolean>() {
             override fun createCall(callBack: ResultCallBack<LiveData<Boolean>>) {
-                HttpManager.getInstance(context).rejectSubmitMic(roomId, uid, object : ValueCallBack<Boolean> {
+                ChatroomHttpManager.getInstance(context).rejectSubmitMic(roomId, uid, object : ValueCallBack<Boolean> {
                     override fun onSuccess(data: Boolean) {
                         callBack.onSuccess(createLiveData(data))
                     }

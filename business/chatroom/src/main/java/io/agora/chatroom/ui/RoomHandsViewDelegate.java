@@ -8,7 +8,7 @@ import java.util.Map;
 import io.agora.buddy.tool.ToastTools;
 import io.agora.chatroom.R;
 import io.agora.chatroom.fragment.ChatroomHandsDialog;
-import io.agora.chatroom.general.net.HttpManager;
+import io.agora.chatroom.general.net.ChatroomHttpManager;
 import io.agora.chatroom.general.repositories.ProfileManager;
 import io.agora.secnceui.ui.common.CommonSheetAlertDialog;
 import io.agora.secnceui.widget.primary.ChatPrimaryMenuView;
@@ -83,7 +83,7 @@ public class RoomHandsViewDelegate {
                    @Override
                    public void onConfirmClick() {
                        if (isRequest){
-                           HttpManager.getInstance(activity).cancelSubmitMic(roomId, new ValueCallBack<Boolean>() {
+                           ChatroomHttpManager.getInstance(activity).cancelSubmitMic(roomId, new ValueCallBack<Boolean>() {
                                @Override
                                public void onSuccess(Boolean var1) {
                                    ToastTools.show(activity,activity.getString(R.string.chatroom_mic_cancel_apply_success), Toast.LENGTH_SHORT);
@@ -97,7 +97,7 @@ public class RoomHandsViewDelegate {
                                }
                            });
                        }else {
-                           HttpManager.getInstance(activity).submitMic(roomId, micIndex, new ValueCallBack<Boolean>() {
+                           ChatroomHttpManager.getInstance(activity).submitMic(roomId, micIndex, new ValueCallBack<Boolean>() {
                                @Override
                                public void onSuccess(Boolean var1) {
                                    ToastTools.show(activity,activity.getString(R.string.chatroom_mic_apply_success), Toast.LENGTH_SHORT);
