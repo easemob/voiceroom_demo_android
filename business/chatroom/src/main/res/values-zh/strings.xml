@@ -62,6 +62,7 @@
     <string name="chatroom_send_gift_fail">礼物发送失败</string>
     <string name="chatroom_create_tip1">本应用为测试产品，请勿商用</string>
     <string name="chatroom_create_tip2">单次语聊房最长10分钟，过时房间将自动解散</string>
+    <string name="chatroom_profile_change_picture">更换头像</string>
 
     <string name="chatroom_agree_success">同意上麦成功!</string>
     <string name="chatroom_agree_fail">同意上麦失败!</string>
