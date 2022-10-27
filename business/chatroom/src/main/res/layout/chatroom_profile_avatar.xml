@@ -38,7 +38,7 @@
             android:textStyle="bold"
             android:textSize="@dimen/text_size_16sp"
             android:textColor="#040925"
-            android:text="Change Profile Picture"
+            android:text="@string/chatroom_profile_change_picture"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
