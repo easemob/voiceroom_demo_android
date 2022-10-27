@@ -32,7 +32,7 @@ import io.agora.buddy.tool.ThreadManager;
 import io.agora.buddy.tool.ToastTools;
 import io.agora.chatroom.R;
 import io.agora.chatroom.adapter.ChatroomInviteAdapter;
-import io.agora.chatroom.general.net.HttpManager;
+import io.agora.chatroom.general.net.ChatroomHttpManager;
 import io.agora.chatroom.model.ChatroomInviteViewModel;
 import tools.ValueCallBack;
 import tools.bean.VMemberBean;
@@ -81,6 +81,12 @@ public class ChatroomInviteHandsFragment extends BaseListFragment<VMemberBean> i
         }else {
             adapter.setEmptyView(emptyView);
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        reset();
     }
 
     @Override
@@ -198,7 +204,6 @@ public class ChatroomInviteHandsFragment extends BaseListFragment<VMemberBean> i
     @Override
     protected void initData() {
         super.initData();
-        handsViewModel.getInviteList(getActivity(),roomId,pageSize,cursor);
     }
 
     @Override
@@ -234,7 +239,7 @@ public class ChatroomInviteHandsFragment extends BaseListFragment<VMemberBean> i
 
     @Override
     public void onItemActionClick(View view, int position,String uid) {
-        HttpManager.getInstance(getActivity()).invitationMic(roomId, uid, new ValueCallBack<Boolean>() {
+        ChatroomHttpManager.getInstance(getActivity()).invitationMic(roomId, uid, new ValueCallBack<Boolean>() {
             @Override
             public void onSuccess(Boolean var1) {
                 LogToolsKt.logE("onActionClick Invite onSuccess " + uid, TAG);

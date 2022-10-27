@@ -15,7 +15,7 @@ import bean.ChatMessageData;
 import custormgift.CustomMsgHelper;
 import custormgift.OnMsgCallBack;
 import io.agora.buddy.tool.ThreadManager;
-import io.agora.chatroom.general.net.HttpManager;
+import io.agora.chatroom.general.net.ChatroomHttpManager;
 import io.agora.chatroom.general.repositories.ProfileManager;
 import io.agora.secnceui.bean.GiftBean;
 import io.agora.secnceui.widget.gift.ChatroomGiftView;
@@ -64,7 +64,7 @@ public class RoomGiftViewDelegate {
             public void SendGift(View view, Object bean) {
                dialog.setSendEnable(false);
                GiftBean giftBean = (GiftBean) bean;
-               HttpManager.getInstance(activity).sendGift(roomId,
+               ChatroomHttpManager.getInstance(activity).sendGift(roomId,
                        giftBean.getId(), giftBean.getNum(), 0, new ValueCallBack<Boolean>() {
                           @Override
                           public void onSuccess(Boolean var1) {

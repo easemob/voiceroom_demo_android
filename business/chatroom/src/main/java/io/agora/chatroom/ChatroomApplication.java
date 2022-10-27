@@ -8,6 +8,7 @@ import com.opensource.svgaplayer.SVGASoundManager;
 import com.opensource.svgaplayer.utils.log.SVGALogger;
 import com.tencent.bugly.crashreport.CrashReport;
 
+import http.VRRequestApi;
 import io.agora.chatroom.general.interfaceOrImplement.UserActivityLifecycleCallbacks;
 import manager.ChatroomConfigManager;
 
@@ -21,6 +22,7 @@ public class ChatroomApplication extends Application {
         instance = this;
         ARouter.init(this);
         ChatroomConfigManager.getInstance().initRoomConfig(this,BuildConfig.im_app_key);
+        VRRequestApi.get().setBaseUrl(BuildConfig.server_host_test);
         registerActivityLifecycleCallbacks();
         SVGAParser.Companion.shareParser().init(this);
         SVGALogger.INSTANCE.setLogEnabled(true);

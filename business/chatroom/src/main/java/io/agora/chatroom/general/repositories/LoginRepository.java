@@ -1,15 +1,13 @@
 package io.agora.chatroom.general.repositories;
 
 import android.content.Context;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 
-import http.VRHttpServer;
 import io.agora.baseui.general.callback.ResultCallBack;
 import io.agora.baseui.general.net.Resource;
-import io.agora.chatroom.general.net.HttpManager;
+import io.agora.chatroom.general.net.ChatroomHttpManager;
 import tools.ValueCallBack;
 import tools.bean.VRUserBean;
 
@@ -19,7 +17,7 @@ public class LoginRepository extends BaseRepository {
         return new NetworkOnlyResource<VRUserBean>() {
             @Override
             protected void createCall(@NonNull ResultCallBack<LiveData<VRUserBean>> callBack) {
-                HttpManager.getInstance(context).loginWithToken(deviceId,avatar,new ValueCallBack<VRUserBean>() {
+                ChatroomHttpManager.getInstance(context).loginWithToken(deviceId,avatar,new ValueCallBack<VRUserBean>() {
                     @Override
                     public void onSuccess(VRUserBean value) {
                         callBack.onSuccess(createLiveData(value));

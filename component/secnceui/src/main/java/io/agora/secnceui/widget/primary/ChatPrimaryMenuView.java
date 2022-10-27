@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -26,7 +27,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import io.agora.buddy.tool.ThreadManager;
 import io.agora.secnceui.R;
 import io.agora.secnceui.widget.expression.ExpressionIcon;
 import io.agora.secnceui.widget.expression.ExpressionView;
@@ -53,6 +53,7 @@ public class ChatPrimaryMenuView extends RelativeLayout implements ExpressionVie
     private int softKeyHeight = 0;
     private int mWindowHeight,mExpressionHeight = 0;
     private boolean isSoftShowing;
+    private Window window;
 
 
     public ChatPrimaryMenuView(Context context) {
@@ -65,8 +66,9 @@ public class ChatPrimaryMenuView extends RelativeLayout implements ExpressionVie
 
     public ChatPrimaryMenuView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        view = LayoutInflater.from(context).inflate(R.layout.widget_primary_menu_layout, this);
         activity = (Activity) context;
+        if (activity !=null) window = activity.getWindow();
+        view = LayoutInflater.from(context).inflate(R.layout.widget_primary_menu_layout, this);
         inputManager = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
         initViews();
     }
@@ -80,7 +82,8 @@ public class ChatPrimaryMenuView extends RelativeLayout implements ExpressionVie
         mSend = findViewById(R.id.input_send);
         normalLayout = findViewById(R.id.normal_layout);
         expressionView = findViewById(R.id.expression_view);
-        rootView =activity.getWindow().getDecorView().findViewById(android.R.id.content);
+        if (window != null)
+        rootView = window.getDecorView().findViewById(android.R.id.content);
 
         expressionView.setExpressionListener(this);
         expressionView.init(7);
@@ -164,9 +167,18 @@ public class ChatPrimaryMenuView extends RelativeLayout implements ExpressionVie
                     if (mWindowHeight != height) {
                         Log.e("ChatPrimaryMenuView","checkDeviceHasNavigationBar: " +  checkDeviceHasNavigationBar(activity));
                         Log.e("ChatPrimaryMenuView","getNavigationBarHeight: " + getNavigationBarHeight(activity));
-                        //两次窗口高度相减，就是软键盘高度
-                        softKeyHeight = mWindowHeight - height;
-                        isSoftShowing = true;
+                        if (checkDeviceHasNavigationBar(activity)){
+                            if (getNavigationBarHeight(activity) > 100){
+                                //两次窗口高度相减，就是软键盘高度
+                                softKeyHeight = mWindowHeight - height - getNavigationBarHeight(activity);
+                            }else {
+                                //两次窗口高度相减，就是软键盘高度
+                                softKeyHeight = mWindowHeight - height;
+                            }
+                            isSoftShowing = true;
+                        }else {
+                            softKeyHeight = 765;
+                        }
 //                        System.out.println("SoftKeyboard height1 = " + softKeyHeight);
                         setViewLayoutParams(expressionView,rootWidth,softKeyHeight);
                     }

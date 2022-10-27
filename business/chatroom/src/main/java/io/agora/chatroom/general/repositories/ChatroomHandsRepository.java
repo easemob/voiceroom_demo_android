@@ -5,7 +5,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import io.agora.baseui.general.callback.ResultCallBack;
 import io.agora.baseui.general.net.Resource;
-import io.agora.chatroom.general.net.HttpManager;
+import io.agora.chatroom.general.net.ChatroomHttpManager;
 import tools.ValueCallBack;
 import tools.bean.VRGiftBean;
 import tools.bean.VRMicListBean;
@@ -17,7 +17,7 @@ public class ChatroomHandsRepository extends BaseRepository{
         return new NetworkOnlyResource<VRMicListBean>() {
             @Override
             protected void createCall(@NonNull ResultCallBack<LiveData<VRMicListBean>> callBack) {
-                HttpManager.getInstance(context).getApplyMicList(roomId, pageSize, cursor, new ValueCallBack<VRMicListBean>() {
+                ChatroomHttpManager.getInstance(context).getApplyMicList(roomId, pageSize, cursor, new ValueCallBack<VRMicListBean>() {
                     @Override
                     public void onSuccess(VRMicListBean var1) {
                         callBack.onSuccess(createLiveData(var1));
@@ -36,7 +36,7 @@ public class ChatroomHandsRepository extends BaseRepository{
         return new NetworkOnlyResource<VRoomUserBean>() {
             @Override
             protected void createCall(@NonNull ResultCallBack<LiveData<VRoomUserBean>> callBack) {
-                HttpManager.getInstance(context).getRoomMembers(roomId, pageSize, cursor, new ValueCallBack<VRoomUserBean>() {
+                ChatroomHttpManager.getInstance(context).getRoomMembers(roomId, pageSize, cursor, new ValueCallBack<VRoomUserBean>() {
                     @Override
                     public void onSuccess(VRoomUserBean var1) {
                         callBack.onSuccess(createLiveData(var1));
@@ -58,7 +58,7 @@ public class ChatroomHandsRepository extends BaseRepository{
         return new NetworkOnlyResource<VRGiftBean>() {
             @Override
             protected void createCall(@NonNull ResultCallBack<LiveData<VRGiftBean>> callBack) {
-                HttpManager.getInstance(context).getGiftList(roomId, new ValueCallBack<VRGiftBean>() {
+                ChatroomHttpManager.getInstance(context).getGiftList(roomId, new ValueCallBack<VRGiftBean>() {
                     @Override
                     public void onSuccess(VRGiftBean var1) {
                         callBack.onSuccess(createLiveData(var1));
