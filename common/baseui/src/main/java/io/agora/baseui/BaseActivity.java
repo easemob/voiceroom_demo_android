@@ -122,9 +122,9 @@ public class BaseActivity extends AppCompatActivity implements IParserSource {
                     }
                 }
             }
-            loadingDialog.setCancelable(cancelable);
-            loadingDialog.show();
         }
+        loadingDialog.setCancelable(cancelable);
+        loadingDialog.show();
     }
 
     public void dismissLoading(){
