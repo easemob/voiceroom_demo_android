@@ -37,8 +37,8 @@
     <string name="room_list_item_enter">Enter</string>
     <string name="room_list_count">%1$s</string>
     <string name="room_tab_layout_count">(%1$s)</string>
-    <string name="room_profile_update_name_fail">Update Failed</string>
-    <string name="room_profile_update_name_suc">Update Succeed</string>
+    <string name="room_profile_update_name_fail">Change Failed</string>
+    <string name="room_profile_update_name_suc">Change Success</string>
 
     <string name="empty_invite_hands">No audience yet</string>
     <string name="empty_raised_hands">No one raised hands yet</string>

@@ -216,6 +216,10 @@ public class ChatroomProfileActivity extends BaseActivity implements View.OnClic
               .showAtLocation(itemView, Gravity.BOTTOM, 0, 0);
    }
 
+   /**
+    * 修改头像
+    * @param bean
+    */
    private void updateProfile(ProfileBean bean){
       try {
          ChatroomHttpManager.getInstance(ChatroomProfileActivity.this).loginWithToken(
@@ -238,6 +242,10 @@ public class ChatroomProfileActivity extends BaseActivity implements View.OnClic
       }
    }
 
+   /**
+    * 修改昵称
+    * @param bean
+    */
    private void updateProfile(VRUserBean bean){
       try {
          ChatroomHttpManager.getInstance(ChatroomProfileActivity.this).loginWithToken(
