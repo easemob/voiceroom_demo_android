@@ -22,7 +22,7 @@ public class ChatroomApplication extends Application {
         instance = this;
         ARouter.init(this);
         ChatroomConfigManager.getInstance().initRoomConfig(this,BuildConfig.im_app_key);
-        VRRequestApi.get().setBaseUrl(BuildConfig.server_host_test);
+        VRRequestApi.get().setBaseUrl(BuildConfig.server_host);
         registerActivityLifecycleCallbacks();
         SVGAParser.Companion.shareParser().init(this);
         SVGALogger.INSTANCE.setLogEnabled(true);

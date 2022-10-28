@@ -45,12 +45,12 @@ android {
             buildConfigField "String", "agora_app_id", "${TEST_RTC_APP_ID}"
             buildConfigField "String", "agora_app_token", "${TEST_RTC_APP_TOKEN}"
             buildConfigField "String", "im_app_key", "${TEST_IM_APP_KEY}"
-            buildConfigField "String", "server_host_test", "${TEST_APP_SERVER_HOST}"
+            buildConfigField "String", "server_host", "${TEST_APP_SERVER_HOST}"
         }else {
             buildConfigField "String", "agora_app_id", "${RELEASE_RTC_APP_ID}"
             buildConfigField "String", "agora_app_token", "${RELEASE_RTC_APP_TOKEN}"
             buildConfigField "String", "im_app_key", "${RELEASE_IM_APP_KEY}"
-            buildConfigField "String", "server_host_release", "${RELEASE__APP_SERVER_HOST}"
+            buildConfigField "String", "server_host", "${RELEASE__APP_SERVER_HOST}"
         }
 
         ndk {
