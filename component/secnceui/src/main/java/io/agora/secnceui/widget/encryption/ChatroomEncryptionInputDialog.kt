@@ -8,6 +8,9 @@ import android.view.ViewGroup
 import io.agora.baseui.dialog.BaseFragmentDialog
 import io.agora.secnceui.databinding.DialogChatroomEncryptionBinding
 
+/**
+ * 输入密码 dialog
+ */
 class ChatroomEncryptionInputDialog constructor() : BaseFragmentDialog<DialogChatroomEncryptionBinding>() {
 
     override fun getViewBinding(inflater: LayoutInflater, container: ViewGroup?): DialogChatroomEncryptionBinding? {
