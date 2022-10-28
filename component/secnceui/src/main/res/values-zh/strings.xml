@@ -22,13 +22,13 @@
     <string name="chatroom_current_sound_selection">当前最佳⾳效</string>
     <string name="chatroom_other_sound_selection">其他最佳⾳效</string>
     <string name="chatroom_social_chat">语聊社交</string>
-    <string name="chatroom_social_chat_introduce">通过调节噪⾳消除和回声抑制的参数， 解决语聊社交场景的⼈声通话问题，享 受超低延时、清晰动听的⼈声。</string>
+    <string name="chatroom_social_chat_introduce">通过调节噪⾳消除和回声抑制的参数，解决语聊社交场景的⼈声通话问题，享受超低延时、清晰动听的⼈声。</string>
     <string name="chatroom_karaoke">K歌</string>
-    <string name="chatroom_karaoke_introduce">该⾳效专注于解决单⼈或多⼈唱K场景 的各类问题，包括伴奏和⼈声的均衡处 理，声⾳的曲调和声线美化，多⼈合唱 的⾳量均衡和实时同步等。能够让K歌 的场景更拟真，演唱者的歌声更动听。</string>
+    <string name="chatroom_karaoke_introduce">该⾳效专注于解决单⼈或多⼈唱K场景的各类问题，包括伴奏和⼈声的均衡处理，声⾳的曲调和声线美化，多⼈合唱的⾳量均衡和实时同步等。能够让K歌的场景更拟真，演唱者的歌声更动听。</string>
     <string name="chatroom_gaming_buddy">游戏陪玩</string>
-    <string name="chatroom_gaming_buddy_introduce">该⾳效专注于解决主播陪玩游戏场景⾥ 各类问题，包括⼈声和游戏声⾳的协同 混响处理，声⾳的曲调和声线美化等。 能够让陪玩主播的声⾳更具吸引⼒，同 时保证游戏声⾳的场景感。</string>
+    <string name="chatroom_gaming_buddy_introduce">该⾳效专注于解决主播陪玩游戏场景⾥各类问题，包括⼈声和游戏声⾳的协同混响处理，声⾳的曲调和声线美化等。能够让陪玩主播的声⾳更具吸引⼒，同时保证游戏声⾳的场景感。</string>
     <string name="chatroom_professional_broadcaster">专业⾳频主播</string>
-    <string name="chatroom_professional_broadcaster_introduce">该⾳效专注于解决单声道主播⾳质差和 主流外置声卡兼容等问题。利⽤声⽹⽴ 体声采集和⾼⾳质技术，能够将使⽤声 卡的主播的⾳质⼤幅提升，提升直播间 吸引⼒，⽬前已适配市场上主流声卡。</string>
+    <string name="chatroom_professional_broadcaster_introduce">该⾳效专注于解决单声道主播⾳质差和主流外置声卡兼容等问题。利⽤声⽹⽴体声采集和⾼⾳质技术能够将使⽤声卡的主播的⾳质⼤幅提升，提升直播间吸引⼒，⽬前已适配市场上主流声卡。</string>
     <string name="chatroom_sound_selection_more">获取更多最佳音效，请访问 <![CDATA[<font color=\'#3C4267\'><strong><u>www.agora.io.</u></strong></font>]]></string>
     <string name="chatroom_ains_settings">AI降噪设置</string>
     <string name="chatroom_your_ains">你自己</string>
@@ -103,5 +103,5 @@
     <string name="gift_default_name_9">火箭</string>
     <string name="dialog_gift_total_count">贡献总计:%1$s</string>
 
-    <string name="room_create_tips">Enter 4 Digit PassWord</string>
+    <string name="room_create_tips">请输入4位密码</string>
 </resources>
