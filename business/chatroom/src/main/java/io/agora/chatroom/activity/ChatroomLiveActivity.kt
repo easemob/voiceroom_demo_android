@@ -377,20 +377,21 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
             }
 
             override fun onSendMessage(content: String?) {
-                if (!content.isNullOrEmpty())
-                ChatroomHelper.getInstance().sendTxtMsg(content,
-                    ProfileManager.getInstance().profile.name, object : OnMsgCallBack() {
-                        override fun onSuccess(message: ChatMessageData?) {
-                            ThreadManager.getInstance().runOnMainThread {
-                                binding.messageView.refreshSelectLast()
-                                binding.likeView.isVisible = true
+                if (!content.isNullOrEmpty()){
+                    ChatroomHelper.getInstance().sendTxtMsg(content,
+                        ProfileManager.getInstance().profile.name, object : OnMsgCallBack() {
+                            override fun onSuccess(message: ChatMessageData?) {
+                                ThreadManager.getInstance().runOnMainThread {
+                                    binding.messageView.refreshSelectLast()
+                                    binding.likeView.isVisible = true
+                                }
                             }
-                        }
 
-                        override fun onError(messageId: String?, code: Int, error: String?) {
-                            Log.e("send error", " $code $error")
-                        }
-                    })
+                            override fun onError(messageId: String?, code: Int, error: String?) {
+                                Log.e("send error", " $code $error")
+                            }
+                        })
+                }
             }
         })
     }

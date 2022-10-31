@@ -102,6 +102,8 @@
     <string name="gift_default_name_8">皇冠</string>
     <string name="gift_default_name_9">火箭</string>
     <string name="dialog_gift_total_count">贡献总计:%1$s</string>
+    <string name="chatroom_gift_title">打赏</string>
+    <string name="chatroom_gift_dialog_send">发送</string>
 
     <string name="room_create_tips">请输入4位密码</string>
 </resources>

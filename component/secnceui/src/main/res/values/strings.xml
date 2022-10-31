@@ -102,6 +102,8 @@
     <string name="gift_default_name_8">Crown</string>
     <string name="gift_default_name_9">Rocket</string>
     <string name="dialog_gift_total_count">Contribution Total:%1$s</string>
+    <string name="chatroom_gift_title">Gifts</string>
+    <string name="chatroom_gift_dialog_send">Send</string>
 
     <string name="room_create_tips">Enter 4 Digit PassWord</string>
 
