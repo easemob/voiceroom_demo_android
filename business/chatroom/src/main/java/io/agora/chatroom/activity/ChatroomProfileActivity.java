@@ -280,9 +280,9 @@ public class ChatroomProfileActivity extends BaseActivity implements View.OnClic
          @Override
          public void run() {
             hideKeyboard();
-            nickName.setEnabled(false);
-            nickName.setFocusable(false);
-            nickName.setFocusableInTouchMode(false);
+            nickName.setEnabled(true);
+//            content.setFocusable(true);
+//            content.setFocusableInTouchMode(true);
          }
       });
    }

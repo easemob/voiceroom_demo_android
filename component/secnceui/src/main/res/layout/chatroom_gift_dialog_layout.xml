@@ -31,7 +31,7 @@
             android:textStyle="bold"
             android:textSize="@dimen/text_size_16sp"
             android:textColor="#040925"
-            android:hint="Gifts"
+            android:text="@string/chatroom_gift_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
@@ -121,7 +121,7 @@
             android:layout_height="40dp"
             android:textSize="@dimen/text_size_18sp"
             android:textColor="@color/white"
-            android:text="Send"
+            android:text="@string/chatroom_gift_dialog_send"
             />
 
 

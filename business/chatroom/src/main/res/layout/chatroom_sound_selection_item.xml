@@ -55,7 +55,6 @@
                 android:lineSpacingExtra="3dp"
                 android:textSize="@dimen/text_size_13sp"
                 android:breakStrategy="simple"
-                android:hint="This sound effect focuses on solving the voice call problem of Social Chat scene, including noise cancellation and echo suppression of the anchor&#180;s voice. It can enable users of different network environments and models to enjoy ultra-low delay, clear and beautiful voice in multi person chat."
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"/>
 

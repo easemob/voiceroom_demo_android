@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -103,6 +104,25 @@ public class ChatPrimaryMenuView extends RelativeLayout implements ExpressionVie
                 }
             }
         });
+
+
+        edContent.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                int result = actionId & EditorInfo.IME_MASK_ACTION;
+                switch(result) {
+                    case EditorInfo.IME_ACTION_DONE:
+                        // done stuff
+                        sendMessage();
+                        break;
+                    case EditorInfo.IME_ACTION_NEXT:
+                        // next stuff
+                        break;
+                }
+                return false;
+            }
+        });
+
         inputLayout.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -132,17 +152,7 @@ public class ChatPrimaryMenuView extends RelativeLayout implements ExpressionVie
         mSend.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (null != clickListener)
-                    clickListener.onSendMessage(edContent.getText().toString().trim());
-                edContent.setText("");
-                hideKeyboard();
-                inputView.setVisibility(View.GONE);
-                normalLayout.setVisibility(View.VISIBLE);
-                menuLayout.setVisibility(View.VISIBLE);
-                inputLayout.setVisibility(View.VISIBLE);
-                inputLayout.setEnabled(true);
-                hideExpressionView(false);
-
+                sendMessage();
             }
         });
 
@@ -440,6 +450,17 @@ public class ChatPrimaryMenuView extends RelativeLayout implements ExpressionVie
         inputView.setVisibility(View.GONE);
         inputLayout.setVisibility(VISIBLE);
         inputLayout.setEnabled(true);
+    }
+
+    public void sendMessage(){
+        if (null != clickListener)
+            clickListener.onSendMessage(edContent.getText().toString().trim());
+        edContent.setText("");
+        hideKeyboard();
+        showInput();
+        normalLayout.setVisibility(View.VISIBLE);
+        menuLayout.setVisibility(View.VISIBLE);
+        hideExpressionView(false);
     }
 
     public static class MenuItemModel{
