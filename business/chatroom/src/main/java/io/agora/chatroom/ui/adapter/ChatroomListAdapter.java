@@ -1,4 +1,4 @@
-package io.agora.chatroom.adapter;
+package io.agora.chatroom.ui.adapter;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,7 +24,7 @@ public class ChatroomListAdapter extends RoomBaseRecyclerViewAdapter<VRoomBean.R
     }
 
     public class RoomListViewHolder extends ViewHolder<VRoomBean.RoomsBean> {
-        private ConstraintLayout item_layout;
+        private ShapeableImageView item_layout;
         private ConstraintLayout title_layout;
         private TextView title;
         private TextView roomName;
@@ -81,7 +81,7 @@ public class ChatroomListAdapter extends RoomBaseRecyclerViewAdapter<VRoomBean.R
                     item_layout.setBackgroundResource(R.drawable.bg_chatroom_list_type_official);
                     break;
                 default:
-                    item_layout.setBackgroundResource(R.drawable.bg_chatroom_list_type_nomal);
+                    item_layout.setBackgroundResource(R.drawable.icon_create_chat_room);
             }
         }
 

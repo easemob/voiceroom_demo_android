@@ -6,15 +6,23 @@
     android:layout_height="146dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/room_item_layout"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:background="@drawable/bg_chatroom_list_type_nomal"
         android:layout_width="0dp"
         android:layout_height="match_parent">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/room_item_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/icon_create_chat_room"
+            app:layout_constraintDimensionRatio="1:1"
+            app:shapeAppearance="@style/RoundedStyle"
+            />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/gl45"

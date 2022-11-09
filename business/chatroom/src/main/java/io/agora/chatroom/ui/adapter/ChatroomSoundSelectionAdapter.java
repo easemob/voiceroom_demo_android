@@ -1,4 +1,4 @@
-package io.agora.chatroom.adapter;
+package io.agora.chatroom.ui.adapter;
 
 import android.content.Context;
 import android.util.Log;

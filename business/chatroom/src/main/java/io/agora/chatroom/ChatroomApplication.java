@@ -27,7 +27,7 @@ public class ChatroomApplication extends Application {
         SVGAParser.Companion.shareParser().init(this);
         SVGALogger.INSTANCE.setLogEnabled(true);
         SVGASoundManager.INSTANCE.init();
-        CrashReport.initCrashReport(this, "baed12f146", false);
+//        CrashReport.initCrashReport(this, "baed12f146", false);
     }
 
     private void registerActivityLifecycleCallbacks() {

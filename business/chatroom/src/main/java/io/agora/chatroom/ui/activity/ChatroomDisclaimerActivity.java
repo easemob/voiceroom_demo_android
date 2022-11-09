@@ -1,6 +1,5 @@
-package io.agora.chatroom.activity;
+package io.agora.chatroom.ui.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -15,14 +14,11 @@ import android.text.style.UnderlineSpan;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.google.android.material.textview.MaterialTextView;
-
-import java.util.Locale;
 
 import io.agora.baseui.BaseActivity;
 import io.agora.buddy.tool.ResourcesTools;
@@ -79,15 +75,15 @@ public class ChatroomDisclaimerActivity extends BaseActivity implements Chatroom
         String e = getString(R.string.room_disclaimer_email);
         SpannableStringBuilder eBuilder = new SpannableStringBuilder(e);
         ForegroundColorSpan graySpan = new ForegroundColorSpan(getResources().getColor(R.color.color_156EF3));
-        eBuilder.setSpan(graySpan,e.length()-16,e.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        eBuilder.setSpan(new UnderlineSpan(), e.length()-16, e.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        eBuilder.setSpan(graySpan,e.length()-18,e.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        eBuilder.setSpan(new UnderlineSpan(), e.length()-18, e.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         eBuilder.setSpan(new ClickableSpan() {
             @Override
             public void onClick(@NonNull View view) {
                 Log.e("SpannableStringBuilder","onClick");
                 sendEmail();
             }
-        }, e.length() - 16, e.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }, e.length() - 18, e.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         end.setText(eBuilder);
     }
 
@@ -107,7 +103,7 @@ public class ChatroomDisclaimerActivity extends BaseActivity implements Chatroom
         //邮件发送类型：无附件，纯文本
         email.setType("plain/text");
         //邮件接收者（数组，可以是多位接收者）
-        String[] emailReciver = new String[]{"support@agora.io.com"};
+        String[] emailReciver = new String[]{"issues@easemob.com"};
 
         //设置邮件地址
         email.putExtra(android.content.Intent.EXTRA_EMAIL, emailReciver);

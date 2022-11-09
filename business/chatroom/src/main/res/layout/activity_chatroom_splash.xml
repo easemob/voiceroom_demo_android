@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_chatroom_splash"
-    tools:context=".activity.ChatroomSplashActivity">
+    tools:context=".ui.activity.ChatroomSplashActivity">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/glHorizontal28"
@@ -33,7 +33,7 @@
         android:layout_marginTop="15dp"
         android:textSize="@dimen/sp_24"
         android:textStyle="bold"
-        android:letterSpacing="0.42"
+        android:letterSpacing="0.12"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ivChatroomLogo" />

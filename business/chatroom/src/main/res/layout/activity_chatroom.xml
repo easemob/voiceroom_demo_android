@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_chatroom_image"
-    tools:context=".activity.ChatroomLiveActivity">
+    tools:context=".ui.activity.ChatroomLiveActivity">
 
     <io.agora.secnceui.widget.top.RoomLiveTopView
         android:id="@+id/cTopView"

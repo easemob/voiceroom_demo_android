@@ -1,6 +1,7 @@
-package io.agora.chatroom.activity;
+package io.agora.chatroom.ui.activity;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -107,6 +108,7 @@ public class ChatroomCreateActivity extends BaseActivity implements RadioGroup.O
       baseLayout = findViewById(R.id.base_layout);
       randomLayout = findViewById(R.id.random_layout);
       tipLayout = findViewById(R.id.tips_layout);
+      setTextStyle(mTitleBar.getTitle(), Typeface.BOLD);
       chickPrivate();
       data = PageRepository.getInstance().getDefaultPageData(this);
    }
@@ -237,11 +239,11 @@ public class ChatroomCreateActivity extends BaseActivity implements RadioGroup.O
          @Override
          public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
                if (data.get(position).getRoom_type() == 0){
-                  holder.mLayout.setBackgroundResource(R.drawable.icon_create_chat_room);
+//                  holder.mLayout.setBackgroundResource(R.drawable.icon_create_chat_room);
                   holder.mTitle.setText(getString(R.string.room_create_chat_room));
                   holder.mContent.setText(getString(R.string.room_create_chat_room_desc));
                }else if (data.get(position).getRoom_type() == 1){
-                  holder.mLayout.setBackgroundResource(R.drawable.icon_create_3d_room);
+//                  holder.mLayout.setBackgroundResource(R.drawable.icon_create_3d_room);
                   holder.mTitle.setText(getString(R.string.room_create_3d_room));
                   holder.mContent.setText(getString(R.string.room_create_3d_room_desc));
                }

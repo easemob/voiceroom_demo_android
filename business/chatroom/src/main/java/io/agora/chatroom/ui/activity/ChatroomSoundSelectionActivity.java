@@ -1,4 +1,4 @@
-package io.agora.chatroom.activity;
+package io.agora.chatroom.ui.activity;
 
 import android.app.Activity;
 import android.content.Context;
@@ -28,7 +28,7 @@ import io.agora.buddy.tool.ThreadManager;
 import io.agora.buddy.tool.ToastTools;
 import io.agora.chatroom.ChatroomApplication;
 import io.agora.chatroom.R;
-import io.agora.chatroom.adapter.ChatroomSoundSelectionAdapter;
+import io.agora.chatroom.ui.adapter.ChatroomSoundSelectionAdapter;
 import io.agora.chatroom.general.interfaceOrImplement.UserActivityLifecycleCallbacks;
 import io.agora.chatroom.general.repositories.ProfileManager;
 import io.agora.chatroom.model.ChatroomViewModel;

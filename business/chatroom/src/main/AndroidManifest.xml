@@ -4,9 +4,9 @@
 
     <application>
         <activity
-            android:name=".activity.ChatroomLiveActivity"
+            android:name=".ui.activity.ChatroomLiveActivity"
             android:exported="false" />
-        <activity android:name=".activity.ChatroomSoundSelectionActivity"
+        <activity android:name=".ui.activity.ChatroomSoundSelectionActivity"
             android:exported="false"/>
     </application>
 

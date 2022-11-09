@@ -7,7 +7,7 @@ import androidx.fragment.app.FragmentActivity;
 import java.util.Map;
 import io.agora.buddy.tool.ToastTools;
 import io.agora.chatroom.R;
-import io.agora.chatroom.fragment.ChatroomHandsDialog;
+import io.agora.chatroom.ui.dialog.ChatroomHandsDialog;
 import io.agora.chatroom.general.net.ChatroomHttpManager;
 import io.agora.chatroom.general.repositories.ProfileManager;
 import io.agora.secnceui.ui.common.CommonSheetAlertDialog;

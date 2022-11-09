@@ -1,4 +1,4 @@
-package io.agora.chatroom.fragment;
+package io.agora.chatroom.ui.fragment;
 
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -17,12 +17,11 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import io.agora.CallBack;
 import io.agora.baseui.adapter.RoomBaseRecyclerViewAdapter;
 import io.agora.baseui.general.callback.OnResourceParseCallback;
-import io.agora.buddy.tool.FastClickTools;
 import io.agora.buddy.tool.ThreadManager;
 import io.agora.buddy.tool.ToastTools;
 import io.agora.chat.ChatClient;
 import io.agora.chatroom.R;
-import io.agora.chatroom.adapter.ChatroomListAdapter;
+import io.agora.chatroom.ui.adapter.ChatroomListAdapter;
 import io.agora.chatroom.general.repositories.ProfileManager;
 import io.agora.chatroom.model.ChatroomViewModel;
 import io.agora.config.RouterParams;
@@ -200,6 +199,7 @@ public class ChatroomListFragment extends BaseChatroomListFragment<VRoomBean.Roo
                 @Override
                 public void onSuccess() {
                     Log.d("ChatroomListFragment","Login success");
+                    dismissLoading();
                     checkPrivate();
                 }
 
@@ -247,9 +247,12 @@ public class ChatroomListFragment extends BaseChatroomListFragment<VRoomBean.Roo
         new ChatroomEncryptionInputDialog()
                 .leftText(getActivity().getString(R.string.chatroom_cancel))
                 .rightText(getActivity().getString(R.string.chatroom_confirm))
+                .setDialogCancelable(true)
                 .setOnClickListener(new ChatroomEncryptionInputDialog.OnClickBottomListener() {
                     @Override
-                    public void onCancelClick() {}
+                    public void onCancelClick() {
+                        dismissLoading();
+                    }
 
                     @Override
                     public void onConfirmClick(@NonNull String password) {

@@ -26,7 +26,7 @@
         android:networkSecurityConfig="@xml/app_net_config"
         android:theme="@style/Theme.AgoraScenesChatroom">
         <activity
-            android:name="io.agora.chatroom.activity.ChatroomSplashActivity"
+            android:name="io.agora.chatroom.ui.activity.ChatroomSplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -35,31 +35,31 @@
         </activity>
 
         <activity
-            android:name="io.agora.chatroom.activity.ChatroomLiveActivity"
+            android:name="io.agora.chatroom.ui.activity.ChatroomLiveActivity"
             android:exported="false"
             android:keepScreenOn="true"
             android:screenOrientation="portrait" />
 
-        <activity android:name=".activity.ChatroomListActivity"
+        <activity android:name=".ui.activity.ChatroomListActivity"
             android:exported="false"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan"/>
 
-        <activity android:name=".activity.ChatroomCreateActivity"
+        <activity android:name=".ui.activity.ChatroomCreateActivity"
             android:windowSoftInputMode="adjustPan"
             android:screenOrientation="portrait"
             android:exported="false"/>
 
-        <activity android:name=".activity.ChatroomProfileActivity"
+        <activity android:name=".ui.activity.ChatroomProfileActivity"
             android:screenOrientation="portrait"
             android:exported="false"/>
 
-        <activity android:name=".activity.ChatroomSoundSelectionActivity"
+        <activity android:name=".ui.activity.ChatroomSoundSelectionActivity"
             android:screenOrientation="portrait"
             android:exported="false"/>
 
-        <activity android:name=".activity.ChatroomDisclaimerActivity"
+        <activity android:name=".ui.activity.ChatroomDisclaimerActivity"
             android:screenOrientation="portrait"
             android:exported="false"/>
 

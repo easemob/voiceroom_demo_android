@@ -1,4 +1,4 @@
-package io.agora.chatroom.fragment;
+package io.agora.chatroom.ui.dialog;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -24,6 +24,8 @@ import io.agora.baseui.BaseInitFragment;
 import io.agora.baseui.dialog.BaseSheetDialog;
 import io.agora.chatroom.R;
 import io.agora.chatroom.databinding.ChatroomHandLayoutBinding;
+import io.agora.chatroom.ui.fragment.ChatroomInviteHandsFragment;
+import io.agora.chatroom.ui.fragment.ChatroomRaisedHandsFragment;
 import io.agora.secnceui.utils.DeviceUtils;
 
 public class ChatroomHandsDialog extends BaseSheetDialog<ChatroomHandLayoutBinding> {

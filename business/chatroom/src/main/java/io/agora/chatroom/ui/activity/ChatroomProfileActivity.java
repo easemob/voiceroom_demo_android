@@ -1,4 +1,4 @@
-package io.agora.chatroom.activity;
+package io.agora.chatroom.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -30,7 +30,7 @@ import io.agora.buddy.tool.ThreadManager;
 import io.agora.buddy.tool.ToastTools;
 import io.agora.chat.ChatClient;
 import io.agora.chatroom.R;
-import io.agora.chatroom.adapter.ChatroomProfileGridAdapter;
+import io.agora.chatroom.ui.adapter.ChatroomProfileGridAdapter;
 import io.agora.chatroom.bean.ProfileBean;
 import io.agora.chatroom.databinding.ChatroomProfileAvatarBinding;
 import io.agora.chatroom.general.net.ChatroomHttpManager;

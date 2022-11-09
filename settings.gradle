@@ -21,7 +21,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "AgoraScenesDemo"
+rootProject.name = "VoiceChatRoom"
 include ':app'
 // business
 include ':business:chatroom'

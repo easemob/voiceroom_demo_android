@@ -1,10 +1,16 @@
 package io.agora.secnceui.widget.encryption
 
+import android.content.Context
 import android.os.Bundle
+import android.os.Handler
+import android.os.Message
 import android.text.TextUtils
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import io.agora.baseui.dialog.BaseFragmentDialog
 import io.agora.secnceui.databinding.DialogChatroomEncryptionBinding
 
@@ -12,7 +18,8 @@ import io.agora.secnceui.databinding.DialogChatroomEncryptionBinding
  * 输入密码 dialog
  */
 class ChatroomEncryptionInputDialog constructor() : BaseFragmentDialog<DialogChatroomEncryptionBinding>() {
-
+    private val BOND = 1
+    private var isCancel = false
     override fun getViewBinding(inflater: LayoutInflater, container: ViewGroup?): DialogChatroomEncryptionBinding? {
         return DialogChatroomEncryptionBinding.inflate(inflater, container, false)
     }
@@ -41,7 +48,15 @@ class ChatroomEncryptionInputDialog constructor() : BaseFragmentDialog<DialogCha
                 clickListener?.onConfirmClick(mtContent.text.toString())
                 dismiss()
             }
+            mtContent.requestFocus()
+            dialog?.setCancelable(isCancel)
+            dialog?.setCanceledOnTouchOutside(isCancel)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        handler.sendEmptyMessageDelayed(BOND,200)
     }
 
     private var clickListener: OnClickBottomListener? = null
@@ -63,6 +78,23 @@ class ChatroomEncryptionInputDialog constructor() : BaseFragmentDialog<DialogCha
 
     fun titleText(titleText: String) = apply {
         this.titleText = titleText
+    }
+
+    fun setDialogCancelable(isCancel: Boolean) = apply {
+        this.isCancel = isCancel;
+    }
+
+    private val handler: Handler = object : Handler() {
+        override fun handleMessage(msg: Message) {
+            super.handleMessage(msg)
+            when (msg.what) {
+                BOND -> {
+                    val inputMethodManager =
+                        context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                    inputMethodManager.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS)
+                }
+            }
+        }
     }
 
 

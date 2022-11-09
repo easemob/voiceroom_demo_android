@@ -1,4 +1,4 @@
-package io.agora.chatroom.activity;
+package io.agora.chatroom.ui.activity;
 
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -24,7 +24,7 @@ import com.google.android.material.tabs.TabLayoutMediator;
 import io.agora.baseui.BaseActivity;
 import io.agora.buddy.tool.FastClickTools;
 import io.agora.chatroom.R;
-import io.agora.chatroom.fragment.ChatroomListFragment;
+import io.agora.chatroom.ui.fragment.ChatroomListFragment;
 import io.agora.chatroom.general.repositories.ProfileManager;
 import io.agora.chatroom.model.PageViewModel;
 import io.agora.config.RouterPath;
@@ -44,7 +44,7 @@ public class ChatroomListActivity extends BaseActivity implements ChatroomTitleB
     private int mCount;
     private int index;
     private int resId = 0;
-    private int[] titles = {R.string.tab_layout_all};
+    private int[] titles = {R.string.app_agora_chatroom};
 
     @Override
     protected int getLayoutId() {

@@ -1,4 +1,4 @@
-package io.agora.chatroom.activity
+package io.agora.chatroom.ui.activity
 
 import android.os.Bundle
 import androidx.viewbinding.ViewBinding

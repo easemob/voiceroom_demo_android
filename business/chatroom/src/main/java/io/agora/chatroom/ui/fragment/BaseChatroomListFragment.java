@@ -1,17 +1,12 @@
-package io.agora.chatroom.fragment;
+package io.agora.chatroom.ui.fragment;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
-import java.util.List;
 
 import io.agora.baseui.BaseListFragment;
 import io.agora.baseui.adapter.RoomBaseRecyclerViewAdapter;
@@ -19,8 +14,7 @@ import io.agora.baseui.general.callback.OnResourceParseCallback;
 import io.agora.baseui.general.enums.Status;
 import io.agora.baseui.general.net.Resource;
 import io.agora.chatroom.R;
-import io.agora.chatroom.adapter.ChatroomListAdapter;
-import tools.bean.VRoomBean;
+import io.agora.chatroom.ui.adapter.ChatroomListAdapter;
 
 
 public class BaseChatroomListFragment<T> extends BaseListFragment<T> implements SwipeRefreshLayout.OnRefreshListener{

@@ -3,6 +3,7 @@ rootProject.ext {
             compileSdkVersion: 32,
             minSdkVersion    : 23,
             targetSdkVersion : 32,
+            applicationId    : "com.easemob.demo.voiceChatRoom",
     ]
     dependencies = [
             // android native libraries
