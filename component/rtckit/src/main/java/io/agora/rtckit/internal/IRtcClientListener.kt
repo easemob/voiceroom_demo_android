@@ -1,6 +1,6 @@
 package io.agora.rtckit.internal
 
-import io.agora.config.ConfigConstants
+import com.easemob.config.ConfigConstants
 import io.agora.rtckit.open.status.RtcAudioChangeStatus
 import io.agora.rtckit.open.status.RtcAudioVolumeIndicationStatus
 import io.agora.rtckit.open.status.RtcErrorStatus

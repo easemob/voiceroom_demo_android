@@ -1,4 +1,4 @@
-package io.agora.chatroom
+package com.easemob.chatroom
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -19,6 +19,6 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("io.agora.chatroom.test", appContext.packageName)
+        assertEquals("com.easemob.chatroom.test", appContext.packageName)
     }
 }

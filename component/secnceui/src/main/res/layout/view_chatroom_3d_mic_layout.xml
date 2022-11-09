@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <io.agora.secnceui.widget.mic.Room2DMicView
+    <com.easemob.secnceui.widget.mic.Room2DMicView
         android:id="@+id/micV0"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -14,7 +14,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <io.agora.secnceui.widget.mic.Room2DMicView
+    <com.easemob.secnceui.widget.mic.Room2DMicView
         android:id="@+id/micV1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -22,7 +22,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <io.agora.secnceui.widget.mic.Room2DMicView
+    <com.easemob.secnceui.widget.mic.Room2DMicView
         android:id="@+id/micV2Blue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -31,7 +31,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <io.agora.secnceui.widget.mic.Room2DMicView
+    <com.easemob.secnceui.widget.mic.Room2DMicView
         android:id="@+id/micV3Red"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -40,7 +40,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <io.agora.secnceui.widget.mic.Room2DMicView
+    <com.easemob.secnceui.widget.mic.Room2DMicView
         android:id="@+id/micV5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -48,7 +48,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <io.agora.secnceui.widget.mic.Room2DMicView
+    <com.easemob.secnceui.widget.mic.Room2DMicView
         android:id="@+id/micV6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -58,7 +58,7 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- 可移动座位-->
-    <io.agora.secnceui.widget.mic.Room3DMicView
+    <com.easemob.secnceui.widget.mic.Room3DMicView
         android:id="@+id/micV4Center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

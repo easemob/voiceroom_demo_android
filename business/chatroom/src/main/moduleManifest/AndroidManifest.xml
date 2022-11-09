@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="io.agora.chatroom">
+    package="com.easemob.chatroom">
 
     <!-- 访问网络权限 -->
     <uses-permission android:name="android.permission.INTERNET" />
@@ -15,7 +15,7 @@
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
 
     <application
-        android:name=".ChatroomApplication"
+        android:name="com.easemob.chatroom.ChatroomApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher_chatroom"
         android:label="@string/app_name"
@@ -26,7 +26,7 @@
         android:networkSecurityConfig="@xml/app_net_config"
         android:theme="@style/Theme.AgoraScenesChatroom">
         <activity
-            android:name="io.agora.chatroom.ui.activity.ChatroomSplashActivity"
+            android:name=".ui.activity.ChatroomSplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -35,31 +35,31 @@
         </activity>
 
         <activity
-            android:name="io.agora.chatroom.ui.activity.ChatroomLiveActivity"
+            android:name=".ui.activity.ChatroomLiveActivity"
             android:exported="false"
             android:keepScreenOn="true"
             android:screenOrientation="portrait" />
 
-        <activity android:name=".ui.activity.ChatroomListActivity"
+        <activity android:name="com.easemob.chatroom.ui.activity.ChatroomListActivity"
             android:exported="false"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan"/>
 
-        <activity android:name=".ui.activity.ChatroomCreateActivity"
+        <activity android:name="com.easemob.chatroom.ui.activity.ChatroomCreateActivity"
             android:windowSoftInputMode="adjustPan"
             android:screenOrientation="portrait"
             android:exported="false"/>
 
-        <activity android:name=".ui.activity.ChatroomProfileActivity"
+        <activity android:name="com.easemob.chatroom.ui.activity.ChatroomProfileActivity"
             android:screenOrientation="portrait"
             android:exported="false"/>
 
-        <activity android:name=".ui.activity.ChatroomSoundSelectionActivity"
+        <activity android:name="com.easemob.chatroom.ui.activity.ChatroomSoundSelectionActivity"
             android:screenOrientation="portrait"
             android:exported="false"/>
 
-        <activity android:name=".ui.activity.ChatroomDisclaimerActivity"
+        <activity android:name="com.easemob.chatroom.ui.activity.ChatroomDisclaimerActivity"
             android:screenOrientation="portrait"
             android:exported="false"/>
 

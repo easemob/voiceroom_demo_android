@@ -20,7 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
-    <io.agora.secnceui.widget.encryption.ChatroomEncryptionInputView
+    <com.easemob.secnceui.widget.encryption.ChatroomEncryptionInputView
         android:id="@+id/mtContent"
         android:layout_marginTop="32dp"
         app:layout_constraintLeft_toLeftOf="parent"

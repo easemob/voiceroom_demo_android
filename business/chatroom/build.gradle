@@ -12,6 +12,7 @@ apply plugin: 'kotlin-kapt'
 
 def dep = rootProject.ext.dependencies
 def androidVersion = rootProject.ext.android
+def appInfo = rootProject.ext.appPageInfo
 
 Properties properties = new Properties()
 properties.load(project.rootProject.file('local.properties').newDataInputStream())
@@ -30,7 +31,7 @@ android {
     defaultConfig {
         minSdk androidVersion["minSdkVersion"]
         targetSdk androidVersion["targetSdkVersion"]
-        applicationId androidVersion["applicationId"]
+        applicationId appInfo["chatroom"]
         versionCode 1
         versionName "1.0"
 

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="io.agora.chatroom">
+    package="com.easemob.chatroom">
 
     <application>
         <activity
-            android:name=".ui.activity.ChatroomLiveActivity"
+            android:name="com.easemob.chatroom.ui.activity.ChatroomLiveActivity"
             android:exported="false" />
-        <activity android:name=".ui.activity.ChatroomSoundSelectionActivity"
+        <activity android:name="com.easemob.chatroom.ui.activity.ChatroomSoundSelectionActivity"
             android:exported="false"/>
     </application>
 

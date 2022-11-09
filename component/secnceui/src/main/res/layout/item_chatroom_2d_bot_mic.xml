@@ -14,7 +14,7 @@
         app:layout_constraintStart_toStartOf="@+id/micBlueBot"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <io.agora.secnceui.widget.mic.Room2DMicView
+    <com.easemob.secnceui.widget.mic.Room2DMicView
         android:id="@+id/micBlueBot"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -39,7 +39,7 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.5" />
 
-    <io.agora.secnceui.widget.mic.Room2DMicView
+    <com.easemob.secnceui.widget.mic.Room2DMicView
         android:id="@+id/micBlueRed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

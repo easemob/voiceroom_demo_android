@@ -121,7 +121,7 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <io.agora.secnceui.widget.expression.ExpressionView
+    <com.easemob.secnceui.widget.expression.ExpressionView
         android:layout_below="@+id/normal_layout"
         android:id="@+id/expression_view"
         android:visibility="invisible"

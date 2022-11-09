@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <io.agora.secnceui.widget.titlebar.ChatroomTitleBar
+    <com.easemob.secnceui.widget.titlebar.ChatroomTitleBar
         android:id="@+id/title_bar"
         android:layout_marginTop="30dp"
         app:layout_constraintTop_toTopOf="parent"

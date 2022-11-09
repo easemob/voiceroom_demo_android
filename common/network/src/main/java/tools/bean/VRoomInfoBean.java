@@ -5,7 +5,7 @@ package tools.bean;
 import java.io.Serializable;
 import java.util.List;
 
-import io.agora.config.ConfigConstants;
+import com.easemob.config.ConfigConstants;
 
 public class VRoomInfoBean implements Serializable {
     private List<VRMicBean> mic_info;

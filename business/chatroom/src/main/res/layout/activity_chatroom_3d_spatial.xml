@@ -6,9 +6,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_chatroom_image"
-    tools:context=".ui.activity.ChatroomLiveActivity">
+    tools:context="com.easemob.chatroom.ui.activity.ChatroomLiveActivity">
 
-    <io.agora.secnceui.widget.top.RoomLiveTopView
+    <com.easemob.secnceui.widget.top.RoomLiveTopView
         android:id="@+id/cTopView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -16,7 +16,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <io.agora.secnceui.ui.mic.spatial.Room3DMicLayout
+    <com.easemob.secnceui.ui.mic.spatial.Room3DMicLayout
         android:id="@+id/rvChatroom3dMicLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"

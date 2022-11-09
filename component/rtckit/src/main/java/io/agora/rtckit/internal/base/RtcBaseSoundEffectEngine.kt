@@ -1,6 +1,6 @@
 package io.agora.rtckit.internal.base
 
-import io.agora.config.ConfigConstants
+import com.easemob.config.ConfigConstants
 
 /**
  * @author create by zhangwei03

@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.util.Map;
 
-import io.agora.buddy.tool.ThreadManager;
+import com.easemob.buddy.tool.ThreadManager;
 
 
 public class VRHttpClientManager {

@@ -1,6 +1,6 @@
 package io.agora.rtckit.internal.impl
 
-import io.agora.buddy.tool.logE
+import com.easemob.buddy.tool.logE
 import io.agora.rtc2.IRtcEngineEventHandler
 import io.agora.rtc2.RtcEngineEx
 import io.agora.rtckit.internal.base.RtcBaseSoundEffectEngine

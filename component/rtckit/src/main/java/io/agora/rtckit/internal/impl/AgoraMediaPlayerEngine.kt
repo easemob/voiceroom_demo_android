@@ -1,7 +1,7 @@
 package io.agora.rtckit.internal.impl
 
-import io.agora.buddy.tool.logE
-import io.agora.config.ConfigConstants
+import com.easemob.buddy.tool.logE
+import com.easemob.config.ConfigConstants
 import io.agora.mediaplayer.Constants.MediaPlayerState
 import io.agora.mediaplayer.Constants.MediaPlayerError
 import io.agora.mediaplayer.IMediaPlayer

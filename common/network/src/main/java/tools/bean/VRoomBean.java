@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
-import io.agora.config.ConfigConstants;
+import com.easemob.config.ConfigConstants;
 
 public class VRoomBean implements Serializable {
    /**

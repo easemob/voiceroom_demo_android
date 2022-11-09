@@ -1,4 +1,4 @@
-package io.agora.chatroom
+package com.easemob.chatroom
 
 import org.junit.Test
 

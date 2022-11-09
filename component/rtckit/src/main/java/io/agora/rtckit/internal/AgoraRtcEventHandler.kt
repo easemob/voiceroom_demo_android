@@ -2,8 +2,8 @@ package io.agora.rtckit.internal
 
 import android.os.Handler
 import android.os.Looper
-import io.agora.buddy.tool.logD
-import io.agora.buddy.tool.logE
+import com.easemob.buddy.tool.logD
+import com.easemob.buddy.tool.logE
 import io.agora.rtc2.Constants
 import io.agora.rtc2.IRtcEngineEventHandler
 import io.agora.rtckit.annotation.RtcNetWorkQuality

@@ -5,7 +5,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
-    <io.agora.secnceui.widget.mic.Room2DMicView
+    <com.easemob.secnceui.widget.mic.Room2DMicView
         android:id="@+id/mic2dView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

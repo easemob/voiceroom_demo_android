@@ -25,10 +25,9 @@ import javax.net.ssl.X509TrustManager;
 
 import http.listener.EventListenerFactory;
 import http.listener.NetEventModel;
-import io.agora.buddy.tool.GsonTools;
+import com.easemob.buddy.tool.GsonTools;
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.EventListener;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
