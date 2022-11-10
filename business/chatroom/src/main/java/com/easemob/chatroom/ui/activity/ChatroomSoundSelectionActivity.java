@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -99,6 +100,7 @@ public class ChatroomSoundSelectionActivity extends BaseActivity implements Chat
       BottomOffsetDecoration bottomOffsetDecoration = new BottomOffsetDecoration((int) offsetPx);
       recyclerView.addItemDecoration(bottomOffsetDecoration);
       recyclerView.setAdapter(adapter);
+      setTextStyle(titleBar.getTitle(), Typeface.BOLD);
    }
 
    @Override

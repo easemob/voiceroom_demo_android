@@ -178,7 +178,7 @@ public class ChatPrimaryMenuView extends RelativeLayout implements ExpressionVie
                         Log.e("ChatPrimaryMenuView","checkDeviceHasNavigationBar: " +  checkDeviceHasNavigationBar(activity));
                         Log.e("ChatPrimaryMenuView","getNavigationBarHeight: " + getNavigationBarHeight(activity));
                         if (checkDeviceHasNavigationBar(activity)){
-                            if (getNavigationBarHeight(activity) > 100){
+                            if (getNavigationBarHeight(activity) > 120){
                                 //两次窗口高度相减，就是软键盘高度
                                 softKeyHeight = mWindowHeight - height - getNavigationBarHeight(activity);
                             }else {

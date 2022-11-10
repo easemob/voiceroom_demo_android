@@ -25,4 +25,26 @@
         <item name="android:windowNoTitle">true</item>
         <item name="windowNoTitle">true</item>
     </style>
+
+    <style name="em_login_et_input">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">52dp</item>
+        <item name="android:layout_marginLeft">30dp</item>
+        <item name="android:layout_marginRight">30dp</item>
+        <item name="android:maxWidth">400dp</item>
+        <item name="android:background">@drawable/demo_login_et_bg</item>
+        <item name="android:paddingLeft">18dp</item>
+        <item name="android:paddingRight">18dp</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:inputType">text</item>
+        <item name="android:textColor">@color/color_3c4267</item>
+    </style>
+
+    <declare-styleable name="MyCheckBox">
+        <attr name="android:button" />
+        <attr name="attr_drawableWidth" format="dimension" />
+        <attr name="attr_drawableHeight" format="dimension" />
+    </declare-styleable>
 </resources>

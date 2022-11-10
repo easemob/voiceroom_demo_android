@@ -3,6 +3,12 @@
     <string name="app_agora_chatroom">环信语聊房</string>
     <string name="app_agora_chatroom_copy_right">Powered by Easemob</string>
     <string name="agora_chat_room_create">创建聊天室</string>
+    <string name="room_login">登录</string>
+    <string name="room_login_title">登录环信聊天室</string>
+    <string name="room_login_number">手机号</string>
+    <string name="room_login_code">短信验证码</string>
+    <string name="room_login_get_code">获取验证码</string>
+    <string name="room_login_agreement">请选择同意《环信服务条款》与《环信隐私协议》</string>
 
     <string name="tab_layout_all">全部</string>
     <string name="tab_layout_chat_room">语聊房</string>

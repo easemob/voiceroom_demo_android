@@ -3,6 +3,13 @@
     <string name="app_agora_chatroom">Easemob Chat Room</string>
     <string name="app_agora_chatroom_copy_right">Powered by Easemob</string>
     <string name="agora_chat_room_create">Create Room</string>
+    <string name="room_login">Login</string>
+    <string name="room_login_title">Login Easemob Chat Room</string>
+    <string name="room_login_number">Mobile Number</string>
+    <string name="room_login_code">Verification Code</string>
+    <string name="room_login_get_code">Get Code</string>
+    <string name="room_login_agreement">By joining, you agree to our Terms of Service and Privacy Policy</string>
+
 
     <string name="tab_layout_all">All</string>
     <string name="tab_layout_chat_room">Chat Room</string>

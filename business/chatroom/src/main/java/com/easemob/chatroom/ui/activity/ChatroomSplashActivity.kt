@@ -46,7 +46,7 @@ class ChatroomSplashActivity : BaseUiActivity<ActivityChatroomSplashBinding>() {
                 }
             })
         }
-        loginViewModel.loginFromServer(this)
+        loginViewModel.loginFromServer()
     }
 
     private fun initSplashPage() {

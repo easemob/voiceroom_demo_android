@@ -2,10 +2,12 @@ package com.easemob.chatroom.model;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
 
 import org.json.JSONException;
 
@@ -14,17 +16,22 @@ import io.agora.chat.ChatClient;
 import com.easemob.chatroom.general.livedatas.SingleSourceLiveData;
 import com.easemob.chatroom.general.repositories.LoginRepository;
 import com.easemob.chatroom.general.repositories.ProfileManager;
+
 import tools.bean.VRUserBean;
 
 
 public class LoginViewModel extends AndroidViewModel {
-    private SingleSourceLiveData<Resource<VRUserBean>> loginObservable;
+    private final Context mContext;
     private LoginRepository mRepository;
+    private SingleSourceLiveData<Resource<VRUserBean>> loginObservable;
+    private SingleSourceLiveData<Resource<String>> verificationCodeObservable;
 
     public LoginViewModel(@NonNull Application application) {
         super(application);
+        mContext = application.getApplicationContext();
         mRepository = new LoginRepository();
         loginObservable = new SingleSourceLiveData<>();
+        verificationCodeObservable =  new SingleSourceLiveData<>();
     }
 
 
@@ -32,7 +39,11 @@ public class LoginViewModel extends AndroidViewModel {
         return loginObservable;
     }
 
-    public void loginFromServer(Context context){
+    public LiveData<Resource<String>> getVerificationCodeObservable(){
+        return verificationCodeObservable;
+    }
+
+    public void loginFromServer(){
         try {
            String device = ChatClient.getInstance().getDeviceInfo().getString("deviceid");
            String portrait = "";
@@ -41,11 +52,37 @@ public class LoginViewModel extends AndroidViewModel {
             if (userBean != null){
                  portrait = userBean.getPortrait();
             }
-           loginObservable.setSource(mRepository.login(context,device,portrait));
+           loginObservable.setSource(mRepository.login(mContext,device,portrait));
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
     }
 
+    public void loginFromServer(String phoneNumber,String code){
+        String portrait = "";
+        VRUserBean userBean = ProfileManager.getInstance().getProfile();
+        if (userBean != null){
+            portrait = userBean.getPortrait();
+        }
+        loginObservable.setSource(mRepository.login(mContext,getDeviceId(),phoneNumber,code,portrait));
+    }
+
+    /**
+     * 获取短信验证码
+     */
+    public void postVerificationCode(String phoneNumber){
+        verificationCodeObservable.setSource(mRepository.getVerificationCode(phoneNumber,getDeviceId()));
+    }
+
+    private String getDeviceId(){
+        String device = "";
+        try {
+            device = ChatClient.getInstance().getDeviceInfo().getString("deviceid");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return device;
+    }
 
 }

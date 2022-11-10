@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="chatroom_code_timer">重新获取(%1$s)</string>
+    <string name="chatroom_login_get_code">获取验证码</string>
+</resources>

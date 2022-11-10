@@ -5,7 +5,7 @@
     android:id="@+id/clMain"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_chatroom_image"
+    android:background="@drawable/icon_chatroom_bg"
     tools:context="com.easemob.chatroom.ui.activity.ChatroomLiveActivity">
 
     <com.easemob.secnceui.widget.top.RoomLiveTopView

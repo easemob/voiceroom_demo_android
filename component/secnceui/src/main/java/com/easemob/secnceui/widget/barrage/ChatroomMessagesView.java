@@ -15,6 +15,7 @@ import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.ImageSpan;
 import android.text.style.StyleSpan;
+import android.text.style.UnderlineSpan;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -54,6 +55,7 @@ public class ChatroomMessagesView extends RelativeLayout{
     private static final int ITEM_DEFAULT_TYPE = 0;
     private static final int ITEM_SYSTEM_TYPE = 1;
     private String chatroomId;
+    private String ownerUid;
     private boolean isOwner;
     private Context mContext;
     private boolean isScrollBottom;
@@ -78,9 +80,9 @@ public class ChatroomMessagesView extends RelativeLayout{
         listview = (RecyclerView) findViewById(R.id.listview);
     }
 
-    public void init(String chatroomId,boolean isOwner){
+    public void init(String chatroomId,String ownerUid){
         this.chatroomId = chatroomId;
-        this.isOwner = isOwner;
+        this.ownerUid = ownerUid;
         adapter = new ListAdapter(getContext(), ChatroomHelper.getInstance().getMessageData(chatroomId));
         ScrollSpeedLinearLayoutManger scrollSpeedLinearLayoutManger = new ScrollSpeedLinearLayoutManger(getContext());
         //设置item滑动速度
@@ -203,11 +205,10 @@ public class ChatroomMessagesView extends RelativeLayout{
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
             String from = "";
             final ChatMessageData message = messages.get(position);
+            isOwner = message.getFrom().equals(ownerUid);
             from = ChatroomHelper.getInstance().getUserName(message);
             String s = message.getContent();
             if (holder instanceof MyViewHolder){
-                if (isOwner){
-                }
                 if (TextUtils.isEmpty(from)){
                     from = message.getFrom();
                 }
