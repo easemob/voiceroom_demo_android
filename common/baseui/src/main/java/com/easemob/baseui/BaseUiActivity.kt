@@ -3,6 +3,7 @@ package com.easemob.baseui
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
@@ -59,5 +60,14 @@ abstract class BaseUiActivity<B : ViewBinding> : AppCompatActivity(), IParserSou
         owner: ViewModelStoreOwner
     ): T {
         return ViewModelProvider(owner, factory)[viewModelClass]
+    }
+
+    /**
+     * set titleText Style
+     * @param view textView
+     * @param type Typeface {NORMAL, BOLD, ITALIC, BOLD_ITALIC}
+     */
+    open fun setTextStyle(view: TextView?, type: Int) {
+        if (null != view && type >= 0 && type <= 3) view.setTypeface(null, type)
     }
 }
