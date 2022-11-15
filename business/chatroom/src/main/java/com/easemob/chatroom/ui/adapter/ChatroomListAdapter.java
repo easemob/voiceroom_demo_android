@@ -58,7 +58,7 @@ public class ChatroomListAdapter extends RoomBaseRecyclerViewAdapter<VRoomBean.R
             showPrivate(item.isIs_private(),item.getType());
             roomName.setText(item.getName());
             ownerName.setText(item.getOwner().getName());
-            roomCount.setText(mContext.getString(R.string.room_list_count,String.valueOf(item.getMember_count())));
+            roomCount.setText(mContext.getString(R.string.chatroom_list_count,String.valueOf(item.getMember_count())));
             try {
                 resId = mContext.getResources().getIdentifier(item.getOwner().getPortrait(), "drawable", mContext.getPackageName());
             }catch (Exception e){
@@ -88,7 +88,7 @@ public class ChatroomListAdapter extends RoomBaseRecyclerViewAdapter<VRoomBean.R
         private void showPrivate(boolean isShow,int type){
             if (isShow){
                 title_layout.setVisibility(View.VISIBLE);
-                title.setText(mContext.getString(R.string.room_list_title_private));
+                title.setText(mContext.getString(R.string.chatroom_list_title_private));
             }else {
                 title_layout.setVisibility(View.GONE);
             }

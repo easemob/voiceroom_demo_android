@@ -36,7 +36,6 @@ import com.google.android.material.tabs.TabLayoutMediator;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import io.agora.CallBack;
 import com.easemob.baseui.BaseActivity;
 import com.easemob.baseui.general.callback.OnResourceParseCallback;
 import com.easemob.buddy.tool.ToastTools;
@@ -49,6 +48,8 @@ import com.easemob.config.RouterPath;
 import com.easemob.secnceui.utils.DeviceUtils;
 import com.easemob.secnceui.widget.encryption.ChatroomEncryptionInputView;
 import com.easemob.secnceui.widget.titlebar.ChatroomTitleBar;
+import com.hyphenate.EMCallBack;
+
 import manager.ChatroomHelper;
 import tools.bean.VRUserBean;
 import tools.bean.VRoomInfoBean;
@@ -92,7 +93,7 @@ public class ChatroomCreateActivity extends BaseActivity implements RadioGroup.O
 
    @Override
    protected int getLayoutId() {
-      return R.layout.agora_create_room_layout;
+      return R.layout.chatroom_create_layout;
    }
 
    @Override
@@ -154,9 +155,9 @@ public class ChatroomCreateActivity extends BaseActivity implements RadioGroup.O
          public void onPageSelected(int position) {
             roomType = data.get(position).getRoom_type();
             if (roomType == 0){
-               mNext.setText(getString(R.string.room_create_next));
+               mNext.setText(getString(R.string.chatroom_create_next));
             }else {
-               mNext.setText(getString(R.string.room_create_go_live));
+               mNext.setText(getString(R.string.chatroom_create_go_live));
             }
             mEdRoomName.setText(randomName());
          }
@@ -183,7 +184,7 @@ public class ChatroomCreateActivity extends BaseActivity implements RadioGroup.O
                        VRUserBean userinfo = ProfileManager.getInstance().getProfile();
                        Log.d("ChatroomCreateActivity","chat_uid: " + userinfo.getChat_uid());
                        Log.d("ChatroomCreateActivity","im_token: " + userinfo.getIm_token());
-                       ChatroomHelper.getInstance().login(userinfo.getChat_uid(), userinfo.getIm_token(), new CallBack() {
+                       ChatroomHelper.getInstance().login(userinfo.getChat_uid(), userinfo.getIm_token(), new EMCallBack() {
                           @Override
                           public void onSuccess() {
                              joinRoom(data);
@@ -242,12 +243,12 @@ public class ChatroomCreateActivity extends BaseActivity implements RadioGroup.O
          public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
                if (data.get(position).getRoom_type() == 0){
 //                  holder.mLayout.setBackgroundResource(R.drawable.icon_create_chat_room);
-                  holder.mTitle.setText(getString(R.string.room_create_chat_room));
-                  holder.mContent.setText(getString(R.string.room_create_chat_room_desc));
+                  holder.mTitle.setText(getString(R.string.chatroom_create_chat_room_tag));
+                  holder.mContent.setText(getString(R.string.chatroom_create_chat_room_desc));
                }else if (data.get(position).getRoom_type() == 1){
 //                  holder.mLayout.setBackgroundResource(R.drawable.icon_create_3d_room);
-                  holder.mTitle.setText(getString(R.string.room_create_3d_room));
-                  holder.mContent.setText(getString(R.string.room_create_3d_room_desc));
+                  holder.mTitle.setText(getString(R.string.chatroom_create_3d_room));
+                  holder.mContent.setText(getString(R.string.chatroom_create_3d_room_desc));
                }
          }
 
@@ -321,14 +322,14 @@ public class ChatroomCreateActivity extends BaseActivity implements RadioGroup.O
 
    private void check(){
       if (TextUtils.isEmpty(roomName)){
-         ToastTools.show(this,getString(R.string.room_create_empty_name),Toast.LENGTH_LONG);
+         ToastTools.show(this,getString(R.string.chatroom_create_empty_name),Toast.LENGTH_LONG);
          mNext.setEnabled(true);
          dismissLoading();
          return;
       }
       if (!isPublic && encryption.length() != 4){
          mTip.setVisibility(View.VISIBLE);
-         ToastTools.show(this,getString(R.string.room_create_tips),Toast.LENGTH_LONG);
+         ToastTools.show(this,getString(R.string.chatroom_room_create_tips),Toast.LENGTH_LONG);
          mNext.setEnabled(true);
          dismissLoading();
          return;
@@ -363,9 +364,9 @@ public class ChatroomCreateActivity extends BaseActivity implements RadioGroup.O
       String month = m.format(new Date());
       String day = d.format(new Date());
       if (roomType == 0){
-         roomName = getString(R.string.room_create_chat_room)+"-"+month+day+"-"+Math.round((Math.random()*999)+1);
+         roomName = getString(R.string.chatroom_create_chat_room_tag)+"-"+month+day+"-"+Math.round((Math.random()*999)+1);
       }else {
-         roomName = getString(R.string.room_create_chat_3d_room)+"-"+month+day+"-"+Math.round((Math.random()*999)+1);
+         roomName = getString(R.string.chatroom_create_chat_3d_room)+"-"+month+day+"-"+Math.round((Math.random()*999)+1);
       }
       return roomName;
    }

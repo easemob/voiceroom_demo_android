@@ -36,7 +36,7 @@
                 android:textSize="@dimen/sp_16"
                 android:layout_marginTop="20dp"
                 android:textColor="@color/dark_grey_color_040925"
-                android:text="@string/room_disclaimer_content_1"
+                android:text="@string/chatroom_disclaimer_content_1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
@@ -44,7 +44,7 @@
                 android:textSize="@dimen/sp_16"
                 android:layout_marginTop="50dp"
                 android:textColor="@color/dark_grey_color_040925"
-                android:text="@string/room_disclaimer_content_2"
+                android:text="@string/chatroom_disclaimer_content_2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
@@ -52,7 +52,7 @@
                 android:textSize="@dimen/sp_16"
                 android:layout_marginTop="50dp"
                 android:textColor="@color/dark_grey_color_040925"
-                android:text="@string/room_disclaimer_content_3"
+                android:text="@string/chatroom_disclaimer_content_3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
@@ -63,7 +63,7 @@
                 android:clickable="true"
                 android:layout_marginTop="38dp"
                 android:textColor="@color/dark_grey_color_040925"
-                android:text="@string/room_disclaimer_email"
+                android:text="@string/chatroom_disclaimer_email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:focusable="true" />

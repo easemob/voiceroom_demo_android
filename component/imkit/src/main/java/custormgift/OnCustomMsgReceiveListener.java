@@ -1,7 +1,6 @@
 package custormgift;
 
 import bean.ChatMessageData;
-import io.agora.chat.ChatMessage;
 
 /**
  * 定义接收到的消息类型

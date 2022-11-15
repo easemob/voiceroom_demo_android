@@ -61,22 +61,22 @@ public class ChatroomDisclaimerActivity extends BaseActivity implements Chatroom
     @Override
     protected void initData() {
         super.initData();
-        String c = getString(R.string.room_disclaimer_content_1);
+        String c = getString(R.string.chatroom_disclaimer_content_1);
         SpannableStringBuilder cBuilder = new SpannableStringBuilder(c);
         StyleSpan styleSpan = new StyleSpan(android.graphics.Typeface.BOLD);
         if (ResourcesTools.isZh(this)){
             cBuilder.setSpan(styleSpan,0,10, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         }else {
-            cBuilder.setSpan(styleSpan,0,22, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            cBuilder.setSpan(styleSpan,0,24, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
         content.setText(cBuilder);
 
         end.setMovementMethod(LinkMovementMethod.getInstance());
-        String e = getString(R.string.room_disclaimer_email);
+        String e = getString(R.string.chatroom_disclaimer_email);
         SpannableStringBuilder eBuilder = new SpannableStringBuilder(e);
         ForegroundColorSpan graySpan = new ForegroundColorSpan(getResources().getColor(R.color.color_156EF3));
-        eBuilder.setSpan(graySpan,e.length()-18,e.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        eBuilder.setSpan(new UnderlineSpan(), e.length()-18, e.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        eBuilder.setSpan(graySpan,e.length()-19,e.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        eBuilder.setSpan(new UnderlineSpan(), e.length()-19, e.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         eBuilder.setSpan(new ClickableSpan() {
             @Override
             public void onClick(@NonNull View view) {
@@ -103,7 +103,7 @@ public class ChatroomDisclaimerActivity extends BaseActivity implements Chatroom
         //邮件发送类型：无附件，纯文本
         email.setType("plain/text");
         //邮件接收者（数组，可以是多位接收者）
-        String[] emailReciver = new String[]{"issues@easemob.com"};
+        String[] emailReciver = new String[]{"support@easemob.com"};
 
         //设置邮件地址
         email.putExtra(android.content.Intent.EXTRA_EMAIL, emailReciver);

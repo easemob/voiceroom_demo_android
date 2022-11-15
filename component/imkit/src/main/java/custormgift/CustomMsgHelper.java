@@ -3,6 +3,12 @@ package custormgift;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.hyphenate.EMCallBack;
+import com.hyphenate.EMMessageListener;
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMCustomMessageBody;
+import com.hyphenate.chat.EMMessage;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,11 +16,6 @@ import java.util.Map;
 
 import bean.ChatMessageData;
 import bean.ChatroomConstants;
-import io.agora.CallBack;
-import io.agora.MessageListener;
-import io.agora.chat.ChatClient;
-import io.agora.chat.ChatMessage;
-import io.agora.chat.CustomMessageBody;
 import manager.ChatroomHelper;
 
 /**
@@ -32,10 +33,10 @@ import manager.ChatroomHelper;
  *      {@link #sendPraiseMsg(Map, OnMsgCallBack)},
  *      b、如果有其他自定义消息类型，可以调用如下方法：
  *      {@link #sendCustomMsg(String, Map, OnMsgCallBack)},
- *      {@link #sendCustomMsg(String, ChatMessage.ChatType, String, Map, OnMsgCallBack)}。
+ *      {@link #sendCustomMsg(String, EMMessage.ChatType, String, Map, OnMsgCallBack)}。
  * （5）自定义消息类型枚举{@link CustomMsgType} 定义了礼物，点赞及弹幕消息类型（以event区分）
  */
-public class CustomMsgHelper implements MessageListener {
+public class CustomMsgHelper implements EMMessageListener {
     private static CustomMsgHelper instance;
     private CustomMsgHelper(){}
 
@@ -59,7 +60,7 @@ public class CustomMsgHelper implements MessageListener {
      * 根据业务要求，放在application或者其他需要初始化的地方
      */
     public void init() {
-        ChatClient.getInstance().chatManager().addMessageListener(this);
+        EMClient.getInstance().chatManager().addMessageListener(this);
     }
 
     /**
@@ -82,24 +83,24 @@ public class CustomMsgHelper implements MessageListener {
      * 移除监听（在页面中初始化后，记得在onDestroy()生命周期中移除）
      */
     public void removeListener() {
-        ChatClient.getInstance().chatManager().removeMessageListener(this);
+        EMClient.getInstance().chatManager().removeMessageListener(this);
 
     }
 
     @Override
-    public void onMessageReceived(List<ChatMessage> messages) {
-        for (ChatMessage message : messages) {
-            if (message.getType() == ChatMessage.Type.TXT){
+    public void onMessageReceived(List<EMMessage> messages) {
+        for (EMMessage message : messages) {
+            if (message.getType() == EMMessage.Type.TXT){
                 AllNormalList.add(ChatroomHelper.getInstance().parseChatMessage(message));
                 if(listener != null) {
                     listener.onReceiveNormalMsg(ChatroomHelper.getInstance().parseChatMessage(message));
                 }
             }
             // 先判断是否自定义消息
-            if(message.getType() != ChatMessage.Type.CUSTOM) {
+            if(message.getType() != EMMessage.Type.CUSTOM) {
                 continue;
             }
-            CustomMessageBody body = (CustomMessageBody) message.getBody();
+            EMCustomMessageBody body = (EMCustomMessageBody) message.getBody();
             String event = body.event();
             CustomMsgType msgType = getCustomMsgType(event);
 
@@ -135,7 +136,7 @@ public class CustomMsgHelper implements MessageListener {
 
             }
             // 再排除单聊
-            if(message.getChatType() != ChatMessage.ChatType.GroupChat && message.getChatType() != ChatMessage.ChatType.ChatRoom) {
+            if(message.getChatType() != EMMessage.ChatType.GroupChat && message.getChatType() != EMMessage.ChatType.ChatRoom) {
                 continue;
             }
             String username = message.getTo();
@@ -176,27 +177,27 @@ public class CustomMsgHelper implements MessageListener {
     }
 
     @Override
-    public void onCmdMessageReceived(List<ChatMessage> list) {
+    public void onCmdMessageReceived(List<EMMessage> list) {
 
     }
 
     @Override
-    public void onMessageRead(List<ChatMessage> list) {
+    public void onMessageRead(List<EMMessage> list) {
 
     }
 
     @Override
-    public void onMessageDelivered(List<ChatMessage> list) {
+    public void onMessageDelivered(List<EMMessage> list) {
 
     }
 
     @Override
-    public void onMessageRecalled(List<ChatMessage> list) {
+    public void onMessageRecalled(List<EMMessage> list) {
 
     }
 
     @Override
-    public void onMessageChanged(ChatMessage emMessage, Object o) {
+    public void onMessageChanged(EMMessage emMessage, Object o) {
 
     }
 
@@ -315,7 +316,7 @@ public class CustomMsgHelper implements MessageListener {
      * @param callBack
      */
     public void sendCustomMsg(String event, Map<String, String> params, final OnMsgCallBack callBack) {
-        sendCustomMsg(chatRoomId, ChatMessage.ChatType.ChatRoom, event, params, callBack);
+        sendCustomMsg(chatRoomId, EMMessage.ChatType.ChatRoom, event, params, callBack);
     }
 
     /**
@@ -326,14 +327,14 @@ public class CustomMsgHelper implements MessageListener {
      * @param params
      * @param callBack
      */
-    public void sendCustomMsg(String to, ChatMessage.ChatType chatType, String event, Map<String, String> params, final OnMsgCallBack callBack) {
-        final ChatMessage sendMessage = ChatMessage.createSendMessage(ChatMessage.Type.CUSTOM);
-        CustomMessageBody body = new CustomMessageBody(event);
+    public void sendCustomMsg(String to, EMMessage.ChatType chatType, String event, Map<String, String> params, final OnMsgCallBack callBack) {
+        final EMMessage sendMessage = EMMessage.createSendMessage(EMMessage.Type.CUSTOM);
+        EMCustomMessageBody body = new EMCustomMessageBody(event);
         body.setParams(params);
         sendMessage.addBody(body);
         sendMessage.setTo(to);
         sendMessage.setChatType(chatType);
-        sendMessage.setMessageStatusCallback(new CallBack() {
+        sendMessage.setMessageStatusCallback(new EMCallBack() {
             @Override
             public void onSuccess() {
                 if(callBack != null) {
@@ -356,7 +357,7 @@ public class CustomMsgHelper implements MessageListener {
                 }
             }
         });
-        ChatClient.getInstance().chatManager().sendMessage(sendMessage);
+        EMClient.getInstance().chatManager().sendMessage(sendMessage);
     }
 
     /**

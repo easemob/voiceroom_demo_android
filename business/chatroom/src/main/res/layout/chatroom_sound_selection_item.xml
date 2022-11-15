@@ -77,7 +77,7 @@
                 android:textSize="@dimen/text_size_13sp"
                 android:textColor="#979CBB"
                 android:textColorHint="#979CBB"
-                android:text="@string/room_current_customer_usage"
+                android:text="@string/chatroom_current_customer_usage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 

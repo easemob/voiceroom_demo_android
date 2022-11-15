@@ -46,11 +46,11 @@ public class ChatroomListActivity extends BaseActivity implements ChatroomTitleB
     private int mCount;
     private int index;
     private int resId = 0;
-    private int[] titles = {R.string.app_agora_chatroom};
+    private int[] titles = {R.string.app_easemob_chatroom};
 
     @Override
     protected int getLayoutId() {
-        return R.layout.agora_room_list_layout;
+        return R.layout.chatroom_list_layout;
     }
 
     @Override
@@ -170,7 +170,7 @@ public class ChatroomListActivity extends BaseActivity implements ChatroomTitleB
                         title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
                         setTextStyle(title,Typeface.BOLD);
                         title.setGravity(Gravity.CENTER);
-                        String content = getString(titles[index]) + getString(R.string.room_tab_layout_count,String.valueOf(mCount));
+                        String content = getString(titles[index]) + getString(R.string.chatroom_tab_layout_count,String.valueOf(mCount));
                         title.setTextColor(getColor(R.color.dark_grey_color_040925));
                         title.setText(content);
                     }

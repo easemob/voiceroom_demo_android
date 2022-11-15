@@ -11,7 +11,7 @@ import com.easemob.baseui.general.net.ErrorCode;
 import com.easemob.baseui.general.net.Resource;
 import com.easemob.baseui.general.net.Result;
 import com.easemob.buddy.tool.ThreadManager;
-import io.agora.util.EMLog;
+import com.hyphenate.util.EMLog;
 
 
 /**

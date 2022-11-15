@@ -7,8 +7,8 @@ import android.text.TextUtils;
 import org.json.JSONException;
 
 import com.easemob.buddy.tool.GsonTools;
+import com.hyphenate.chat.EMClient;
 
-import io.agora.chat.ChatClient;
 import manager.ChatroomConfigManager;
 import tools.bean.VRUserBean;
 
@@ -34,7 +34,7 @@ public class ProfileManager {
    public void setProfile(VRUserBean value) {
       try {
          vrUserBean = value;
-         String device = ChatClient.getInstance().getDeviceInfo().getString("deviceid");
+         String device = EMClient.getInstance().getDeviceInfo().getString("deviceid");
          if (TextUtils.isEmpty(device)){
             editor.putString(KEY_AT_PROFILE, GsonTools.beanToString(value));
          }else {
@@ -49,7 +49,7 @@ public class ProfileManager {
    public VRUserBean getProfile() {
       try {
          if (vrUserBean != null) return vrUserBean;
-         String device = ChatClient.getInstance().getDeviceInfo().getString("deviceid");
+         String device = EMClient.getInstance().getDeviceInfo().getString("deviceid");
          String profile = mSharedPreferences.getString(device,"");
          if (!TextUtils.isEmpty(profile)){
            return GsonTools.toBean(profile,VRUserBean.class);

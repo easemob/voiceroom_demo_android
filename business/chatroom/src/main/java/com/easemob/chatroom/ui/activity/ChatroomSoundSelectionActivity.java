@@ -23,7 +23,6 @@ import com.easemob.chatroom.model.ChatroomViewModel;
 import com.alibaba.android.arouter.launcher.ARouter;
 
 import java.util.List;
-import io.agora.CallBack;
 import com.easemob.baseui.BaseActivity;
 import com.easemob.baseui.general.callback.OnResourceParseCallback;
 import com.easemob.buddy.tool.FastClickTools;
@@ -40,7 +39,9 @@ import com.easemob.config.RouterPath;
 import com.easemob.secnceui.bean.SoundSelectionBean;
 import com.easemob.secnceui.ui.soundselection.RoomSoundSelectionConstructor;
 import com.easemob.secnceui.widget.titlebar.ChatroomTitleBar;
-import io.agora.util.EMLog;
+import com.hyphenate.EMCallBack;
+import com.hyphenate.util.EMLog;
+
 import manager.ChatroomHelper;
 import tools.bean.VRUserBean;
 import tools.bean.VRoomInfoBean;
@@ -126,7 +127,7 @@ public class ChatroomSoundSelectionActivity extends BaseActivity implements Chat
                   VRUserBean userinfo = ProfileManager.getInstance().getProfile();
                   Log.d("ChatroomSoundSelectionActivity","chat_uid: " + userinfo.getChat_uid());
                   Log.d("ChatroomSoundSelectionActivity","im_token: " + userinfo.getIm_token());
-                  ChatroomHelper.getInstance().login(userinfo.getChat_uid(), userinfo.getIm_token(), new CallBack() {
+                  ChatroomHelper.getInstance().login(userinfo.getChat_uid(), userinfo.getIm_token(), new EMCallBack() {
                      @Override
                      public void onSuccess() {
                         joinRoom(data);
@@ -152,7 +153,7 @@ public class ChatroomSoundSelectionActivity extends BaseActivity implements Chat
          if (!TextUtils.isEmpty(encryption) && encryption.length() == 4){
             chatroomViewModel.createNormalRoom(this,roomName,true,encryption,allow_free_join_mic,sound_effect);
          }else {
-            ToastTools.show(this,getString(R.string.room_create_tips), Toast.LENGTH_LONG);
+            ToastTools.show(this,getString(R.string.chatroom_room_create_tips), Toast.LENGTH_LONG);
          }
       }
    }
@@ -165,7 +166,7 @@ public class ChatroomSoundSelectionActivity extends BaseActivity implements Chat
          if (!TextUtils.isEmpty(encryption) && encryption.length() == 4){
             chatroomViewModel.createSpatial(this,roomName,true,encryption);
          }else {
-            ToastTools.show(this,getString(R.string.room_create_tips), Toast.LENGTH_LONG);
+            ToastTools.show(this,getString(R.string.chatroom_room_create_tips), Toast.LENGTH_LONG);
          }
       }
    }

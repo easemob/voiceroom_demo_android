@@ -5,6 +5,11 @@ import android.content.Context;
 import android.os.Build;
 import android.util.Log;
 import androidx.annotation.RequiresApi;
+
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMOptions;
+import com.hyphenate.util.EMLog;
+
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
@@ -13,9 +18,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import bean.ChatMessageData;
 import custormgift.CustomMsgHelper;
 import custormgift.OnCustomMsgReceiveListener;
-import io.agora.chat.ChatClient;
-import io.agora.chat.ChatOptions;
-import io.agora.util.EMLog;
 
 public class ChatroomConfigManager {
     private static final String TAG = ChatroomConfigManager.class.getSimpleName();
@@ -38,12 +40,12 @@ public class ChatroomConfigManager {
 
     public void initRoomConfig(Context context, String imKey) {
         this.mContext = context;
-        ChatOptions options = initChatOptions(context, imKey);
+        EMOptions options = initChatOptions(context, imKey);
         if (!isMainProcess(context)) {
             Log.e(TAG, "enter the service process!");
             return;
         }
-        ChatClient.getInstance().init(context, options);
+        EMClient.getInstance().init(context, options);
         registerListener();
     }
 
@@ -270,8 +272,8 @@ public class ChatroomConfigManager {
         return mContext;
     }
 
-    private ChatOptions initChatOptions(Context context,String imKey){
-        ChatOptions options = new ChatOptions();
+    private EMOptions initChatOptions(Context context,String imKey){
+        EMOptions options = new EMOptions();
 //        options.setAppKey("81399972#1002901");
         options.setAppKey(imKey);
         options.setAutoLogin(false);

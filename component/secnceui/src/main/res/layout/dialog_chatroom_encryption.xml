@@ -16,7 +16,7 @@
         android:id="@+id/title"
         android:textSize="@dimen/text_size_16sp"
         android:textColor="@color/dark_grey_color_040925"
-        android:text="@string/room_create_tips"
+        android:text="@string/chatroom_room_create_tips"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 

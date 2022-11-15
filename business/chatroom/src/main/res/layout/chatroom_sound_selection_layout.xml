@@ -57,7 +57,7 @@
                 app:layout_constraintRight_toRightOf="parent"
                 android:gravity="center"
                 android:textStyle="bold"
-                android:text="@string/room_create_go_live"
+                android:text="@string/chatroom_create_go_live"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_size_16sp"
                 />

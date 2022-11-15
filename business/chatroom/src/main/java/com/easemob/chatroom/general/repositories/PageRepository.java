@@ -29,15 +29,15 @@ public class PageRepository extends BaseRepository {
         data.clear();
         PageBean bean = new PageBean();
         bean.setRoom_type(0);
-        bean.setTab_title(mContext.getString(R.string.tab_layout_chat_room));
-        bean.setRoom_name(mContext.getString(R.string.room_create_chat_room));
-        bean.setRoom_desc(mContext.getString(R.string.room_create_chat_room_desc));
+        bean.setTab_title(mContext.getString(R.string.chatroom_tab_layout_chat_room));
+        bean.setRoom_name(mContext.getString(R.string.chatroom_create_chat_room_tag));
+        bean.setRoom_desc(mContext.getString(R.string.chatroom_create_chat_room_desc));
         data.add(bean);
 //        PageBean bean1 = new PageBean();
 //        bean1.setRoom_type(1);
-//        bean1.setTab_title(mContext.getString(R.string.tab_layout_audio_room));
-//        bean1.setRoom_name(mContext.getString(R.string.room_create_3d_room));
-//        bean1.setRoom_desc(mContext.getString(R.string.room_create_3d_room_desc));
+//        bean1.setTab_title(mContext.getString(R.string.chatroom_tab_layout_audio_room));
+//        bean1.setRoom_name(mContext.getString(R.string.chatroom_create_3d_room));
+//        bean1.setRoom_desc(mContext.getString(R.string.chatroom_create_3d_room_desc));
 //        data.add(bean1);
         return data;
     }

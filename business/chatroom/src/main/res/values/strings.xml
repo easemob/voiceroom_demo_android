@@ -1,59 +1,59 @@
 <resources>
     <string name="app_name">Easemob Chat Room</string>
-    <string name="app_agora_chatroom">Easemob Chat Room</string>
-    <string name="app_agora_chatroom_copy_right">Powered by Easemob</string>
-    <string name="agora_chat_room_create">Create Room</string>
-    <string name="room_login">Login</string>
-    <string name="room_login_title">Login Easemob Chat Room</string>
-    <string name="room_login_number">Mobile Number</string>
-    <string name="room_login_code">Verification Code</string>
-    <string name="room_login_get_code">Get Code</string>
-    <string name="room_login_agreement">By joining, you agree to our Terms of Service and Privacy Policy</string>
+    <string name="app_easemob_chatroom">Easemob Chat Room</string>
+    <string name="app_easemob_chatroom_copy_right">Powered by Easemob</string>
+
+    <string name="chatroom_create">Create Room</string>
+    <string name="chatroom_login">Login</string>
+    <string name="chatroom_login_title">Login Easemob Chat Room</string>
+    <string name="chatroom_login_phone_number">Mobile Number</string>
+    <string name="chatroom_login_code">Verification Code</string>
+    <string name="chatroom_login_get_code">Get Code</string>
+    <string name="chatroom_login_agreement">By joining, you agree to our Terms of Service and Privacy Policy</string>
 
 
-    <string name="tab_layout_all">All</string>
-    <string name="tab_layout_chat_room">Chat Room</string>
-    <string name="tab_layout_audio_room">Spatial Audio Room</string>
-    <string name="tab_layout_karaoke_room">Karaoke</string>
+    <string name="chatroom_tab_layout_all">All</string>
+    <string name="chatroom_tab_layout_chat_room">Chat Room</string>
+    <string name="chatroom_tab_layout_audio_room">Spatial Audio Room</string>
+    <string name="chatroom_tab_layout_karaoke_room">Karaoke</string>
 
-    <string name="room_create_tab">Create Room</string>
     <string name="room_disclaimer">Disclaimer for demo</string>
     <string name="room_sound_selection">Sound Selection</string>
-    <string name="room_current_customer_usage">Current Customer Usage</string>
+    <string name="chatroom_current_customer_usage">Current Customer Usage</string>
 
-    <string name="room_create_empty_name">No Room Name</string>
-    <string name="room_create_room_name">Room Name</string>
-    <string name="room_create_hint_room_name">Set Room Name</string>
-    <string name="room_create_random_name">Random</string>
-    <string name="room_create_encrypt">Room Access?</string>
-    <string name="room_create_private">Private</string>
-    <string name="room_create_public">Public</string>
-    <string name="room_create_next">Next</string>
-    <string name="room_create_go_live">Go Live</string>
-    <string name="room_create_chat_room">Chat Room</string>
-    <string name="room_create_chat_3d_room">Spatial Audio</string>
-    <string name="room_create_chat_room_desc">Multi-audio chat scenario where anyone can unmute their mic and speak \nCo-Watch / Team Chat / Gaming Buddy Chat</string>
-    <string name="room_create_3d_room">Spatial Audio</string>
-    <string name="room_create_3d_room_desc">Power natural conversations that make people feel like "they're in the room" together</string>
-    <string name="room_create_ktv_room">KTV</string>
-    <string name="room_create_tips">Enter 4 Digit PassWord</string>
-    <string name="room_check_password">Incorrect Password</string>
+    <string name="chatroom_create_empty_name">No Room Name</string>
+    <string name="chatroom_create_room_name">Room Name</string>
+    <string name="chatroom_create_hint_room_name">Set Room Name</string>
+    <string name="chatroom_create_random_name">Random</string>
+    <string name="chatroom_create_encrypt">Room Access?</string>
+    <string name="chatroom_create_private">Private</string>
+    <string name="chatroom_create_public">Public</string>
+    <string name="chatroom_create_next">Next</string>
+    <string name="chatroom_create_go_live">Go Live</string>
+    <string name="chatroom_create_chat_room_tag">Chat Room</string>
+    <string name="chatroom_create_chat_3d_room">Spatial Audio</string>
+    <string name="chatroom_create_chat_room_desc">Multi-audio chat scenario where anyone can unmute their mic and speak \nCo-Watch / Team Chat / Gaming Buddy Chat</string>
+    <string name="chatroom_create_3d_room">Spatial Audio</string>
+    <string name="chatroom_create_3d_room_desc">Power natural conversations that make people feel like "they're in the room" together</string>
+    <string name="chatroom_create_ktv_room">KTV</string>
+    <string name="chatroom_room_create_tips">Enter 4 Digit PassWord</string>
+    <string name="chatroom_check_password">Incorrect Password</string>
 
-    <string name="room_empty_data">No Chat Room Yet</string>
-    <string name="room_list_title_private">Private</string>
-    <string name="room_list_item_enter">Enter</string>
-    <string name="room_list_count">%1$s</string>
-    <string name="room_tab_layout_count">(%1$s)</string>
-    <string name="room_profile_update_name_fail">Change Failed</string>
-    <string name="room_profile_update_name_suc">Change Success</string>
+    <string name="chatroom_empty_data">No Chat Room Yet</string>
+    <string name="chatroom_list_title_private">Private</string>
+    <string name="chatroom_list_item_enter">Enter</string>
+    <string name="chatroom_list_count">%1$s</string>
+    <string name="chatroom_tab_layout_count">(%1$s)</string>
+    <string name="chatroom_profile_update_name_fail">Change Failed</string>
+    <string name="chatroom_profile_update_name_suc">Change Success</string>
 
-    <string name="empty_invite_hands">No audience yet</string>
-    <string name="empty_raised_hands">No one raised hands yet</string>
-    <string name="room_profile">Profile</string>
-    <string name="room_close">Room Closed</string>
-    <string name="room_kick_member">Kicked Out</string>
+    <string name="chatroom_empty_invite_hands">No audience yet</string>
+    <string name="chatroom_empty_raised_hands">No one raised hands yet</string>
+    <string name="chatroom_profile">Profile</string>
+    <string name="chatroom_close">Room Closed</string>
+    <string name="chatroom_kick_member">Kicked Out</string>
 
-    <string name="room_welcome">Welcome to the voice chat room! Pornography, gambling or violence is strictly prohibited in the room.</string>
+    <string name="chatroom_welcome">Welcome to the voice chat room! Pornography, gambling or violence is strictly prohibited in the room.</string>
 
     <!-- gift -->
     <string name="gift_default_name_1">Sweet Heart</string>
@@ -131,10 +131,10 @@
     <string name="chatroom_join_room_failed">Joined Failed</string>
     <string name="chatroom_host_invitation_sent">Invitation sent!</string>
 
-    <string name="room_disclaimer_content_1">[Agora Chat Room Demo] (this "Product") is a test product provided by Agora. This Product is available for our current and potential customers only, and for them to test the functionality and quality of this Product. This Product is provided neither for commercial nor for public use.
-Agora enjoys the copyright and ownership of this product. You shall not modify, consolidate, compile, adjust, reverse engineer, sub-license, transfer, sell this Product or infringe the legitimate interests of Agora in any way.</string>
-    <string name="room_disclaimer_content_2">If you’d like to test this Product, you’re welcome to download, install and use it. Agora hereby grants you a world-wide and royalty-free license to use this Product. This product is provided "as is" without any express or implicit warranty, including but not limited to guarantees of suitability, suitability for specific purposes, and non-infringement. Whether it is due to any contract, infringement or other forms of conduct related to this Product or the use of this Product or otherwise, Agora shall not be liable for any claims, damages or liabilities arising out of or related to your use of this Product.</string>
-    <string name="room_disclaimer_content_3">It’s your freedom to choose to test this Product or not. But if you decide to do so, and if you download, install, or use this Product, it means that you confirm and agree that under no circumstances shall Agora be liable for any form of loss or injury caused to yourself or others when you use this Product for any reason, in any manner.</string>
-    <string name="room_disclaimer_email">If you have any query, please feel free to contact
-        issues@easemob.com</string>
+    <string name="chatroom_disclaimer_content_1">[Easemob Chat Room Demo] (this "Product") is a test product provided by Easemob. This Product is available for our current and potential customers only, and for them to test the functionality and quality of this Product. This Product is provided neither for commercial nor for public use.
+Easemob enjoys the copyright and ownership of this product. You shall not modify, consolidate, compile, adjust, reverse engineer, sub-license, transfer, sell this Product or infringe the legitimate interests of Easemob in any way.</string>
+    <string name="chatroom_disclaimer_content_2">If you’d like to test this Product, you’re welcome to download, install and use it. Easemob hereby grants you a world-wide and royalty-free license to use this Product. This product is provided "as is" without any express or implicit warranty, including but not limited to guarantees of suitability, suitability for specific purposes, and non-infringement. Whether it is due to any contract, infringement or other forms of conduct related to this Product or the use of this Product or otherwise, Easemob shall not be liable for any claims, damages or liabilities arising out of or related to your use of this Product.</string>
+    <string name="chatroom_disclaimer_content_3">It’s your freedom to choose to test this Product or not. But if you decide to do so, and if you download, install, or use this Product, it means that you confirm and agree that under no circumstances shall Easemob be liable for any form of loss or injury caused to yourself or others when you use this Product for any reason, in any manner.</string>
+    <string name="chatroom_disclaimer_email">If you have any query, please feel free to contact
+        support@easemob.com</string>
 </resources>

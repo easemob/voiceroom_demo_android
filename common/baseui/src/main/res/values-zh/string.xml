@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="error_network_error">网络不可用</string>
-    <string name="room_empty_data">暂无房间</string>
+    <string name="chatroom_empty_data">暂无房间</string>
     <string name="loading">请求中…</string>
 </resources>

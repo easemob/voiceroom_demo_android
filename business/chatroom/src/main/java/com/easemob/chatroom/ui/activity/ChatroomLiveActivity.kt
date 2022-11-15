@@ -28,8 +28,6 @@ import com.easemob.buddy.tool.ThreadManager
 import com.easemob.buddy.tool.ToastTools
 import com.easemob.buddy.tool.logE
 import com.easemob.chatroom.R
-import io.agora.chat.ChatClient
-import io.agora.chat.adapter.EMAChatRoomManagerListener
 import com.easemob.chatroom.bean.RoomKitBean
 import com.easemob.chatroom.controller.RtcRoomController
 import com.easemob.chatroom.databinding.ActivityChatroomBinding
@@ -46,6 +44,8 @@ import com.easemob.config.ConfigConstants
 import com.easemob.config.RouterParams
 import com.easemob.config.RouterPath
 import com.easemob.secnceui.widget.top.OnLiveTopClickListener
+import com.hyphenate.chat.EMClient
+import com.hyphenate.chat.adapter.EMAChatRoomManagerListener
 import manager.ChatroomConfigManager
 import manager.ChatroomHelper
 import manager.ChatroomListener
@@ -127,7 +127,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
             }
         }
         ChatroomHelper.getInstance().init(roomKitBean.chatroomId)
-        ChatroomHelper.getInstance().saveWelcomeMsg(getString(R.string.room_welcome),
+        ChatroomHelper.getInstance().saveWelcomeMsg(getString(R.string.chatroom_welcome),
             ProfileManager.getInstance().profile.name)
         binding.messageView.refreshSelectLast()
         ChatroomConfigManager.getInstance().setChatRoomListener(this)
@@ -206,7 +206,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
         if (roomKitBean.roomType == ConfigConstants.RoomType.Common_Chatroom) { // 普通房间
             binding.likeView.likeView.setOnClickListener { binding.likeView.addFavor() }
             binding.chatroomGiftView.init(roomKitBean.chatroomId)
-            binding.messageView.init(roomKitBean.chatroomId, roomKitBean.ownerId)
+            binding.messageView.init(roomKitBean.chatroomId, isOwner,ProfileManager.getInstance().profile.chat_uid)
             binding.rvChatroom2dMicLayout.isVisible = true
             binding.rvChatroom3dMicLayout.isVisible = false
             roomObservableDelegate =
@@ -414,7 +414,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
     }
 
     override fun finish() {
-        ChatClient.getInstance().chatroomManager().leaveChatRoom(roomKitBean.chatroomId)
+        EMClient.getInstance().chatroomManager().leaveChatRoom(roomKitBean.chatroomId)
         binding.chatroomGiftView.clear()
         RtcRoomController.get().destroy()
         ChatroomConfigManager.getInstance().removeChatRoomListener(this)
@@ -568,7 +568,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
 
     override fun onTokenWillExpire() {
         ChatroomHttpManager.getInstance(this).loginWithToken(
-            ChatClient.getInstance().deviceInfo.getString("deviceid"),
+            EMClient.getInstance().deviceInfo.getString("deviceid"),
             ProfileManager.getInstance().profile.portrait, object : ValueCallBack<VRUserBean> {
                 override fun onSuccess(bean: VRUserBean?) {
                     "onSuccess: chat_uid: ${bean?.chat_uid} im_token: ${bean?.im_token}".logE("onTokenWillExpire")
@@ -639,10 +639,10 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
         if (!TextUtils.equals(roomKitBean.chatroomId, roomId)) return
         Log.e("ChatroomLiveActivity", "userBeKicked: $reason")
         if(reason == EMAChatRoomManagerListener.DESTROYED) {
-            ToastTools.show(this,getString(R.string.room_close), Toast.LENGTH_SHORT)
+            ToastTools.show(this,getString(R.string.chatroom_close), Toast.LENGTH_SHORT)
             finish()
         }else if(reason == EMAChatRoomManagerListener.BE_KICKED){
-            ToastTools.show(this,getString(R.string.room_kick_member), Toast.LENGTH_SHORT)
+            ToastTools.show(this,getString(R.string.chatroom_kick_member), Toast.LENGTH_SHORT)
             finish()
         }
     }
@@ -650,7 +650,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
     override fun onRoomDestroyed(roomId: String?) {
         if (!TextUtils.equals(roomKitBean.chatroomId, roomId)) return
         Log.e("ChatroomLiveActivity","onRoomDestroyed: ")
-        ToastTools.show(this,getString(R.string.room_close), Toast.LENGTH_SHORT)
+        ToastTools.show(this,getString(R.string.chatroom_close), Toast.LENGTH_SHORT)
         finish()
     }
 }

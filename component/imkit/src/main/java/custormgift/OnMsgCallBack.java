@@ -1,10 +1,10 @@
 package custormgift;
 
-import bean.ChatMessageData;
-import io.agora.CallBack;
-import io.agora.chat.ChatMessage;
+import com.hyphenate.EMCallBack;
 
-public abstract class OnMsgCallBack implements CallBack {
+import bean.ChatMessageData;
+
+public abstract class OnMsgCallBack implements EMCallBack {
     /**
      * 为了回调发送的message，不建议使用此回调
      */

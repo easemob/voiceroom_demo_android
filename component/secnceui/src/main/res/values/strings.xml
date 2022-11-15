@@ -105,6 +105,6 @@
     <string name="chatroom_gift_title">Gifts</string>
     <string name="chatroom_gift_dialog_send">Send</string>
 
-    <string name="room_create_tips">Enter 4 Digit PassWord</string>
+    <string name="chatroom_room_create_tips">Enter 4 Digit PassWord</string>
 
 </resources>

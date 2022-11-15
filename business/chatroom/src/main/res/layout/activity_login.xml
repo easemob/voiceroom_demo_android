@@ -10,7 +10,7 @@
         android:id="@+id/mtChatroom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/room_login_title"
+        android:text="@string/chatroom_login_title"
         android:textColor="@color/main_color_009FFF"
         android:layout_marginStart="30dp"
         android:textSize="@dimen/sp_24"
@@ -29,7 +29,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintVertical_bias="0.34"
-        android:hint="@string/room_login_number"
+        android:hint="@string/chatroom_login_phone_number"
         style="@style/em_login_et_input" />
 
     <ImageView
@@ -47,7 +47,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/et_login_name"
-        android:hint="@string/room_login_code"
+        android:hint="@string/chatroom_login_code"
         android:layout_marginTop="20dp"
         android:inputType="number"
         android:ellipsize="end"
@@ -61,7 +61,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/et_login_pwd"
         app:layout_constraintRight_toRightOf="@id/et_login_pwd"
         android:padding="20dp"
-        android:text="@string/room_login_get_code"
+        android:text="@string/chatroom_login_get_code"
         android:textColor="@color/color_009FFF"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
@@ -73,7 +73,7 @@
         android:layout_marginTop="24dp"
         android:layout_marginStart="30dp"
         android:layout_marginEnd="30dp"
-        android:text="@string/room_login"
+        android:text="@string/chatroom_login"
         android:paddingTop="16dp"
         android:paddingBottom="16dp"
         android:textSize="16sp"
@@ -114,7 +114,7 @@
             android:textColor="@color/color_3c4267"
             android:letterSpacing="0.1"
             android:lineSpacingExtra="5dp"
-            android:text="@string/room_login_agreement"
+            android:text="@string/chatroom_login_agreement"
             android:textSize="12sp"/>
 
     </androidx.appcompat.widget.LinearLayoutCompat>

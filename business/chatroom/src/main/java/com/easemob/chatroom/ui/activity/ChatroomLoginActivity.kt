@@ -150,7 +150,7 @@ class ChatroomLoginActivity : BaseUiActivity<ActivityLoginBinding>(), TextWatche
     }
 
     private fun getSpannable(): SpannableString? {
-        val spanStr = SpannableString(getString(R.string.room_login_agreement))
+        val spanStr = SpannableString(getString(R.string.chatroom_login_agreement))
         //设置颜色
         spanStr.setSpan(
             ForegroundColorSpan(ContextCompat.getColor(this, R.color.color_009FFF)),

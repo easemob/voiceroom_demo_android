@@ -2,7 +2,6 @@ package com.easemob.chatroom.model;
 
 import android.app.Application;
 import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -12,10 +11,10 @@ import androidx.lifecycle.LiveData;
 import org.json.JSONException;
 
 import com.easemob.baseui.general.net.Resource;
-import io.agora.chat.ChatClient;
 import com.easemob.chatroom.general.livedatas.SingleSourceLiveData;
 import com.easemob.chatroom.general.repositories.LoginRepository;
 import com.easemob.chatroom.general.repositories.ProfileManager;
+import com.hyphenate.chat.EMClient;
 
 import tools.bean.VRUserBean;
 
@@ -44,19 +43,14 @@ public class LoginViewModel extends AndroidViewModel {
     }
 
     public void loginFromServer(){
-        try {
-           String device = ChatClient.getInstance().getDeviceInfo().getString("deviceid");
-           String portrait = "";
-           Log.e("LoginFromServer"," device: "+device);
-            VRUserBean userBean = ProfileManager.getInstance().getProfile();
-            if (userBean != null){
-                 portrait = userBean.getPortrait();
-            }
-           loginObservable.setSource(mRepository.login(mContext,device,portrait));
-        } catch (JSONException e) {
-            e.printStackTrace();
+        String device = getDeviceId();
+        String portrait = "";
+        Log.e("LoginFromServer"," device: "+device);
+        VRUserBean userBean = ProfileManager.getInstance().getProfile();
+        if (userBean != null){
+            portrait = userBean.getPortrait();
         }
-
+        loginObservable.setSource(mRepository.login(mContext,device,portrait));
     }
 
     public void loginFromServer(String phoneNumber,String code){
@@ -78,7 +72,7 @@ public class LoginViewModel extends AndroidViewModel {
     private String getDeviceId(){
         String device = "";
         try {
-            device = ChatClient.getInstance().getDeviceInfo().getString("deviceid");
+            device = EMClient.getInstance().getDeviceInfo().getString("deviceid");
         } catch (JSONException e) {
             e.printStackTrace();
         }

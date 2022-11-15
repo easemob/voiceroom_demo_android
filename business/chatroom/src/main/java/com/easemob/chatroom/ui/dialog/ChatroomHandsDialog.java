@@ -87,7 +87,7 @@ public class ChatroomHandsDialog extends BaseSheetDialog<ChatroomHandLayoutBindi
                     title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
                     title.setGravity(Gravity.CENTER);
                     title.setTypeface(null,Typeface.BOLD);
-                    String content = getString(titles[index]) + getString(R.string.room_tab_layout_count,String.valueOf(mCount));
+                    String content = getString(titles[index]) + getString(R.string.chatroom_tab_layout_count,String.valueOf(mCount));
                     title.setText(content);
                     title.setTextColor(getResources().getColor(R.color.dark_grey_color_040925));
                     tag_line.setBackgroundColor(getResources().getColor(R.color.color_156EF3));
@@ -135,7 +135,7 @@ public class ChatroomHandsDialog extends BaseSheetDialog<ChatroomHandLayoutBindi
                         public void getItemCount(int count) {
                             mCount = count;
                             if (getActivity() != null){
-                                String content = requireActivity().getString(titles[index]) + getString(R.string.room_tab_layout_count,String.valueOf(mCount));
+                                String content = requireActivity().getString(titles[index]) + getString(R.string.chatroom_tab_layout_count,String.valueOf(mCount));
                                 Log.e("getItemCount","content1: " + content);
                                 title.setText(content);
                             }
@@ -148,7 +148,7 @@ public class ChatroomHandsDialog extends BaseSheetDialog<ChatroomHandLayoutBindi
                         public void getItemCount(int count) {
                             mCount = count;
                             if (getActivity() != null){
-                                String content = requireActivity().getResources().getString(titles[index]) + getString(R.string.room_tab_layout_count,String.valueOf(mCount));
+                                String content = requireActivity().getResources().getString(titles[index]) + getString(R.string.chatroom_tab_layout_count,String.valueOf(mCount));
                                 Log.e("getItemCount","content2: " + content);
                                 title.setText(content);
                             }

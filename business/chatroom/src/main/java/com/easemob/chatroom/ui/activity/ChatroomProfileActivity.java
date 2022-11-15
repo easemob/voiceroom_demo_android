@@ -32,7 +32,6 @@ import com.easemob.baseui.BaseActivity;
 import com.easemob.baseui.popupwindow.CommonPopupWindow;
 import com.easemob.buddy.tool.ThreadManager;
 import com.easemob.buddy.tool.ToastTools;
-import io.agora.chat.ChatClient;
 import com.easemob.chatroom.ui.adapter.ChatroomProfileGridAdapter;
 import com.easemob.chatroom.bean.ProfileBean;
 
@@ -40,6 +39,8 @@ import com.easemob.chatroom.general.repositories.ProfileManager;
 import com.easemob.config.RouterPath;
 import com.easemob.secnceui.utils.DeviceUtils;
 import com.easemob.secnceui.widget.titlebar.ChatroomTitleBar;
+import com.hyphenate.chat.EMClient;
+
 import tools.ValueCallBack;
 import tools.bean.VRUserBean;
 
@@ -225,17 +226,17 @@ public class ChatroomProfileActivity extends BaseActivity implements View.OnClic
    private void updateProfile(ProfileBean bean){
       try {
          ChatroomHttpManager.getInstance(ChatroomProfileActivity.this).loginWithToken(
-                 ChatClient.getInstance().getDeviceInfo().getString("deviceid"), bean.getAvatarName(), new ValueCallBack<VRUserBean>() {
+                 EMClient.getInstance().getDeviceInfo().getString("deviceid"), bean.getAvatarName(), new ValueCallBack<VRUserBean>() {
                     @Override
                     public void onSuccess(VRUserBean var1) {
                        hideKey();
                        ProfileManager.getInstance().setProfile(var1);
-                       ToastTools.show(ChatroomProfileActivity.this, getString(R.string.room_profile_update_name_suc) , Toast.LENGTH_SHORT);
+                       ToastTools.show(ChatroomProfileActivity.this, getString(R.string.chatroom_profile_update_name_suc) , Toast.LENGTH_SHORT);
                     }
 
                     @Override
                     public void onError(int var1, String var2) {
-                       ToastTools.show(ChatroomProfileActivity.this, getString(R.string.room_profile_update_name_fail) + ": " + var2, Toast.LENGTH_SHORT);
+                       ToastTools.show(ChatroomProfileActivity.this, getString(R.string.chatroom_profile_update_name_fail) + ": " + var2, Toast.LENGTH_SHORT);
                        onFail();
                     }
                  });
@@ -251,17 +252,17 @@ public class ChatroomProfileActivity extends BaseActivity implements View.OnClic
    private void updateProfile(VRUserBean bean){
       try {
          ChatroomHttpManager.getInstance(ChatroomProfileActivity.this).loginWithToken(
-                 ChatClient.getInstance().getDeviceInfo().getString("deviceid"),bean.getPortrait(), new ValueCallBack<VRUserBean>() {
+                 EMClient.getInstance().getDeviceInfo().getString("deviceid"),bean.getPortrait(), new ValueCallBack<VRUserBean>() {
                     @Override
                     public void onSuccess(VRUserBean var1) {
                        hideKey();
                        ProfileManager.getInstance().setProfile(var1);
-                       ToastTools.show(ChatroomProfileActivity.this, getString(R.string.room_profile_update_name_suc) , Toast.LENGTH_SHORT);
+                       ToastTools.show(ChatroomProfileActivity.this, getString(R.string.chatroom_profile_update_name_suc) , Toast.LENGTH_SHORT);
                     }
 
                     @Override
                     public void onError(int var1, String var2) {
-                       ToastTools.show(ChatroomProfileActivity.this, getString(R.string.room_profile_update_name_fail)+ ": " + var2, Toast.LENGTH_SHORT);
+                       ToastTools.show(ChatroomProfileActivity.this, getString(R.string.chatroom_profile_update_name_fail)+ ": " + var2, Toast.LENGTH_SHORT);
                        onFail();
                     }
                  });

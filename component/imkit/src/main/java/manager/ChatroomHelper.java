@@ -3,6 +3,16 @@ package manager;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.hyphenate.EMCallBack;
+import com.hyphenate.EMChatRoomChangeListener;
+import com.hyphenate.EMConnectionListener;
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMConversation;
+import com.hyphenate.chat.EMCustomMessageBody;
+import com.hyphenate.chat.EMMessage;
+import com.hyphenate.chat.EMTextMessageBody;
+import com.hyphenate.util.EMLog;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -14,17 +24,8 @@ import bean.ChatMessageData;
 import custormgift.CustomMsgHelper;
 import custormgift.OnCustomMsgReceiveListener;
 import custormgift.OnMsgCallBack;
-import io.agora.CallBack;
-import io.agora.ChatRoomChangeListener;
-import io.agora.ConnectionListener;
-import io.agora.chat.ChatClient;
-import io.agora.chat.ChatMessage;
-import io.agora.chat.Conversation;
-import io.agora.chat.CustomMessageBody;
-import io.agora.chat.TextMessageBody;
-import io.agora.util.EMLog;
 
-public class ChatroomHelper implements ChatRoomChangeListener, ConnectionListener {
+public class ChatroomHelper implements EMChatRoomChangeListener, EMConnectionListener {
     private static ChatroomHelper instance;
     private ChatroomHelper(){}
     private String chatroomId;
@@ -74,19 +75,19 @@ public class ChatroomHelper implements ChatRoomChangeListener, ConnectionListene
     }
 
     public void setChatRoomChangeListener(){
-        ChatClient.getInstance().chatroomManager().addChatRoomChangeListener(this);
+        EMClient.getInstance().chatroomManager().addChatRoomChangeListener(this);
     }
 
     public void removeChatRoomChangeListener(){
-        ChatClient.getInstance().chatroomManager().removeChatRoomListener(this);
+        EMClient.getInstance().chatroomManager().removeChatRoomListener(this);
     }
 
     public void setConnectionListener(){
-        ChatClient.getInstance().addConnectionListener(this);
+        EMClient.getInstance().addConnectionListener(this);
     }
 
     public void removeChatRoomConnectionListener(){
-        ChatClient.getInstance().removeConnectionListener(this);
+        EMClient.getInstance().removeConnectionListener(this);
     }
 
     public void setChatRoomListener(OnChatroomEventReceiveListener listener){
@@ -110,10 +111,10 @@ public class ChatroomHelper implements ChatRoomChangeListener, ConnectionListene
      * @param callBack
      */
     public void sendTxtMsg(String content,String nickName, OnMsgCallBack callBack) {
-        ChatMessage message = ChatMessage.createTextSendMessage(content, chatroomId);
+        EMMessage message = EMMessage.createTextSendMessage(content, chatroomId);
         message.setAttribute("userName",nickName);
-        message.setChatType(ChatMessage.ChatType.ChatRoom);
-        message.setMessageStatusCallback(new CallBack() {
+        message.setChatType(EMMessage.ChatType.ChatRoom);
+        message.setMessageStatusCallback(new EMCallBack() {
             @Override
             public void onSuccess() {
                 CustomMsgHelper.getInstance().addSendText(parseChatMessage(message));
@@ -130,7 +131,7 @@ public class ChatroomHelper implements ChatRoomChangeListener, ConnectionListene
                 callBack.onProgress(i, s);
             }
         });
-        ChatClient.getInstance().chatManager().sendMessage(message);
+        EMClient.getInstance().chatManager().sendMessage(message);
     }
 
     /**
@@ -168,11 +169,11 @@ public class ChatroomHelper implements ChatRoomChangeListener, ConnectionListene
 
     public ArrayList<ChatMessageData> getMessageData(String chatroomId){
         data.clear();
-        Conversation conversation = ChatClient.getInstance().chatManager().getConversation(chatroomId, Conversation.ConversationType.ChatRoom, true);
+        EMConversation conversation = EMClient.getInstance().chatManager().getConversation(chatroomId, EMConversation.EMConversationType.ChatRoom, true);
         if (conversation != null){
             EMLog.e("getMessageData",conversation.getAllMessages().size() + "");
-            for (ChatMessage allMessage : conversation.getAllMessages()) {
-                if (allMessage.getBody() instanceof TextMessageBody ){
+            for (EMMessage allMessage : conversation.getAllMessages()) {
+                if (allMessage.getBody() instanceof EMTextMessageBody){
                     data.add(parseChatMessage(allMessage));
                 }
             }
@@ -182,19 +183,19 @@ public class ChatroomHelper implements ChatRoomChangeListener, ConnectionListene
         }
     }
 
-    public ChatMessageData parseChatMessage(ChatMessage chatMessage){
+    public ChatMessageData parseChatMessage(EMMessage chatMessage){
         ChatMessageData chatMessageData = new ChatMessageData();
         chatMessageData.setForm(chatMessage.getFrom());
         chatMessageData.setTo(chatMessage.getTo());
         chatMessageData.setConversationId(chatMessage.conversationId());
         chatMessageData.setMessageId(chatMessage.getMsgId());
-        if (chatMessage.getBody() instanceof TextMessageBody){
+        if (chatMessage.getBody() instanceof EMTextMessageBody){
             chatMessageData.setType("text");
-            chatMessageData.setContent(((TextMessageBody) chatMessage.getBody()).getMessage());
-        }else if (chatMessage.getBody() instanceof CustomMessageBody){
+            chatMessageData.setContent(((EMTextMessageBody) chatMessage.getBody()).getMessage());
+        }else if (chatMessage.getBody() instanceof EMCustomMessageBody){
             chatMessageData.setType("custom");
-            chatMessageData.setEvent(((CustomMessageBody) chatMessage.getBody()).event());
-            chatMessageData.setCustomParams(((CustomMessageBody) chatMessage.getBody()).getParams());
+            chatMessageData.setEvent(((EMCustomMessageBody) chatMessage.getBody()).event());
+            chatMessageData.setCustomParams(((EMCustomMessageBody) chatMessage.getBody()).getParams());
         }
         chatMessageData.setExt(chatMessage.ext());
         return chatMessageData;
@@ -405,11 +406,11 @@ public class ChatroomHelper implements ChatRoomChangeListener, ConnectionListene
     }
 
     public void renewToken(String newToken){
-        ChatClient.getInstance().renewToken(newToken);
+        EMClient.getInstance().renewToken(newToken);
     }
 
-    public void login(String uid,String token,CallBack callBack){
-        ChatClient.getInstance().loginWithAgoraToken(uid, token, new CallBack() {
+    public void login(String uid,String token,EMCallBack callBack){
+        EMClient.getInstance().loginWithAgoraToken(uid, token, new EMCallBack() {
             @Override
             public void onSuccess() {
                 callBack.onSuccess();
@@ -425,7 +426,7 @@ public class ChatroomHelper implements ChatRoomChangeListener, ConnectionListene
     }
 
     public void login(String uid,String token){
-        ChatClient.getInstance().loginWithAgoraToken(uid, token, new CallBack() {
+        EMClient.getInstance().loginWithAgoraToken(uid, token, new EMCallBack() {
             @Override
             public void onSuccess() {
                 Log.d("ChatroomConfigManager","Login success");
@@ -438,8 +439,8 @@ public class ChatroomHelper implements ChatRoomChangeListener, ConnectionListene
         });
     }
 
-    public void logout(boolean unbind,CallBack callBack){
-        ChatClient.getInstance().logout(unbind, new CallBack() {
+    public void logout(boolean unbind,EMCallBack callBack){
+        EMClient.getInstance().logout(unbind, new EMCallBack() {
             @Override
             public void onSuccess() {
                 callBack.onSuccess();
@@ -453,7 +454,7 @@ public class ChatroomHelper implements ChatRoomChangeListener, ConnectionListene
     }
 
     public void logout(boolean unbind){
-        ChatClient.getInstance().logout(unbind, new CallBack() {
+        EMClient.getInstance().logout(unbind, new EMCallBack() {
             @Override
             public void onSuccess() {
                 EMLog.d(TAG,"logout onSuccess");
@@ -467,13 +468,13 @@ public class ChatroomHelper implements ChatRoomChangeListener, ConnectionListene
     }
 
     public void saveWelcomeMsg(String content,String nick){
-        ChatMessage message = ChatMessage.createSendMessage(ChatMessage.Type.TXT);
-        message.setChatType(ChatMessage.ChatType.ChatRoom);
+        EMMessage message = EMMessage.createSendMessage(EMMessage.Type.TXT);
+        message.setChatType(EMMessage.ChatType.ChatRoom);
         message.setTo(chatroomId);
-        TextMessageBody textMessageBody = new TextMessageBody(content);
+        EMTextMessageBody textMessageBody = new EMTextMessageBody(content);
         message.setBody(textMessageBody);
         message.setAttribute("userName",nick);
-        ChatClient.getInstance().chatManager().saveMessage(message);
+        EMClient.getInstance().chatManager().saveMessage(message);
     }
 
 }

@@ -58,7 +58,7 @@ public class ChatroomRaisedHandsFragment extends BaseListFragment<VRMicListBean.
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         emptyView = getLayoutInflater().inflate(R.layout.chatroom_no_data_layout, container,false);
         TextView textView = emptyView.findViewById(R.id.content_item);
-        textView.setText(getString(R.string.empty_raised_hands));
+        textView.setText(getString(R.string.chatroom_empty_raised_hands));
         LinearLayoutCompat.LayoutParams params = new LinearLayoutCompat.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
         emptyView.setLayoutParams(params);
         return super.onCreateView(inflater, container, savedInstanceState);

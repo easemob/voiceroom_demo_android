@@ -1,58 +1,58 @@
 <resources>
     <string name="app_name">环信语聊房</string>
-    <string name="app_agora_chatroom">环信语聊房</string>
-    <string name="app_agora_chatroom_copy_right">Powered by Easemob</string>
-    <string name="agora_chat_room_create">创建聊天室</string>
-    <string name="room_login">登录</string>
-    <string name="room_login_title">登录环信聊天室</string>
-    <string name="room_login_number">手机号</string>
-    <string name="room_login_code">短信验证码</string>
-    <string name="room_login_get_code">获取验证码</string>
-    <string name="room_login_agreement">请选择同意《环信服务条款》与《环信隐私协议》</string>
+    <string name="app_easemob_chatroom">环信语聊房</string>
+    <string name="app_easemob_chatroom_copy_right">Powered by Easemob</string>
 
-    <string name="tab_layout_all">全部</string>
-    <string name="tab_layout_chat_room">语聊房</string>
-    <string name="tab_layout_audio_room">空间音频房</string>
-    <string name="tab_layout_karaoke_room">KTV</string>
+    <string name="chatroom_create">创建房间</string>
+    <string name="chatroom_login">登录</string>
+    <string name="chatroom_login_title">登录环信聊天室</string>
+    <string name="chatroom_login_phone_number">手机号</string>
+    <string name="chatroom_login_code">短信验证码</string>
+    <string name="chatroom_login_get_code">获取验证码</string>
+    <string name="chatroom_login_agreement">请选择同意《环信服务条款》与《环信隐私协议》</string>
 
-    <string name="room_create_tab">创建房间</string>
+    <string name="chatroom_tab_layout_all">全部</string>
+    <string name="chatroom_tab_layout_chat_room">语聊房</string>
+    <string name="chatroom_tab_layout_audio_room">空间音频房</string>
+    <string name="chatroom_tab_layout_karaoke_room">KTV</string>
+
     <string name="room_disclaimer">免责声明</string>
     <string name="room_sound_selection">最佳音效</string>
-    <string name="room_current_customer_usage">以下客户都在用</string>
+    <string name="chatroom_current_customer_usage">以下客户都在用</string>
 
-    <string name="room_create_empty_name">房间名不能为空</string>
-    <string name="room_create_room_name">房间名称</string>
-    <string name="room_create_hint_room_name">设置房间名称</string>
-    <string name="room_create_random_name">随机</string>
-    <string name="room_create_encrypt">房间加密?</string>
-    <string name="room_create_private">私密</string>
-    <string name="room_create_public">公开</string>
-    <string name="room_create_next">下一步</string>
-    <string name="room_create_go_live">开始直播</string>
-    <string name="room_create_chat_room">语聊房</string>
-    <string name="room_create_chat_3d_room">空间音频房</string>
-    <string name="room_create_chat_room_desc">多人语音互动场景，观众可以自由上麦进行语音交流 \n一起看 / 开黑 / 游戏陪玩</string>
-    <string name="room_create_3d_room">空间音频</string>
-    <string name="room_create_3d_room_desc">拟真且自然的对话，让人们感觉是在一个现实房间里交谈</string>
-    <string name="room_create_ktv_room">KTV</string>
-    <string name="room_create_tips">请输入4位数密码</string>
-    <string name="room_check_password">密码错误，请重试</string>
+    <string name="chatroom_create_empty_name">房间名不能为空</string>
+    <string name="chatroom_create_room_name">房间名称</string>
+    <string name="chatroom_create_hint_room_name">设置房间名称</string>
+    <string name="chatroom_create_random_name">随机</string>
+    <string name="chatroom_create_encrypt">房间加密?</string>
+    <string name="chatroom_create_private">私密</string>
+    <string name="chatroom_create_public">公开</string>
+    <string name="chatroom_create_next">下一步</string>
+    <string name="chatroom_create_go_live">开始直播</string>
+    <string name="chatroom_create_chat_room_tag">语聊房</string>
+    <string name="chatroom_create_chat_3d_room">空间音频房</string>
+    <string name="chatroom_create_chat_room_desc">多人语音互动场景，观众可以自由上麦进行语音交流 \n一起看 / 开黑 / 游戏陪玩</string>
+    <string name="chatroom_create_3d_room">空间音频</string>
+    <string name="chatroom_create_3d_room_desc">拟真且自然的对话，让人们感觉是在一个现实房间里交谈</string>
+    <string name="chatroom_create_ktv_room">KTV</string>
+    <string name="chatroom_room_create_tips">请输入4位数密码</string>
+    <string name="chatroom_check_password">密码错误，请重试</string>
 
-    <string name="room_empty_data">暂无房间</string>
-    <string name="room_list_title_private">私密</string>
-    <string name="room_list_item_enter">进入</string>
-    <string name="room_list_count">%1$s</string>
-    <string name="room_tab_layout_count">(%1$s)</string>
-    <string name="room_profile_update_name_fail">修改失败</string>
-    <string name="room_profile_update_name_suc">修改成功</string>
+    <string name="chatroom_empty_data">暂无房间</string>
+    <string name="chatroom_list_title_private">私密</string>
+    <string name="chatroom_list_item_enter">进入</string>
+    <string name="chatroom_list_count">%1$s</string>
+    <string name="chatroom_tab_layout_count">(%1$s)</string>
+    <string name="chatroom_profile_update_name_fail">修改失败</string>
+    <string name="chatroom_profile_update_name_suc">修改成功</string>
 
-    <string name="empty_invite_hands">暂无听众</string>
-    <string name="empty_raised_hands">暂无上麦请求</string>
-    <string name="room_profile">个人信息</string>
-    <string name="room_close">房间销毁</string>
-    <string name="room_kick_member">已踢出房间</string>
+    <string name="chatroom_empty_invite_hands">暂无听众</string>
+    <string name="chatroom_empty_raised_hands">暂无上麦请求</string>
+    <string name="chatroom_profile">个人信息</string>
+    <string name="chatroom_close">房间销毁</string>
+    <string name="chatroom_kick_member">已踢出房间</string>
 
-    <string name="room_welcome">欢迎来到声网语聊房！房间内严禁色情、赌博或暴力内容。</string>
+    <string name="chatroom_welcome">欢迎来到声网语聊房！房间内严禁色情、赌博或暴力内容。</string>
 
     <!-- gift -->
     <string name="gift_default_name_1">甜心</string>
@@ -130,9 +130,9 @@
     <string name="chatroom_join_room_failed">加入语聊房失败</string>
     <string name="chatroom_host_invitation_sent">邀请已发送</string>
 
-    <string name="room_disclaimer_content_1">【声动语聊Demo】（“本产品”）是由声⽹提供的⼀款测试产品，主要⽤于向声⽹客户展示内嵌声⽹SDK后可以实现的效果。本产品仅为测试效果之⽬的提供给现有或潜在客户使⽤，⽽⾮提供给⼤众使⽤的正式产品。声⽹享有本产品的著作权和所有权，任何⼈不得对本产品进⾏修改、合并、调整、逆向⼯程、再许可和/或出售该软件的副本以及做出其他损害声⽹合法权益的⾏为。</string>
-    <string name="room_disclaimer_content_2">若您想试⽤本产品，欢迎您下载、安装并使⽤，声⽹特此授权您在全球范围内免费使⽤本产品的权利。本产品按“现状”提供，没有任何形式的明示或暗示担保，包括但不限于对适配性、特定⽬的的适⽤性和⾮侵权性的担保。⽆论是由于与本产品或本产品的使⽤或其他⽅式有关的任何合同、侵权或其他形式的⾏为，声⽹均不对任何索赔、损害或其他责任负责。</string>
-    <string name="room_disclaimer_content_3">如果您下载、安装、使⽤本产品，即表明您确认并同意声⽹对因任何原因在试⽤本产品时可能对您⾃身或他⼈造成的任何形式的损失和伤害不承担任何责任。</string>
-    <string name="room_disclaimer_email">若您有任何疑问，请联系
-        issues@easemob.com</string>
+    <string name="chatroom_disclaimer_content_1">【环信语聊房Demo】（“本产品”）是由环信提供的一款测试产品，主要用于向环信客户展示内嵌环信SDK后可以实现的效果。本产品仅为测试效果之目的提供给现有或潜在客户使用，而非提供给大众使用的正式产品。环信享有本产品的著作权和所有权，任何人不得对本产品进行修改、合井、调整、逆向工程、再许可和/或出售该软件的副本以及做出其他损害环信合法权益的行为。</string>
+    <string name="chatroom_disclaimer_content_2">若您想试用本产品，欢迎您下载、安装井使用，环信特此投权您在全球范围内免费使用本产品的权利。本产品按“现状”提供，没有任何形式的明示或暗示担保，包括但不限于对适配性、特定目的的适用性和非侵权性的担保。无论是由手与本产品或本产品的使用或其他方式有关的任何合同、侵权或其他形式的行为，环信不对任何索赔、损害或其他责任负责。</string>
+    <string name="chatroom_disclaimer_content_3">如果您下载、安装、使用本产品，即表明您确认井同意环信对因任何原因在试用本产品时可能对您自身或他人造成的任何形式的损失和伤害不承担任何责任。</string>
+    <string name="chatroom_disclaimer_email">若您有任何疑问，请联系
+        support@easemob.com</string>
 </resources>

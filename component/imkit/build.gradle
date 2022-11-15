@@ -35,5 +35,5 @@ android {
 dependencies {
     api fileTree(dir: 'libs', include: ['*.jar'])
     api dep["core-ktx"]
-//    api dep["agora-chat"]
+    api dep["easemob-im"]
 }

@@ -19,15 +19,15 @@ import com.easemob.chatroom.model.ChatroomViewModel;
 import com.easemob.chatroom.ui.adapter.ChatroomListAdapter;
 import com.alibaba.android.arouter.launcher.ARouter;
 
-import io.agora.CallBack;
 import com.easemob.baseui.adapter.RoomBaseRecyclerViewAdapter;
 import com.easemob.baseui.general.callback.OnResourceParseCallback;
 import com.easemob.buddy.tool.ThreadManager;
 import com.easemob.buddy.tool.ToastTools;
-import io.agora.chat.ChatClient;
 import com.easemob.config.RouterParams;
 import com.easemob.config.RouterPath;
 import com.easemob.secnceui.widget.encryption.ChatroomEncryptionInputDialog;
+import com.hyphenate.EMCallBack;
+import com.hyphenate.chat.EMClient;
 
 import manager.ChatroomHelper;
 import tools.bean.VRUserBean;
@@ -119,7 +119,7 @@ public class ChatroomListFragment extends BaseChatroomListFragment<VRoomBean.Roo
                         goChatroomPage(roomBean,mPassWord);
                     }else {
                         dismissLoading();
-                        ToastTools.show(requireActivity(),getString(R.string.room_check_password), Toast.LENGTH_SHORT);
+                        ToastTools.show(requireActivity(),getString(R.string.chatroom_check_password), Toast.LENGTH_SHORT);
                     }
                 }
 
@@ -127,7 +127,7 @@ public class ChatroomListFragment extends BaseChatroomListFragment<VRoomBean.Roo
                 public void onError(int code, String message) {
                     super.onError(code, message);
                     dismissLoading();
-                    ToastTools.show(requireActivity(),getString(R.string.room_check_password), Toast.LENGTH_SHORT);
+                    ToastTools.show(requireActivity(),getString(R.string.chatroom_check_password), Toast.LENGTH_SHORT);
                 }
             });
         });
@@ -193,11 +193,11 @@ public class ChatroomListFragment extends BaseChatroomListFragment<VRoomBean.Roo
         VRUserBean data = ProfileManager.getInstance().getProfile();
         Log.d("ChatroomListFragment","chat_uid: " + data.getChat_uid());
         Log.d("ChatroomListFragment","im_token: " + data.getIm_token());
-        if (ChatClient.getInstance().isLoggedIn()){
+        if (EMClient.getInstance().isLoggedIn()){
             checkPrivate();
         }else {
             showLoading(false);
-            ChatroomHelper.getInstance().login(data.getChat_uid(), data.getIm_token(), new CallBack() {
+            ChatroomHelper.getInstance().login(data.getChat_uid(), data.getIm_token(), new EMCallBack() {
                 @Override
                 public void onSuccess() {
                     Log.d("ChatroomListFragment","Login success");

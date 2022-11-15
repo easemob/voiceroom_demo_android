@@ -13,17 +13,18 @@ import com.easemob.chatroom.general.repositories.ChatroomRepository;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import io.agora.ValueCallBack;
 import com.easemob.baseui.general.callback.ResultCallBack;
 import com.easemob.baseui.general.net.Resource;
 import com.easemob.buddy.tool.ThreadManager;
-import io.agora.chat.ChatClient;
-import io.agora.chat.ChatRoom;
 import com.easemob.chatroom.bean.RoomKitBean;
 import com.easemob.chatroom.controller.RtcRoomController;
 import com.easemob.chatroom.general.livedatas.SingleSourceLiveData;
 import com.easemob.chatroom.general.repositories.NetworkOnlyResource;
 import com.easemob.chatroom.general.repositories.ProfileManager;
+import com.hyphenate.EMValueCallBack;
+import com.hyphenate.chat.EMChatRoom;
+import com.hyphenate.chat.EMClient;
+
 import kotlin.Pair;
 import tools.DefaultValueCallBack;
 import tools.bean.VRoomBean;
@@ -152,9 +153,9 @@ public class ChatroomViewModel extends AndroidViewModel {
                     }
                 }
         );
-        ChatClient.getInstance().chatroomManager().joinChatRoom(roomKitBean.getChatroomId(), new ValueCallBack<ChatRoom>() {
+        EMClient.getInstance().chatroomManager().joinChatRoom(roomKitBean.getChatroomId(), new EMValueCallBack<EMChatRoom>() {
             @Override
-            public void onSuccess(ChatRoom value) {
+            public void onSuccess(EMChatRoom value) {
                 LogToolsKt.logE("im  joinChatRoom onSuccess ", TAG);
                 joinImRoom.set(true);
                 joinRoom(getApplication(), roomKitBean.getRoomId(), password);
