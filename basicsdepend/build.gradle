@@ -39,8 +39,8 @@ dependencies {
     api project(':component:imkit')
     api project(':component:secnceui')
     // common
-    api project(':common:baseui')
-    api project(':common:buddy')
-    api project(':common:config')
-    api project(':common:network')
+    api project(':commons:baseui')
+    api project(':commons:buddy')
+    api project(':commons:config')
+    api project(':commons:network')
 }

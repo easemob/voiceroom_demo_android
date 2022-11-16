@@ -42,6 +42,6 @@ dependencies {
     api dep["core-ktx"]
     api dep["agora-rtc"]
 
-    compileOnly project(':common:buddy')
-    compileOnly project(':common:config')
+    compileOnly project(':commons:buddy')
+    compileOnly project(':commons:config')
 }

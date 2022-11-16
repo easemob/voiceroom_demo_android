@@ -42,5 +42,5 @@ dependencies {
     api dep["material"]
     implementation 'androidx.databinding:databinding-runtime:4.2.2'
 
-    compileOnly project(':common:buddy')
+    compileOnly project(':commons:buddy')
 }

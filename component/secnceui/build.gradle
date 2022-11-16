@@ -45,8 +45,8 @@ dependencies {
     api dep["material"]
     api dep["glide"]
 
-    compileOnly project(':common:buddy')
-    compileOnly project(':common:config')
-    compileOnly project(':common:baseui')
+    compileOnly project(':commons:buddy')
+    compileOnly project(':commons:config')
+    compileOnly project(':commons:baseui')
     compileOnly project(':component:imkit')
 }
