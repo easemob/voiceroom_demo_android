@@ -3,6 +3,9 @@ package com.easemob.baseui
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.WindowManager
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -69,5 +72,28 @@ abstract class BaseUiActivity<B : ViewBinding> : AppCompatActivity(), IParserSou
      */
     open fun setTextStyle(view: TextView?, type: Int) {
         if (null != view && type >= 0 && type <= 3) view.setTypeface(null, type)
+    }
+
+    /**
+     * show keyboard
+     */
+    open fun showKeyboard(editText: EditText) {
+        val imm = editText.context.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.showSoftInput(editText, 0)
+    }
+
+    /**
+     * hide keyboard
+     */
+    open fun hideKeyboard() {
+        val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        if (window.attributes.softInputMode != WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN) {
+            if (currentFocus != null) {
+                imm.hideSoftInputFromWindow(
+                    currentFocus!!.windowToken,
+                    InputMethodManager.HIDE_NOT_ALWAYS
+                )
+            }
+        }
     }
 }
