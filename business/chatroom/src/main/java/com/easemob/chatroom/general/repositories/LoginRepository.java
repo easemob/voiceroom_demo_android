@@ -18,7 +18,7 @@ public class LoginRepository extends BaseRepository {
         return new NetworkOnlyResource<VRUserBean>() {
             @Override
             protected void createCall(@NonNull ResultCallBack<LiveData<VRUserBean>> callBack) {
-                ChatroomHttpManager.getInstance(context).loginWithToken(deviceId,avatar,new ValueCallBack<VRUserBean>() {
+                ChatroomHttpManager.getInstance().loginWithToken(deviceId,avatar,new ValueCallBack<VRUserBean>() {
                     @Override
                     public void onSuccess(VRUserBean value) {
                         callBack.onSuccess(createLiveData(value));
@@ -37,7 +37,7 @@ public class LoginRepository extends BaseRepository {
         return new NetworkOnlyResource<VRUserBean>() {
             @Override
             protected void createCall(@NonNull ResultCallBack<LiveData<VRUserBean>> callBack) {
-                ChatroomHttpManager.getInstance(context).loginWithToken(deviceId,avatar,new ValueCallBack<VRUserBean>() {
+                ChatroomHttpManager.getInstance().loginWithToken(deviceId,avatar,new ValueCallBack<VRUserBean>() {
                     @Override
                     public void onSuccess(VRUserBean value) {
                         runOnMainThread(new Runnable() {

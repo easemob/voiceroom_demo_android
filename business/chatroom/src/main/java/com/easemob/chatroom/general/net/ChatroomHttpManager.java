@@ -19,6 +19,7 @@ import http.VRRequestApi;
 import com.easemob.buddy.tool.GsonTools;
 import com.easemob.buddy.tool.ResourcesTools;
 import com.easemob.buddy.tool.LogToolsKt;
+import com.easemob.chatroom.ChatroomApplication;
 import com.easemob.chatroom.general.repositories.ProfileManager;
 import tools.ValueCallBack;
 import tools.bean.VRGiftBean;
@@ -36,7 +37,7 @@ public class ChatroomHttpManager {
 
     private static final String TAG = "HttpManager";
 
-    public static ChatroomHttpManager getInstance(Context context) {
+    public static ChatroomHttpManager getInstance() {
         if (mInstance == null) {
             synchronized (ChatroomHttpManager.class) {
                 if (mInstance == null) {
@@ -44,7 +45,7 @@ public class ChatroomHttpManager {
                 }
             }
         }
-        mContext = context;
+        mContext = ChatroomApplication.getInstance().getAppContext();
         return mInstance;
     }
 
@@ -120,27 +121,6 @@ public class ChatroomHttpManager {
                     callBack.onError(code,msg);
                  }
               });
-
-//       Map<String, Object> body = new HashMap<>();
-//       body.put("deviceId", device);
-//       body.put("name", "apex");
-//       body.put("portrait", "");
-//          body.putOpt("phone", "手机号后期上");
-//          body.putOpt("verify_code", "验证码后期上");
-//       VRHttpServer.get().enqueuePost(VRRequestApi.get().login(), headers, body, VRUserBean.class, new VRHttpServer.IHttpCallback<VRUserBean>() {
-//
-//           @Override
-//           public void onSuccess(String bodyString, VRUserBean data) {
-//               Log.e("loginWithToken success: "+ bodyString,TAG);
-//               callBack.onSuccess(data);
-//           }
-//
-//           @Override
-//           public void onFail(int code, String message) {
-//               LogToolsKt.logE("loginWithToken onError: "+code + " msg: " + message,TAG);
-//               callBack.onError(code,message);
-//           }
-//       });
    }
 
    /**
@@ -159,7 +139,7 @@ public class ChatroomHttpManager {
     public void createRoom(String name,boolean is_privacy,String password,int type,boolean allow_free_join_mic,String sound_effect,ValueCallBack<VRoomInfoBean> callBack){
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
-        headers.put("Authorization", "Bearer " + ProfileManager.getInstance().getProfile().getAuthorization());
+        headers.put("Authorization", buildAuth());
         JSONObject requestBody = new JSONObject();
         try {
             requestBody.putOpt("name", name);
@@ -229,7 +209,7 @@ public class ChatroomHttpManager {
     public void deleteRoom(String roomId,ValueCallBack<Boolean> callBack){
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
-        headers.put("Authorization", "Bearer " + ProfileManager.getInstance().getProfile().getAuthorization());
+        headers.put("Authorization", buildAuth());
         new VRHttpClientManager.Builder(mContext)
                 .setUrl(VRRequestApi.get().deleteRoom(roomId))
                 .setHeaders(headers)
@@ -264,7 +244,7 @@ public class ChatroomHttpManager {
                                Integer robotVolume,ValueCallBack<Boolean> callBack) {
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
-        headers.put("Authorization", "Bearer " + ProfileManager.getInstance().getProfile().getAuthorization());
+        headers.put("Authorization", buildAuth());
         JSONObject requestBody = new JSONObject();
         try {
             if (name != null) requestBody.putOpt("name", name);
@@ -305,7 +285,7 @@ public class ChatroomHttpManager {
     public void getRoomFromServer(int limit,int type,String cursor,ValueCallBack<VRoomBean> callBack){
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
-        headers.put("Authorization", "Bearer " + ProfileManager.getInstance().getProfile().getAuthorization());
+        headers.put("Authorization", buildAuth());
         new VRHttpClientManager.Builder(mContext)
                 .setUrl(VRRequestApi.get().getRoomList(!TextUtils.isEmpty(cursor) ? cursor:"" , limit,type))
                 .setHeaders(headers)
@@ -338,7 +318,7 @@ public class ChatroomHttpManager {
     public void getRoomMembers(String roomId, int limit,String cursor, ValueCallBack<VRoomUserBean> callBack){
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
-        headers.put("Authorization", "Bearer " + ProfileManager.getInstance().getProfile().getAuthorization());
+        headers.put("Authorization", buildAuth());
         new VRHttpClientManager.Builder(mContext)
                 .setUrl(VRRequestApi.get().fetchRoomMembers(roomId,!TextUtils.isEmpty(cursor)? cursor: "", limit))
                 .setHeaders(headers)
@@ -369,7 +349,7 @@ public class ChatroomHttpManager {
         Log.e("joinRoom","Authorization:"+ ProfileManager.getInstance().getProfile().getAuthorization());
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
-        headers.put("Authorization", "Bearer " + ProfileManager.getInstance().getProfile().getAuthorization());
+        headers.put("Authorization", buildAuth());
         JSONObject requestBody = new JSONObject();
         if (!TextUtils.isEmpty(password)){
             try {
@@ -409,7 +389,7 @@ public class ChatroomHttpManager {
         Log.e("joinRoom","Authorization:"+ ProfileManager.getInstance().getProfile().getAuthorization());
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
-        headers.put("Authorization", "Bearer " + ProfileManager.getInstance().getProfile().getAuthorization());
+        headers.put("Authorization", buildAuth());
         JSONObject requestBody = new JSONObject();
         if (!TextUtils.isEmpty(password)){
             try {
@@ -457,7 +437,7 @@ public class ChatroomHttpManager {
         Log.e("leaveRoom","Authorization:"+ ProfileManager.getInstance().getProfile().getAuthorization());
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
-        headers.put("Authorization", "Bearer " + ProfileManager.getInstance().getProfile().getAuthorization());
+        headers.put("Authorization", buildAuth());
         new VRHttpClientManager.Builder(mContext)
                 .setUrl(VRRequestApi.get().leaveRoom(roomId))
                 .setHeaders(headers)
@@ -487,7 +467,7 @@ public class ChatroomHttpManager {
         Log.e("kickRoomMember","Authorization:"+ ProfileManager.getInstance().getProfile().getAuthorization());
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
-        headers.put("Authorization", "Bearer " + ProfileManager.getInstance().getProfile().getAuthorization());
+        headers.put("Authorization", buildAuth());
         new VRHttpClientManager.Builder(mContext)
                 .setUrl(VRRequestApi.get().kickUser(roomId,uid))
                 .setHeaders(headers)
@@ -519,7 +499,7 @@ public class ChatroomHttpManager {
     public void getApplyMicList(String roomId,int limit,String cursor,ValueCallBack<VRMicListBean> callBack){
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
-        headers.put("Authorization", "Bearer " + ProfileManager.getInstance().getProfile().getAuthorization());
+        headers.put("Authorization", buildAuth());
         new VRHttpClientManager.Builder(mContext)
                 .setUrl(VRRequestApi.get().fetchApplyMembers(roomId,!TextUtils.isEmpty(cursor)? cursor: "", limit))
                 .setHeaders(headers)
@@ -550,7 +530,7 @@ public class ChatroomHttpManager {
         Log.e("submitMic","Authorization:"+ ProfileManager.getInstance().getProfile().getAuthorization());
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
-        headers.put("Authorization", "Bearer " + ProfileManager.getInstance().getProfile().getAuthorization());
+        headers.put("Authorization", buildAuth());
         JSONObject requestBody = new JSONObject();
         try {
             if (mic_index >= 0) {
@@ -588,7 +568,7 @@ public class ChatroomHttpManager {
         Log.e("cancelSubmitMic","Authorization:"+ ProfileManager.getInstance().getProfile().getAuthorization());
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
-        headers.put("Authorization", "Bearer " + ProfileManager.getInstance().getProfile().getAuthorization());
+        headers.put("Authorization", buildAuth());
         new VRHttpClientManager.Builder(mContext)
                 .setUrl(VRRequestApi.get().cancelApply(roomId))
                 .setHeaders(headers)
@@ -617,7 +597,7 @@ public class ChatroomHttpManager {
         Log.e("getMicInfo","Authorization:"+ ProfileManager.getInstance().getProfile().getAuthorization());
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
-        headers.put("Authorization", "Bearer " + ProfileManager.getInstance().getProfile().getAuthorization());
+        headers.put("Authorization", buildAuth());
         new VRHttpClientManager.Builder(mContext)
                 .setUrl(VRRequestApi.get().fetchMicsInfo(roomId))
                 .setHeaders(headers)
@@ -649,7 +629,7 @@ public class ChatroomHttpManager {
         Log.e("closeMic","Authorization:"+ ProfileManager.getInstance().getProfile().getAuthorization());
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
-        headers.put("Authorization", "Bearer " + ProfileManager.getInstance().getProfile().getAuthorization());
+        headers.put("Authorization", buildAuth());
         JSONObject requestBody = new JSONObject();
         try {
             requestBody.putOpt("mic_index", mic_index);
@@ -686,7 +666,7 @@ public class ChatroomHttpManager {
         Log.e("cancelCloseMic","Authorization:"+ ProfileManager.getInstance().getProfile().getAuthorization());
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
-        headers.put("Authorization", "Bearer " + ProfileManager.getInstance().getProfile().getAuthorization());
+        headers.put("Authorization", buildAuth());
         new VRHttpClientManager.Builder(mContext)
                 .setUrl(VRRequestApi.get().cancelCloseMic(roomId, mic_index))
                 .setHeaders(headers)
@@ -715,7 +695,7 @@ public class ChatroomHttpManager {
         Log.e("leaveMic", "Authorization:" + ProfileManager.getInstance().getProfile().getAuthorization());
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
-        headers.put("Authorization", "Bearer " + ProfileManager.getInstance().getProfile().getAuthorization());
+        headers.put("Authorization", buildAuth());
         new VRHttpClientManager.Builder(mContext)
                 .setUrl(VRRequestApi.get().leaveMic(roomId, micIndex))
                 .setHeaders(headers)
@@ -745,7 +725,7 @@ public class ChatroomHttpManager {
         Log.e("muteMic","Authorization:"+ ProfileManager.getInstance().getProfile().getAuthorization());
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
-        headers.put("Authorization", "Bearer " + ProfileManager.getInstance().getProfile().getAuthorization());
+        headers.put("Authorization", buildAuth());
         JSONObject requestBody = new JSONObject();
         try {
             requestBody.putOpt("mic_index", mic_index);
@@ -782,7 +762,7 @@ public class ChatroomHttpManager {
         Log.e("cancelMuteMic","Authorization:"+ ProfileManager.getInstance().getProfile().getAuthorization());
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
-        headers.put("Authorization", "Bearer " + ProfileManager.getInstance().getProfile().getAuthorization());
+        headers.put("Authorization", buildAuth());
         new VRHttpClientManager.Builder(mContext)
                 .setUrl(VRRequestApi.get().unMuteMic(roomId, mic_index))
                 .setHeaders(headers)
@@ -813,7 +793,7 @@ public class ChatroomHttpManager {
         Log.e("exChangeMic","Authorization:"+ ProfileManager.getInstance().getProfile().getAuthorization());
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
-        headers.put("Authorization", "Bearer " + ProfileManager.getInstance().getProfile().getAuthorization());
+        headers.put("Authorization", buildAuth());
         JSONObject requestBody = new JSONObject();
         try {
             requestBody.putOpt("from", form);
@@ -852,7 +832,7 @@ public class ChatroomHttpManager {
         Log.e("kickMic","Authorization:"+ ProfileManager.getInstance().getProfile().getAuthorization());
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
-        headers.put("Authorization", "Bearer " + ProfileManager.getInstance().getProfile().getAuthorization());
+        headers.put("Authorization", buildAuth());
         JSONObject requestBody = new JSONObject();
         try {
             requestBody.putOpt("uid", uid);
@@ -889,7 +869,7 @@ public class ChatroomHttpManager {
         Log.e("agreeMicInvitation","Authorization:"+ ProfileManager.getInstance().getProfile().getAuthorization());
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
-        headers.put("Authorization", "Bearer " + ProfileManager.getInstance().getProfile().getAuthorization());
+        headers.put("Authorization", buildAuth());
 
         JSONObject requestBody = new JSONObject();
         try {
@@ -926,7 +906,7 @@ public class ChatroomHttpManager {
         Log.e("rejectMicInvitation","Authorization:"+ ProfileManager.getInstance().getProfile().getAuthorization());
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
-        headers.put("Authorization", "Bearer " + ProfileManager.getInstance().getProfile().getAuthorization());
+        headers.put("Authorization", buildAuth());
         new VRHttpClientManager.Builder(mContext)
                 .setUrl(VRRequestApi.get().rejectMicInvitation(roomId))
                 .setHeaders(headers)
@@ -956,7 +936,7 @@ public class ChatroomHttpManager {
         Log.e("lockMic","Authorization:"+ ProfileManager.getInstance().getProfile().getAuthorization());
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
-        headers.put("Authorization", "Bearer " + ProfileManager.getInstance().getProfile().getAuthorization());
+        headers.put("Authorization", buildAuth());
         JSONObject requestBody = new JSONObject();
         try {
             requestBody.putOpt("mic_index", mic_index);
@@ -992,7 +972,7 @@ public class ChatroomHttpManager {
         Log.e("cancelLockMic","Authorization:"+ ProfileManager.getInstance().getProfile().getAuthorization());
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
-        headers.put("Authorization", "Bearer " + ProfileManager.getInstance().getProfile().getAuthorization());
+        headers.put("Authorization", buildAuth());
         new VRHttpClientManager.Builder(mContext)
                 .setUrl(VRRequestApi.get().unlockMic(roomId, micIndex))
                 .setHeaders(headers)
@@ -1022,7 +1002,7 @@ public class ChatroomHttpManager {
         Log.e("invitationMic","Authorization:"+ ProfileManager.getInstance().getProfile().getAuthorization());
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
-        headers.put("Authorization", "Bearer " + ProfileManager.getInstance().getProfile().getAuthorization());
+        headers.put("Authorization", buildAuth());
         JSONObject requestBody = new JSONObject();
         try {
             requestBody.putOpt("uid", uid);
@@ -1059,7 +1039,7 @@ public class ChatroomHttpManager {
         Log.e("rejectSubmitMic","Authorization:"+ ProfileManager.getInstance().getProfile().getAuthorization());
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
-        headers.put("Authorization", "Bearer " + ProfileManager.getInstance().getProfile().getAuthorization());
+        headers.put("Authorization", buildAuth());
         JSONObject requestBody = new JSONObject();
         try {
             requestBody.putOpt("uid", uid);
@@ -1097,7 +1077,7 @@ public class ChatroomHttpManager {
         Log.e("applySubmitMic","Authorization:"+ ProfileManager.getInstance().getProfile().getAuthorization());
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
-        headers.put("Authorization", "Bearer " + ProfileManager.getInstance().getProfile().getAuthorization());
+        headers.put("Authorization", buildAuth());
         JSONObject requestBody = new JSONObject();
         try {
             requestBody.putOpt("mic_index", mic_index);
@@ -1136,7 +1116,7 @@ public class ChatroomHttpManager {
     public void getGiftList(String roomId,ValueCallBack<VRGiftBean> callBack){
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
-        headers.put("Authorization", "Bearer " + ProfileManager.getInstance().getProfile().getAuthorization());
+        headers.put("Authorization", buildAuth());
         new VRHttpClientManager.Builder(mContext)
                 .setUrl(VRRequestApi.get().fetchGiftContribute(roomId))
                 .setHeaders(headers)
@@ -1169,7 +1149,7 @@ public class ChatroomHttpManager {
         Log.e("sendGift","Authorization:"+ ProfileManager.getInstance().getProfile().getAuthorization());
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
-        headers.put("Authorization", "Bearer " + ProfileManager.getInstance().getProfile().getAuthorization());
+        headers.put("Authorization", buildAuth());
         JSONObject requestBody = new JSONObject();
         try {
             requestBody.putOpt("gift_id", gift_id);

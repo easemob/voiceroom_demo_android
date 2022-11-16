@@ -19,7 +19,7 @@ public class ChatroomRepository extends BaseRepository {
         return new NetworkOnlyResource<VRoomBean>() {
             @Override
             protected void createCall(@NonNull ResultCallBack<LiveData<VRoomBean>> callBack) {
-                ChatroomHttpManager.getInstance(context).getRoomFromServer(pageSize, type, cursor, new ValueCallBack<VRoomBean>() {
+                ChatroomHttpManager.getInstance().getRoomFromServer(pageSize, type, cursor, new ValueCallBack<VRoomBean>() {
                     @Override
                     public void onSuccess(VRoomBean bean) {
                         callBack.onSuccess(createLiveData(bean));
@@ -39,7 +39,7 @@ public class ChatroomRepository extends BaseRepository {
         return new NetworkOnlyResource<VRoomInfoBean>() {
             @Override
             protected void createCall(@NonNull ResultCallBack<LiveData<VRoomInfoBean>> callBack) {
-                ChatroomHttpManager.getInstance(context).getRoomDetails(roomId, new ValueCallBack<VRoomInfoBean>() {
+                ChatroomHttpManager.getInstance().getRoomDetails(roomId, new ValueCallBack<VRoomInfoBean>() {
                     @Override
                     public void onSuccess(VRoomInfoBean data) {
                         callBack.onSuccess(createLiveData(data));
@@ -58,7 +58,7 @@ public class ChatroomRepository extends BaseRepository {
         return new NetworkOnlyResource<Boolean>() {
             @Override
             protected void createCall(@NonNull ResultCallBack<LiveData<Boolean>> callBack) {
-                ChatroomHttpManager.getInstance(context).joinRoom(roomId, password, new ValueCallBack<Boolean>() {
+                ChatroomHttpManager.getInstance().joinRoom(roomId, password, new ValueCallBack<Boolean>() {
                     @Override
                     public void onSuccess(Boolean data) {
                         callBack.onSuccess(createLiveData(data));
@@ -78,7 +78,7 @@ public class ChatroomRepository extends BaseRepository {
         return new NetworkOnlyResource<Boolean>() {
             @Override
             protected void createCall(@NonNull ResultCallBack<LiveData<Boolean>> callBack) {
-                ChatroomHttpManager.getInstance(context).leaveRoom(roomId, new ValueCallBack<Boolean>() {
+                ChatroomHttpManager.getInstance().leaveRoom(roomId, new ValueCallBack<Boolean>() {
                     @Override
                     public void onSuccess(Boolean data) {
                         callBack.onSuccess(createLiveData(data));
@@ -98,7 +98,7 @@ public class ChatroomRepository extends BaseRepository {
         return new NetworkOnlyResource<VRoomInfoBean>() {
             @Override
             protected void createCall(@NonNull ResultCallBack<LiveData<VRoomInfoBean>> callBack) {
-                ChatroomHttpManager.getInstance(context).createRoom(name, is_privacy, password, type,
+                ChatroomHttpManager.getInstance().createRoom(name, is_privacy, password, type,
                         allow_free_join_mic, sound_effect, new ValueCallBack<VRoomInfoBean>() {
                             @Override
                             public void onSuccess(VRoomInfoBean var1) {
@@ -119,7 +119,7 @@ public class ChatroomRepository extends BaseRepository {
         return new NetworkOnlyResource<Boolean>() {
             @Override
             protected void createCall(@NonNull ResultCallBack<LiveData<Boolean>> callBack) {
-                ChatroomHttpManager.getInstance(context).updateRoomInfo(roomId, name, announcement, isPrivate,
+                ChatroomHttpManager.getInstance().updateRoomInfo(roomId, name, announcement, isPrivate,
                         password, useRobot, allowedFreeJoinMic, robotVolume, new ValueCallBack<Boolean>() {
                             @Override
                             public void onSuccess(Boolean var1) {
@@ -139,7 +139,7 @@ public class ChatroomRepository extends BaseRepository {
         return new NetworkOnlyResource<Boolean>() {
             @Override
             protected void createCall(@NonNull ResultCallBack<LiveData<Boolean>> callBack) {
-                ChatroomHttpManager.getInstance(context).updateRoomInfo(roomId, null, null, null,
+                ChatroomHttpManager.getInstance().updateRoomInfo(roomId, null, null, null,
                         null, useRobot, null, null, new ValueCallBack<Boolean>() {
                             @Override
                             public void onSuccess(Boolean var1) {
@@ -159,7 +159,7 @@ public class ChatroomRepository extends BaseRepository {
         return new NetworkOnlyResource<Pair<Integer, Boolean>>() {
             @Override
             protected void createCall(@NonNull ResultCallBack<LiveData<Pair<Integer, Boolean>>> callBack) {
-                ChatroomHttpManager.getInstance(context).updateRoomInfo(roomId, null, null, null,
+                ChatroomHttpManager.getInstance().updateRoomInfo(roomId, null, null, null,
                         null, null, null, robotVolume, new ValueCallBack<Boolean>() {
                             @Override
                             public void onSuccess(Boolean var1) {
@@ -179,7 +179,7 @@ public class ChatroomRepository extends BaseRepository {
         return new NetworkOnlyResource<Boolean>() {
             @Override
             protected void createCall(@NonNull ResultCallBack<LiveData<Boolean>> callBack) {
-                ChatroomHttpManager.getInstance(context).updateRoomInfo(roomId, null, notice, null,
+                ChatroomHttpManager.getInstance().updateRoomInfo(roomId, null, notice, null,
                         null, null, null, null, new ValueCallBack<Boolean>() {
                             @Override
                             public void onSuccess(Boolean var1) {
@@ -199,7 +199,7 @@ public class ChatroomRepository extends BaseRepository {
         return new NetworkOnlyResource<Boolean>() {
             @Override
             protected void createCall(@NonNull ResultCallBack<LiveData<Boolean>> callBack) {
-                ChatroomHttpManager.getInstance(context).checkPassword(roomId, password, new ValueCallBack<Boolean>() {
+                ChatroomHttpManager.getInstance().checkPassword(roomId, password, new ValueCallBack<Boolean>() {
                     @Override
                     public void onSuccess(Boolean var1) {
                         callBack.onSuccess(createLiveData(var1));

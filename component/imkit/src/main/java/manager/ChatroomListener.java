@@ -12,7 +12,7 @@ public interface ChatroomListener {
     void receiveGift(String roomId, ChatMessageData message);
     //接收申请消息
     default void receiveApplySite(String roomId,ChatMessageData message){}
-    //接收取消申请消息 //确认？
+    //接收取消申请消息
     default void receiveCancelApplySite(String roomId,ChatMessageData message){}
     //接收邀请消息
     default void receiveInviteSite(String roomId,ChatMessageData message){}

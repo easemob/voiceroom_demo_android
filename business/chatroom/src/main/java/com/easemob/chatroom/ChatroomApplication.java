@@ -1,6 +1,7 @@
 package com.easemob.chatroom;
 
 import android.app.Application;
+import android.content.Context;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.opensource.svgaplayer.SVGAParser;
@@ -28,6 +29,10 @@ public class ChatroomApplication extends Application {
         SVGALogger.INSTANCE.setLogEnabled(true);
         SVGASoundManager.INSTANCE.init();
 //        CrashReport.initCrashReport(this, "baed12f146", false);
+    }
+
+    public Context getAppContext(){
+        return instance;
     }
 
     private void registerActivityLifecycleCallbacks() {

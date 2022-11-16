@@ -274,7 +274,6 @@ public class ChatroomConfigManager {
 
     private EMOptions initChatOptions(Context context,String imKey){
         EMOptions options = new EMOptions();
-//        options.setAppKey("81399972#1002901");
         options.setAppKey(imKey);
         options.setAutoLogin(false);
         return options;
