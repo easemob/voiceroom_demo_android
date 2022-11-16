@@ -66,7 +66,7 @@ public class RoomGiftViewDelegate {
             public void SendGift(View view, Object bean) {
                dialog.setSendEnable(false);
                GiftBean giftBean = (GiftBean) bean;
-               ChatroomHttpManager.getInstance(activity).sendGift(roomId,
+               ChatroomHttpManager.getInstance().sendGift(roomId,
                        giftBean.getId(), giftBean.getNum(), 0, new ValueCallBack<Boolean>() {
                           @Override
                           public void onSuccess(Boolean var1) {

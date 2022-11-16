@@ -85,7 +85,7 @@ public class RoomHandsViewDelegate {
                    @Override
                    public void onConfirmClick() {
                        if (isRequest){
-                           ChatroomHttpManager.getInstance(activity).cancelSubmitMic(roomId, new ValueCallBack<Boolean>() {
+                           ChatroomHttpManager.getInstance().cancelSubmitMic(roomId, new ValueCallBack<Boolean>() {
                                @Override
                                public void onSuccess(Boolean var1) {
                                    ToastTools.show(activity,activity.getString(R.string.chatroom_mic_cancel_apply_success), Toast.LENGTH_SHORT);
@@ -99,7 +99,7 @@ public class RoomHandsViewDelegate {
                                }
                            });
                        }else {
-                           ChatroomHttpManager.getInstance(activity).submitMic(roomId, micIndex, new ValueCallBack<Boolean>() {
+                           ChatroomHttpManager.getInstance().submitMic(roomId, micIndex, new ValueCallBack<Boolean>() {
                                @Override
                                public void onSuccess(Boolean var1) {
                                    ToastTools.show(activity,activity.getString(R.string.chatroom_mic_apply_success), Toast.LENGTH_SHORT);

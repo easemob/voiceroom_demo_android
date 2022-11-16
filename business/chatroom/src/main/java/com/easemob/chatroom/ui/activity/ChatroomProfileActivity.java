@@ -225,7 +225,7 @@ public class ChatroomProfileActivity extends BaseActivity implements View.OnClic
     */
    private void updateProfile(ProfileBean bean){
       try {
-         ChatroomHttpManager.getInstance(ChatroomProfileActivity.this).loginWithToken(
+         ChatroomHttpManager.getInstance().loginWithToken(
                  EMClient.getInstance().getDeviceInfo().getString("deviceid"), bean.getAvatarName(), new ValueCallBack<VRUserBean>() {
                     @Override
                     public void onSuccess(VRUserBean var1) {
@@ -251,7 +251,7 @@ public class ChatroomProfileActivity extends BaseActivity implements View.OnClic
     */
    private void updateProfile(VRUserBean bean){
       try {
-         ChatroomHttpManager.getInstance(ChatroomProfileActivity.this).loginWithToken(
+         ChatroomHttpManager.getInstance().loginWithToken(
                  EMClient.getInstance().getDeviceInfo().getString("deviceid"),bean.getPortrait(), new ValueCallBack<VRUserBean>() {
                     @Override
                     public void onSuccess(VRUserBean var1) {

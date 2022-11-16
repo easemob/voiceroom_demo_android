@@ -220,7 +220,7 @@ public class ChatroomRaisedHandsFragment extends BaseListFragment<VRMicListBean.
 
     @Override
     public void onItemActionClick(View view,int index,String uid) {
-        ChatroomHttpManager.getInstance(getActivity()).applySubmitMic(roomId, uid, index, new ValueCallBack<Boolean>() {
+        ChatroomHttpManager.getInstance().applySubmitMic(roomId, uid, index, new ValueCallBack<Boolean>() {
             @Override
             public void onSuccess(Boolean var1) {
                 LogToolsKt.logE("onActionClick apply onSuccess " + uid, TAG);

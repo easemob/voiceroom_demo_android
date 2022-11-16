@@ -164,7 +164,7 @@ class RoomAudienceListFragment : BaseUiFragment<FragmentChatroomAudienceListBind
         if (roomId.isNullOrEmpty() || uid.isNullOrEmpty()) return
         context?.let { parentContext ->
             if (action == com.easemob.secnceui.annotation.MicClickAction.Invite) {
-                ChatroomHttpManager.getInstance(parentContext).invitationMic(roomId, uid, object : ValueCallBack<Boolean> {
+                ChatroomHttpManager.getInstance().invitationMic(roomId, uid, object : ValueCallBack<Boolean> {
                     override fun onSuccess(var1: Boolean?) {
                         if (var1 != true) return
                         CoroutineUtil.execMain {
@@ -179,7 +179,7 @@ class RoomAudienceListFragment : BaseUiFragment<FragmentChatroomAudienceListBind
                     }
                 })
             } else if (action == com.easemob.secnceui.annotation.MicClickAction.KickOff) {
-                ChatroomHttpManager.getInstance(parentContext)
+                ChatroomHttpManager.getInstance()
                     .kickMic(roomId, uid, -1, object : ValueCallBack<Boolean> {
                         override fun onSuccess(var1: Boolean?) {
                             if (var1 != true) return

@@ -240,7 +240,7 @@ public class ChatroomInviteHandsFragment extends BaseListFragment<VMemberBean> i
 
     @Override
     public void onItemActionClick(View view, int position,String uid) {
-        ChatroomHttpManager.getInstance(getActivity()).invitationMic(roomId, uid, new ValueCallBack<Boolean>() {
+        ChatroomHttpManager.getInstance().invitationMic(roomId, uid, new ValueCallBack<Boolean>() {
             @Override
             public void onSuccess(Boolean var1) {
                 LogToolsKt.logE("onActionClick Invite onSuccess " + uid, TAG);

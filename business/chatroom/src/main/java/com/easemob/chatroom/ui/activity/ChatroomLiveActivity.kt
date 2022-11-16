@@ -567,7 +567,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
     }
 
     override fun onTokenWillExpire() {
-        ChatroomHttpManager.getInstance(this).loginWithToken(
+        ChatroomHttpManager.getInstance().loginWithToken(
             EMClient.getInstance().deviceInfo.getString("deviceid"),
             ProfileManager.getInstance().profile.portrait, object : ValueCallBack<VRUserBean> {
                 override fun onSuccess(bean: VRUserBean?) {

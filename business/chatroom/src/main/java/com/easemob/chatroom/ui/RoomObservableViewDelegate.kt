@@ -688,7 +688,7 @@ class RoomObservableViewDelegate constructor(
                 showAlertDialog(activity.getString(R.string.chatroom_exchange_mic),
                     object : CommonSheetAlertDialog.OnClickBottomListener {
                         override fun onConfirmClick() {
-                            ChatroomHttpManager.getInstance(activity)
+                            ChatroomHttpManager.getInstance()
                                 .exChangeMic(
                                     roomKitBean.roomId,
                                     mineMicIndex,
@@ -768,7 +768,7 @@ class RoomObservableViewDelegate constructor(
         val longDelay = Random.nextInt(1000, 10000)
         "receiveGift longDelay：$longDelay".logE(TAG)
         updateRankRunnable = Runnable {
-            ChatroomHttpManager.getInstance(activity).getGiftList(roomId, object : ValueCallBack<VRGiftBean> {
+            ChatroomHttpManager.getInstance().getGiftList(roomId, object : ValueCallBack<VRGiftBean> {
                 override fun onSuccess(var1: VRGiftBean?) {
                     var1?.ranking_list?.let {
                         val rankList = RoomInfoConstructor.convertServerRankToUiRank(it)
@@ -795,7 +795,7 @@ class RoomObservableViewDelegate constructor(
             .rightText(activity.getString(R.string.chatroom_accept))
             .setOnClickListener(object : CommonFragmentAlertDialog.OnClickBottomListener {
                 override fun onConfirmClick() {
-                    ChatroomHttpManager.getInstance(activity)
+                    ChatroomHttpManager.getInstance()
                         .agreeMicInvitation(roomId, micIndex, object : ValueCallBack<Boolean> {
                             override fun onSuccess(var1: Boolean?) {
 
@@ -808,7 +808,7 @@ class RoomObservableViewDelegate constructor(
                 }
 
                 override fun onCancelClick() {
-                    ChatroomHttpManager.getInstance(activity).rejectMicInvitation(roomId, object : ValueCallBack<Boolean> {
+                    ChatroomHttpManager.getInstance().rejectMicInvitation(roomId, object : ValueCallBack<Boolean> {
                         override fun onSuccess(var1: Boolean?) {
 
                         }
