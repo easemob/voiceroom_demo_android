@@ -58,9 +58,9 @@
             android:screenOrientation="portrait"
             android:exported="false" />
 
-        <activity android:name="com.easemob.chatroom.ui.activity.ChatroomDisclaimerActivity"
+        <activity android:name=".ui.activity.ChatroomDisclaimerActivity"
             android:screenOrientation="portrait"
-            android:exported="false"/>
+            android:exported="false" />
 
         <activity android:name=".ui.activity.ChatroomListActivity"
             android:screenOrientation="portrait"
