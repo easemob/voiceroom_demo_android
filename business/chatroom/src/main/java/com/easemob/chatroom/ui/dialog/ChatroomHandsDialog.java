@@ -115,6 +115,8 @@ public class ChatroomHandsDialog extends BaseSheetDialog<ChatroomHandLayoutBindi
                 title.setText(titles[tab.getPosition()]);
                 title.setTextColor(getResources().getColor(R.color.dark_grey_color_040925));
                 title.setTypeface(null,Typeface.BOLD);
+                ShapeableImageView tag_line = tab.getCustomView().findViewById(R.id.tab_bg);
+                tag_line.setBackgroundColor(getResources().getColor(R.color.color_156EF3));
             }
         });
         binding.vpFragment.setCurrentItem(0);

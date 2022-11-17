@@ -15,7 +15,6 @@ import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.ImageSpan;
 import android.text.style.StyleSpan;
-import android.text.style.UnderlineSpan;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -33,10 +32,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
-
-
 import java.util.ArrayList;
-
 import bean.ChatMessageData;
 import custormgift.CustomMsgHelper;
 import custormgift.CustomMsgType;
@@ -44,6 +40,10 @@ import com.easemob.buddy.tool.ThreadManager;
 import com.easemob.secnceui.R;
 import com.easemob.secnceui.utils.DeviceUtils;
 import com.easemob.secnceui.widget.expression.SmileUtils;
+import com.hyphenate.EMValueCallBack;
+import com.hyphenate.chat.EMChatRoom;
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.util.EMLog;
 import manager.ChatroomHelper;
 
 /**
@@ -55,8 +55,7 @@ public class ChatroomMessagesView extends RelativeLayout{
     private static final int ITEM_DEFAULT_TYPE = 0;
     private static final int ITEM_SYSTEM_TYPE = 1;
     private String chatroomId;
-    private String myChatId;
-    private boolean isOwner;
+    private String mOwnerChatUid;
     private Context mContext;
     private boolean isScrollBottom;
 
@@ -80,10 +79,19 @@ public class ChatroomMessagesView extends RelativeLayout{
         listview = (RecyclerView) findViewById(R.id.listview);
     }
 
-    public void init(String chatroomId,boolean isOwner,String myChatId){
+    public void init(String chatroomId){
         this.chatroomId = chatroomId;
-        this.isOwner = isOwner;
-        this.myChatId = myChatId;
+        EMClient.getInstance().chatroomManager().asyncFetchChatRoomFromServer(chatroomId, new EMValueCallBack<EMChatRoom>() {
+            @Override
+            public void onSuccess(EMChatRoom value) {
+                mOwnerChatUid = value.getOwner();
+            }
+
+            @Override
+            public void onError(int error, String errorMsg) {
+                EMLog.d("asyncFetchChatRoomFromServer","onError" + error + " " + errorMsg);
+            }
+        });
         adapter = new ListAdapter(getContext(), ChatroomHelper.getInstance().getMessageData(chatroomId));
         ScrollSpeedLinearLayoutManger scrollSpeedLinearLayoutManger = new ScrollSpeedLinearLayoutManger(getContext());
         //设置item滑动速度
@@ -206,14 +214,14 @@ public class ChatroomMessagesView extends RelativeLayout{
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
             String from = "";
             final ChatMessageData message = messages.get(position);
-            Log.e("onBindViewHolder","message.getFrom(): " + message.getFrom() + " myChatId: "+ myChatId + " isOwner" + isOwner);
+            EMLog.d("onBindViewHolder","message.getFrom(): " + message.getFrom() + " mOwnerChatUid: "+ mOwnerChatUid );
             from = ChatroomHelper.getInstance().getUserName(message);
             String s = message.getContent();
             if (holder instanceof MyViewHolder){
                 if (TextUtils.isEmpty(from)){
                     from = message.getFrom();
                 }
-                showText(isOwner && message.getFrom().equals(myChatId),((MyViewHolder) holder).content, from, s);
+                showText(message.getFrom().equals(mOwnerChatUid),((MyViewHolder) holder).content, from, s);
             }else if (holder instanceof SystemViewHolder){
                 from = ChatroomHelper.getInstance().getSystemUserName(message);
                 showSystemMsg(((SystemViewHolder) holder).name ,from,"");
@@ -238,16 +246,16 @@ public class ChatroomMessagesView extends RelativeLayout{
             name.setText(span);
         }
 
-        private void showText(boolean isShow,TextView con, String nickName,String content) {
+        private void showText(boolean isOwner,TextView con, String nickName,String content) {
             StringBuilder builder = new StringBuilder();
-            if (isShow){
+            if (isOwner){
                 builder.append("O").append(nickName).append(" : ").append(content);
             }else {
                 builder.append(nickName).append(" : ").append(content);
             }
             if (!TextUtils.isEmpty(builder.toString()) && SmileUtils.containsKey(builder.toString())){
                 Spannable span1 = SmileUtils.getSmiledText(context, builder.toString());
-                if (isShow){
+                if (isOwner){
                     span1.setSpan(new CenteredImageSpan(mContext, R.drawable.icon_owner,0,10),0,1,0);
                     span1.setSpan(new ForegroundColorSpan(ContextCompat.getColor(getContext(), R.color.color_8BB3FF)),
                             0, nickName.length()+4, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -265,7 +273,7 @@ public class ChatroomMessagesView extends RelativeLayout{
                 return;
             }
             SpannableString span = new SpannableString(builder.toString());
-            if (isShow){
+            if (isOwner){
                 span.setSpan(new CenteredImageSpan(mContext, R.drawable.icon_owner,0,10),0,1,0);
                 span.setSpan(new ForegroundColorSpan(ContextCompat.getColor(getContext(), R.color.color_8BB3FF)),
                         0, nickName.length()+4, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);

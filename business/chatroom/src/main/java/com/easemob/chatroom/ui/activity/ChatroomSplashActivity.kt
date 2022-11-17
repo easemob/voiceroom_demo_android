@@ -14,6 +14,7 @@ import com.easemob.chatroom.databinding.ActivityChatroomSplashBinding
 import com.easemob.chatroom.general.repositories.ProfileManager
 import com.easemob.config.RouterPath
 import com.hyphenate.EMCallBack
+import com.hyphenate.chat.EMClient
 import com.hyphenate.util.EMLog
 import manager.ChatroomHelper
 
@@ -51,7 +52,7 @@ class ChatroomSplashActivity : BaseUiActivity<ActivityChatroomSplashBinding>() {
     }
 
     private fun initSplashPage() {
-        if (ProfileManager.getInstance().profile != null){
+        if (ProfileManager.getInstance().profile != null && !EMClient.getInstance().isLoggedIn){
             val uid = ProfileManager.getInstance().profile.chat_uid
             val token = ProfileManager.getInstance().profile.im_token
             ChatroomHelper.getInstance().login(uid, token, object : EMCallBack {
@@ -61,6 +62,10 @@ class ChatroomSplashActivity : BaseUiActivity<ActivityChatroomSplashBinding>() {
                 }
                 override fun onError(code: Int, error: String) {
                     EMLog.e("Splash AutoLogin", "onError: $code  $error")
+                    if (code == 200){
+                        ARouter.getInstance().build(RouterPath.ChatroomListPath).navigation()
+                        finish()
+                    }
                 }
             })
         }else{

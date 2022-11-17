@@ -10,6 +10,7 @@
     <string name="chatroom_login_code">Verification Code</string>
     <string name="chatroom_login_get_code">Get Code</string>
     <string name="chatroom_login_agreement">By joining, you agree to our Terms of Service and Privacy Policy</string>
+    <string name="chatroom_create_input_name">Room name does not support inputting emoji temporarily</string>
 
     <string name="chatroom_phone_number">mobile number cannot be empty</string>
     <string name="chatroom_correct_number">Please enter correct mobile number</string>

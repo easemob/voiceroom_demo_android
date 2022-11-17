@@ -244,7 +244,21 @@ public class ChatroomHttpManager {
                     @Override
                     public void onSuccess(String result) {
                         LogToolsKt.logE("getRtcToken onSuccess: " + result, TAG);
-                        callBack.onSuccess(result);
+                        String rtcToken= "";
+                        try {
+                            JSONObject jsonObject = new JSONObject(result);
+                            if (jsonObject.has("rtc_token")){
+                                rtcToken = jsonObject.getString("rtc_token");
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        if (TextUtils.isEmpty(rtcToken)){
+                            callBack.onError(1,"rtc_token is empty");
+                        }else {
+                            callBack.onSuccess(rtcToken);
+                        }
+
                     }
 
                     @Override
@@ -276,9 +290,7 @@ public class ChatroomHttpManager {
         try {
             requestBody.putOpt("name", name);
             requestBody.putOpt("is_private", is_privacy);
-            if (!TextUtils.isEmpty(password)){
-                requestBody.putOpt("password", password);
-            }
+            requestBody.putOpt("password", password);
             requestBody.putOpt("type", type);
             requestBody.putOpt("allow_free_join_mic", allow_free_join_mic);
             requestBody.putOpt("sound_effect", sound_effect);

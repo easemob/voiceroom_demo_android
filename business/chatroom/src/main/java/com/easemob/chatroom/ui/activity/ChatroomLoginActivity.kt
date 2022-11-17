@@ -22,13 +22,16 @@ import com.easemob.baseui.BaseUiTool
 import com.easemob.baseui.general.callback.OnResourceParseCallback
 import com.easemob.buddy.tool.CountDownTimerUtils
 import com.easemob.buddy.tool.ResourcesTools
+import com.easemob.buddy.tool.ThreadManager
 import com.easemob.buddy.tool.ToastTools
 import com.easemob.chatroom.R
 import com.easemob.chatroom.databinding.ActivityLoginBinding
 import com.easemob.chatroom.general.repositories.ProfileManager
 import com.easemob.chatroom.model.LoginViewModel
 import com.easemob.config.RouterPath
+import com.hyphenate.EMCallBack
 import com.hyphenate.util.EMLog
+import manager.ChatroomHelper
 import tools.bean.VRUserBean
 import java.util.regex.Matcher
 import java.util.regex.Pattern
@@ -67,8 +70,18 @@ class ChatroomLoginActivity : BaseUiActivity<ActivityLoginBinding>(), TextWatche
             parseResource(response,object :OnResourceParseCallback<VRUserBean>(true){
                 override fun onSuccess(data: VRUserBean?) {
                     ProfileManager.getInstance().profile = data
-                    mJumpPage()
-                    dismissLoading()
+                    ChatroomHelper.getInstance().login(data?.chat_uid, data?.im_token, object : EMCallBack {
+                        override fun onSuccess() {
+                            ThreadManager.getInstance().runOnMainThread(Runnable {
+                                EMLog.e("Login", "onSuccess: $data.chat_uid  $data.im_token")
+                                mJumpPage()
+                            })
+                        }
+                        override fun onError(code: Int, error: String) {
+                            EMLog.e("Login", "onError: $code  $error")
+                            dismissLoading()
+                        }
+                    })
                 }
 
                 override fun onError(code: Int, message: String?) {
@@ -106,16 +119,14 @@ class ChatroomLoginActivity : BaseUiActivity<ActivityLoginBinding>(), TextWatche
     }
 
     private fun initView(){
-        binding.btLogin.isEnabled = false
-        binding.btLogin.alpha = 0.3f
         timer = CountDownTimerUtils(this,binding.getCode, 60000, 1000)
         binding.tvAgreement.text = getSpannable()
         binding.tvAgreement.movementMethod = LinkMovementMethod.getInstance()
     }
 
     private fun getCode(){
-        if (TextUtils.isEmpty(phoneNumber)){
-            ToastTools.show(this,"")
+        if (TextUtils.isEmpty(phoneNumber) || !isTelPhoneNumber(phoneNumber)){
+            ToastTools.show(this,getString(R.string.chatroom_correct_number))
         }else{
             loginViewModel.postVerificationCode(phoneNumber)
         }
@@ -130,27 +141,14 @@ class ChatroomLoginActivity : BaseUiActivity<ActivityLoginBinding>(), TextWatche
         }else{
             binding.loginClear.visibility = View.VISIBLE
         }
-        code = binding.etLoginPwd.text.toString().trim { it <= ' ' }
-        binding.btLogin.isEnabled = !TextUtils.isEmpty(phoneNumber) && !TextUtils.isEmpty(code) && isReady
-        if (!TextUtils.isEmpty(phoneNumber) && !TextUtils.isEmpty(code) && isReady){
-            binding.btLogin.alpha = 1f
-        }else{
-            binding.btLogin.alpha = 0.3f
-        }
     }
 
     private fun checkLogin(): Boolean {
-        binding.btLogin.alpha = 0.3f
-        if (TextUtils.isEmpty(phoneNumber)){
-            ToastTools.show(this,getString(R.string.chatroom_phone_number))
-            return false
-        }
-
-        if (!isTelPhoneNumber(phoneNumber)){
+        if (TextUtils.isEmpty(phoneNumber) || !isTelPhoneNumber(phoneNumber)){
             ToastTools.show(this,getString(R.string.chatroom_correct_number))
             return false
         }
-
+        code = binding.etLoginPwd.text.toString().trim { it <= ' ' }
         if (TextUtils.isEmpty(code) || code?.length!! < 6){
             ToastTools.show(this,getString(R.string.chatroom_code_error))
             return false
@@ -159,7 +157,6 @@ class ChatroomLoginActivity : BaseUiActivity<ActivityLoginBinding>(), TextWatche
             ToastTools.show(this,getString(R.string.chatroom_login_ready))
             return false
         }
-        binding.btLogin.alpha = 1f
         showLoading(false)
         return true
     }
@@ -195,7 +192,7 @@ class ChatroomLoginActivity : BaseUiActivity<ActivityLoginBinding>(), TextWatche
         EMLog.d("Login ","getSpannable: " + spanStr.length)
         if (ResourcesTools.isZh(this)) {
             index1 = 5
-            index2 = 12
+            index2 = 13
             index3 = 14
         } else {
             index1 = 29
@@ -250,6 +247,7 @@ class ChatroomLoginActivity : BaseUiActivity<ActivityLoginBinding>(), TextWatche
 
     private fun mJumpPage() {
         ARouter.getInstance().build(RouterPath.ChatroomListPath).navigation()
+        dismissLoading()
         finish()
     }
 

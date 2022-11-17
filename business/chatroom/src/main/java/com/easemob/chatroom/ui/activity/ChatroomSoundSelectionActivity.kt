@@ -9,6 +9,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Toast
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -32,6 +34,7 @@ import com.easemob.config.RouterPath
 import com.easemob.secnceui.bean.SoundSelectionBean
 import com.easemob.secnceui.ui.soundselection.RoomSoundSelectionConstructor.builderSoundSelectionList
 import com.easemob.secnceui.widget.titlebar.ChatroomTitleBar
+import com.hyphenate.util.EMLog
 import tools.bean.VRoomInfoBean
 
 class ChatroomSoundSelectionActivity : BaseUiActivity<ChatroomSoundSelectionLayoutBinding>(),
@@ -73,6 +76,11 @@ class ChatroomSoundSelectionActivity : BaseUiActivity<ChatroomSoundSelectionLayo
                                 joinRoom(data)
                             }
                         }
+
+                        override fun onError(code: Int, message: String?) {
+                            dismissLoading()
+                            EMLog.d("Go Live onError", "$code  $message")
+                        }
                     })
             })
     }
@@ -91,6 +99,11 @@ class ChatroomSoundSelectionActivity : BaseUiActivity<ChatroomSoundSelectionLayo
         binding.list.addItemDecoration(bottomOffsetDecoration)
         binding.list.adapter = adapter
         setTextStyle(binding.titleBar.title, Typeface.BOLD)
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { _: View?, insets: WindowInsetsCompat ->
+            val inset = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            binding.clRoot.setPaddingRelative(0, inset.top, 0, inset.bottom)
+            WindowInsetsCompat.CONSUMED
+        }
     }
 
     private fun initIntent() {

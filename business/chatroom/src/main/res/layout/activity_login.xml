@@ -8,15 +8,16 @@
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/mtChatroom"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/chatroom_login_title"
         android:textColor="@color/main_color_009FFF"
         android:layout_marginStart="30dp"
-        android:textSize="@dimen/sp_24"
+        android:layout_marginEnd="30dp"
+        android:textSize="@dimen/sp_22"
         android:textStyle="bold"
-        android:letterSpacing="0.05"
         app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintVertical_bias="0.26" />
@@ -29,6 +30,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintVertical_bias="0.34"
+        android:inputType="number"
         android:hint="@string/chatroom_login_phone_number"
         style="@style/em_login_et_input" />
 
@@ -70,13 +72,11 @@
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/bt_login"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:layout_marginTop="24dp"
         android:layout_marginStart="30dp"
         android:layout_marginEnd="30dp"
         android:text="@string/chatroom_login"
-        android:paddingTop="16dp"
-        android:paddingBottom="16dp"
         android:textSize="16sp"
         android:textColor="@color/white"
         android:gravity="center"

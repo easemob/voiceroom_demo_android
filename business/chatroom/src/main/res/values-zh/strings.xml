@@ -10,6 +10,7 @@
     <string name="chatroom_login_code">请输入验证码</string>
     <string name="chatroom_login_get_code">获取验证码</string>
     <string name="chatroom_login_agreement">请选择同意《环信服务条款》与《环信隐私协议》</string>
+    <string name="chatroom_create_input_name">房间名称暂不支持输入emoji</string>
 
     <string name="chatroom_phone_number">手机号不能为空</string>
     <string name="chatroom_correct_number">请输入正确的手机号</string>

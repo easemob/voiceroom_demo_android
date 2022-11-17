@@ -206,7 +206,7 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
         if (roomKitBean.roomType == ConfigConstants.RoomType.Common_Chatroom) { // 普通房间
             binding.likeView.likeView.setOnClickListener { binding.likeView.addFavor() }
             binding.chatroomGiftView.init(roomKitBean.chatroomId)
-            binding.messageView.init(roomKitBean.chatroomId, isOwner,ProfileManager.getInstance().profile.chat_uid)
+            binding.messageView.init(roomKitBean.chatroomId)
             binding.rvChatroom2dMicLayout.isVisible = true
             binding.rvChatroom3dMicLayout.isVisible = false
             roomObservableDelegate =

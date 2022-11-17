@@ -27,7 +27,7 @@ public class CountDownTimerUtils extends CountDownTimer {
         // mTextView.setBackgroundResource(R.drawable.bg_identify_code_press); //设置按钮为灰色，这时是不能点击的
         SpannableString spannableString = new SpannableString(mTextView.getText().toString());  //获取按钮上的文字
         ForegroundColorSpan span = new ForegroundColorSpan(mContext.getColor(R.color.color_979CBB));
-        spannableString.setSpan(span, 0, spannableString.length()-1, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);//将倒计时的时间设置为灰色
+        spannableString.setSpan(span, 0, spannableString.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);//将倒计时的时间设置为灰色
         mTextView.setText(spannableString);
     }
 

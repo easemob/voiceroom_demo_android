@@ -85,18 +85,18 @@ class ChatroomProfileActivity : BaseUiActivity<ChatroomProfileLayoutBinding>(),
 
     override fun onClick(v: View?) {
         when(v?.id){
-            R.id.avatar -> {
-                showDialog(v)
-            }
-            R.id.edit -> {
-                window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
-                binding.contentLayout.isFocusable = false
-                binding.contentLayout.isFocusableInTouchMode = false
-                binding.nickName.isEnabled = true
-                binding.nickName.requestFocus()
-                binding.nickName.setSelection( binding.nickName.text.length)
-                showKeyboard(binding.nickName)
-            }
+//            R.id.avatar -> {
+//                showDialog(v)
+//            }
+//            R.id.edit -> {
+//                window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
+//                binding.contentLayout.isFocusable = false
+//                binding.contentLayout.isFocusableInTouchMode = false
+//                binding.nickName.isEnabled = true
+//                binding.nickName.requestFocus()
+//                binding.nickName.setSelection( binding.nickName.text.length)
+//                showKeyboard(binding.nickName)
+//            }
             R.id.disclaimer_layout -> {
                 startActivity(
                     Intent(

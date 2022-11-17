@@ -54,7 +54,7 @@ class ChatroomListActivity : BaseUiActivity<ChatroomListLayoutBinding>(),
     }
 
     private fun initListener() {
-        pageViewModel = ViewModelProvider(this).get(PageViewModel::class.java)
+        pageViewModel = ViewModelProvider(this)[PageViewModel::class.java]
         binding.titleBar.setOnBackPressListener(this)
         binding.imageAvatar.setOnClickListener(this)
 

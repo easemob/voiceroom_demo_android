@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
@@ -37,6 +39,9 @@ import com.google.android.material.tabs.TabLayoutMediator;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import com.easemob.baseui.BaseActivity;
 import com.easemob.baseui.general.callback.OnResourceParseCallback;
 import com.easemob.buddy.tool.ToastTools;
@@ -50,6 +55,7 @@ import com.easemob.secnceui.utils.DeviceUtils;
 import com.easemob.secnceui.widget.encryption.ChatroomEncryptionInputView;
 import com.easemob.secnceui.widget.titlebar.ChatroomTitleBar;
 import com.hyphenate.EMCallBack;
+import com.hyphenate.util.EMLog;
 
 import manager.ChatroomHelper;
 import tools.bean.VRUserBean;
@@ -114,6 +120,7 @@ public class ChatroomCreateActivity extends BaseActivity implements RadioGroup.O
       tipLayout = findViewById(R.id.tips_layout);
       setTextStyle(mTitleBar.getTitle(), Typeface.BOLD);
       chickPrivate();
+      mEdRoomName.setFilters(new InputFilter[]{new EmojiInputFilter(32)});
       data = PageRepository.getInstance().getDefaultPageData(this);
    }
 
@@ -184,6 +191,12 @@ public class ChatroomCreateActivity extends BaseActivity implements RadioGroup.O
                     if (null != data && null != data.getRoom()){
                        joinRoom(data);
                     }
+                 }
+
+                 @Override
+                 public void onError(int code, String message) {
+                    dismissLoading();
+                    EMLog.d("Create Room onError", "$code  $message");
                  }
               });
          });
@@ -375,6 +388,25 @@ public class ChatroomCreateActivity extends BaseActivity implements RadioGroup.O
          mLayout =  itemView.findViewById(R.id.item_layout);
          mTitle =  itemView.findViewById(R.id.item_title);
          mContent = itemView.findViewById(R.id.item_text);
+      }
+   }
+
+   public class EmojiInputFilter extends InputFilter.LengthFilter {
+      protected Pattern emoji = Pattern.compile("[\ud83c\udc00-\ud83c\udfff]|[\ud83d\udc00-\ud83d\udfff]|[\u2600-\u27ff]",Pattern.UNICODE_CASE | Pattern.CASE_INSENSITIVE);
+
+      public EmojiInputFilter(int max) {
+         super(max);
+      }
+
+      @Override
+      public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+         Matcher emojiMatcher = emoji.matcher(source);
+         if (emojiMatcher.find()) {
+            ToastTools.show(ChatroomCreateActivity.this,getString(R.string.chatroom_create_input_name),Toast.LENGTH_SHORT);
+            return "";
+         }else{
+            return super.filter(source, start, end, dest, dstart, dend);
+         }
       }
    }
 }
