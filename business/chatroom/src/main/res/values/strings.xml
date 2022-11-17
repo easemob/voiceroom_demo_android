@@ -11,6 +11,11 @@
     <string name="chatroom_login_get_code">Get Code</string>
     <string name="chatroom_login_agreement">By joining, you agree to our Terms of Service and Privacy Policy</string>
 
+    <string name="chatroom_phone_number">mobile number cannot be empty</string>
+    <string name="chatroom_correct_number">Please enter correct mobile number</string>
+    <string name="chatroom_correct_code">Please enter verification code</string>
+    <string name="chatroom_code_error">Incorrect Code</string>
+    <string name="chatroom_login_ready">Please confrim Terms &amp; Policy</string>
 
     <string name="chatroom_tab_layout_all">All</string>
     <string name="chatroom_tab_layout_chat_room">Chat Room</string>

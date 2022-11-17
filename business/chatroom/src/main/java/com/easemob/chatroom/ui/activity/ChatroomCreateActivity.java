@@ -2,6 +2,7 @@ package com.easemob.chatroom.ui.activity;
 
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -181,21 +182,7 @@ public class ChatroomCreateActivity extends BaseActivity implements RadioGroup.O
                  @Override
                  public void onSuccess(@Nullable VRoomInfoBean data) {
                     if (null != data && null != data.getRoom()){
-                       VRUserBean userinfo = ProfileManager.getInstance().getProfile();
-                       Log.d("ChatroomCreateActivity","chat_uid: " + userinfo.getChat_uid());
-                       Log.d("ChatroomCreateActivity","im_token: " + userinfo.getIm_token());
-                       ChatroomHelper.getInstance().login(userinfo.getChat_uid(), userinfo.getIm_token(), new EMCallBack() {
-                          @Override
-                          public void onSuccess() {
-                             joinRoom(data);
-                          }
-
-                          @Override
-                          public void onError(int code, String desc) {
-                             mNext.setEnabled(true);
-                             dismissLoading();
-                          }
-                       });
+                       joinRoom(data);
                     }
                  }
               });

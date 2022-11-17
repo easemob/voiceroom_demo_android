@@ -24,20 +24,24 @@ public class LoginRepository extends BaseRepository {
                         callBack.onSuccess(createLiveData(value));
                     }
 
-                    @Override
                     public void onError(int error, String errorMsg) {
-
+                        runOnMainThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                callBack.onError(error,errorMsg);
+                            }
+                        });
                     }
                 });
             }
         }.asLiveData();
     }
 
-    public LiveData<Resource<VRUserBean>> login(Context context,String deviceId,String phoneNumber,String code,String avatar) {
+    public LiveData<Resource<VRUserBean>> login(String deviceId,String phoneNumber,String code,String avatar) {
         return new NetworkOnlyResource<VRUserBean>() {
             @Override
             protected void createCall(@NonNull ResultCallBack<LiveData<VRUserBean>> callBack) {
-                ChatroomHttpManager.getInstance().loginWithToken(deviceId,avatar,new ValueCallBack<VRUserBean>() {
+                ChatroomHttpManager.getInstance().loginWithToken(phoneNumber,code,deviceId,avatar,new ValueCallBack<VRUserBean>() {
                     @Override
                     public void onSuccess(VRUserBean value) {
                         runOnMainThread(new Runnable() {
@@ -50,21 +54,41 @@ public class LoginRepository extends BaseRepository {
 
                     @Override
                     public void onError(int error, String errorMsg) {
-
+                        runOnMainThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                callBack.onError(error,errorMsg);
+                            }
+                        });
                     }
                 });
             }
         }.asLiveData();
     }
 
-    public LiveData<Resource<String>> getVerificationCode(String phoneNumber,String deviceId){
-        return new NetworkOnlyResource<String>() {
+    public LiveData<Resource<Boolean>> getVerificationCode(String phoneNumber){
+        return new NetworkOnlyResource<Boolean>() {
             @Override
-            protected void createCall(@NonNull ResultCallBack<LiveData<String>> callBack) {
-                runOnMainThread(new Runnable() {
+            protected void createCall(@NonNull ResultCallBack<LiveData<Boolean>> callBack) {
+                ChatroomHttpManager.getInstance().getVerificationCode(phoneNumber, new ValueCallBack<Boolean>() {
                     @Override
-                    public void run() {
+                    public void onSuccess(Boolean value) {
+                        runOnMainThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                callBack.onSuccess(createLiveData(value));
+                            }
+                        });
+                    }
 
+                    @Override
+                    public void onError(int error, String errorMsg) {
+                        runOnMainThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                callBack.onError(error,errorMsg);
+                            }
+                        });
                     }
                 });
             }

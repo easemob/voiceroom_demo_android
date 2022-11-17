@@ -68,6 +68,7 @@ class RtcRoomController : IRtcKitListener {
     /**加入rtc频道*/
     fun joinChannel(
         context: Context,
+        rtcToken:String,
         roomId: String,
         userId: Int,
         broadcaster: Boolean = false,
@@ -77,6 +78,7 @@ class RtcRoomController : IRtcKitListener {
         rtcChannelConfig.roomId = roomId
         rtcChannelConfig.userId = userId
         rtcChannelConfig.broadcaster = broadcaster
+        rtcChannelConfig.appToken = rtcToken
         this.joinCallback = joinCallback
         this.broadcaster = broadcaster
         rtcManger?.joinChannel(rtcChannelConfig)

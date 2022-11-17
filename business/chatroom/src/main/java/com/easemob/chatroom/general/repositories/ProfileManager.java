@@ -84,4 +84,9 @@ public class ProfileManager {
         }
         return -1;
     }
+
+    public void clear(){
+        editor.clear();
+        editor.commit();
+    }
 }

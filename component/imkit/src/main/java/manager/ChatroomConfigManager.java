@@ -74,7 +74,13 @@ public class ChatroomConfigManager {
 
             @Override
             public void onTokenExpired() {
-
+                try {
+                    for (ChatroomListener listener : ChatroomConfigManager.this.messageListeners) {
+                        listener.onTokenExpired();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
         ChatroomHelper.getInstance().setOnCustomMsgReceiveListener(new OnCustomMsgReceiveListener() {
@@ -202,13 +208,6 @@ public class ChatroomConfigManager {
 
             @Override
             public void onMemberJoined(String roomId, String name) {
-                try {
-                    for (ChatroomListener listener : ChatroomConfigManager.this.messageListeners) {
-                        listener.userJoinedRoom(roomId,name);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
             }
 
             @Override

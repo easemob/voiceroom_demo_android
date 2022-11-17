@@ -37,6 +37,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/et_login_name"
         app:layout_constraintRight_toRightOf="@id/et_login_name"
         android:layout_marginEnd="20dp"
+        android:visibility="gone"
         android:src="@drawable/icon_login_circle"
         android:id="@+id/login_clear"
         android:layout_width="wrap_content"
@@ -52,7 +53,7 @@
         android:inputType="number"
         android:ellipsize="end"
         android:singleLine="true"
-        android:maxLength="4"
+        android:maxLength="6"
         style="@style/em_login_et_input"/>
 
     <com.google.android.material.textview.MaterialTextView

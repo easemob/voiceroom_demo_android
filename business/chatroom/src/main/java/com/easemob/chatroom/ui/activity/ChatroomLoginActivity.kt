@@ -1,6 +1,8 @@
 package com.easemob.chatroom.ui.activity
 
+import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
 import android.text.*
 import android.text.method.LinkMovementMethod
@@ -13,16 +15,25 @@ import android.widget.CompoundButton
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.alibaba.android.arouter.facade.annotation.Route
+import com.alibaba.android.arouter.launcher.ARouter
 import com.easemob.baseui.BaseUiActivity
 import com.easemob.baseui.BaseUiTool
 import com.easemob.baseui.general.callback.OnResourceParseCallback
 import com.easemob.buddy.tool.CountDownTimerUtils
+import com.easemob.buddy.tool.ResourcesTools
 import com.easemob.buddy.tool.ToastTools
 import com.easemob.chatroom.R
 import com.easemob.chatroom.databinding.ActivityLoginBinding
+import com.easemob.chatroom.general.repositories.ProfileManager
 import com.easemob.chatroom.model.LoginViewModel
+import com.easemob.config.RouterPath
+import com.hyphenate.util.EMLog
 import tools.bean.VRUserBean
+import java.util.regex.Matcher
+import java.util.regex.Pattern
 
+@Route(path = RouterPath.ChatroomLoginPath)
 class ChatroomLoginActivity : BaseUiActivity<ActivityLoginBinding>(), TextWatcher,
     CompoundButton.OnCheckedChangeListener {
 
@@ -42,17 +53,27 @@ class ChatroomLoginActivity : BaseUiActivity<ActivityLoginBinding>(), TextWatche
         initView()
         loginViewModel = BaseUiTool.getViewModel(LoginViewModel::class.java, this)
         loginViewModel.verificationCodeObservable.observe(this){ response ->
-            parseResource(response,object : OnResourceParseCallback<String>(true){
-                override fun onSuccess(data: String?) {
-                    code = data
+            parseResource(response,object : OnResourceParseCallback<Boolean>(true){
+                override fun onSuccess(data: Boolean?) {
                     timer.start()
+                }
+
+                override fun onError(code: Int, message: String?) {
+                    message?.let { ToastTools.show(this@ChatroomLoginActivity, it) }
                 }
             })
         }
         loginViewModel.loginObservable.observe(this){ response ->
             parseResource(response,object :OnResourceParseCallback<VRUserBean>(true){
                 override fun onSuccess(data: VRUserBean?) {
+                    ProfileManager.getInstance().profile = data
+                    mJumpPage()
+                    dismissLoading()
+                }
 
+                override fun onError(code: Int, message: String?) {
+                    message?.let { ToastTools.show(this@ChatroomLoginActivity, it) }
+                    dismissLoading()
                 }
             })
 
@@ -67,6 +88,7 @@ class ChatroomLoginActivity : BaseUiActivity<ActivityLoginBinding>(), TextWatche
         }
         binding.let {
             it.etLoginName.addTextChangedListener(this)
+            it.etLoginPwd.addTextChangedListener(this)
             it.cbSelect.setOnCheckedChangeListener(this)
             it.btLogin.setOnClickListener(View.OnClickListener {
                 if (checkLogin()){
@@ -84,6 +106,8 @@ class ChatroomLoginActivity : BaseUiActivity<ActivityLoginBinding>(), TextWatche
     }
 
     private fun initView(){
+        binding.btLogin.isEnabled = false
+        binding.btLogin.alpha = 0.3f
         timer = CountDownTimerUtils(this,binding.getCode, 60000, 1000)
         binding.tvAgreement.text = getSpannable()
         binding.tvAgreement.movementMethod = LinkMovementMethod.getInstance()
@@ -108,21 +132,35 @@ class ChatroomLoginActivity : BaseUiActivity<ActivityLoginBinding>(), TextWatche
         }
         code = binding.etLoginPwd.text.toString().trim { it <= ' ' }
         binding.btLogin.isEnabled = !TextUtils.isEmpty(phoneNumber) && !TextUtils.isEmpty(code) && isReady
+        if (!TextUtils.isEmpty(phoneNumber) && !TextUtils.isEmpty(code) && isReady){
+            binding.btLogin.alpha = 1f
+        }else{
+            binding.btLogin.alpha = 0.3f
+        }
     }
 
     private fun checkLogin(): Boolean {
+        binding.btLogin.alpha = 0.3f
         if (TextUtils.isEmpty(phoneNumber)){
-            ToastTools.show(this,"")
+            ToastTools.show(this,getString(R.string.chatroom_phone_number))
             return false
         }
-        if (TextUtils.isEmpty(code) || code?.length!! < 3){
-            ToastTools.show(this,"")
+
+        if (!isTelPhoneNumber(phoneNumber)){
+            ToastTools.show(this,getString(R.string.chatroom_correct_number))
+            return false
+        }
+
+        if (TextUtils.isEmpty(code) || code?.length!! < 6){
+            ToastTools.show(this,getString(R.string.chatroom_code_error))
             return false
         }
         if (!isReady){
-            ToastTools.show(this,"")
+            ToastTools.show(this,getString(R.string.chatroom_login_ready))
             return false
         }
+        binding.btLogin.alpha = 1f
+        showLoading(false)
         return true
     }
 
@@ -150,34 +188,47 @@ class ChatroomLoginActivity : BaseUiActivity<ActivityLoginBinding>(), TextWatche
     }
 
     private fun getSpannable(): SpannableString? {
+        var index1 = 0
+        var index2 = 0
+        var index3 = 0
         val spanStr = SpannableString(getString(R.string.chatroom_login_agreement))
+        EMLog.d("Login ","getSpannable: " + spanStr.length)
+        if (ResourcesTools.isZh(this)) {
+            index1 = 5
+            index2 = 12
+            index3 = 14
+        } else {
+            index1 = 29
+            index2 = 46
+            index3 = 50
+        }
         //设置颜色
         spanStr.setSpan(
             ForegroundColorSpan(ContextCompat.getColor(this, R.color.color_009FFF)),
-            5, 12, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+            index1, index2, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
         )
         //设置下划线
-        spanStr.setSpan(UnderlineSpan(), 5, 12, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        spanStr.setSpan(UnderlineSpan(), index1, index2, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
         spanStr.setSpan(object :
             MyClickableSpan() {
             override fun onClick(widget: View) {
-
+                mJumpTerms()
             }
-        }, 5, 12, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        }, index1, index2, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
 
         //设置颜色
         spanStr.setSpan(
             ForegroundColorSpan(ContextCompat.getColor(this, R.color.color_009FFF)),
-            14, spanStr.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+            index3, spanStr.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
         )
         //设置下划线
-        spanStr.setSpan(UnderlineSpan(), 14, spanStr.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        spanStr.setSpan(UnderlineSpan(), index3, spanStr.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
         spanStr.setSpan(object :
             MyClickableSpan() {
             override fun onClick(widget: View) {
-
+                mJumpProtocol()
             }
-        }, 14, spanStr.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        }, index3, spanStr.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
         return spanStr
     }
 
@@ -186,6 +237,34 @@ class ChatroomLoginActivity : BaseUiActivity<ActivityLoginBinding>(), TextWatche
             super.updateDrawState(ds)
             ds.bgColor = Color.TRANSPARENT
         }
+    }
+
+    fun isTelPhoneNumber(value: String?): Boolean {
+        if (value != null && value.length == 11) {
+            val pattern: Pattern = Pattern.compile("^((1[1-9][0-9])|(14[5|7])|(15([0-3]|[5-9]))|(17[013678])|(18[0,5-9]))\\d{8}\$")
+            val matcher: Matcher = pattern.matcher(value)
+            return matcher.matches()
+        }
+        return false
+    }
+
+    private fun mJumpPage() {
+        ARouter.getInstance().build(RouterPath.ChatroomListPath).navigation()
+        finish()
+    }
+
+    private fun mJumpProtocol(){
+        var protocolUrl = "https://www.easemob.com/protocol "
+        val uri = Uri.parse(protocolUrl)
+        val it = Intent(Intent.ACTION_VIEW, uri)
+        startActivity(it)
+    }
+
+    private fun mJumpTerms(){
+        var termsUrl = "https://www.easemob.com/terms/im"
+        val uri = Uri.parse(termsUrl)
+        val it = Intent(Intent.ACTION_VIEW, uri)
+        startActivity(it)
     }
 
 }

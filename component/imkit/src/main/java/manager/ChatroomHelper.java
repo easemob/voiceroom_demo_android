@@ -410,7 +410,7 @@ public class ChatroomHelper implements EMChatRoomChangeListener, EMConnectionLis
     }
 
     public void login(String uid,String token,EMCallBack callBack){
-        EMClient.getInstance().loginWithAgoraToken(uid, token, new EMCallBack() {
+        EMClient.getInstance().loginWithToken(uid, token, new EMCallBack() {
             @Override
             public void onSuccess() {
                 callBack.onSuccess();
@@ -426,7 +426,7 @@ public class ChatroomHelper implements EMChatRoomChangeListener, EMConnectionLis
     }
 
     public void login(String uid,String token){
-        EMClient.getInstance().loginWithAgoraToken(uid, token, new EMCallBack() {
+        EMClient.getInstance().loginWithToken(uid, token, new EMCallBack() {
             @Override
             public void onSuccess() {
                 Log.d("ChatroomConfigManager","Login success");

@@ -123,9 +123,141 @@ public class ChatroomHttpManager {
               });
    }
 
-   /**
-    **********************************Room 操作请求***************************
-    */
+    //手机验证码登录
+    public void loginWithToken(String phone,String code,String device,String portrait, ValueCallBack<VRUserBean> callBack){
+        Map<String, String> headers = new HashMap<>();
+        String nickName = "";
+        headers.put("Content-Type", "application/json");
+        JSONObject requestBody = new JSONObject();
+        if (TextUtils.isEmpty(portrait)){
+            portrait = "avatar"+ Math.round((Math.random()*17)+1);
+        }
+        VRUserBean bean = ProfileManager.getInstance().getProfile();
+        if (null != bean && !TextUtils.isEmpty(bean.getName())){
+            nickName = bean.getName();
+        }else {
+            nickName = getRandomUserNick();
+        }
+        try {
+            requestBody.putOpt("deviceId", device);
+            requestBody.putOpt("name", nickName);
+            requestBody.putOpt("portrait",portrait);
+            requestBody.putOpt("phone", phone);
+            requestBody.putOpt("verify_code", code);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        new VRHttpClientManager.Builder(mContext)
+                .setUrl(VRRequestApi.get().login())
+                .setHeaders(headers)
+                .setParams(requestBody.toString())
+                .setRequestMethod(Method_POST)
+                .asyncExecute(new VRHttpCallback() {
+                    @Override
+                    public void onSuccess(String result) {
+                        LogToolsKt.logE("loginWithToken success: " + result, TAG);
+                        VRUserBean bean = GsonTools.toBean(result,VRUserBean.class);
+                        callBack.onSuccess(bean);
+                    }
+
+                    @Override
+                    public void onError(int code, String msg) {
+                        LogToolsKt.logE("loginWithToken onError: " + code + " msg: " + msg, TAG);
+                        callBack.onError(code,msg);
+                    }
+                });
+    }
+
+    //刷新token
+    public void refreshToken(String uid,String device,String imToken, ValueCallBack<VRUserBean> callBack){
+        Map<String, String> headers = new HashMap<>();
+        String nickName = "";
+        headers.put("Content-Type", "application/json");
+        headers.put("Authorization", buildAuth());
+        JSONObject requestBody = new JSONObject();
+        try {
+            requestBody.putOpt("uid", uid);
+            requestBody.putOpt("device_id", device);
+            requestBody.putOpt("token",imToken);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        new VRHttpClientManager.Builder(mContext)
+                .setUrl(VRRequestApi.get().refreshToken())
+                .setHeaders(headers)
+                .setParams(requestBody.toString())
+                .setRequestMethod(Method_POST)
+                .asyncExecute(new VRHttpCallback() {
+                    @Override
+                    public void onSuccess(String result) {
+                        LogToolsKt.logE("loginWithToken success: " + result, TAG);
+                        VRUserBean bean = GsonTools.toBean(result,VRUserBean.class);
+                        callBack.onSuccess(bean);
+                    }
+
+                    @Override
+                    public void onError(int code, String msg) {
+                        LogToolsKt.logE("loginWithToken onError: " + code + " msg: " + msg, TAG);
+                        callBack.onError(code,msg);
+                    }
+                });
+    }
+
+    public void getVerificationCode(String phoneNum, ValueCallBack<Boolean> callBack){
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Content-Type", "application/json");
+        JSONObject requestBody = new JSONObject();
+        try {
+            requestBody.putOpt("phone_number", phoneNum);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        new VRHttpClientManager.Builder(mContext)
+                .setUrl(VRRequestApi.get().getCode())
+                .setHeaders(headers)
+                .setParams(requestBody.toString())
+                .setRequestMethod(Method_POST)
+                .asyncExecute(new VRHttpCallback() {
+                    @Override
+                    public void onSuccess(String result) {
+                        LogToolsKt.logE("getVerificationCode success: " + result, TAG);
+                        callBack.onSuccess(true);
+                    }
+
+                    @Override
+                    public void onError(int code, String msg) {
+                        LogToolsKt.logE("getVerificationCode onError: " + code + " msg: " + msg, TAG);
+                        callBack.onError(code,msg);
+                    }
+                });
+    }
+
+    public void getRtcToken(String roomId,String channelId, ValueCallBack<String> callBack){
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Content-Type", "application/json");
+        headers.put("Authorization", buildAuth());
+        new VRHttpClientManager.Builder(mContext)
+                .setUrl(VRRequestApi.get().getRtcToken(roomId,channelId))
+                .setHeaders(headers)
+                .setRequestMethod(Method_GET)
+                .asyncExecute(new VRHttpCallback() {
+                    @Override
+                    public void onSuccess(String result) {
+                        LogToolsKt.logE("getRtcToken onSuccess: " + result, TAG);
+                        callBack.onSuccess(result);
+                    }
+
+                    @Override
+                    public void onError(int code, String msg) {
+                        LogToolsKt.logE("getRtcToken onError：" + code + "msg:" + msg, TAG);
+                        callBack.onError(code,msg);
+                    }
+                });
+    }
+
+    /**
+     **********************************Room 操作请求***************************
+     */
 
     /**
      * 创建语聊房
@@ -716,7 +848,7 @@ public class ChatroomHttpManager {
     }
 
     /**
-     * 禁止指定麦位
+     * 封禁指定麦位
      * @param roomId
      * @param mic_index
      */
@@ -753,7 +885,7 @@ public class ChatroomHttpManager {
     }
 
     /**
-     * 取消禁止指定麦位
+     * 取消封禁指定麦位
      * @param roomId
      * @param mic_index
      */

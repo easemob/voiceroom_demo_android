@@ -23,7 +23,7 @@ public class LoginViewModel extends AndroidViewModel {
     private final Context mContext;
     private LoginRepository mRepository;
     private SingleSourceLiveData<Resource<VRUserBean>> loginObservable;
-    private SingleSourceLiveData<Resource<String>> verificationCodeObservable;
+    private SingleSourceLiveData<Resource<Boolean>> verificationCodeObservable;
 
     public LoginViewModel(@NonNull Application application) {
         super(application);
@@ -38,7 +38,7 @@ public class LoginViewModel extends AndroidViewModel {
         return loginObservable;
     }
 
-    public LiveData<Resource<String>> getVerificationCodeObservable(){
+    public LiveData<Resource<Boolean>> getVerificationCodeObservable(){
         return verificationCodeObservable;
     }
 
@@ -59,14 +59,14 @@ public class LoginViewModel extends AndroidViewModel {
         if (userBean != null){
             portrait = userBean.getPortrait();
         }
-        loginObservable.setSource(mRepository.login(mContext,getDeviceId(),phoneNumber,code,portrait));
+        loginObservable.setSource(mRepository.login(getDeviceId(),phoneNumber,code,portrait));
     }
 
     /**
      * 获取短信验证码
      */
     public void postVerificationCode(String phoneNumber){
-        verificationCodeObservable.setSource(mRepository.getVerificationCode(phoneNumber,getDeviceId()));
+        verificationCodeObservable.setSource(mRepository.getVerificationCode(phoneNumber));
     }
 
     private String getDeviceId(){

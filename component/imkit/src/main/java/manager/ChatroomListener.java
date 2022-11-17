@@ -20,8 +20,6 @@ public interface ChatroomListener {
     default void receiveInviteRefusedSite(String roomId,ChatMessageData message){}
     //接收拒绝申请消息
     default void receiveDeclineApply(String roomId,ChatMessageData message){}
-    //用户加入房间 后面采用自定义消息
-    default void userJoinedRoom(String roomId,String uid){}
     //用户离开房间
     default void onMemberExited(String roomId,String s1,String s2){}
     //聊天室公告更新
@@ -34,6 +32,8 @@ public interface ChatroomListener {
     default void roomAttributesDidRemoved(String roomId, List<String> keyList, String fromId){}
     //token即将过期
     default void onTokenWillExpire(){}
+    //token已过期
+    default void onTokenExpired(){}
     //收到系统消息
     default void receiveSystem(String roomId, ChatMessageData message){}
     //机器人音量更新

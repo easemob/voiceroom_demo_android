@@ -419,7 +419,6 @@ class ChatroomLiveActivity : BaseUiActivity<ActivityChatroomBinding>(), EasyPerm
         RtcRoomController.get().destroy()
         ChatroomConfigManager.getInstance().removeChatRoomListener(this)
         roomViewModel.leaveRoom(this, roomKitBean.roomId)
-        ChatroomHelper.getInstance().logout(false)
         super.finish()
     }
 

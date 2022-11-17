@@ -33,6 +33,9 @@ public class VRRequestApi {
     private final String MIC_INVITE = "/invite";
     private final String MIC_REJECT_INVITE = "/refuse";
     private final String MIC_AGREE = "/agree";
+    private final String LOGIN_CODE = "/user/sms/send";
+    private final String REFRESH_TOKEN = "/user/token/refresh";
+    private final String RTC_TOKEN = "/rtc/token?channel_id=%1$s";
 
     public static VRRequestApi get() {
         if(mInstance == null) {
@@ -50,6 +53,18 @@ public class VRRequestApi {
 
     public String login(){
         return BASE_URL+LOGIN;
+    }
+
+    public String getCode(){
+        return BASE_URL + LOGIN_CODE;
+    }
+
+    public String refreshToken(){
+        return BASE_URL + REFRESH_TOKEN;
+    }
+
+    public String getRtcToken(String roomId,String channelId){
+        return BASE_URL + String.format(BASE_ROOM,roomId) + String.format(RTC_TOKEN, channelId);
     }
 
     public String createRoom(){

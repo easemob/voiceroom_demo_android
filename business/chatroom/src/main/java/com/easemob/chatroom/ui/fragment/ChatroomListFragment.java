@@ -189,29 +189,7 @@ public class ChatroomListFragment extends BaseChatroomListFragment<VRoomBean.Roo
     @Override
     public void onItemClick(View view, int position) {
         roomBean = listAdapter.getItem(position);
-        Log.e("onItemClick","getOwnerUid: " + roomBean.getOwnerUid());
-        VRUserBean data = ProfileManager.getInstance().getProfile();
-        Log.d("ChatroomListFragment","chat_uid: " + data.getChat_uid());
-        Log.d("ChatroomListFragment","im_token: " + data.getIm_token());
-        if (EMClient.getInstance().isLoggedIn()){
-            checkPrivate();
-        }else {
-            showLoading(false);
-            ChatroomHelper.getInstance().login(data.getChat_uid(), data.getIm_token(), new EMCallBack() {
-                @Override
-                public void onSuccess() {
-                    Log.d("ChatroomListFragment","Login success");
-                    dismissLoading();
-                    checkPrivate();
-                }
-
-                @Override
-                public void onError(int code, String msg) {
-                    dismissLoading();
-                    Log.e("ChatroomListFragment", "Login onError code:" + code + " desc: " + msg);
-                }
-            });
-        }
+        checkPrivate();
     }
 
     private void goChatroomPage(VRoomBean.RoomsBean roomBean) {

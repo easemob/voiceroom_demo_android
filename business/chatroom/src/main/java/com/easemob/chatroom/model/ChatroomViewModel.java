@@ -9,6 +9,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 import com.easemob.buddy.tool.LogToolsKt;
+import com.easemob.chatroom.general.net.ChatroomHttpManager;
 import com.easemob.chatroom.general.repositories.ChatroomRepository;
 
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -27,6 +28,7 @@ import com.hyphenate.chat.EMClient;
 
 import kotlin.Pair;
 import tools.DefaultValueCallBack;
+import tools.ValueCallBack;
 import tools.bean.VRoomBean;
 import tools.bean.VRoomInfoBean;
 
@@ -130,29 +132,40 @@ public class ChatroomViewModel extends AndroidViewModel {
     public void initSdkJoin(RoomKitBean roomKitBean, String password) {
         joinRtcChannel.set(false);
         joinImRoom.set(false);
-        RtcRoomController.get().joinChannel(getApplication(), roomKitBean.getChannelId(),
-                ProfileManager.getInstance().getProfile().getRtc_uid(),
-                roomKitBean.isOwner(),
-                new DefaultValueCallBack<Boolean>() {
-                    @Override
-                    public void onSuccess(Boolean value) {
-                        LogToolsKt.logE("rtc  joinChannel onSuccess ", TAG);
-                        joinRtcChannel.set(true);
-                        joinRoom(getApplication(), roomKitBean.getRoomId(), password);
-                    }
-
-                    @Override
-                    public void onError(int error, String errorMsg) {
-                        ThreadManager.getInstance().runOnMainThread(() -> joinObservable.setSource(new NetworkOnlyResource<Boolean>() {
+        ChatroomHttpManager.getInstance().getRtcToken(roomKitBean.getRoomId(),roomKitBean.getChannelId(), new ValueCallBack<String>() {
+            @Override
+            public void onSuccess(String token) {
+                RtcRoomController.get().joinChannel(getApplication(),token,roomKitBean.getChannelId(),
+                        ProfileManager.getInstance().getProfile().getRtc_uid(),
+                        roomKitBean.isOwner(),
+                        new DefaultValueCallBack<Boolean>() {
                             @Override
-                            protected void createCall(@NonNull ResultCallBack<LiveData<Boolean>> callBack) {
-                                callBack.onError(error, errorMsg);
+                            public void onSuccess(Boolean value) {
+                                LogToolsKt.logE("rtc  joinChannel onSuccess ", TAG);
+                                joinRtcChannel.set(true);
+                                joinRoom(getApplication(), roomKitBean.getRoomId(), password);
                             }
-                        }.asLiveData()));
-                        LogToolsKt.logE("rtc  joinChannel onError " + error + "  " + errorMsg, TAG);
-                    }
-                }
-        );
+
+                            @Override
+                            public void onError(int error, String errorMsg) {
+                                ThreadManager.getInstance().runOnMainThread(() -> joinObservable.setSource(new NetworkOnlyResource<Boolean>() {
+                                    @Override
+                                    protected void createCall(@NonNull ResultCallBack<LiveData<Boolean>> callBack) {
+                                        callBack.onError(error, errorMsg);
+                                    }
+                                }.asLiveData()));
+                                LogToolsKt.logE("rtc  joinChannel onError " + error + "  " + errorMsg, TAG);
+                            }
+                        }
+                );
+            }
+
+            @Override
+            public void onError(int error, String errorMsg) {
+                LogToolsKt.logE("rtc  joinChannel onError " + error + "  " + errorMsg, TAG);
+            }
+        });
+
         EMClient.getInstance().chatroomManager().joinChatRoom(roomKitBean.getChatroomId(), new EMValueCallBack<EMChatRoom>() {
             @Override
             public void onSuccess(EMChatRoom value) {

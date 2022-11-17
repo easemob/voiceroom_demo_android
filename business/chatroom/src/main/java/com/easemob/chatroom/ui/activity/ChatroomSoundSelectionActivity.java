@@ -124,21 +124,7 @@ public class ChatroomSoundSelectionActivity extends BaseActivity implements Chat
             @Override
             public void onSuccess(@Nullable VRoomInfoBean data) {
                if (null != data && null != data.getRoom()){
-                  VRUserBean userinfo = ProfileManager.getInstance().getProfile();
-                  Log.d("ChatroomSoundSelectionActivity","chat_uid: " + userinfo.getChat_uid());
-                  Log.d("ChatroomSoundSelectionActivity","im_token: " + userinfo.getIm_token());
-                  ChatroomHelper.getInstance().login(userinfo.getChat_uid(), userinfo.getIm_token(), new EMCallBack() {
-                     @Override
-                     public void onSuccess() {
-                        joinRoom(data);
-                     }
-
-                     @Override
-                     public void onError(int code, String desc) {
-                        EMLog.e("ChatroomSoundSelectionActivity", "Login Fail code: "+code + " desc: " + desc);
-                        dismissLoading();
-                     }
-                  });
+                  joinRoom(data);
                }
             }
          });
