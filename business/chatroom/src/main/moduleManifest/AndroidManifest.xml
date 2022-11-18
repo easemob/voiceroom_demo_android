@@ -45,10 +45,10 @@
             android:keepScreenOn="true"
             android:screenOrientation="portrait" />
 
-        <activity android:name="com.easemob.chatroom.ui.activity.ChatroomCreateActivity"
+        <activity android:name=".ui.activity.ChatroomCreateActivity"
             android:windowSoftInputMode="adjustPan"
             android:screenOrientation="portrait"
-            android:exported="false"/>
+            android:exported="false" />
 
         <activity android:name=".ui.activity.ChatroomProfileActivity"
             android:screenOrientation="portrait"

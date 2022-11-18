@@ -52,7 +52,7 @@ class ChatroomSplashActivity : BaseUiActivity<ActivityChatroomSplashBinding>() {
     }
 
     private fun initSplashPage() {
-        if (ProfileManager.getInstance().profile != null && !EMClient.getInstance().isLoggedIn){
+        if (ProfileManager.getInstance().profile != null){
             val uid = ProfileManager.getInstance().profile.chat_uid
             val token = ProfileManager.getInstance().profile.im_token
             ChatroomHelper.getInstance().login(uid, token, object : EMCallBack {
@@ -64,6 +64,9 @@ class ChatroomSplashActivity : BaseUiActivity<ActivityChatroomSplashBinding>() {
                     EMLog.e("Splash AutoLogin", "onError: $code  $error")
                     if (code == 200){
                         ARouter.getInstance().build(RouterPath.ChatroomListPath).navigation()
+                        finish()
+                    }else{
+                        ARouter.getInstance().build(RouterPath.ChatroomLoginPath).navigation()
                         finish()
                     }
                 }
