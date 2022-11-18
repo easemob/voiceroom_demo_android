@@ -25,7 +25,6 @@ import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
-import com.easemob.baseui.BaseActivity
 import com.easemob.baseui.BaseUiActivity
 import com.easemob.baseui.general.callback.OnResourceParseCallback
 import com.easemob.baseui.general.net.Resource
@@ -87,7 +86,7 @@ class ChatroomCreateActivity : BaseUiActivity<ChatroomCreateLayoutBinding>(),
                 if (tab.customView != null) {
                     val title = tab.customView!!.findViewById<TextView>(R.id.tab_item_title)
                     val layoutParams = title.layoutParams
-                    layoutParams.height = BaseActivity.dip2px(this@ChatroomCreateActivity, 26f).toInt()
+                    layoutParams.height = DeviceUtils.dp2px(this@ChatroomCreateActivity, 26f).toInt()
                     title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
                     title.gravity = Gravity.CENTER
                 }
