@@ -10,6 +10,7 @@ import android.text.style.ClickableSpan
 import android.text.style.ForegroundColorSpan
 import android.text.style.UnderlineSpan
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.widget.CompoundButton
 import androidx.core.content.ContextCompat
@@ -38,7 +39,7 @@ import java.util.regex.Pattern
 
 @Route(path = RouterPath.ChatroomLoginPath)
 class ChatroomLoginActivity : BaseUiActivity<ActivityLoginBinding>(), TextWatcher,
-    CompoundButton.OnCheckedChangeListener {
+    CompoundButton.OnCheckedChangeListener, View.OnTouchListener {
 
     private lateinit var loginViewModel: LoginViewModel
     private var code: String? = ""
@@ -115,6 +116,7 @@ class ChatroomLoginActivity : BaseUiActivity<ActivityLoginBinding>(), TextWatche
             it.getCode.setOnClickListener(View.OnClickListener {
                 getCode()
             })
+            binding.clRoot.setOnTouchListener(this)
         }
     }
 
@@ -263,6 +265,11 @@ class ChatroomLoginActivity : BaseUiActivity<ActivityLoginBinding>(), TextWatche
         val uri = Uri.parse(termsUrl)
         val it = Intent(Intent.ACTION_VIEW, uri)
         startActivity(it)
+    }
+
+    override fun onTouch(p0: View?, p1: MotionEvent?): Boolean {
+        hideKeyboard()
+        return false
     }
 
 }

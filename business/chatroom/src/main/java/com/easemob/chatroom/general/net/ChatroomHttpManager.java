@@ -227,7 +227,16 @@ public class ChatroomHttpManager {
                     @Override
                     public void onError(int code, String msg) {
                         LogToolsKt.logE("getVerificationCode onError: " + code + " msg: " + msg, TAG);
-                        callBack.onError(code,msg);
+                        try {
+                            JSONObject jsonObject = new JSONObject(msg);
+                            if (jsonObject.has("message")){
+                                callBack.onError(code,jsonObject.getString("message"));
+                            }else {
+                                callBack.onError(code,msg);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 });
     }
