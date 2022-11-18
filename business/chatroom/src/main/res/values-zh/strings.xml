@@ -5,7 +5,7 @@
 
     <string name="chatroom_create">创建房间</string>
     <string name="chatroom_login">登录</string>
-    <string name="chatroom_login_title">登录环信聊天室</string>
+    <string name="chatroom_login_title">登录环信语聊房</string>
     <string name="chatroom_login_phone_number">请输入您的手机号</string>
     <string name="chatroom_login_code">请输入验证码</string>
     <string name="chatroom_login_get_code">获取验证码</string>
