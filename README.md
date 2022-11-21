@@ -1,4 +1,4 @@
-# AgoraSenceDemo
+# voiceroom_demo_android
 
 ### 介绍
 
@@ -8,7 +8,7 @@
 
 ##### basicdepend 依赖的一层壳
 
-* 依赖component和common
+* 依赖component和commons
 
 ##### business：业务
 
@@ -24,7 +24,7 @@
 
 ##### common：基础
 
-* basui 基础ui
+* baseui 基础ui
 * buddy 工具类
 * config 配置
 * network 网络封装
