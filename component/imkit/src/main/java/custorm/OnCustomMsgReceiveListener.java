@@ -1,4 +1,4 @@
-package custormgift;
+package custorm;
 
 import bean.ChatMessageData;
 
@@ -61,7 +61,7 @@ public interface OnCustomMsgReceiveListener {
     void onReceiveSystem(ChatMessageData message);
 
     /**
-     *
+     * 机器人音量更新
      * @param message
      */
     void voiceRoomUpdateRobotVolume(ChatMessageData message);

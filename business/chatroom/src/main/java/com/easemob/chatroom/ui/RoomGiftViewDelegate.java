@@ -14,8 +14,8 @@ import com.opensource.svgaplayer.SVGAVideoEntity;
 import org.jetbrains.annotations.NotNull;
 
 import bean.ChatMessageData;
-import custormgift.CustomMsgHelper;
-import custormgift.OnMsgCallBack;
+import custorm.CustomMsgHelper;
+import custorm.OnMsgCallBack;
 import com.easemob.buddy.tool.ThreadManager;
 
 import com.easemob.chatroom.general.repositories.ProfileManager;

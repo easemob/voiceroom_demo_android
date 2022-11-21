@@ -17,8 +17,8 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import bean.ChatMessageData
 import com.alibaba.android.arouter.facade.annotation.Route
-import custormgift.CustomMsgHelper
-import custormgift.OnMsgCallBack
+import custorm.CustomMsgHelper
+import custorm.OnMsgCallBack
 import com.easemob.baseui.BaseUiActivity
 import com.easemob.baseui.adapter.OnItemClickListener
 import com.easemob.baseui.general.callback.OnResourceParseCallback
