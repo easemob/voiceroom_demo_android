@@ -3,7 +3,7 @@ package bean;
 import java.util.HashMap;
 import java.util.Map;
 
-import custormgift.CustomMsgType;
+import custorm.CustomMsgType;
 
 public class ChatMessageData {
     private String from;

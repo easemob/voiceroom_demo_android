@@ -16,8 +16,8 @@ import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import bean.ChatMessageData;
-import custormgift.CustomMsgHelper;
-import custormgift.OnCustomMsgReceiveListener;
+import custorm.CustomMsgHelper;
+import custorm.OnCustomMsgReceiveListener;
 
 public class ChatroomConfigManager {
     private static final String TAG = ChatroomConfigManager.class.getSimpleName();

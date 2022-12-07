@@ -1,4 +1,4 @@
-package custormgift;
+package custorm;
 
 import com.hyphenate.EMCallBack;
 

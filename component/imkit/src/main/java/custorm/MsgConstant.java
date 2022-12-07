@@ -1,4 +1,4 @@
-package custormgift;
+package custorm;
 
 public interface MsgConstant {
     // 定义的消息params中的key

@@ -21,9 +21,9 @@ import java.util.List;
 import java.util.Map;
 
 import bean.ChatMessageData;
-import custormgift.CustomMsgHelper;
-import custormgift.OnCustomMsgReceiveListener;
-import custormgift.OnMsgCallBack;
+import custorm.CustomMsgHelper;
+import custorm.OnCustomMsgReceiveListener;
+import custorm.OnMsgCallBack;
 
 public class ChatroomHelper implements EMChatRoomChangeListener, EMConnectionListener {
     private static ChatroomHelper instance;
